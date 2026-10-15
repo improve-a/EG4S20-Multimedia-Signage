@@ -9,7 +9,7 @@ sd_card_bmp #(.CLK_FREQ_HZ(1000),.DEBOUNCE_MS(5),.LONG_PRESS_MS(40),.ENABLE_EXHI
 .write_finish_toggle(1'b0),.display_commit_ack_toggle(ack),.commit_toggle(commit),.storage_fault_async(1'b0),.write_req_ack(1'b0),.SD_MISO(1'b1),
 .panel_active(1'b0),.panel_req(1'b0),.panel_addr(32'd0),.compare_panels_ready(panels),
 .candidate_page(candidate),.candidate_reverse(reverse_candidate),.candidate_compare(compare_candidate),.committed_page(committed),.committed_toggle(committed_toggle),
-.display_valid(valid),.resource_page_ready(ready),.resource_catalog_ready(catalog),.page_ready(pages),.cache_preload_done(done),
+.display_valid(valid),.resource_page_ready(ready),.resource_mode_valid(1'b1),.resource_layer_mode(1'b1),.resource_catalog_ready(catalog),.page_ready(pages),.cache_preload_done(done),
 .resource_sector0(s0),.resource_sector1(s1),.resource_sector2(s2),.resource_sector3(s3),.resource_sector4(s4),.resource_sector5(s5));
 always@(posedge clk)begin #1;
  if(dut.load_start_pulse)loads=loads+1;

@@ -40,7 +40,7 @@ for case in plan['tests']:
  record={'id':case['id'],'recipe_reference':case['recipe_reference'],'top':case['top'],'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'runner_pid':os.getpid(),'SIM':'FAIL','scope':'explicit existing unencrypted testbench only','source_sha256':{n:sha(root/n) for n in case['inputs']}}
  assert record['source_sha256']=={n:plan['source_sha256'][n] for n in case['inputs']}
  t=time.monotonic();print('START '+case['id'],flush=True)
- cmd=[r'C:\iverilog\bin\iverilog.exe','-g2012','-s',case['top'],'-o',str(folder/'simulation.vvp')]+['-P'+v for v in case['parameters']]+[str(root/n) for n in case['sources']]
+ cmd=[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM','-s',case['top'],'-o',str(folder/'simulation.vvp')]+['-P'+v for v in case['parameters']]+[str(root/n) for n in case['sources']]
  record['compile_command']=cmd
  with (folder/'compile.log').open('wb') as log:
   p=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT,cwd=root);record['compile_pid']=p.pid

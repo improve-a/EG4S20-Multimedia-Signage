@@ -18,6 +18,7 @@ CASES=[
  case("content_modes_tb",SD,"Legacy daily/emergency grouping and eight-slot discovery"),
  case("exhibit_interval_tb",CONTROL,"100ms interval updates, second carry/borrow, saturation, reset and no runtime divider"),
  case("exhibit_keys_tb",CONTROL,"Physical debounce, previous chord, six focus presets, zoom and pause/mute"),
+ case("exhibit_resource_mode_tb",SD,"Late resource probe, runtime plain BMP fallback, immutable six-page cache and HFXL readiness"),
  case("exhibit_layer_control_tb",SD,"External HFXL page readiness, six-sector catalog, no ordinary BMP load and actual ACK ownership"),
  case("exhibit_control_tb",SD,"Six-page resident readiness, real ACK ownership, late resources, rapid previous/next and exact5400ms"),
  case("exhibit_panel_mux_tb",SD,"One existing physical SD arbiter, audio/panel routing and parser isolation; transport modeled"),

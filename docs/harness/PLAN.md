@@ -1,21 +1,35 @@
-# HTML fidelity plan
+# HTML 分层移植计划
 
-Primary D:\FPGA\EG4S20-Multimedia-Signage; HX4S20C / EG4S20BG256, top top; TD6.2.1 Engineer168116. Preserve fb97d76 public history and c16d3da baseline. Offline only.
+主工作区为 D:\FPGA\EG4S20-Multimedia-Signage，目标 HX4S20C / EG4S20BG256，顶层 top，工具 TD 6.2.1 Engineer build 168116。保留公开历史 fb97d76、基线 c16d3da、官方原件与认可的 HTML 原型。本次仅离线开发；不操作硬件、物理卡、驱动、许可证，不改变引脚、继承的时钟和复位架构。
 
-| Contest bonus direction | Implementation / verification |
+## 实现与验证范围
+
+| 赛题方向 | 实际实现和证据 |
 | --- | --- |
-| Layers and dynamic captions | html_osd_overlay + html_bot_overlay, proportional antialias resources, actual DUT640x480 export |
-| Slideshow and continuous transitions | exhibit cache/control and eased transition; late-ready/ACK/fast-key tests |
-| Adaptive scaling | existing bmp_scale_read retained; differing-resolution regression, viewport zoom tested separately |
-| Board keys and OSD parameters | media_controls exhibit option, same physical key pins, live fields |
-| Real audio visualization | WAV/PCM/mute/FIFO/arbiter retained; sample-derived visual level, no FFT claim |
+| 分层与动态字幕 | 有限场景、真实 RGBA 混合、纹理 Bot、独立字幕/OSD；验证 DUT 的 640×480 像素 |
+| 轮播与连续转场 | 请求/实际提交事件一致；CSS 曲线驱动孔径、主图、大字和文字；验证延迟就绪、ACK 和快速按键 |
+| 输入自适应缩放 | 保留 bmp_scale_read；八种输入几何测试；1×/2×/3×局部放大单独验证 |
+| 板上按键与参数 | 继承物理按键，默认 5.4 秒、0.1 秒步长；配置在帧边界统一生效 |
+| 真实音频可视化 | WAV/PCM/FIFO/仲裁及静音后的峰值历史；不声称 FFT 或语音功能 |
 
-Dual comparison is a project interaction, not a separate mandatory contest item. No PC runtime renderer or additional processor.
+双图是产品交互扩展，读取两份独立 HFXC 产品资源。普通 BMP 回退读取两份独立 RGB 帧。运行时不依赖 PC 渲染或额外处理器。
 
-Memory: EG_PHY_SDRAM_2M_32 is2^21 32-bit words (8MiB). Six640x480 pages consume1843200words=7372800bytes, remaining253952words=1015808bytes. BMP24bpp loads to32-bit SDRAM words. Six cached pages avoid navigation reload; legacy8slot scanner retained. AudioFIFO remainsBRAM. Historical35/64BRAM9K+0/16BRAM32K only planning reference. New104x100ARGB4444 body166400bits; captions measured from generated resources. Delay DE/HS/VS withRGB.
+## 容量和存储契约
 
-Sequence: prototype/assets → controller/Bot/OSD/reader integration → targeted regression+firstTD → compare/transition fidelity+contention → final pixel/build/material package/Gitpush. Serial fresh snapshots only.
+EG_PHY_SDRAM_2M_32 提供 2^21 个 32 位字，即 8 MiB。传统 BMP 路径把每个 24 位像素存入一个 32 位字。HFXL 路径使用精确 RGB 调色板背景（每字三个 10 位索引、每行 214 字）、裁剪的 RRGGBBAA 图层和有限描述符。六场景共 1,803,776 字、7,215,104 字节；四个对比区从字地址 1,843,200 开始，每区 62,464 字。总有效数据 8,214,528 字节，剩余 174,080 字节。固定写入均按 256 字对齐，资源不重叠。八图扫描容量不代表八张完整帧同时常驻，正式轮播为六页。
 
-Next finite-layer budget: exact RGB palette backgrounds use3x10bit indices/32bit word,214words/row; independent RRGGBBAA cropped parts replace the old six full frames. Six scene payloads total1803776words=7215104bytes. Four comparison panels keep baseword1843200 and62464words each. Total data8214528bytes;174080bytes unused; no additional runtime allocation is assumed. Scene locator lives in BMP metadata bytes80..111 and payload follows native BMP pixels as an aligned trailer; normal BMP limits are preserved unless the explicit HFXL extension validates. Layer readiness follows physical write completion.
+BRAM9K 与 BRAM32K 分别核算。身体与字模分别用 6、5 个 32K 块；字幕列查询用 16 个 9K 块，交换图标用一个 9K 块。描述符使用一个 32K 块，运动表使用两个 32K 块；RGB 调色板使用九个 9K 块。缓存和队列以真实综合结果为准，不能只把总比特容量当成任意端口几何。
 
-Measured overlay optimization frees4073LUT/6DSP at cost16BRAM9K; actual full02 synthesis is13500LUT/47BRAM9K/11BRAM32K/16DSP before layered renderer. New16slot cache is1445LUT/2BRAM9K; palette and finite descriptors consume additional ROM. Full renderer must prove worst-row throughput with real40/25MHz cadence/refresh/backpressure, not average bandwidth. The final fresh full build is required after this phase.
+APUG011 契约要求按四字对齐的物理组读出。首字等待初始化/刷新，后续字按内部地址递增；读写不能重叠。逻辑像素请求与物理事务分离，引用计数保护未返回的数据。渲染器使用 32 个取数记录、有限计算上下文和 RGB 结果队列。验证实际 40 MHz 内存/25 MHz 视频节奏、512 字 FIFO、256 字突发门限、13 周期排空与刷新/背压。加密 IP 不替换、不解密。
+
+## 显示提交和时间
+
+候选页与方向保持到真实读端 ACK。首次就绪提交之前，空白帧请求被消耗但不访问未写入的 SDRAM。参数和焦点邮箱在原始帧请求处捕获，早于读端 ACK，使几何与 OSD 同帧一致。多位配置沿用稳定载荷邮箱；RGB、DE、HS、VS 延迟保持一致。
+
+800×525、25 MHz 对应 16.8 ms/帧，约 59.5238095 Hz。轮播以 5400 ms 截止时间和余数计数为准，在加载、转场、ACK 期间继续计时，手动切换重启期限。运动使用实际帧周期和 CSS 曲线；明确区分上一页/下一页，忙时保留最新目标并稳定当前提交候选。
+
+## 执行与收尾
+
+只根据真实错误、面积和吞吐数据优化。模块测试、第一阶段 BUILD_PASS 与最终工作树是不同版本；最终显示链、六页/双图/放大/动作图像、SYN/PNR/BITGEN、时序报告及源码/媒体/位流哈希必须对应。保留失败测试和构建；不自动循环完整构建，不添加无依据的时序例外。
+
+PLAN、STATUS、EVIDENCE、FINAL_REPORT 是仅有的四份新增叙述报告。验收按键和限制写入 FINAL_REPORT，数值证据放入 EVIDENCE 及现有机器可读结果。Root 独占 Git、共享顶层和串行 TD；最多三个明确授权的非 Astra 子代理，不递归委派。只正常推送开发分支，不合并 main 或强推。

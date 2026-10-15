@@ -103,10 +103,14 @@ def package(layers, base_media, out, wav=None, rtl_include=None):
         # Keep the existing offset gap and its HFXC bytes for the four comparison pages.
         new_pixel_offset = pixel_offset if hfxc else 512
         header = bytearray(new_pixel_offset)
-        header[:min(new_pixel_offset, len(original))] = original[:min(new_pixel_offset, len(original))]
         if hfxc:
+            header[:] = original[:new_pixel_offset]
             if header[512:new_pixel_offset] != original[512:pixel_offset]:
                 raise ValueError(f'{source.name}: HFXC gap was not preserved')
+        else:
+            # Keep only the canonical 54-byte BMP/DIB header. The rest of the
+            # 512-byte locator area is reserved and must be zero before HFXL.
+            header[:54] = original[:54]
         scene_offset = (new_pixel_offset + len(bgr) + 511) // 512 * 512
         payload = (layers / page['path']).read_bytes()
         if len(payload) != page['payload_bytes'] or len(payload) % 1024 or len(payload) > 2097152:

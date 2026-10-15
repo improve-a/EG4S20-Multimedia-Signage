@@ -281,7 +281,18 @@ module html_bot_overlay #(
  wire [15:0] body_rom_data;
  reg texvalid2;
  wire [15:0] tex2=texvalid2 ? body_rom_data : 16'd0;
- reg [3:0] eye2;
+ wire[3:0]eye2;
+ reg[7:0]eye_ax2;reg eye_valid2;
+ reg[11:0]eye_ax_calc,eye_ay0_calc,eye_ay1_calc;
+ reg signed[11:0]eye_dy_calc,eye_y0_calc,eye_y1_calc;
+ wire[1:0]eye_width_bank=selected_eye_width-4'd6;
+ wire[9:0]eye_radius_address0={eye_width_bank,eye_height[2:0],eye_ay0_calc[6:2]};
+ wire[9:0]eye_radius_address1={eye_width_bank,eye_height[2:0],eye_ay1_calc[6:2]};
+ wire[6:0]eye_radius0,eye_radius1;
+ html_eye_radius_rom eye_rom(clk,eye_radius_address0,eye_radius_address1,eye_radius0,eye_radius1);
+ wire[5:0]eye_sum={1'b0,eye_line_coverage(eye_radius0,eye_ax2)}+{1'b0,eye_line_coverage(eye_radius1,eye_ax2)};
+ wire[9:0]eye_scaled={eye_sum,4'b0}-{4'd0,eye_sum}+10'd16;
+ assign eye2=eye_valid2 ? eye_scaled[8:5] : 4'd0;
  reg [3:0] alpha2;
  reg [7:0] red2,green2,blue2;
  reg [23:0] bot_background;
@@ -332,7 +343,12 @@ module html_bot_overlay #(
   // The eye discs never overlap: select spatially before the shared AA unit.
   if(sample_x_q4<eye_cx_q4)begin eye_dx_q4=sample_x_q4-eye_cx_q4+16'sd170;selected_eye_width=left_width;end
   else begin eye_dx_q4=sample_x_q4-eye_cx_q4-16'sd170;selected_eye_width=right_width;end
-  eye_coverage_calc=eye_coverage_q4(eye_dx_q4,sample_y_q4-eye_cy_q4,selected_eye_width,eye_height);
+  eye_coverage_calc=0;
+  eye_dy_calc=sample_y_q4-eye_cy_q4;
+  eye_y0_calc=eye_dy_calc-12'sd4;eye_y1_calc=eye_dy_calc+12'sd4;
+  eye_ax_calc=eye_dx_q4<0 ? -eye_dx_q4 : eye_dx_q4;
+  eye_ay0_calc=eye_y0_calc<0 ? -eye_y0_calc : eye_y0_calc;
+  eye_ay1_calc=eye_y1_calc<0 ? -eye_y1_calc : eye_y1_calc;
   addr=uy1*104+ux1;
  end
  // Perceptual RGB444 codebook retains near-black gradient detail at16bits/texel.
@@ -359,7 +375,7 @@ module html_bot_overlay #(
  always @(posedge clk)begin
   if(rst)begin
    sync0<=0;sync1<=0;sync2<=0;sync3<=0;bg0<=0;bg1<=0;bg2<=0;
-   lx0<=0;ly0<=0;ux1<=0;uy1<=0;en0<=0;en1<=0;texvalid2<=0;eye2<=0;
+   lx0<=0;ly0<=0;ux1<=0;uy1<=0;en0<=0;en1<=0;texvalid2<=0;eye_ax2<=0;eye_valid2<=0;
    red3<=0;green3<=0;blue3<=0;alpha3<=0;bg3r<=0;bg3g<=0;bg3b<=0;fg3r<=0;fg3g<=0;fg3b<=0;
    o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
   end else begin
@@ -369,18 +385,17 @@ module html_bot_overlay #(
    ux1<=tx_calc[10:0];uy1<=ty_calc[10:0];
    sync2<=sync1;bg2<=bg1;
    texvalid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100;
-   if(en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100)
-    eye2<=eye_coverage_calc;
-   else eye2<=0;
+   eye_ax2<=eye_ax_calc[7:0];
+   eye_valid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100 &&
+    eye_ax_calc<136 && eye_ay0_calc<128 && eye_ay1_calc<128 &&
+    selected_eye_width>=6 && selected_eye_width<=8 && eye_height>=1 && eye_height<=7;
    sync3<=sync2;alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bot_background[23:16];bg3g<=bot_background[15:8];bg3b<=bot_background[7:0];
    red3<=blend_product(red2,bot_background[23:16],alpha2);
    green3<=blend_product(green2,bot_background[15:8],alpha2);
    blue3<=blend_product(blue2,bot_background[7:0],alpha2);
    {o_hs,o_vs,o_de}<=sync3;
    // Linear alpha4 is encoded0..15, so partial coverage also divides by15.
-   if(alpha3==15)o_rgb<={fg3r,fg3g,fg3b};
-   else if(alpha3==0)o_rgb<={bg3r,bg3g,bg3b};
-   else o_rgb<={alpha15_result(red3),alpha15_result(green3),alpha15_result(blue3)};
+   o_rgb<={alpha15_result(red3),alpha15_result(green3),alpha15_result(blue3)};
   end
  end
 endmodule

@@ -2,12 +2,12 @@
 import argparse,hashlib,importlib.util,json,shutil,subprocess,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-SOURCES=['rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','tests/html_bot_reference_tb.v']
+SOURCES=['rtl/ext/html_eye_radius_rom.v','rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','tests/html_bot_reference_tb.v']
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--label',default='current');a=ap.parse_args()
  out=ROOT/'output/html_fidelity/bot_reference'/(a.label+'_'+time.strftime('%Y%m%d_%H%M%S'));out.mkdir(parents=True)
  spec=importlib.util.spec_from_file_location('images',ROOT/'scripts/html_display_chain_verify.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
- for name in SOURCES+['rtl/ext/html_assets/bot_body_argb4444.hex']:
+ for name in SOURCES+['rtl/ext/html_assets/bot_body_argb4444.hex','rtl/ext/html_assets/html_eye_radius.hex']:
   dest=out/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dest)
  base,_=m.bmp_rgb(ROOT/'output/html_fidelity/media/UI01.BMP')
  (out/'page0_rgb.hex').write_bytes(''.join(f'{base[i]:02x}{base[i+1]:02x}{base[i+2]:02x}\n' for i in range(0,len(base),3)).encode())

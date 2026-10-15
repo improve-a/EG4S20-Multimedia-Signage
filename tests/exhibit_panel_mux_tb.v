@@ -41,7 +41,7 @@ initial begin
  wait(pends==1 && aends==1);repeat(10)@(negedge clk);
  if(pbytes!=512 || abytes!=512 || requestcount!=2)$fatal(1,"sectorcount/order");
  // Response bundle is registered together only on the BMP path. Panel
- // responses remain direct; ownership switches occur after idle sector drain.
+ // responses are registered by one cycle; ownership switches occur after idle sector drain.
  transport_checks=0;active=0;repeat(2)@(negedge clk);
  force dut.bmp_client_data=8'h3c;force dut.bmp_client_valid=1;
  force dut.bmp_client_end=1;force dut.bmp_client_error=1;
@@ -55,10 +55,13 @@ initial begin
  if(dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error || dut.sd_sec_read_data!==8'hf1)$fatal(1,"BMPbundleclear");
  @(negedge clk);active=1;force dut.bmp_client_data=8'ha5;force dut.bmp_client_valid=1;
  force dut.bmp_client_end=1;force dut.bmp_client_error=1;
- #1;if(!pv || !pe || !px || pdata!==8'ha5)$fatal(1,"paneldirectbundle");
- @(posedge clk);#1;if(dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error)$fatal(1,"panelBMPisolationregistered");
+ #1;if(pv || pe || px)$fatal(1,"resourcebundle_notregistered");
+ @(posedge clk);#1;if(!pv || !pe || !px || pdata!==8'ha5 || dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error)$fatal(1,"resourcebundlealignment_isolation");
+ @(negedge clk);active=0;force dut.bmp_client_valid=0;force dut.bmp_client_end=0;force dut.bmp_client_error=0;force dut.bmp_client_data=8'h12;
+ #1;if(!pv || !pe || !px || pdata!==8'ha5)$fatal(1,"resourcebundlecombinationalgate");
+ @(posedge clk);#1;if(pv || pe || px || pdata!==8'h12)$fatal(1,"resourcebundleclear");
  release dut.bmp_client_data;release dut.bmp_client_valid;release dut.bmp_client_end;release dut.bmp_client_error;
- $display("TEST_PASS exhibit_panel_mux existingphysicalSDarbiter audio512panel512 isolation stableLBA nosecondreader BMPbundle1cycle data_valid_end_error paneldirect");$finish;
+ $display("TEST_PASS exhibit_panel_mux existingphysicalSDarbiter audio512panel512 isolation stableLBA nosecondreader BMPbundle1cycle data_valid_end_error resourcebundle1cycle no_postgate");$finish;
 end
 initial begin #1000000;$fatal(1,"timeout");end
 endmodule

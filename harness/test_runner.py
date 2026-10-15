@@ -7,7 +7,7 @@ def main():
  src=[str(pathlib.Path(x).resolve(strict=True)) for x in a.sources]
  result={'schema_version':1,'SIM':'FAIL','scope':'explicit_testbench_only','top':a.top,'sources':src,'source_sha256':{s:hashlib.sha256(pathlib.Path(s).read_bytes()).hexdigest() for s in src},'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'pid':os.getpid()};t=time.monotonic()
  try:
-  compile_cmd=[r'C:\iverilog\bin\iverilog.exe','-g'+a.language,'-s',a.top,'-o',str(out/'sim.vvp')]+['-P'+x for x in a.parameter]+src
+  compile_cmd=[r'C:\iverilog\bin\iverilog.exe','-g'+a.language,'-DHTML_SIM','-s',a.top,'-o',str(out/'sim.vvp')]+['-P'+x for x in a.parameter]+src
   result['compile_command']=compile_cmd;result['parameter_overrides']=a.parameter
   c=subprocess.run(compile_cmd,capture_output=True,timeout=120,cwd=a.cwd);(out/'compile.log').write_bytes(c.stdout+c.stderr);result['compile_exit']=c.returncode
   if c.returncode==0:

@@ -39,6 +39,10 @@ module html_scene_loader_tb;
    4:payload=64;5:payload=8;7:payload=214;10:payload=640;11:payload=480;
    13:payload=32'h003adc1b;14:payload=(c==6)?256:page*1024;15:payload=(c==7)?6:page;
   endcase
+  // Every required payload-header field has an independent rejection case.
+  if((c==19&&word==1)||(c==20&&word==2)||(c==21&&word==3)||
+     (c==22&&word==4)||(c==23&&word==5)||(c==24&&word==7)||
+     (c==25&&word==10)||(c==26&&word==11)||(c==27&&word==13))payload=payload^32'h80000001;
  end endfunction
  always @(negedge clk)begin
   valid=0;ending=0;sd_error=0;
@@ -91,7 +95,7 @@ module html_scene_loader_tb;
   if(page_ready & ~((1<<page_count)-1))$fatal(1,"page ready before physical write completion");
  end
  initial begin
-  for(c=0;c<19;c=c+1)begin
+  for(c=0;c<28;c=c+1)begin
    @(posedge clk);#1;rst=1;enable=0;ack=0;valid=0;ending=0;sd_error=0;finish_toggle=0;
    s0=(c==16)?32'hfffffc00:17;
    busy=0;cycles=0;grant=0;ack_wait=0;ack_tail=0;word_count=0;page_count=0;finish_wait=0;request_count=0;
@@ -105,6 +109,6 @@ module html_scene_loader_tb;
    repeat(10)@(posedge clk);#1;
    if(req||wreq||active)$fatal(1,"transaction held after terminal state");
   end
-  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 17 malformed/transport/timeout cases plus ordinary adaptive-BMP fallback",all_words);$finish;
+  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 26 malformed/transport/timeout cases plus ordinary adaptive-BMP fallback",all_words);$finish;
  end
 endmodule

@@ -20,6 +20,7 @@ module media_controls #(
     output reg signed [8:0] brightness,
     output reg [2:0] contrast,
     output reg [7:0] interval_seconds,
+    output reg [3:0] interval_fraction,
     output reg osd_enable,
     output reg [1:0] transition_mode,
     output reg [1:0] scale_mode,
@@ -44,7 +45,6 @@ module media_controls #(
     reg next_long_done, next_key_held, next_play_held;
     reg [2:0] next_gesture_mode;
     reg chord_active;
-    reg [3:0] interval_fraction; // tenths within the displayed whole second
     wire chord_now=ENABLE_EXHIBIT && mode==0 && next_down && key4_down && !next_long_done && !key4_long_done;
 
     media_button #(.CLK_FREQ_HZ(CLK_FREQ_HZ), .DEBOUNCE_MS(DEBOUNCE_MS)) next_button

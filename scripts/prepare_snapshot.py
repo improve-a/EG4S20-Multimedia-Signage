@@ -19,7 +19,8 @@ for folder,prefix in [('rtl','user_source/hdl_source'),('project/user_source/con
 project='td_project/hx4s20_basic.al'
 txt=files[project].decode('utf-8')
 if x.probe_source and not x.synth_top:a.error('--probe-source requires --synth-top')
-for order,source in enumerate(x.probe_source,90):
+probe_order=1+max(int(v) for v in re.findall(r'Name="CompileOrder" Val="(\d+)"',txt))
+for order,source in enumerate(x.probe_source,probe_order):
     source=pathlib.PurePosixPath(source.replace('\\','/'))
     if source.is_absolute() or '..' in source.parts:a.error('Probe source must be relative to rtl')
     path='user_source/hdl_source/'+source.as_posix()

@@ -13,6 +13,8 @@ TESTS={
  'commit_overlay':BASE+['rtl/SD/color_bar.v','rtl/SD/video_timing_data.v','rtl/display_commit.v','rtl/ext/pixel_adjust.v','rtl/ext/html_bot_overlay.v','rtl/ext/html_video_overlay.v','tests/html_commit_overlay_tb.v'],
 }
 if '--columns' in sys.argv:TESTS['osd_columns']=BASE+['tests/models/html_osd_reference.v','tests/html_osd_columns_tb.v']
+for test in TESTS:TESTS[test]=['rtl/ext/html_eye_radius_rom.v']+TESTS[test]
+
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  out=ROOT/'output/html_fidelity/overlay_target'/('run_'+time.strftime('%Y%m%d_%H%M%S'));out.mkdir(parents=True)

@@ -153,7 +153,7 @@ module control_storage_tb;
   initial begin #200000; fail("timeout"); end
 endmodule
 
-module bmp_read #(parameter ENABLE_SCALE=0) (
+module bmp_read #(parameter ENABLE_SCALE=0, parameter ENABLE_HFXL=0) (
   input [1:0] scale_mode,
   input clk,rst,scan_start,
   output reg ready,

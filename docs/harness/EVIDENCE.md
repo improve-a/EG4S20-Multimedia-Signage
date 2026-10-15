@@ -65,3 +65,24 @@ Overlay09 SYN PASS33.172s:4364LUT,17BRAM9K,11BRAM32K,13DSP. Exact radius factori
 Wholebridge probe01 SYN PASS71.36s but9360LUT/11BRAM9K/6BRAM32K makes the aggregate design too large. Geometry3884LUT and16contextengine dominate. Static wholebridge307200pixels match the real scene source-over oracle at layer_whole_unit_v2; this explicitly holds motion atsettledage127 and does not prove natural animation or real25/40MHz delivery. Eightcontext and16context/8cache configurations underflowed in real-cadence tests and are rejected. Optimization continues before fullflow.
 
 Formal output/html_fidelity/media is now a single six-HFXL-BMP/one-WAV pack. scripts/html_fidelity_unified_pack.py staged, verified and activated it twice; native921600-byte BGR data and four HFXC payloads are unchanged. Existing WAV SHA c0671b03 is preserved (full hash in manifest). Root generated ordinary64MiB card_images/unified_003adc1b.img, SHA7cb3db222979a0daab3f62ce8ea667c5ef52183967b7760ebec529d7e5067175. Inspector PASS checks all file hashes, twoFAT chains, contiguity, sixphysicalheader scan/order and oneWAV; issues[]. No physical card/device opened. First_static image and manifest remain immutable. Descriptor ROM16 export has1536words and exactlow/high reconstruction; binarySHA0bc3896d9036ee0923dc687dc96999d1518cc59dbc877f8d5817945a827d4acc.
+
+## 首帧边界、有限图层和资源优化（19:07 UTC）
+
+- 首帧及配置：integration_review/run_20261016_023857/verification.json SHA256 694171e02cb4cc77f770f1075c1d225e1f14e316c69c5af16dc6f7aa1cf84354。原失败复现保留；REQUIRE_INITIAL_COMMIT=1 空白帧零读取，首个就绪帧与原始请求边界配置一致。顶层声明顺序修复后 SHA256 e87a626c8059e3640afc1bf2935a4bdbc16880a4b71540dab7111cf99bb7414a，integration_replay_v4.json 三项精确原件重放/幂等/未知修改拒绝均PASS。
+- 新场景流式校验：verification/scene_stream_v1 保存修改前源码、diff、工具/源码哈希、PID/退出码/耗时。源 SHA256 b840a01fba871b1cfc85f7f5844817fb68dd120e75adf5c6b4acb26cbb162dc3，8831字、26个异常及普通BMP回退PASS。scene_verification/20261015T185829824020Z 全6场景/PCM复测PASS，424.875秒、1803776字、3500PCM帧，日志SHA256 fdb0d04f1fdd9708d4af3661091597741d06c74ec26fad4936e8d2d5de9a1980。
+- html_scene_stream_probe_20261015_01：SYN PASS，11.250秒，1006LUT/777reg/无BRAM或DSP；snapshot 02e2c0296861d3b047dc975d5df3d8449aef9973d6ba73e064aa0d0290869245。
+- html_compact_engine_probe_20261015_01：退出0但面积无效；TD把前向声明accept/dispatch_slot当作未驱动，导致删去大部分电路。audit/compact_engine_probe_v1.json 明确标记INVALID，不计为容量成果。修复声明顺序后probe02：21.281秒、3228LUT/1165reg/6×9K/2×32K/2DSP，snapshot 2833da42f271a0640f2e4724b819b0af3a710468790e7b675717090d7c58ec71。probe03直连首RGBA：21.265秒、3158LUT，相同RAM/DSP，snapshot 781b03d3f8759a1c5baf536c5b0bbbfdfa70dd377d693b1dfcbcda0b3b442314。两项无上述未驱动警告；独立探针不是整机时序/功能签核。
+- html_geometry_span4_probe_20261015_01：13.390秒、1809LUT/662reg/3×32K/1DSP；snapshot ba8ae3f39f4b2b1ca51eada44d237c6be81802d2a712166cc983492d601c05ac。720场景对/年龄/行用例，921600个地址和alpha样本通过；完整候选吞吐继续验证。
+- display_chain/layered_20261016_024345：实际分层smoke PASS，715.84秒，307200像素、267880请求/返回、无故障。DUT帧SHA256 a85b4bd824185b743aa73ec407b4ab172bf94a3a6d88b3b3dbe2d8661c81f792；cleanA MAE0.03570/255为整数alpha舍入，整幅MAE1.06313/255包含Bot姿态及真实音柱差异。仅该冻结cache16版本和首页，非最终全套。
+- 第一阶段display_chain/run_20261016_011100：18帧5529600像素通过，负向诊断原记录FAIL；pixel_frames_evidence.json SHA256 1e4967a89fe9baf48d83a3e6f17cd510fa3defc3fef6b115b29bd2b2cc8f1b3e。diagnostic_delta_20261016_025134 短复现证明组合故障标记delta-cycle竞争，修复测试观察时机，不改RTL、不覆盖旧结果。
+- 正式BMP头未使用区域统一清零，HFXC保持；audit/formal_media_transport_identity.json 六文件字节一致。card_images/unified_003adc1b_v2.img SHA256 be88671cd1e5732c5a94892fb4427b02db2ce82e03924b3f82346b474a73b1e4，inspection PASS/无issues，旧v1保留。未进行物理卡操作。
+
+## 资源候选冻结前检查（19:34 UTC）
+
+- 整机SYN03：18779 LUT/10866 REG/64×9K/16×32K/18DSP；187.812秒，exit0，supervisor4348/TD17040；快照86649724cebc3ec1f379905438fec48d950819efddb331bb6f83a0330c05ff7a，源包a4e1d8175d0d106063d3cec90e777b0101cbd265a1913fdbe85d7f2ed9d3a87c。独立probe时钟不用于时序结论。完整报告、初始化输入和警告见audit/top_area_probe03.json及builds/html_top_area_probe_20261015_03。
+- 眼睛ROM独立SYN为4018 LUT，较原4364节省346 LUT和2 DSP，使用新增1×9K。生产六帧与原实现逐字节相同；verification.json SHA77209fee3c44855fa5d046a215657c387953f07d47a055193b0795bc884ed459。数值ROM14份均完成HEX/BIN roundtrip（audit/rom_init_eye_v1.json）。
+- returnFF版本cache SHA8aa97cab14d8cd958d3d5d4b26988428cb6cbc8a873d765869006b6e458385c5；8192单元事务、home/eagle连续25/40MHz全帧通过；其他页和266周期后台写占用继续。
+- BMP sector同步RAM候选独立SYN1737 LUT、3×9K/1×32K/1DSP；原生case3及scan/load/reject已过，其余兼容回归继续。最小diff/before/provenance在verification/bmp_sector_sync_v1。
+- control_storage旧替身参数遗漏导致原快照编译FAIL，补齐ENABLE_HFXL声明后regression/20261015T193237292810Z PASS，未改DUT或放宽断言。
+- 受保护依赖审计audit/protected_dependencies_20261015T1914.json：59项中53项与基线相同，6项为授权的最小可重放补丁。引脚、时钟/复位架构和vendor IP未更改。
+- 两bank调色板只读穷举31种分组，最优UI01/04/05=1060色、UI02/03/06=1059色，各超1024；因此不采用，SET_ID仍003adc1b。总色并集1994，不以总数误判分组可行。

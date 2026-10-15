@@ -12,7 +12,8 @@ def generate(root=ROOT):
         specs.append(("html_caption_columns.hex",8114,18))
     # Every optional layer/animation resource keeps simulation hex and TD binary
     # initialization numerically identical in the immutable build snapshot.
-    optional=[("html_osd_swap_palette.hex",576,8),
+    optional=[("html_eye_radius.hex",1024,9),
+              ("html_osd_swap_palette.hex",576,8),
               ("html_motion_alpha_scale.hex",1536,16),
               ("html_motion_offset.hex",1536,16),
               ("html_layer_palette.hex",3072,24),

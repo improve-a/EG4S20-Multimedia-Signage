@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 module html_hfxc_bmp_tb;
- parameter CASE=3, BYTE_GAP=2;
+ parameter CASE=3, BYTE_GAP=2, ENABLE_HFXL=0, EXPECT_REJECT=0;
  localparam CARD_BYTES=1171968;
  reg clk=0;always #5 clk=~clk;
  reg rst=1,init=0,start=0,abort=0,ack=0;
@@ -13,7 +13,7 @@ module html_hfxc_bmp_tb;
  integer cycle=0,count=0,requests=0,ack_wait=0;
  integer pending=0,index=0,gap=0,end_wait=0,last_wr=-999,last_request=-1,grant_wait=0;
  reg busy=0;reg [31:0] sector;
- bmp_read #(.ENABLE_SCALE(1),.TIMEOUT_CYCLES(1000000)) dut(
+ bmp_read #(.ENABLE_SCALE(1),.ENABLE_HFXL(ENABLE_HFXL),.TIMEOUT_CYCLES(1000000)) dut(
  .clk(clk),.rst(rst),.ready(ready),.scan_start(1'b0),.scan_start_sector(32'd0),
  .scan_max_sector(32'd0),.scan_target_count(3'd1),.scan_done(),.scan_found_valid(),
  .scan_found_sector(),.scan_found_total(),.load_start(start),.load_abort(abort),
@@ -60,13 +60,19 @@ module html_hfxc_bmp_tb;
  end
  always @(posedge clk) if(!rst) begin
   if(wr) begin
+   if(EXPECT_REJECT)$fatal(1,"unvalidated extended BMP produced a pixel");
    if(count>=307200) $fatal(1,"canvas overflow");
    if(pixel!==golden[count]) $fatal(1,"pixel %0d got %h expected %h",count,pixel,golden[count]);
    if(cycle-last_wr<16) $fatal(1,"unsafe output rate");
    count=count+1;last_wr=cycle;
   end
-  if(error) $fatal(1,"loader error %0d state %0d",error,state);
+  if(error)begin
+   if(EXPECT_REJECT && error==1 && count==0)begin
+    $display("TEST_PASS REAL_HFXL_WITHOUT_OPTIN_REJECTED error=%0d requests=%0d",error,requests);$finish;
+   end else $fatal(1,"loader error %0d state %0d",error,state);
+  end
   if(done) begin
+   if(EXPECT_REJECT)$fatal(1,"unvalidated extended BMP completed");
    if(count!=307200) $fatal(1,"premature done count %0d",count);
    if(busy||pending_read) $fatal(1,"load_done with pending SD transaction");
    $display("TEST_PASS REAL_HFXC_BMP case=%0d count=%0d requests=%0d cycles=%0d gap=%0d",CASE,count,requests,cycle,BYTE_GAP);

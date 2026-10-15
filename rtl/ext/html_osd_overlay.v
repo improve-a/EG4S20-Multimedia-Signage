@@ -523,7 +523,6 @@ module html_osd_overlay #(
    b3<=blend_product(fg_calc[7:0],bg_calc[7:0],alpha_calc);
    {o_hs,o_vs,o_de}<=sync3;
    if(alpha3==15)o_rgb<=fg3;
-   else if(alpha3==0)o_rgb<=bg3;
    else o_rgb<={r3[11:4],g3[11:4],b3[11:4]};
   end
  end

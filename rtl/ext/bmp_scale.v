@@ -101,7 +101,6 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg [15:0] planes,bit_count;
  reg [15:0] signature;
  reg [9:0] receive_count,parse_index;
- reg [7:0] sector_mem [0:511];
  reg [31:0] file_position,row_position;
  reg [1:0] component;
  reg [23:0] source_pixel;
@@ -177,7 +176,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    header_ok<=dimensions_ok&&format_ok&&offset_ok&&extent_ok;
   end
  end
- wire [7:0] parsed_byte=sector_mem[parse_index[8:0]];
+ wire [7:0] parsed_byte;
  wire is_rgb=(file_position>=pixel_offset)&&(file_position<pixel_end)&&(row_position<rgb_row);
  wire parser_can_step=!is_rgb || (source_ready&&!source_valid);
  wire active=(state>=WAIT_ACK);
@@ -188,8 +187,16 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  .start(scale_start),.source_width(width[9:0]),.source_height(height[9:0]),
  .scale_mode(mode_l),.source_valid(source_valid),.source_pixel(source_pixel),
  .source_ready(source_ready),.pixel_valid(scale_valid),.pixel(scale_pixel),.done(scale_done));
- always @(posedge clk) if(state==DRECV && sd_sec_read_data_valid && receive_count<512)
-  sector_mem[receive_count[8:0]]<=sd_sec_read_data;
+ // Prefetch byte zero on the receive-to-parse edge. Each accepted byte
+ // prefetches its successor; a stalled parser rereads the current byte.
+ // This preserves parser timing while removing the asynchronous 512-way mux.
+ wire sector_read=(state==DRECV&&sd_sec_read_end)||(state==PARSE);
+ wire [8:0] sector_read_addr=state==DRECV?9'd0:
+  parser_can_step?parse_index[8:0]+9'd1:parse_index[8:0];
+ bmp_sector_buffer sector_buffer(.clk(clk),
+  .write_en(state==DRECV&&sd_sec_read_data_valid&&receive_count<512),
+  .write_addr(receive_count[8:0]),.write_data(sd_sec_read_data),
+  .read_en(sector_read),.read_addr(sector_read_addr),.read_data(parsed_byte));
  always @(posedge clk) begin
   if(rst) begin
    state<=IDLE;scanning<=0;mode_l<=0;start_sector<=0;
@@ -306,4 +313,25 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    endcase
   end
  end
+endmodule
+
+// One sector, synchronous independent write/read ports. Payload is not reset;
+// the caller enters PARSE only after all 512 bytes have arrived successfully.
+module bmp_sector_buffer(input clk,input write_en,input [8:0] write_addr,input [7:0] write_data,
+ input read_en,input [8:0] read_addr,output [7:0] read_data);
+`ifdef HTML_SIM
+ reg [7:0] memory[0:511];reg [7:0] q;
+ always @(posedge clk)begin
+  if(write_en)memory[write_addr]<=write_data;
+  if(read_en)q<=memory[read_addr];
+ end
+ assign read_data=q;
+`else
+ EG_LOGIC_BRAM #(.DATA_WIDTH_A(8),.ADDR_WIDTH_A(9),.DATA_DEPTH_A(512),
+ .DATA_WIDTH_B(8),.ADDR_WIDTH_B(9),.DATA_DEPTH_B(512),.MODE("DP"),
+ .REGMODE_A("NOREG"),.REGMODE_B("NOREG"),.WRITEMODE_A("NORMAL"),.WRITEMODE_B("NORMAL"),
+ .RESETMODE("SYNC"),.BYTE_ENABLE(0),.IMPLEMENT("32K"),.INIT_FILE("NONE"))storage(
+ .clka(clk),.addra(write_addr),.dia(write_data),.cea(1'b1),.ocea(1'b1),.wea(write_en),.rsta(1'b0),.bea(1'b1),.doa(),
+ .clkb(clk),.addrb(read_addr),.dib(8'd0),.ceb(read_en),.oceb(1'b1),.web(1'b0),.rstb(1'b0),.beb(1'b1),.dob(read_data));
+`endif
 endmodule

@@ -1,34 +1,39 @@
-# HTML fidelity status
+# HTML 分层移植状态
 
-Updated UTC 2026-10-15T18:27:39.139000+00:00
+更新 UTC 2026-10-15T19:35:59.074328+00:00。主工作区 D:\FPGA\EG4S20-Multimedia-Signage，分支 codex/html-fidelity，已提交 HEAD a80b0facc90c4240d210f05613c04abd6da18045；当前工作树另有已验证及待验证改动。目标 HX4S20C / EG4S20BG256，top，TD 6.2.1 Engineer build 168116。历史 main/fb97d76、c16d3da、官方原件均保留。首次远端只读检查成功且无分支；本次尚未推送。
 
-Primary: D:\FPGA\EG4S20-Multimedia-Signage; branch codex/html-fidelity; committed HEAD706e2f3. Public history fb97d76 and baseline c16d3da preserved. Remote https://github.com/improve-a/EG4S20-Multimedia-Signage.git: fresh ls-remote exit0/empty; push pending.
-Target HX4S20C/EG4S20BG256, top top, project/td_project/hx4s20_basic.al. TD G:\anlu\bin\td_commands_prompt.exe,6.2.1 Engineer168116. Windows primary; Mac single task temporary directory. No physical hardware/card operations.
+## 构建与资源
 
-## Current build result
+第一阶段 html_full_20261015_02 的 SYN/PNR/BITGEN PASS，退出 0、564.016 秒，产生新的 702956 字节位流。资源为 LUT 13905/19600、BRAM9K 47/64、BRAM32K 11/16、DSP 16/29。该版本不含最新有限图层、最终动作、首帧门控和帧配置修复，不能充当最终交付。
 
-First-phase full02 SYN/PNR/BITGEN PASS, exit0,564.016s, fresh702956-byte bitstream. Routed13905/19600 LUT,47/64 BRAM9K,11/16 BRAM32K,16/29 DSP. Snapshot72a155b70dee8d9a36ebbaf4f0639a141ca07aeaeee09f5bc63b66947fd556ad. Provenance output/html_fidelity/audit/full02_result.json.
-TIMING does not pass: setup WNS-0.797ns/TNS-3.204ns, hold WNS+0.003ns/TNS0;99.95% reported coverage with inherited IO/clock-definition warnings unsigned. Two setup endpoints: SD response→panel loader(-0.084ns), BMP stride→row position(-0.005ns). Eight recovery endpoints: inherited video-reset→HDMI125MHz. Reset and HDMI connections match baseline; no exceptions added. Complete resource-response1clk pipeline now passes targeted tests but is later than full02.
-Full01 SYN passed/PNR packing failed4918>4900mslices,273.313s. Two full flows so far; diagnostic attempts separately recorded. Completed tool time through full02:1214.408s; scene-loader probe adds15.062s. Ledger output/html_fidelity/audit/build_budget.json.
+该次时序未通过：setup/recovery WNS −0.797 ns、TNS −3.204 ns；hold WNS +0.003 ns、TNS 0，工具覆盖率 99.95%，仍有继承的 IO/时钟定义警告。两个新 setup 端点分别为 SD 返回到 panel 状态（−0.084 ns）、BMP 行步长（−0.005 ns）；八个 recovery 端点涉及继承的视频复位到 HDMI 125 MHz。复位/HDMI 连接与基线一致，无新增例外。资源返回已增加一个同步级，尚需最终时序复测。
 
-## Current integration
+最新整机面积诊断 html_top_area_probe_20261015_03 综合通过：18779/19600 LUT（95.81%）、10866寄存器、64/64 BRAM9K、16/16 BRAM32K、18/29 DSP，187.812秒。源快照86649724cebc3ec1f379905438fec48d950819efddb331bb6f83a0330c05ff7a。此结果包含8槽缓存、4-span几何、返回标签FF队列、眼睛半径ROM和BMP同步扇区RAM；尚未证明器件packing和布线可行。原21399、19303 LUT诊断及无效385 LUT前向声明候选均保留；不混作最终结果。
 
-Working tree is newer than full02:51bit atomic config/fractional5.4s OSD, CSS motion, OSD swap/eye-alpha corrections, HFXL loading, finite renderer and plain-BMP fallback. A fresh final unified build is required; root top replay must be regenerated.
-Six finite scenes use1803776words/7215104bytes; four comparison panels249856words from1843200. Total8214528bytes,174080free in8MiB. Content-derived SET_ID003adc1b is active in all six payloads, locators, manifests and ROMs.
-Locator tests28cases in each enabled/disabled mode. Loader tests six ready-after-write pages,7679checked words,17 malformed/transport cases and ordinary BMP mode selection. Runtime controller waits for mode resolution, then uses layer ready flags or original adaptiveBMP path. Plain comparison uses actual two fullRGB sources when packed panels are absent.
-Layer core:16slot4word cache, sequential line geometry, pipelined blend and BRAM join queue. Core44894contexts/54012pixels pass with real textures/palettes,1/2/3repeats,twoRGBA,packed and plainRGB,refresh/write exclusion/backpressure. Complete bridge static307200pixel exact-color test passes; real25/40MHz FIFO throughput is still pending. Bridge diagnostic9360LUT is too large for the full design and is being optimized before another full flow. Scene loader SYN1104LUT/noBRAM/noDSP; core16 standalone4619LUT; overlay09 standalone4364LUT.
+本次优化未改变六页资源或色深。眼睛与alpha端点等价优化六帧逐字节一致；完整页面分为两个1024色bank的只读穷举无解（最佳1060/1059色），未修改素材。BG共享候选连续显示欠流，已停止此路线，失败记录保留。
 
-## Verification scope
+累计29次TD尝试，含2次完整流程，已完成工具耗时2323.909秒；台账output/html_fidelity/audit/build_budget.json。没有并行重型TD。准备对当前候选运行完整流程，依据实际packing和时序结果继续处理。
 
-Legacy regression39/39PASS on recorded snapshot;8input geometry cases,6/8catalog bounds, realBMP/HFXC and WAV/mute/EOF. Aligned bridge1,228,800pixels; aperture100096pixels; write contract2,457,600words pass. These are scoped module/contract tests; encrypted-IP full-system simulation unverified.
-Real full display-chain smoke307200pixels PASS, cleanA exact, whole composite MAE1.070/255. Immutable18-frame suite completed all6normal pages(1,843,200pixels), now dual/zoom/actions. Column thirds-AA oracle1,113,600pixels/12layouts PASS. Latest updated overlay six640x480 frames and2318100sync checks PASS; source-matched eye/blend and720event-timeline tests PASS. Final combined layered display comparisons pending; no fidelity percentage claimed.
-Final layered formal media now contains six HFXL BMPs plus unchanged07_MUSIC.WAV; four HFXC panel resources and native BGR bytes are preserved. unified_003adc1b.img FAT32 image/inspector PASS with exact6BMP/1WAV hashes, contiguous chains and order. ImageSHA7cb3db222979a0daab3f62ce8ea667c5ef52183967b7760ebec529d7e5067175. Only ordinary files used; syntheticLBAs are not physical card evidence.
+## 当前验证
 
-## Ownership and next work
+首帧门控和帧配置边界：实际 scene_loader、display_commit、video_timing_data/color_bar、邮箱在 25/40/100 MHz 下验证通过。未就绪时空白请求不读取 SDRAM；第一个就绪提交在下一帧使用；参数和 OSD 同帧一致。顶层最小补丁 v4 可从精确原件重建、可重复运行并拒绝未知修改。
 
-Root owns sharedtop/project/serialTD/Git/fourreports. Explicit agents: original visual_assets gpt-6.1-sol medium failed twice with model capacity; replacement visual_assets_recovery gpt-6-luna medium owns bounded asset/test continuation. bot_osd/page_control remain gpt-6.1-sol high. At most3 active subagents. No recursive agents.
-Next: sealedassets sync, complete bridge+fallback, top/ROM integration, targeted/full regression and realDUT comparisons, final matching TD build, formalmedia/image/acceptance, commits and normal branch push. User8–10h scope remains active; first-phase BUILD_PASS is not completion.
-Entries: scripts/build.py→prepare_snapshot.py→harness/windows_job.py→build.tcl; run_regression.py and html_*_verify.py. Output output/html_fidelity. Live CUA HTML file open was URL-policy blocked; no workaround. Offline deterministic exports recorded separately.
-SIM scoped PASS/final pending; BUILD first-phase PASS/final pending; TIMING not passed; VISUAL first-phase clean regions exact/final pending; HARDWARE NOT_TESTED_THIS_RUN.
+最新 scene_stream_v1 单元验证六页、8831 个字、26 个错误/传输/超时用例及普通 BMP 回退。实际六资源全字传输复测 20261015T185829824020Z PASS：7215104 字节、1803776 字、14098 场景扇区、96 音频扇区、3500 个真实 PCM 帧、36 次紧急仲裁，424.875 秒。测试台显式重启 EOF 11 次，不代表产品自动循环。
 
-Latest transport: scene_verification/20261015T180953784326Z PASS all1803776words,14098scene sectors,3500actualPCMframes,96audiosectors,36urgentgrants,435.125s. Old timeout remains recorded asFAIL. Completed TD time 1548.69s across17attempts including2fullflows. Wholebridge resource optimization and actual video cadence are the blocking integration work; no TD job currently active.
+基线16缓存的完整有限渲染器已在实际 25/40 MHz、512字 FIFO、四字组/刷新/背压下验证 home、eagle、放大与对比。最终分层显示链 smoke layered_20261016_024345 PASS：307200 像素、267880 对物理请求/返回、无故障，包含实际显示提交、读 FIFO、时序和当前 Bot/OSD。当前资源候选已完成面积综合，最终18帧套件等待布局资源和长写占用验证。
+
+第一阶段18帧像素检查全部通过，共5529600像素；末尾负向诊断遇到仿真 delta-cycle 采样竞争，原套件仍记录 FAIL。独立复现证明 rd_underflow 的组合故障位在下一个 delta 才生效；新测试仅增加1ns观察延迟，未修改 DUT。不能把原诊断失败抹成整套通过。
+
+Bot/OSD 六帧、2318100同步检查、1113600字模像素/12排版、720事件时序与5654运动曲线查询通过，均有独立来源。旧39项兼容回归为明确快照证据；全加密 IP 系统仿真仍未验证。
+
+## 素材和边界
+
+正式素材 output/html_fidelity/media：六HFXL BMP加原07_MUSIC.WAV，SET_ID 003adc1b。四产品页HFXC与原生BGR保持一致；六正式BMP与完成传输测试的输入逐字节相同。资源总数据8214528字节，8MiB剩174080字节。
+
+离线 FAT32 文件 unified_003adc1b_v2.img 只读检查 PASS，SHA256 be88671cd1e5732c5a94892fb4427b02db2ce82e03924b3f82346b474a73b1e4。仅普通文件；模拟LBA不能作为物理卡证据。原型 file:// 的 CUA 打开被 URL 策略阻止，未绕过；离线确定性导出单独记录。
+
+SIM：明确模块/显示链范围通过，最终套件待完成。BUILD：第一阶段通过，最终待完成。TIMING：尚未通过。VISUAL：已有真实 DUT 帧，最终全部场景待完成。FULL_SYSTEM_SIM：未验证。HARDWARE：NOT_TESTED_THIS_RUN。
+
+接下来完成候选吞吐和整机面积、冻结源码并启动匹配18帧、最终SYN/PNR/BITGEN和时序分析、更新验收报告、正常提交和分支推送。用户8–10小时任务继续，第一阶段成功不是完成条件。
+
+补充验证：eyeROM生产版本六帧307200像素全部与优化前逐字节相同（bot_osd/verify_20261016_032406）；overlay_target/run_20261016_032406的720事件、alpha、48缩放配置及1113600字模像素通过。BMP同步扇区RAM的scan/reject、两次加载共614400像素和原生307200像素case3通过，其余缩放/正式HFXL兼容测试继续。旧40项快照control_storage因替身缺ENABLE_HFXL参数编译失败；仅补齐测试接口后20261015T193237292810Z单独复测PASS，所有原断言保留，原FAIL未覆盖。

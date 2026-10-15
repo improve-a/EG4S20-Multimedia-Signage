@@ -6,30 +6,69 @@
 import argparse,hashlib,json,pathlib
 FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
                              'baseline_text_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
-                             'result_text_sha256': '326b3c3f5cf7e61be606b874c93b250da6dbc4a55c82371dad89ea54dc2f1a7c',
+                             'result_text_sha256': 'e87a626c8059e3640afc1bf2935a4bdbc16880a4b71540dab7111cf99bb7414a',
                              'edits': [{'start': 0,
                                         'end': 0,
                                         'old': [],
                                         'new': ['// HTML_FIDELITY_INTEGRATED\n']},
+                                       {'start': 55,
+                                        'end': 55,
+                                        'old': [],
+                                        'new': ['wire [3:0] interval_fraction,cfg_interval_fraction;\n']},
+                                       {'start': 58,
+                                        'end': 59,
+                                        'old': ['wire [46:0] video_config;\n'],
+                                        'new': ['wire [50:0] video_config;\n']},
+                                       {'start': 65,
+                                        'end': 66,
+                                        'old': ['assign '
+                                                '{cfg_state,cfg_mute,cfg_paused,cfg_auto,cfg_progress,cfg_volume,cfg_scale,cfg_transition,\n'],
+                                        'new': ['assign '
+                                                '{cfg_interval_fraction,cfg_state,cfg_mute,cfg_paused,cfg_auto,cfg_progress,cfg_volume,cfg_scale,cfg_transition,\n']},
                                        {'start': 158,
                                         'end': 158,
                                         'old': [],
-                                        'new': ['\n',
-                                                'reg config_prev_vs;\n',
-                                                'wire [4:0] active_view;\n',
+                                        'new': ['\n', 'reg config_prev_vs;\n']},
+                                       {'start': 159,
+                                        'end': 159,
+                                        'old': [],
+                                        'new': ['wire [4:0] active_view;\n',
                                                 'wire [2:0] '
                                                 'candidate_page,write_page,zoom_focus,video_focus;\n',
                                                 'wire candidate_compare,candidate_reverse;\n',
                                                 'wire [5:0] page_ready;\n',
                                                 'wire cache_preload_done,cache_loading;\n',
                                                 'wire [31:0] '
-                                                'resource_sector1,resource_sector2,resource_sector3,resource_sector4;\n',
+                                                'resource_sector0,resource_sector1,resource_sector2,resource_sector3,resource_sector4,resource_sector5;\n',
                                                 'wire '
                                                 'panel_active,panel_ready,panel_error,panel_req,panel_valid,panel_end,panel_sd_error;\n',
                                                 'wire [31:0] panel_addr,panel_write_data;\n',
                                                 'wire [7:0] panel_data;\n',
                                                 'wire panel_write_req,panel_write_en,write_ack;\n',
                                                 'wire [20:0] panel_write_base,panel_write_len;\n',
+                                                'wire '
+                                                'resource_catalog_ready,scene_active,scene_ready,scene_error,scene_mode_valid,scene_layer_mode;\n',
+                                                'wire scene_req,scene_write_req,scene_write_en;\n',
+                                                'wire [5:0] scene_page_ready;\n',
+                                                'wire [31:0] scene_addr,scene_write_data;\n',
+                                                'wire [20:0] scene_write_base,scene_write_len;\n',
+                                                'wire resource_active=scene_active|panel_active;\n',
+                                                'wire resource_req=scene_active?scene_req:panel_req;\n',
+                                                'wire [31:0] '
+                                                'resource_addr=scene_active?scene_addr:panel_addr;\n',
+                                                'wire '
+                                                'resource_write_req=scene_active?scene_write_req:panel_write_req;\n',
+                                                'wire '
+                                                'resource_write_en=scene_active?scene_write_en:panel_write_en;\n',
+                                                'wire [31:0] '
+                                                'resource_write_data=scene_active?scene_write_data:panel_write_data;\n',
+                                                'wire [20:0] '
+                                                'resource_write_len=scene_active?scene_write_len:panel_write_len;\n',
+                                                '(* async_reg="true" *) reg [1:0] layer_mode_mem;\n',
+                                                'always @(posedge ext_mem_clk)begin\n',
+                                                ' if(mem_rst)layer_mode_mem<=0;else '
+                                                'layer_mode_mem<={layer_mode_mem[0],scene_layer_mode};\n',
+                                                'end\n',
                                                 'wire '
                                                 'raw_App_rd_en,frame_fifo_fault,tag_fault,read_accept_mem;\n',
                                                 'wire '
@@ -38,36 +77,53 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'wire [31:0] mapped_read_data;\n',
                                                 "wire [20:0] page_write_base=write_page*21'd307200;\n",
                                                 'wire [20:0] '
-                                                'current_write_base=panel_active?panel_write_base:page_write_base;\n',
+                                                'current_write_base=scene_active?scene_write_base:panel_active?panel_write_base:page_write_base;\n',
                                                 'reg commit_previous;\n',
                                                 'wire page_event=commit_ack_toggle^commit_previous;\n',
                                                 'always @(posedge '
                                                 'video_clk)if(video_rst)commit_previous<=0;else '
                                                 'commit_previous<=commit_ack_toggle;\n',
-                                                'assign fifo_fault=frame_fifo_fault|tag_fault|panel_error;\n',
-                                                'assign sd_card_write_req_ack=write_ack&&!panel_active;\n',
+                                                'assign '
+                                                'fifo_fault=frame_fifo_fault|tag_fault|panel_error|scene_error;\n',
+                                                'assign sd_card_write_req_ack=write_ack&&!resource_active;\n',
                                                 'frame_config_bridge #(.WIDTH(3),.RESET_VALUE(0)) '
                                                 'focus_bridge(\n',
                                                 ' '
                                                 '.src_clk(sd_card_clk),.src_rst(sd_rst),.src_config(zoom_focus),\n',
                                                 ' '
-                                                '.dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(vs&&!config_prev_vs),.dst_config(video_focus));\n',
+                                                '.dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(timing_read_req&&!timing_req_prev),.dst_config(video_focus));\n',
+                                                'html_scene_loader '
+                                                'scenes(.clk(sd_card_clk),.rst(sd_rst),.enable(resource_catalog_ready),\n',
+                                                ' '
+                                                '.sector0(resource_sector0),.sector1(resource_sector1),.sector2(resource_sector2),\n',
+                                                ' '
+                                                '.sector3(resource_sector3),.sector4(resource_sector4),.sector5(resource_sector5),\n',
+                                                ' '
+                                                '.active(scene_active),.ready(scene_ready),.error(scene_error),.page_ready(scene_page_ready),\n',
+                                                ' '
+                                                '.mode_valid(scene_mode_valid),.layer_mode(scene_layer_mode),.sector_req(scene_req),.sector_addr(scene_addr),\n',
+                                                ' '
+                                                '.sector_data(panel_data),.sector_valid(panel_valid&&scene_active),.sector_end(panel_end&&scene_active),.sector_error(panel_sd_error&&scene_active),\n',
+                                                ' '
+                                                '.write_req(scene_write_req),.write_req_ack(write_ack&&scene_active),.write_en(scene_write_en),\n',
+                                                ' '
+                                                '.write_data(scene_write_data),.write_base(scene_write_base),.write_len(scene_write_len),.write_finish_toggle(frame_write_toggle_mem));\n',
                                                 'html_panel_loader '
-                                                'panels(.clk(sd_card_clk),.rst(sd_rst),.enable(cache_preload_done),\n',
+                                                'panels(.clk(sd_card_clk),.rst(sd_rst),.enable(scene_mode_valid&&scene_layer_mode&&scene_ready),\n',
                                                 ' '
                                                 '.sector1(resource_sector1),.sector2(resource_sector2),.sector3(resource_sector3),.sector4(resource_sector4),\n',
                                                 ' '
                                                 '.active(panel_active),.ready(panel_ready),.error(panel_error),.sector_req(panel_req),.sector_addr(panel_addr),\n',
                                                 ' '
-                                                '.sector_data(panel_data),.sector_valid(panel_valid),.sector_end(panel_end),.sector_error(panel_sd_error),\n',
+                                                '.sector_data(panel_data),.sector_valid(panel_valid&&panel_active),.sector_end(panel_end&&panel_active),.sector_error(panel_sd_error&&panel_active),\n',
                                                 ' '
                                                 '.write_req(panel_write_req),.write_req_ack(write_ack&&panel_active),.write_en(panel_write_en),\n',
                                                 ' '
                                                 '.write_data(panel_write_data),.write_base(panel_write_base),.write_len(panel_write_len),.write_finish_toggle(frame_write_toggle_mem));\n',
-                                                'html_memory_bridge '
+                                                'html_layer_memory_bridge '
                                                 'view_reader(.mem_clk(ext_mem_clk),.rst(mem_rst),.video_read_req(video_read_req),.read_accept_mem(read_accept_mem),\n',
                                                 ' '
-                                                '.active_view(active_view),.zoom(cfg_scale),.transition_mode(cfg_transition),.focus(video_focus),.panels_ready(panel_ready),\n',
+                                                '.layer_resources_enabled(layer_mode_mem[1]),.active_view(active_view),.zoom(cfg_scale),.transition_mode(cfg_transition),.focus(video_focus),.panels_ready(panel_ready),\n',
                                                 ' '
                                                 '.write_busy_mem(write_busy_mem),.mem_ready(Sdr_init_done),.refresh_active(Sdr_init_ref_vld),\n',
                                                 ' '
@@ -93,13 +149,31 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'assign tr_hs=hs;assign tr_vs=vs;assign tr_de=de;assign '
                                                 'tr_rgb=vout_data;\n',
                                                 "assign transition_busy=1'b0;\n"]},
-                                       {'start': 176,
+                                       {'start': 171,
+                                        'end': 172,
+                                        'old': ['frame_config_bridge '
+                                                "#(.WIDTH(47),.RESET_VALUE({4'd0,3'b000,8'd0,4'd8,2'd0,2'd0,1'b1,8'd3,3'd2,9'd0,3'd0})) "
+                                                'config_bridge(\n'],
+                                        'new': ['frame_config_bridge '
+                                                "#(.WIDTH(51),.RESET_VALUE({4'd4,4'd0,3'b000,8'd0,4'd8,2'd0,2'd0,1'b1,8'd5,3'd2,9'd0,3'd0})) "
+                                                'config_bridge(\n']},
+                                       {'start': 173,
+                                        'end': 174,
+                                        'old': [' '
+                                                '.src_config({state_code,audio_muted,paused,auto_mode,progress,volume,scale_mode,transition_mode,\n'],
+                                        'new': [' '
+                                                '.src_config({interval_fraction,state_code,audio_muted,paused,auto_mode,progress,volume,scale_mode,transition_mode,\n']},
+                                       {'start': 175,
                                         'end': 178,
-                                        'old': ['video_extensions #(.ENABLE_AUDIO_VIS(1)) '
+                                        'old': [' .dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(vs && '
+                                                '!config_prev_vs),.dst_config(video_config));\n',
+                                                'video_extensions #(.ENABLE_AUDIO_VIS(1)) '
                                                 'extensions(.clk(video_clk),.rst(video_rst),.i_hs(tr_hs),.i_vs(tr_vs),.i_de(tr_de),.i_rgb(tr_rgb),\n',
                                                 ' '
                                                 '.config_data(video_config),.sample_valid(audio_valid),.sample_left(audio_left_data),.sample_right(audio_right_data),\n'],
-                                        'new': ['html_video_overlay '
+                                        'new': [' '
+                                                '.dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(timing_read_req&&!timing_req_prev),.dst_config(video_config));\n',
+                                                'html_video_overlay '
                                                 'extensions(.clk(video_clk),.rst(video_rst),.i_hs(tr_hs),.i_vs(tr_vs),.i_de(tr_de),.i_rgb(tr_rgb),\n',
                                                 ' '
                                                 '.config_data(video_config),.page_event(page_event),.page_index(active_view[2:0]),.dual_enable(active_view[3]),.page_reverse(active_view[4]),.focus(video_focus),\n']},
@@ -107,7 +181,9 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                        {'start': 236,
                                         'end': 237,
                                         'old': ['display_commit frame_commit(\n'],
-                                        'new': ['display_commit #(.BUFFER_BITS(5)) frame_commit(\n']},
+                                        'new': ['display_commit '
+                                                '#(.BUFFER_BITS(5),.REQUIRE_INITIAL_COMMIT(1)) '
+                                                'frame_commit(\n']},
                                        {'start': 239,
                                         'end': 241,
                                         'old': [' '
@@ -122,7 +198,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'end': 280,
                                         'old': ['    .ENABLE_AUDIO(1),.ENABLE_SCALING(1),\n'],
                                         'new': ['    '
-                                                '.ENABLE_AUDIO(1),.ENABLE_SCALING(1),.ENABLE_EXHIBIT(1),\n']},
+                                                '.ENABLE_AUDIO(1),.ENABLE_SCALING(1),.ENABLE_EXHIBIT(1),.ENABLE_LAYER_RESOURCES(1),\n']},
                                        {'start': 282,
                                         'end': 283,
                                         'old': ["    .SCAN_TARGET_COUNT (4'd8),\n"],
@@ -135,11 +211,23 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '    '
                                                 '.zoom_focus(zoom_focus),.compare_panels_ready(panel_ready),.cache_loading(cache_loading),.cache_preload_done(cache_preload_done),\n',
                                                 '    '
-                                                '.resource_sector1(resource_sector1),.resource_sector2(resource_sector2),.resource_sector3(resource_sector3),.resource_sector4(resource_sector4),\n',
+                                                '.resource_sector0(resource_sector0),.resource_sector1(resource_sector1),.resource_sector2(resource_sector2),\n',
                                                 '    '
-                                                '.panel_req(panel_req),.panel_addr(panel_addr),.panel_active(panel_active),.panel_data(panel_data),\n',
+                                                '.resource_sector3(resource_sector3),.resource_sector4(resource_sector4),.resource_sector5(resource_sector5),\n',
+                                                '    '
+                                                '.resource_catalog_ready(resource_catalog_ready),.resource_page_ready(scene_page_ready),\n',
+                                                '    '
+                                                '.resource_mode_valid(scene_mode_valid),.resource_layer_mode(scene_layer_mode),\n',
+                                                '    '
+                                                '.panel_req(resource_req),.panel_addr(resource_addr),.panel_active(resource_active),.panel_data(panel_data),\n',
                                                 '    '
                                                 '.panel_valid(panel_valid),.panel_end(panel_end),.panel_error(panel_sd_error),\n']},
+                                       {'start': 291,
+                                        'end': 292,
+                                        'old': ['    '
+                                                '.control_mode(control_mode),.brightness(brightness),.contrast(contrast),.interval_seconds(interval_seconds),\n'],
+                                        'new': ['    '
+                                                '.control_mode(control_mode),.brightness(brightness),.contrast(contrast),.interval_seconds(interval_seconds),.interval_fraction(interval_fraction),\n']},
                                        {'start': 364,
                                         'end': 365,
                                         'old': ['    .WRITE_V_FLIP     (1),\n'],
@@ -151,7 +239,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'new': ['    '
                                                 '.read_source_ready(logical_ready),.read_source_busy(view_reader_busy),.write_busy_mem(write_busy_mem),\n',
                                                 '    '
-                                                '.read_accept_mem(read_accept_mem),.write_linear(panel_active),\n']},
+                                                '.read_accept_mem(read_accept_mem),.write_linear(resource_active),\n']},
                                        {'start': 369,
                                         'end': 370,
                                         'old': ['    '
@@ -183,7 +271,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'old': ['    .write_req         (sd_card_write_req),\n',
                                                 '    .write_req_ack     (sd_card_write_req_ack),\n'],
                                         'new': ['    .write_req         '
-                                                '(panel_active?panel_write_req:sd_card_write_req),\n',
+                                                '(resource_active?resource_write_req:sd_card_write_req),\n',
                                                 '    .write_req_ack     (write_ack),\n']},
                                        {'start': 402,
                                         'end': 410,
@@ -201,11 +289,11 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '    .write_addr_3      (current_write_base),\n',
                                                 "    .write_addr_index  (2'd0),\n",
                                                 '    .write_len         '
-                                                '(panel_active?panel_write_len:FRAME_PIXELS),\n',
+                                                '(resource_active?resource_write_len:FRAME_PIXELS),\n',
                                                 '    .write_en          '
-                                                '(panel_active?panel_write_en:sd_card_write_en),\n',
+                                                '(resource_active?resource_write_en:sd_card_write_en),\n',
                                                 '    .write_data        '
-                                                '(panel_active?panel_write_data:sd_card_write_data)\n']}]},
+                                                '(resource_active?resource_write_data:sd_card_write_data)\n']}]},
  'rtl/SD/frame_fifo_write.v': {'baseline_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
                                'baseline_text_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
                                'result_text_sha256': 'f226456b201e5f0d34919d8767686dfacf65842c80f43357ebf87cc1fd863edb',

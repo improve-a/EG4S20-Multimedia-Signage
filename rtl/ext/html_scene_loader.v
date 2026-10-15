@@ -30,9 +30,28 @@ module html_scene_loader #(
  reg [31:0] pixel_end;
  wire [20:0] expected_base=BASE_WORDS[page*21+:21];
  wire [20:0] expected_words=LENGTH_WORDS[page*21+:21];
- reg [31:0] body_magic,body_version,body_words,body_count,body_set,body_base,body_page;
- reg [31:0] body_desc_offset,body_desc_stride,body_bg_stride,body_width,body_height;
- reg body_ok;
+ // Validate each required header word as it arrives. The sticky result
+ // avoids retaining twelve words after their single comparison.
+ reg body_ok,body_checked;
+ reg [31:0] expected_body_word;
+ always @*begin
+  body_checked=1;expected_body_word=0;
+  case(byte_index[8:2])
+   0:expected_body_word=32'h4c584648;
+   1:expected_body_word=1;
+   2:expected_body_word={11'd0,expected_words};
+   3:expected_body_word=page==0?9:page==5?10:12;
+   4:expected_body_word=64;
+   5:expected_body_word=8;
+   7:expected_body_word=214;
+   10:expected_body_word=640;
+   11:expected_body_word=480;
+   13:expected_body_word=SET_ID;
+   14:expected_body_word={11'd0,expected_base};
+   15:expected_body_word={29'd0,page};
+   default:body_checked=0;
+  endcase
+ end
  (* async_reg="true" *) reg [2:0] finish_sync;
  reg finish_seen;
  wire finish_pulse=finish_sync[2]^finish_sync[1];
@@ -46,14 +65,8 @@ module html_scene_loader #(
   .file_len(file_len),.pixel_offset(pixel_offset),.pixel_end(pixel_end),.dib_size(dib_size),.width(width),.height(height),
   .valid(locator_valid),.present(locator_present),.scene_offset(scene_offset),.payload_bytes(payload_bytes),.word_base(locator_base),.set_id(set_id),.page_index(page_index));
  always @(posedge clk)begin
-  if(rst)begin pixel_end<=0;body_ok<=0;end
-  else begin
-   pixel_end<=pixel_offset+32'd921600;
-   body_ok<=body_magic==32'h4c584648 && body_version==1 && body_words=={11'd0,expected_words} &&
-    body_set==SET_ID && body_base=={11'd0,expected_base} && body_page=={29'd0,page} &&
-    body_count==(page==0 ? 9 : page==5 ? 10 : 12) &&
-    body_desc_offset==64 && body_desc_stride==8 && body_bg_stride==214 && body_width==640 && body_height==480;
-  end
+  if(rst)pixel_end<=0;
+  else pixel_end<=pixel_offset+32'd921600;
  end
  always @(posedge clk)begin
   if(rst)begin
@@ -61,8 +74,7 @@ module html_scene_loader #(
    sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
    byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;assembled<=0;
    file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;signature<=0;planes<=0;bit_count<=0;compression<=0;
-   body_magic<=0;body_version<=0;body_words<=0;body_count<=0;body_set<=0;body_base<=0;body_page<=0;
-   body_desc_offset<=0;body_desc_stride<=0;body_bg_stride<=0;body_width<=0;body_height<=0;
+   body_ok<=0;
    finish_sync<=0;finish_seen<=0;
   end else begin
    finish_sync<={finish_sync[1:0],write_finish_toggle};write_en<=0;
@@ -97,8 +109,7 @@ module html_scene_loader #(
        mode_valid<=1;layer_mode<=1;
        write_base<=expected_base;write_len<=expected_words;write_req<=1;finish_seen<=0;
        payload_sector<=origin+(scene_offset>>9);sector_count<=payload_bytes[21:9];sector_index<=0;
-       body_magic<=0;body_version<=0;body_words<=0;body_count<=0;body_set<=0;body_base<=0;body_page<=0;
-       body_desc_offset<=0;body_desc_stride<=0;body_bg_stride<=0;body_width<=0;body_height<=0;state<=WREQ;
+       body_ok<=1;state<=WREQ;
       end else if(page==0 && !locator_present && signature==16'h4d42 && byte_index+sector_valid==512)begin
        // An ordinary first BMP selects the existing adaptive-BMP pipeline.
        // That parser still performs all original dimensions/extent checks.
@@ -118,12 +129,7 @@ module html_scene_loader #(
        0:assembled[7:0]<=sector_data;1:assembled[15:8]<=sector_data;2:assembled[23:16]<=sector_data;
        3:begin
         write_data<=assembled_word;write_en<=1;
-        if(sector_index==0)case(byte_index[8:2])
-         0:body_magic<=assembled_word;1:body_version<=assembled_word;2:body_words<=assembled_word;3:body_count<=assembled_word;
-         4:body_desc_offset<=assembled_word;5:body_desc_stride<=assembled_word;7:body_bg_stride<=assembled_word;
-         10:body_width<=assembled_word;11:body_height<=assembled_word;13:body_set<=assembled_word;
-         14:body_base<=assembled_word;15:body_page<=assembled_word;
-        endcase
+        if(sector_index==0&&body_checked&&assembled_word!=expected_body_word)body_ok<=0;
        end
       endcase
      end
