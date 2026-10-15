@@ -2,10 +2,10 @@
 import argparse,datetime,hashlib,json,pathlib,re,subprocess,zipfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 REMOTE=r'D:\FPGA\hx4s20_extensions_20261013'
-a=argparse.ArgumentParser();a.add_argument('run_id');a.add_argument('--synth-top');x=a.parse_args()
+a=argparse.ArgumentParser();a.add_argument('run_id');a.add_argument('--synth-top');a.add_argument('--build-root');x=a.parse_args()
 assert re.fullmatch('[A-Za-z0-9_-]+',x.run_id)
 if x.synth_top:assert re.fullmatch('[A-Za-z_][A-Za-z0-9_]*',x.synth_top)
-dest=REMOTE+'\\builds\\'+x.run_id
+dest=str(pathlib.Path(x.build_root)/x.run_id) if x.build_root else REMOTE+'\\builds\\'+x.run_id
 files={}
 for folder,prefix in [('rtl','user_source/hdl_source'),('project/user_source/constraints_source','user_source/constraints_source'),('project/td_project','td_project')]:
     for p in (ROOT/folder).rglob('*'):
@@ -15,6 +15,10 @@ project='td_project/hx4s20_basic.al'
 txt=files[project].decode('utf-8')
 txt=re.sub(r'(<Project Version="3" Minor="2" Path=")[^"]*',lambda m:m[1]+dest.replace('\\','/')+'/work/design/td_project',txt)
 files[project]=txt.encode()
+# Resolve initialization files to this immutable snapshot before synthesis.
+for key in list(files):
+    if key.endswith(('.v','.sv')) and b'rtl/ext/html_assets/' in files[key]:
+        files[key]=files[key].replace(b'rtl/ext/html_assets/',(dest.replace('\\','/')+'/work/design/user_source/hdl_source/ext/html_assets/').encode())
 lookup={k.lower() for k in files}
 for name in re.findall(r'<File Path="([^"]+)"',txt):
     parts=[]
@@ -23,7 +27,7 @@ for name in re.findall(r'<File Path="([^"]+)"',txt):
         elif s!='.':parts.append(s)
     assert '/'.join(parts).lower() in lookup,name
 rows=[dict(path=k,sha256=hashlib.sha256(v).hexdigest(),bytes=len(v)) for k,v in sorted(files.items())]
-manifest=dict(schema_version=2,task_root=REMOTE,run_id=x.run_id,source='HX4S20 extension working source',selected=rows,snapshot_sha256=hashlib.sha256(json.dumps(rows,sort_keys=True).encode()).hexdigest(),zip_sha256='5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6',created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
+manifest=dict(schema_version=2,task_root=str(ROOT/'output/html_fidelity') if x.build_root else REMOTE,run_id=x.run_id,source='HX4S20 extension working source',selected=rows,snapshot_sha256=hashlib.sha256(json.dumps(rows,sort_keys=True).encode()).hexdigest(),zip_sha256='5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6',created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
 # zip_sha256 above is the frozen baseline import, not this run's package hash.
 # The package hash is stored outside the ZIP by build.py to avoid self-reference.
 manifest['git_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()

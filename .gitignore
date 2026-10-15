@@ -85,3 +85,7 @@ __pycache__/
 /rtl/video_source_test.v
 /tb/vendor_public/eg_logic_clk.v
 /tb/vendor_public/eg_phy_pll.v
+
+# Generated visual assets, private prototype, snapshots and verification products stay local.
+/output/html_fidelity/
+/rtl/ext/html_assets/

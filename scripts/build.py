@@ -1,10 +1,40 @@
 """Dispatch/status/collect one explicit isolated TD run; no automatic retries."""
-import argparse,json,pathlib,subprocess,sys
+import argparse,json,pathlib,subprocess,sys,os,zipfile,datetime
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'harness'))
 from windows_runner import remote_python
 REMOTE=r'D:\FPGA\hx4s20_extensions_20261013'
-a=argparse.ArgumentParser();a.add_argument('action',choices=['launch','status','collect']);a.add_argument('run_id');a.add_argument('--timeout',type=int,default=1800);a.add_argument('--synth-top');x=a.parse_args()
+a=argparse.ArgumentParser();a.add_argument('action',choices=['launch','status','collect']);a.add_argument('run_id');a.add_argument('--timeout',type=int,default=1800);a.add_argument('--synth-top');a.add_argument('--build-root',type=pathlib.Path);x=a.parse_args()
+if os.name=='nt':
+    base=x.build_root or ROOT/'output/html_fidelity/builds'
+    dest=base/x.run_id
+    if x.action=='launch':
+        (ROOT/'output/html_fidelity/audit').mkdir(parents=True,exist_ok=True)
+        check=subprocess.run(['powershell','-NoProfile','-Command','Get-Process td_commands_prompt,td,fdp,synpwrap -ErrorAction SilentlyContinue | Select-Object Id,ProcessName | ConvertTo-Json'],capture_output=True,text=True)
+        if check.stdout.strip():raise RuntimeError('Heavy TD already present: '+check.stdout)
+        subprocess.run([sys.executable,str(ROOT/'scripts/prepare_snapshot.py'),x.run_id,'--build-root',str(base)]+(['--synth-top',x.synth_top] if x.synth_top else []),check=True,cwd=ROOT)
+        dest.mkdir(parents=True,exist_ok=False)
+        archive=ROOT/'artifacts'/(x.run_id+'_source.zip')
+        with zipfile.ZipFile(archive) as z:z.extractall(dest)
+        (dest/'work/design/td_project/hx4s20_basic_Runs').mkdir(exist_ok=True)
+        import hashlib
+        (dest/'audit/package_sha256.txt').write_text(hashlib.sha256(archive.read_bytes()).hexdigest())
+        cmd=[sys.executable,str(dest/'harness/windows_job.py'),'--root',str(dest),'--run-id',x.run_id,'--timeout',str(x.timeout)]
+        # Reuse the existing WMI detach mechanism; SSH's process lifetime must
+        # not own the TD supervisor. The supervisor retains its own kill-job.
+        import base64
+        command=subprocess.list2cmdline(cmd)
+        script="$r=Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine='"+command.replace("'","''")+"';CurrentDirectory='"+str(dest).replace("'","''")+"'}; $r | Select-Object ReturnValue,ProcessId | ConvertTo-Json; if($r.ReturnValue -ne 0){exit 1}"
+        launch=subprocess.run(['powershell','-NoProfile','-NonInteractive','-EncodedCommand',base64.b64encode(script.encode('utf-16le')).decode()],capture_output=True,text=True,check=True)
+        (dest/'audit/dispatch.log').write_text(launch.stdout+launch.stderr)
+        print(launch.stdout)
+    else:
+        status=dest/'runs'/x.run_id/'status.json'
+        print(status.read_text() if status.exists() else 'STATUS_NOT_CREATED')
+        stages=status.parent/'stages.tsv'
+        print(stages.read_text() if stages.exists() else '')
+    raise SystemExit(0)
+
 dest=REMOTE+'\\builds\\'+x.run_id
 if x.action=='launch':
     # Check process names before preparing; the supervisor also owns a lock.

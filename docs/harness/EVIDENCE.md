@@ -1,16 +1,21 @@
-# Publication evidence
+# HTML fidelity evidence
 
-- Existing extension repository: 13 commits, clean working tree, no remote; latest c16d3da, beyond historical 94051b8.
-- Older standalone contest-one source is e6f7380; Windows extension root contains per-run snapshots, no Git worktree.
-- Target GitHub repository read via Windows GitHub API: Public, default main, size 0. Mac and Windows ls-remote initially returned no refs.
-- Independent history selected because original history contains official encrypted HDL and tool simulation models without established public redistribution terms.
-- docs/import_manifest.json records all selected input file SHA256s. docs/local_dependencies.json records excluded local files.
-- UI assets contain original procedural graphics/audio, Noto Sans SC with SIL OFL 1.1 and source/hash records. No original card backup, device serial records, vendor source ZIP or bitstream is published.
-- Current unified build results come from output/venue_unified_offline/STATUS.json and validation reports. Original ext_full_005 numbers are historical only.
-- No new full build, hardware operation, software installation or credential copy performed.
-- Local reconstruction: scripts/local_dependencies.py restored and checked59 files. scripts/prepare_snapshot.py produced75 TD inputs;74 match unified_full_20261014_02 exactly, AL Project Path alone relocated. No TD execution.
-- All346 selected imported files match their SHA256 manifests. Public tree358 files; largest17772300bytes. Tracked official dependency paths0; ZIP/bundle/bitstream/DB0; tested private-key/PAT/cloud-key patterns0. Original c16d3da repository remains clean and unchanged.
-- Media validator returned OFFLINE_MEDIA_PASS. This is not a new RTL simulation or physical-card test.
-- First Windows push: ssh exit1, could not read Username for HTTPS because terminal prompts disabled. Existing gh auth status reports invalid default token; credential inventory reports no GitHub credential target; no Windows SSH public keys. Existing authentication was not modified.
-- Connector read identifies improve-a and repository account push/admin permission. Actual README create-file request returned403 Resource not accessible by integration; no remote commit was created. Plugin discovery confirms existing GitHub connection ENABLED. Plugin permission-mode controls cannot grant GitHub OAuth/app Contents scopes.
-- Raw attempt metadata and public-only local Git bundle remain under ignored evidence/github_publish/. Full official-source reconstruction ZIP remains under ignored artifacts/ and was never uploaded.
+StartedUTC 2026-10-15T16:14:36.592861+00:00. Windows inventory found frozen build mirror and bare relay only. Imported full public-source Gitbundle into new worktree, verifiedorigin, created codex/html-fidelity.59dependencies match hashes. No hardware/card accessed.
+
+Video25MHz and800x525 gives16.8ms/frame=59.5238095Hz.5400ms requires fractional-frame accumulation; old loader addedload/transitionlatency.
+
+Evidence output/html_fidelity. EachTD run retains source_manifest/status/stages/logs/resource/timing/bitstreamhashes.
+
+## Completed targeted checks
+
+- Assets: 13 checks PASS; formal media: 6 checks PASS. Four independent HFXC panel payloads preserve standard BMP pixel data. SDRAM use 2,093,056 of 2,097,152 words, leaving 4,096 words.
+- Panel loader: verification/20261015T162949479611Z/result.json; PID 45564, exit 0, 54.953 s. All 249,856 payload words checked, 1,956 panel/header sectors with real audio arbitration, delayed storage and write ACKs, malformed headers and timeout cases.
+- Read tags: same run, PID 47476, exit 0, 0.125 s; 1,388 ordered requests/responses, packed halves, queue wrap/full/underflow/overflow. This tests tags only, not SDRAM address legality.
+- Bot/OSD: bot_osd/verify_20261016_002121/verification.json, exit 0, 402.78 s; six 640x480 DUT frames and 2,318,100 pipeline checks. Updated dark audio bars/contrast numeric rendering verified separately. Actual full-display-chain test remains pending.
+- Controller/viewport: page_control/previous_v1 and earlier scoped runs; six cached pages, late-ready/ACK, previous-key chord, 5.4 s schedule, 8-slot legacy boundary, 7,680,000 geometry address checks and explicit reverse aperture. Previous ideal memory bridge PASS is not hardware validity; see correction below.
+
+## Primary reference check and memory correction
+
+2026 contest title and five bonus directions checked in [Anlogic contest document](https://drive.google.com/file/d/1lV1hRE_DFhZdloVfqjA9CYWO-Yy8NBdE/view). No additional processor or PC runtime renderer is introduced.
+
+[APUG011 v1.2 SDRAM guide](https://drive.google.com/file/d/1FdMvGjBKgTTtH4E3rBS7LOF5ucA1xVm5/view), sections 2.3.4, 2.4 and 7, specifies aligned groups of four 32-bit words; addresses within each group advance internally. The initial pixel-address bridge violated this for packed/zoom samples. It is being replaced before the first full build, and the simulation memory model now must enforce the official burst contract. No encrypted IP or inherited clocks are changed.

@@ -15,3 +15,11 @@
 - Keep unit simulation, full-system simulation, SYN, PNR, STA, BITGEN and hardware
   states separate. Historical build evidence is not a fresh test of later changes.
 - Prefer one Root Agent and Python standard-library scripts. No automatic full builds.
+
+## Current HTML fidelity authorization — 2026-10-15
+
+- Windows primary: D:\FPGA\EG4S20-Multimedia-Signage; branch codex/html-fidelity. Preserve Mac and historical workspaces.
+- User authorizes offline RTL/assets/tests and serial fresh TD builds during approximately8–10h. No hardware/JTAG/card/driver/system operations.
+- Root owns Git/shared integration/builds; max3 explicit non-Astra children gpt-6.1-sol medium/high; no recursive delegation.
+- Normal branch push authorized; no force push/main merge. Public redistribution exclusions remain.
+- Six-page exhibit and eight-slot baseline verified separately. Actual RTL pixels and new timing evidence required.
