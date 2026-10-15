@@ -2,12 +2,13 @@
 // existing SD/audio arbiter and existing write FIFO; no PC runtime dependency.
 module html_scene_loader #(
  parameter TIMEOUT_CYCLES=1_000_000_000,
- parameter [31:0] SET_ID=32'h687d5bbc,
+ parameter [31:0] SET_ID=32'h003adc1b,
  parameter [125:0] BASE_WORDS={21'd1514240,21'd1202688,21'd890880,21'd586240,21'd275200,21'd0},
  parameter [125:0] LENGTH_WORDS={21'd289536,21'd311552,21'd311808,21'd304640,21'd311040,21'd275200}
 )(
  input clk,rst,enable,input [31:0] sector0,sector1,sector2,sector3,sector4,sector5,
  output reg active,ready,error,output reg [5:0] page_ready,
+ output reg mode_valid,layer_mode,
  output reg sector_req,output reg [31:0] sector_addr,
  input [7:0] sector_data,input sector_valid,sector_end,sector_error,
  output reg write_req,input write_req_ack,
@@ -25,7 +26,7 @@ module html_scene_loader #(
  reg [15:0] signature,planes,bit_count;
  wire [31:0] scene_offset,payload_bytes,locator_base,set_id;
  wire [15:0] page_index;
- wire locator_valid;
+ wire locator_valid,locator_present;
  reg [31:0] pixel_end;
  wire [20:0] expected_base=BASE_WORDS[page*21+:21];
  wire [20:0] expected_words=LENGTH_WORDS[page*21+:21];
@@ -43,7 +44,7 @@ module html_scene_loader #(
  html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
   .byte_valid(state==HWAIT&&sector_valid),.byte_index(byte_index),.byte_data(sector_data),
   .file_len(file_len),.pixel_offset(pixel_offset),.pixel_end(pixel_end),.dib_size(dib_size),.width(width),.height(height),
-  .valid(locator_valid),.scene_offset(scene_offset),.payload_bytes(payload_bytes),.word_base(locator_base),.set_id(set_id),.page_index(page_index));
+  .valid(locator_valid),.present(locator_present),.scene_offset(scene_offset),.payload_bytes(payload_bytes),.word_base(locator_base),.set_id(set_id),.page_index(page_index));
  always @(posedge clk)begin
   if(rst)begin pixel_end<=0;body_ok<=0;end
   else begin
@@ -56,7 +57,7 @@ module html_scene_loader #(
  end
  always @(posedge clk)begin
   if(rst)begin
-   state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;
+   state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;mode_valid<=0;layer_mode<=0;
    sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
    byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;assembled<=0;
    file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;signature<=0;planes<=0;bit_count<=0;compression<=0;
@@ -93,10 +94,16 @@ module html_scene_loader #(
      if(sector_end)begin
       sector_req<=0;
       if(header_ok && byte_index+sector_valid==512 && !resource_last_sector[32])begin
+       mode_valid<=1;layer_mode<=1;
        write_base<=expected_base;write_len<=expected_words;write_req<=1;finish_seen<=0;
        payload_sector<=origin+(scene_offset>>9);sector_count<=payload_bytes[21:9];sector_index<=0;
        body_magic<=0;body_version<=0;body_words<=0;body_count<=0;body_set<=0;body_base<=0;body_page<=0;
        body_desc_offset<=0;body_desc_stride<=0;body_bg_stride<=0;body_width<=0;body_height<=0;state<=WREQ;
+      end else if(page==0 && !locator_present && signature==16'h4d42 && byte_index+sector_valid==512)begin
+       // An ordinary first BMP selects the existing adaptive-BMP pipeline.
+       // That parser still performs all original dimensions/extent checks.
+       // A recognized but malformed HFXL locator cannot select this fallback.
+       mode_valid<=1;layer_mode<=0;active<=0;state<=DONE;
       end else begin error<=1;state<=FAIL;end
      end
     end

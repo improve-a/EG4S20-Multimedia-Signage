@@ -3,11 +3,12 @@
 module html_resource_locator(
  input clk,rst,header_start,byte_valid,input [9:0] byte_index,input [7:0] byte_data,
  input [31:0] file_len,pixel_offset,pixel_end,dib_size,width,height,
- output reg valid,
+ output reg valid,output present,
  output reg [31:0] scene_offset,payload_bytes,word_base,set_id,
  output reg [15:0] page_index
 );
  reg [31:0] magic,reserved;
+ assign present=magic==32'h4c584648;
  reg [15:0] version,locator_len,page_count;
  reg [32:0] aligned_pixel_end,scene_end,memory_end;
  reg format_ok,layout_ok,extent_ok;

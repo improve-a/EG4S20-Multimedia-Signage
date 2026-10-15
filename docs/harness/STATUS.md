@@ -1,29 +1,34 @@
 # HTML fidelity status
 
-Updated UTC 2026-10-15T17:36:01.055299+00:00
+Updated UTC 2026-10-15T17:58:23.819162+00:00
 
-Primary repository: D:\FPGA\EG4S20-Multimedia-Signage
-Branch: codex/html-fidelity. Current integrated HEAD fd32c00; imported public HEAD fb97d76. Historical c16d3da and original sources preserved.
-Remote: https://github.com/improve-a/EG4S20-Multimedia-Signage.git; fresh ls-remote returned empty, exit 0. Push not attempted this run.
-Target: HX4S20C / EG4S20BG256, top top; project/td_project/hx4s20_basic.al.
-Tool: G:\anlu\bin\td_commands_prompt.exe, TD 6.2.1 Engineer build 168116.
-Build entry: scripts/build.py -> scripts/prepare_snapshot.py -> harness/windows_job.py -> harness/build.tcl.
-Regression entry: scripts/run_regression.py plus targeted scripts/html_*_verify.py.
+Primary: D:\FPGA\EG4S20-Multimedia-Signage; branch codex/html-fidelity; committed HEAD15a8e2e038824436c387c9025a15d80f6f9c2dcb. Public history fb97d76 and baseline c16d3da preserved. Remote https://github.com/improve-a/EG4S20-Multimedia-Signage.git: fresh ls-remote exit0/empty; push pending.
+Target HX4S20C/EG4S20BG256, top top, project/td_project/hx4s20_basic.al. TD G:\anlu\bin\td_commands_prompt.exe,6.2.1 Engineer168116. Windows primary; Mac single task temporary directory. No physical hardware/card operations.
 
-Explicit agent models: visual_assets gpt-6.1-sol medium; bot_osd and page_control gpt-6.1-sol high. No recursive agents.
+## Current build result
 
-Completed: verified 59 local dependencies; retained eight-slot scanner; six clean native pages, four independent comparison resources, body texture and glyph atlas; panel loader passes all real payloads and audio arbitration; six-page cache, previous/next, late ACK, 5.4 s schedule, zoom mapping and proportional caption/Bot unit tests. Top connects 5-bit page/direction/comparison metadata and shared commit event.
+First-phase full02 SYN/PNR/BITGEN PASS, exit0,564.016s, fresh702956-byte bitstream. Routed13905/19600 LUT,47/64 BRAM9K,11/16 BRAM32K,16/29 DSP. Snapshot72a155b70dee8d9a36ebbaf4f0639a141ca07aeaeee09f5bc63b66947fd556ad. Provenance output/html_fidelity/audit/full02_result.json.
+TIMING does not pass: setup WNS-0.797ns/TNS-3.204ns, hold WNS+0.003ns/TNS0;99.95% reported coverage with inherited IO/clock-definition warnings unsigned. Two setup endpoints: SD response→panel loader(-0.084ns), BMP stride→row position(-0.005ns). Eight recovery endpoints: inherited video-reset→HDMI125MHz. Reset and HDMI connections match baseline; no exceptions added. Complete resource-response1clk pipeline now passes targeted tests but is later than full02.
+Full01 SYN passed/PNR packing failed4918>4900mslices,273.313s. Two full flows so far; diagnostic attempts separately recorded. Completed tool time through full02:1214.408s; scene-loader probe adds15.062s. Ledger output/html_fidelity/audit/build_budget.json.
 
-First full build html_full_20261015_01 (snapshot fd32c00) ended exit 2 after 273.313 s: SYN PASS, PNR packing FAIL (4918 mslices > 4900), BITGEN NOT_RUN. Gate area 17790/19600 LUT, 31/64 BRAM9K, 11/16 BRAM32K, 22/29 DSP. Gate setup -9.145 ns is not final routed timing. No BUILD_PASS. Earlier overlay-only probe05 SYN PASS: 7694 LUT, 11 BRAM32K, 18 DSP. Build ledger cumulative 553.377 s (five diagnostic probes plus one full flow).
+## Current integration
 
-The actual SDRAM aligned-four-word bridge correction is complete. Four 640x480 frames (1,228,800 logical pixels) pass the APUG011 contract model, including zoom and packed comparison, refresh and write exclusion. First full display-chain smoke passes 307,200 pixels; outside overlays clean-A comparison has zero pixel mismatch. Composite MAE 1.070/255 is scoped to this page and not a fidelity percentage. Six-page/dual/zoom/action sequence is running (first three pages PASS). Legacy regression completed 39/39 PASS on its recorded earlier snapshot, including eight input geometries and six/eight file catalogs.
+Working tree is newer than full02:51bit atomic config/fractional5.4s OSD, CSS motion, OSD swap/eye-alpha corrections, HFXL loading, finite renderer and plain-BMP fallback. A fresh final unified build is required; root top replay must be regenerated.
+Six finite scenes use1803776words/7215104bytes; four comparison panels249856words from1843200. Total8214528bytes,174080free in8MiB. Content-derived SET_ID003adc1b is prepared; old-ID actual full transport remains immutable until completion, then all assets/defaults synchronize.
+Locator tests28cases in each enabled/disabled mode. Loader tests six ready-after-write pages,7679checked words,17 malformed/transport cases and ordinary BMP mode selection. Runtime controller waits for mode resolution, then uses layer ready flags or original adaptiveBMP path. Plain comparison uses actual two fullRGB sources when packed panels are absent.
+Layer core:16slot4word cache, sequential line geometry, pipelined blend and BRAM join queue. Core44894contexts/54012pixels pass with real textures/palettes,1/2/3repeats,twoRGBA,packed and plainRGB,refresh/write exclusion/backpressure. Complete renderer/full-frame throughput pending. Scene loader SYN1104LUT/noBRAM/noDSP; pixel engine standalone SYN running.
 
-Active next increment: exact-palette scene backgrounds plus independent RRGGBBAA cropped hero/giant/text components; source CSS frame-based transforms and alpha. Finite payload fits SDRAM with existing four comparison resources. A tagged BMP trailer needs explicit parser support because legacy BMP size validation permits only 64 KiB trailing bytes; plain BMP limits and negative tests remain unchanged. Root owns loader/parser/top integration; agents own asset packer, motion/OSD and finite renderer. Full-build area failure is driving caption lookup/OSD and cache resource optimization before another full flow.
+## Verification scope
 
-Next: reduce measured overlay logic, implement/verify layered resources and renderer, actual DUT visual comparison, fresh complete TD flow, final regression/material package and normal branch push.
+Legacy regression39/39PASS on recorded snapshot;8input geometry cases,6/8catalog bounds, realBMP/HFXC and WAV/mute/EOF. Aligned bridge1,228,800pixels; aperture100096pixels; write contract2,457,600words pass. These are scoped module/contract tests; encrypted-IP full-system simulation unverified.
+Real full display-chain smoke307200pixels PASS, cleanA exact, whole composite MAE1.070/255. Immutable18-frame suite completed all6normal pages(1,843,200pixels), now dual/zoom/actions. Column thirds-AA oracle1,113,600pixels/12layouts PASS. Final updated overlay/layer DUT comparisons pending; no fidelity percentage claimed.
+Offline first_static.img FAT32 image+inspector passes6BMP/1WAV hashes/chains/scan. Only ordinary files used; final layered media/image pending. SyntheticLBAs are not physical card evidence.
 
-Output: output/html_fidelity. Prototype originals unchanged. Live CUA file opening blocked by URL policy; no workaround attempted. Offline deterministic exports are recorded separately, not claimed as live UI verification.
+## Ownership and next work
 
-SIM: scoped module and first full-display-chain PASS; expanded suite running. SYN: PASS for first full snapshot. PNR: FAIL packing capacity. STA: gate setup negative; final routed STA unavailable. BITGEN: NOT_RUN. VISUAL: actual page0 clean background exact; overlay differences recorded, remaining frames running. HARDWARE: NOT_TESTED_THIS_RUN.
+Root owns sharedtop/project/serialTD/Git/fourreports. Explicit agents: original visual_assets gpt-6.1-sol medium failed twice with model capacity; replacement visual_assets_recovery gpt-6-luna medium owns bounded asset/test continuation. bot_osd/page_control remain gpt-6.1-sol high. At most3 active subagents. No recursive agents.
+Next: sealedassets sync, complete bridge+fallback, top/ROM integration, targeted/full regression and realDUT comparisons, final matching TD build, formalmedia/image/acceptance, commits and normal branch push. User8–10h scope remains active; first-phase BUILD_PASS is not completion.
+Entries: scripts/build.py→prepare_snapshot.py→harness/windows_job.py→build.tcl; run_regression.py and html_*_verify.py. Output output/html_fidelity. Live CUA HTML file open was URL-policy blocked; no workaround. Offline deterministic exports recorded separately.
+SIM scoped PASS/final pending; BUILD first-phase PASS/final pending; TIMING not passed; VISUAL first-phase clean regions exact/final pending; HARDWARE NOT_TESTED_THIS_RUN.
 
-Resource repair freeze: overlay probe06 SYN PASS 21.078 s, 3621 LUT, 16 BRAM9K, 11 BRAM32K, 12 DSP versus probe05 7694 LUT/18 DSP. Actual column ROM BIN is parsed by TD. OSD all12 layouts/caret prefixes: 1,113,600 pixels equal independent original decoder with corrected thirds-AA. Total diagnostic/full tool time now650.392 s. Interval divide removed; response metadata pipeline and captured write bases pass targeted tests. Second full flow is next. HFXL locator/scene loader have28 header cases with extension both disabled/enabled, plus six ready-after-write scenes and16 malformed/transport cases; formal media remains first-version assets until real-payload and layered-renderer checks pass.
+Latest18:12UTC: sealed003adc1b assets/defaults active and verified; Root topresource integration landed, AL newhelpers added, finalbridge/replaypending. Focusedactualpage0 transport PASS63.594s; allsix running. Oldallscene timeout124 is preserved asFAIL. Core16 SYN4619LUT;8ctx fullframeunderflow rejected. Overlay08 SYN5062LUT; exactfactor/serialROM09 running. See EVIDENCE for scopes/hashes.

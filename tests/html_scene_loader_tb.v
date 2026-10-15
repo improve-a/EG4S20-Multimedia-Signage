@@ -3,7 +3,7 @@ module html_scene_loader_tb;
  reg clk=0;always #5 clk=~clk;
  reg rst=1,enable=0,ack=0,valid=0,ending=0,sd_error=0,finish_toggle=0;
  reg [7:0] data=0;
- wire active,ready,error,req,wreq,we;wire [5:0] page_ready;
+ wire active,ready,error,req,wreq,we,mode_valid,layer_mode;wire [5:0] page_ready;
  wire [31:0] address,wdata;wire [20:0] base,len;
  reg [31:0] s0=17;
  integer c=0,cycles=0,grant=0,byte_i=0,gap=0,p=0,sector_i=0,origin=0;
@@ -16,7 +16,7 @@ module html_scene_loader_tb;
  .LENGTH_WORDS({6{21'd1024}})) dut(
  .clk(clk),.rst(rst),.enable(enable),.sector0(s0),.sector1(32'd10017),.sector2(32'd20017),
  .sector3(32'd30017),.sector4(32'd40017),.sector5(32'd50017),
- .active(active),.ready(ready),.error(error),.page_ready(page_ready),
+ .active(active),.ready(ready),.error(error),.page_ready(page_ready),.mode_valid(mode_valid),.layer_mode(layer_mode),
  .sector_req(req),.sector_addr(address),.sector_data(data),.sector_valid(valid),.sector_end(ending),.sector_error(sd_error),
  .write_req(wreq),.write_req_ack(ack),.write_en(we),.write_data(wdata),.write_base(base),.write_len(len),.write_finish_toggle(finish_toggle));
  task put32;input integer a;input [31:0] v;begin
@@ -26,7 +26,9 @@ module html_scene_loader_tb;
   for(k=0;k<512;k=k+1)h[k]=0;
   h[0]=8'h42;h[1]=8'h4d;put32(2,926208);put32(10,512);put32(14,40);put32(18,640);put32(22,480);
   h[26]=1;h[28]=24;put32(80,32'h4c584648);h[84]=1;h[86]=32;put32(88,922112);put32(92,4096);
-  put32(96,page*1024);h[100]=page;h[102]=6;put32(104,32'h687d5bbc);
+  put32(96,page*1024);h[100]=page;h[102]=6;put32(104,32'h003adc1b);
+  if(c==17)begin put32(80,0);put32(10,54);put32(18,320);put32(22,240);put32(2,230454);end
+  if(c==18)h[0]=0;
   case(c)1:h[84]=2;2:put32(104,0);3:put32(96,256);4:begin put32(92,8192);put32(2,930304);end endcase
  end endtask
  function [31:0] payload;input integer page,word;begin
@@ -35,7 +37,7 @@ module html_scene_loader_tb;
    0:payload=(c==5)?0:32'h4c584648;
    1:payload=1;2:payload=1024;3:payload=(page==0)?9:(page==5)?10:12;
    4:payload=64;5:payload=8;7:payload=214;10:payload=640;11:payload=480;
-   13:payload=32'h687d5bbc;14:payload=(c==6)?256:page*1024;15:payload=(c==7)?6:page;
+   13:payload=32'h003adc1b;14:payload=(c==6)?256:page*1024;15:payload=(c==7)?6:page;
   endcase
  end endfunction
  always @(negedge clk)begin
@@ -89,18 +91,20 @@ module html_scene_loader_tb;
   if(page_ready & ~((1<<page_count)-1))$fatal(1,"page ready before physical write completion");
  end
  initial begin
-  for(c=0;c<17;c=c+1)begin
+  for(c=0;c<19;c=c+1)begin
    @(posedge clk);#1;rst=1;enable=0;ack=0;valid=0;ending=0;sd_error=0;finish_toggle=0;
    s0=(c==16)?32'hfffffc00:17;
    busy=0;cycles=0;grant=0;ack_wait=0;ack_tail=0;word_count=0;page_count=0;finish_wait=0;request_count=0;
    repeat(7)@(posedge clk);#1;rst=0;enable=1;
-   while(!ready&&!error&&cycles<150000)begin @(posedge clk);#1;end
+   while(!ready&&!error&&!(mode_valid&&!layer_mode)&&cycles<150000)begin @(posedge clk);#1;end
    if(c==0)begin
-    if(!ready||error||page_ready!=63||page_count!=6||request_count!=54)$fatal(1,"six page load incomplete");
+    if(!ready||error||!mode_valid||!layer_mode||page_ready!=63||page_count!=6||request_count!=54)$fatal(1,"six page load incomplete");
+   end else if(c==17)begin
+    if(!mode_valid||layer_mode||ready||error||active||page_ready||request_count!=1||word_count||wreq)$fatal(1,"ordinary BMP did not select legacy adaptive mode");
    end else if(!error||ready||page_ready!=0)$fatal(1,"case%0d did not reject incomplete resources",c);
    repeat(10)@(posedge clk);#1;
    if(req||wreq||active)$fatal(1,"transaction held after terminal state");
   end
-  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 16 malformed/transport/timeout cases",all_words);$finish;
+  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 17 malformed/transport/timeout cases plus ordinary adaptive-BMP fallback",all_words);$finish;
  end
 endmodule
