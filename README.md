@@ -145,6 +145,9 @@ python3 scripts/package_unified_offline.py
 
 本 Mac 仓库是后续源码主目录，旧 `hx4s20_extensions` 留作冻结来源；不要在两边并行开发。
 Windows 的裸仓库只中转提交，没有第二份工作分支或工作区。
+本次发布实际使用已连接的 GitHub 插件：Windows 的 GitHub CLI 旧令牌已失效，
+Git HTTPS 凭据亦不可用；没有重置认证。认证恢复前，可让 Codex 通过已连接 GitHub
+提交当前树并把 Mac `main` 快进到远端；下面的 Windows 推送脚本供认证有效时使用。
 
 ```sh
 git pull --ff-only origin main
@@ -155,7 +158,7 @@ git commit -m "描述具体改动"
 python3 scripts/push_via_thinkpad.py
 ```
 
-推送脚本用 Git bundle 经已有 SSH 传输到 Windows，复用现有 Git Credential Manager
+Windows 认证有效时，推送脚本用 Git bundle 经已有 SSH 传输到 Windows，复用 Git Credential Manager
 向 HTTPS 远端推送，并回查远端 SHA。不复制或输出凭据，不强推。
 公开仓库的 `git pull` / `git fetch` 可由 Mac 直接使用 HTTPS；有冲突时保留双方提交并处理，
 不执行 `reset --hard`。本地依赖被逐文件忽略，仍需随工程变更更新本地哈希清单。

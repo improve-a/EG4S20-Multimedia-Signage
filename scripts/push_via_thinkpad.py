@@ -60,9 +60,9 @@ assert git('rev-parse','--is-bare-repository')=='true'
 remotes=git('remote').splitlines()
 if 'origin' not in remotes:git('remote','add','origin',{URL!r})
 assert git('remote','get-url','origin')=={URL!r}
-git('fetch',str(incoming),'refs/heads/main:refs/heads/main')
-assert git('rev-parse','main')=={head!r}
-print(git('push','origin','refs/heads/main:refs/heads/main'))
+git('fetch',str(incoming),'refs/heads/main:refs/remotes/mac/main')
+assert git('rev-parse','refs/remotes/mac/main')=={head!r}
+print(git('push','origin','refs/remotes/mac/main:refs/heads/main'))
 remote=git('ls-remote','origin','refs/heads/main').split()[0]
 assert remote=={head!r}
 print(json.dumps({{'remote_main':remote,'relay_bare':True,'url':{URL!r}}}))
