@@ -1,0 +1,2811 @@
+[
+  {
+    "id": "UI01",
+    "title": "欢迎首页",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "公共空间 · 有序同行",
+        "x": 438,
+        "y": 27,
+        "size": 15,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "01 / 欢迎首页",
+        "x": 32,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序 / VENUE FLOW",
+        "x": 447,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 32,
+        "y": 102,
+        "size": 40,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 34,
+        "y": 158,
+        "size": 16,
+        "color": "#3D8EF7",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "让信息有序",
+        "x": 32,
+        "y": 214,
+        "size": 31,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "让行动清晰",
+        "x": 32,
+        "y": 256,
+        "size": 31,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "公共场馆多媒体信息发布",
+        "x": 32,
+        "y": 319,
+        "size": 19,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "与应急引导演示系统",
+        "x": 32,
+        "y": 350,
+        "size": 19,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 313,
+        "y": 98,
+        "w": 295,
+        "h": 290,
+        "color": "#173457",
+        "r": 12,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            335,
+            98
+          ],
+          [
+            335,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            383,
+            98
+          ],
+          [
+            383,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            431,
+            98
+          ],
+          [
+            431,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            479,
+            98
+          ],
+          [
+            479,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            527,
+            98
+          ],
+          [
+            527,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            575,
+            98
+          ],
+          [
+            575,
+            388
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            313,
+            130
+          ],
+          [
+            608,
+            130
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            313,
+            178
+          ],
+          [
+            608,
+            178
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            313,
+            226
+          ],
+          [
+            608,
+            226
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            313,
+            274
+          ],
+          [
+            608,
+            274
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            313,
+            322
+          ],
+          [
+            608,
+            322
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 540.15,
+        "y": 173.4,
+        "r": 64.9,
+        "color": "#245CA0",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 540.15,
+        "y": 173.4,
+        "r": 38.35,
+        "color": "#327ED3",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            325,
+            318.4
+          ],
+          [
+            484.1,
+            260.4
+          ],
+          [
+            598,
+            301.0
+          ],
+          [
+            598,
+            368
+          ],
+          [
+            325,
+            368
+          ]
+        ],
+        "color": "#102440",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            348.4,
+            231.4
+          ],
+          [
+            481.15,
+            167.6
+          ],
+          [
+            566.7,
+            205.3
+          ],
+          [
+            442.8,
+            272.0
+          ]
+        ],
+        "color": "#75B5F4",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            348.4,
+            231.4
+          ],
+          [
+            442.8,
+            272.0
+          ],
+          [
+            442.8,
+            353.2
+          ],
+          [
+            348.4,
+            306.79999999999995
+          ]
+        ],
+        "color": "#245B91",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            442.8,
+            272.0
+          ],
+          [
+            566.7,
+            205.3
+          ],
+          [
+            566.7,
+            301.0
+          ],
+          [
+            442.8,
+            353.2
+          ]
+        ],
+        "color": "#3D8EF7",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            457.55,
+            264.75
+          ],
+          [
+            457.55,
+            345.95
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            475.25,
+            255.46999999999997
+          ],
+          [
+            475.25,
+            338.40999999999997
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            492.95,
+            246.18999999999997
+          ],
+          [
+            492.95,
+            330.87
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            510.65,
+            236.91
+          ],
+          [
+            510.65,
+            323.33000000000004
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            528.35,
+            227.63
+          ],
+          [
+            528.35,
+            315.78999999999996
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            546.05,
+            218.34999999999997
+          ],
+          [
+            546.05,
+            308.25
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            366.1,
+            250.25
+          ],
+          [
+            366.1,
+            311.15
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            385.275,
+            258.37
+          ],
+          [
+            385.275,
+            318.98
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            404.45,
+            266.49
+          ],
+          [
+            404.45,
+            326.81
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            423.625,
+            274.61
+          ],
+          [
+            423.625,
+            334.64
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            328,
+            374
+          ],
+          [
+            593,
+            374
+          ]
+        ],
+        "color": "#A9C9E9",
+        "sw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 408,
+        "w": 576,
+        "h": 1,
+        "color": "#26374E",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "面向科技馆、展览馆与公共服务大厅",
+        "x": 32,
+        "y": 417,
+        "size": 16,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      }
+    ]
+  },
+  {
+    "id": "UI02",
+    "title": "日常信息展示",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "公共空间 · 有序同行",
+        "x": 438,
+        "y": 27,
+        "size": 15,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "02 / 日常信息",
+        "x": 32,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序 / VENUE FLOW",
+        "x": 447,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "今日在场",
+        "x": 32,
+        "y": 90,
+        "size": 34,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "探索、相遇与发现",
+        "x": 222,
+        "y": 105,
+        "size": 18,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 151,
+        "w": 298,
+        "h": 219,
+        "color": "#173457",
+        "r": 12,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            54,
+            151
+          ],
+          [
+            54,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            102,
+            151
+          ],
+          [
+            102,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            150,
+            151
+          ],
+          [
+            150,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            198,
+            151
+          ],
+          [
+            198,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            246,
+            151
+          ],
+          [
+            246,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            294,
+            151
+          ],
+          [
+            294,
+            370
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            183
+          ],
+          [
+            330,
+            183
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            231
+          ],
+          [
+            330,
+            231
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            279
+          ],
+          [
+            330,
+            279
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            327
+          ],
+          [
+            330,
+            327
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            375
+          ],
+          [
+            330,
+            375
+          ]
+        ],
+        "color": "#203F63",
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 261.46000000000004,
+        "y": 207.94,
+        "r": 65.56,
+        "color": "#245CA0",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 261.46000000000004,
+        "y": 207.94,
+        "r": 38.74,
+        "color": "#327ED3",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            44,
+            317.44
+          ],
+          [
+            204.83999999999997,
+            273.64
+          ],
+          [
+            320,
+            304.29999999999995
+          ],
+          [
+            320,
+            350
+          ],
+          [
+            44,
+            350
+          ]
+        ],
+        "color": "#102440",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            67.75999999999999,
+            251.74
+          ],
+          [
+            201.85999999999999,
+            203.56
+          ],
+          [
+            288.28,
+            232.03
+          ],
+          [
+            163.12,
+            282.4
+          ]
+        ],
+        "color": "#75B5F4",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            67.75999999999999,
+            251.74
+          ],
+          [
+            163.12,
+            282.4
+          ],
+          [
+            163.12,
+            343.72
+          ],
+          [
+            67.75999999999999,
+            308.68
+          ]
+        ],
+        "color": "#245B91",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            163.12,
+            282.4
+          ],
+          [
+            288.28,
+            232.03
+          ],
+          [
+            288.28,
+            304.29999999999995
+          ],
+          [
+            163.12,
+            343.72
+          ]
+        ],
+        "color": "#3D8EF7",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            178.02,
+            276.925
+          ],
+          [
+            178.02,
+            338.245
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            195.9,
+            269.917
+          ],
+          [
+            195.9,
+            332.551
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            213.78,
+            262.909
+          ],
+          [
+            213.78,
+            326.85699999999997
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            231.65999999999997,
+            255.901
+          ],
+          [
+            231.65999999999997,
+            321.163
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            249.54,
+            248.89299999999997
+          ],
+          [
+            249.54,
+            315.469
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            267.42,
+            241.885
+          ],
+          [
+            267.42,
+            309.775
+          ]
+        ],
+        "color": "#A0CEFB",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            85.64,
+            265.975
+          ],
+          [
+            85.64,
+            311.96500000000003
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            105.01,
+            272.107
+          ],
+          [
+            105.01,
+            317.87800000000004
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            124.38,
+            278.23900000000003
+          ],
+          [
+            124.38,
+            323.791
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            143.75,
+            284.371
+          ],
+          [
+            143.75,
+            329.70399999999995
+          ]
+        ],
+        "color": "#4F91CA",
+        "sw": 2
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            47,
+            356
+          ],
+          [
+            315,
+            356
+          ]
+        ],
+        "color": "#A9C9E9",
+        "sw": 2
+      },
+      {
+        "kind": "rect",
+        "x": 46,
+        "y": 321,
+        "w": 155,
+        "h": 33,
+        "color": "#0B1220",
+        "r": 6,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "未来城市 · 主题展",
+        "x": 58,
+        "y": 327,
+        "size": 16,
+        "color": "#F7FAFC",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "活动公告 / 示例",
+        "x": 356,
+        "y": 151,
+        "size": 16,
+        "color": "#3D8EF7",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "城市与未来",
+        "x": 356,
+        "y": 188,
+        "size": 25,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "主题展览 · A 展厅",
+        "x": 356,
+        "y": 227,
+        "size": 18,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            356,
+            264
+          ],
+          [
+            608,
+            264
+          ]
+        ],
+        "color": "#2B3C53",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "创客体验",
+        "x": 356,
+        "y": 282,
+        "size": 24,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "互动工坊 · B 展厅",
+        "x": 356,
+        "y": 320,
+        "size": 18,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 388,
+        "w": 576,
+        "h": 47,
+        "color": "#142238",
+        "r": 8,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "公共服务",
+        "x": 47,
+        "y": 401,
+        "size": 16,
+        "color": "#3D8EF7",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "咨询服务台  /  无障碍通道  /  文明参观",
+        "x": 138,
+        "y": 400,
+        "size": 17,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      }
+    ]
+  },
+  {
+    "id": "UI03",
+    "title": "安全预警",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 421,
+        "y": 24,
+        "w": 187,
+        "h": 30,
+        "color": "#F6AD39",
+        "r": 7,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟演示 / DEMO",
+        "x": 434,
+        "y": 28,
+        "size": 15,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "03 / 安全预警",
+        "x": 32,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序 / VENUE FLOW",
+        "x": 447,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 94,
+        "w": 133,
+        "h": 30,
+        "color": "#F6AD39",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "注意级 · 示例",
+        "x": 44,
+        "y": 98,
+        "size": 16,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "安全预警",
+        "x": 32,
+        "y": 143,
+        "size": 38,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "请留意现场指引",
+        "x": 32,
+        "y": 205,
+        "size": 26,
+        "color": "#F7FAFC",
+        "weight": "semibold"
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            506,
+            96
+          ],
+          [
+            585,
+            234
+          ],
+          [
+            427,
+            234
+          ]
+        ],
+        "color": "#F6AD39",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "rect",
+        "x": 500,
+        "y": 138,
+        "w": 12,
+        "h": 51,
+        "color": "#0B1220",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 506,
+        "y": 209,
+        "r": 7,
+        "color": "#0B1220",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 268,
+        "w": 576,
+        "h": 107,
+        "color": "#142238",
+        "r": 10,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 278,
+        "w": 4,
+        "h": 87,
+        "color": "#F6AD39",
+        "r": 2,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "通道临时维护",
+        "x": 52,
+        "y": 281,
+        "size": 23,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "模拟区域  二层东侧通道",
+        "x": 52,
+        "y": 319,
+        "size": 19,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "示例时间  14:30",
+        "x": 402,
+        "y": 330,
+        "size": 16,
+        "color": "#F6AD39",
+        "weight": "semibold"
+      },
+      {
+        "kind": "circle",
+        "x": 39,
+        "y": 403,
+        "r": 3,
+        "color": "#F6AD39",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "避开维护区域，选择其他开放通道",
+        "x": 52,
+        "y": 388,
+        "size": 19,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      },
+      {
+        "kind": "circle",
+        "x": 39,
+        "y": 430,
+        "r": 3,
+        "color": "#F6AD39",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "保持通道畅通，配合现场工作人员",
+        "x": 52,
+        "y": 417,
+        "size": 19,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      }
+    ]
+  },
+  {
+    "id": "UI04",
+    "title": "紧急指引",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 421,
+        "y": 24,
+        "w": 187,
+        "h": 30,
+        "color": "#EB4D4B",
+        "r": 7,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟演示 / DEMO",
+        "x": 434,
+        "y": 28,
+        "size": 15,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "04 / 模拟紧急指引",
+        "x": 32,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序 / VENUE FLOW",
+        "x": 447,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "请有序前往安全出口",
+        "x": 32,
+        "y": 92,
+        "size": 35,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 163,
+        "w": 245,
+        "h": 177,
+        "color": "#EB4D4B",
+        "r": 12,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            64,
+            251
+          ],
+          [
+            141,
+            193
+          ],
+          [
+            141,
+            229
+          ],
+          [
+            242,
+            229
+          ],
+          [
+            242,
+            273
+          ],
+          [
+            141,
+            273
+          ],
+          [
+            141,
+            310
+          ]
+        ],
+        "color": "#F7FAFC",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "向左撤离",
+        "x": 309,
+        "y": 170,
+        "size": 34,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "沿箭头方向前行",
+        "x": 310,
+        "y": 225,
+        "size": 22,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "01  保持冷静，依次通行",
+        "x": 310,
+        "y": 280,
+        "size": 18,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "02  服从现场人员指引",
+        "x": 310,
+        "y": 312,
+        "size": 18,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 366,
+        "w": 576,
+        "h": 66,
+        "color": "#142238",
+        "r": 8,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "安全提示",
+        "x": 49,
+        "y": 377,
+        "size": 16,
+        "color": "#EB4D4B",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "不奔跑、不拥挤、不返回取物",
+        "x": 49,
+        "y": 401,
+        "size": 19,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      }
+    ]
+  },
+  {
+    "id": "UI05",
+    "title": "模拟疏散路线",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 421,
+        "y": 24,
+        "w": 187,
+        "h": 30,
+        "color": "#21B787",
+        "r": 7,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟演示 / DEMO",
+        "x": 434,
+        "y": 28,
+        "size": 15,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟疏散路线",
+        "x": 32,
+        "y": 91,
+        "size": 32,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 145,
+        "w": 403,
+        "h": 264,
+        "color": "#E7EFF5",
+        "r": 10,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "二层 / 虚构场馆",
+        "x": 48,
+        "y": 154,
+        "size": 15,
+        "color": "#455A70",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 51,
+        "y": 185,
+        "w": 103,
+        "h": 61,
+        "color": "#C6D6E5",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "A 展厅",
+        "x": 68,
+        "y": 203,
+        "size": 18,
+        "color": "#0B1220",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 173,
+        "y": 185,
+        "w": 111,
+        "h": 61,
+        "color": "#C6D6E5",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "B 展厅",
+        "x": 191,
+        "y": 203,
+        "size": 18,
+        "color": "#0B1220",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 303,
+        "y": 185,
+        "w": 112,
+        "h": 61,
+        "color": "#C6D6E5",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "服务区",
+        "x": 321,
+        "y": 203,
+        "size": 18,
+        "color": "#0B1220",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 51,
+        "y": 286,
+        "w": 103,
+        "h": 83,
+        "color": "#C6D6E5",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "互动区",
+        "x": 69,
+        "y": 314,
+        "size": 18,
+        "color": "#0B1220",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 174,
+        "y": 286,
+        "w": 110,
+        "h": 83,
+        "color": "#B7E5D6",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "当前区域",
+        "x": 185,
+        "y": 314,
+        "size": 18,
+        "color": "#0F614B",
+        "weight": "bold"
+      },
+      {
+        "kind": "rect",
+        "x": 303,
+        "y": 286,
+        "w": 112,
+        "h": 83,
+        "color": "#C6D6E5",
+        "r": 5,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "休息区",
+        "x": 321,
+        "y": 314,
+        "size": 18,
+        "color": "#0B1220",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 266,
+        "y": 283,
+        "w": 16,
+        "h": 8,
+        "color": "#E7EFF5",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            274,
+            352
+          ],
+          [
+            274,
+            265
+          ],
+          [
+            41,
+            265
+          ],
+          [
+            41,
+            392
+          ],
+          [
+            67,
+            392
+          ]
+        ],
+        "color": "#21B787",
+        "sw": 7
+      },
+      {
+        "kind": "circle",
+        "x": 274,
+        "y": 352,
+        "r": 8,
+        "color": "#21B787",
+        "stroke": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            158,
+            265
+          ],
+          [
+            175,
+            256
+          ],
+          [
+            175,
+            274
+          ]
+        ],
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "poly",
+        "points": [
+          [
+            41,
+            354
+          ],
+          [
+            35,
+            338
+          ],
+          [
+            47,
+            338
+          ]
+        ],
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "rect",
+        "x": 50,
+        "y": 380,
+        "w": 114,
+        "h": 24,
+        "color": "#21B787",
+        "r": 4,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "安全出口 A",
+        "x": 61,
+        "y": 381,
+        "size": 15,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "路线说明",
+        "x": 457,
+        "y": 157,
+        "size": 18,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "circle",
+        "x": 469,
+        "y": 214,
+        "r": 6,
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "当前位置",
+        "x": 486,
+        "y": 201,
+        "size": 16,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            460,
+            256
+          ],
+          [
+            479,
+            256
+          ]
+        ],
+        "color": "#21B787",
+        "sw": 5
+      },
+      {
+        "kind": "text",
+        "text": "疏散路线",
+        "x": 486,
+        "y": 242,
+        "size": 16,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 460,
+        "y": 287,
+        "w": 18,
+        "h": 17,
+        "color": "#21B787",
+        "r": 2,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "安全出口",
+        "x": 486,
+        "y": 283,
+        "size": 16,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "沿绿色路线",
+        "x": 457,
+        "y": 340,
+        "size": 18,
+        "color": "#F7FAFC",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "前往出口 A",
+        "x": 457,
+        "y": 370,
+        "size": 18,
+        "color": "#F7FAFC",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "虚构场馆 · 模拟疏散示意图",
+        "x": 32,
+        "y": 416,
+        "size": 18,
+        "color": "#F6AD39",
+        "weight": "semibold"
+      },
+      {
+        "kind": "text",
+        "text": "仅供演示，实际疏散以现场标识与指引为准",
+        "x": 32,
+        "y": 447,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      }
+    ]
+  },
+  {
+    "id": "UI06",
+    "title": "恢复常态",
+    "width": 640,
+    "height": 480,
+    "ops": [
+      {
+        "kind": "rect",
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 480,
+        "color": "#0B1220",
+        "r": 0,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            44
+          ],
+          [
+            33,
+            25
+          ],
+          [
+            43,
+            25
+          ],
+          [
+            43,
+            44
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            49,
+            44
+          ],
+          [
+            49,
+            25
+          ],
+          [
+            59,
+            25
+          ],
+          [
+            59,
+            44
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            33,
+            49
+          ],
+          [
+            59,
+            49
+          ],
+          [
+            65,
+            43
+          ]
+        ],
+        "color": "#3D8EF7",
+        "sw": 3
+      },
+      {
+        "kind": "text",
+        "text": "场序",
+        "x": 78,
+        "y": 19,
+        "size": 22,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "VENUE FLOW",
+        "x": 133,
+        "y": 27,
+        "size": 11,
+        "color": "#A9BBCE",
+        "weight": "semibold"
+      },
+      {
+        "kind": "rect",
+        "x": 421,
+        "y": 24,
+        "w": 187,
+        "h": 30,
+        "color": "#21B787",
+        "r": 7,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟演示 / DEMO",
+        "x": 434,
+        "y": 28,
+        "size": 15,
+        "color": "#0B1220",
+        "weight": "bold"
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            32,
+            69
+          ],
+          [
+            608,
+            69
+          ]
+        ],
+        "color": "#26374E",
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "06 / 恢复日常展示",
+        "x": 32,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "场序 / VENUE FLOW",
+        "x": 447,
+        "y": 445,
+        "size": 13,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "text",
+        "text": "演示结束",
+        "x": 32,
+        "y": 117,
+        "size": 38,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "继续发现精彩",
+        "x": 32,
+        "y": 176,
+        "size": 31,
+        "color": "#F7FAFC",
+        "weight": "bold"
+      },
+      {
+        "kind": "text",
+        "text": "模拟应急展示已完成",
+        "x": 32,
+        "y": 234,
+        "size": 20,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "circle",
+        "x": 510,
+        "y": 210,
+        "r": 79,
+        "color": "#143C37",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "circle",
+        "x": 510,
+        "y": 210,
+        "r": 61,
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            480,
+            209
+          ],
+          [
+            502,
+            231
+          ],
+          [
+            543,
+            187
+          ]
+        ],
+        "color": "#F7FAFC",
+        "sw": 8
+      },
+      {
+        "kind": "line",
+        "points": [
+          [
+            44,
+            315
+          ],
+          [
+            306,
+            315
+          ]
+        ],
+        "color": "#355269",
+        "sw": 2
+      },
+      {
+        "kind": "circle",
+        "x": 44,
+        "y": 315,
+        "r": 7,
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "日常信息",
+        "x": 32,
+        "y": 336,
+        "size": 17,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "circle",
+        "x": 175,
+        "y": 315,
+        "r": 7,
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "场馆宣传",
+        "x": 163,
+        "y": 336,
+        "size": 17,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "circle",
+        "x": 306,
+        "y": 315,
+        "r": 7,
+        "color": "#21B787",
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "媒体轮播",
+        "x": 294,
+        "y": 336,
+        "size": 17,
+        "color": "#A9BBCE",
+        "weight": "regular"
+      },
+      {
+        "kind": "rect",
+        "x": 32,
+        "y": 387,
+        "w": 576,
+        "h": 47,
+        "color": "#142238",
+        "r": 8,
+        "stroke": null,
+        "sw": 1
+      },
+      {
+        "kind": "text",
+        "text": "模拟演示已结束 · 日常展示待继续",
+        "x": 49,
+        "y": 400,
+        "size": 19,
+        "color": "#F7FAFC",
+        "weight": "regular"
+      }
+    ]
+  }
+]

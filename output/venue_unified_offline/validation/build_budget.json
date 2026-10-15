@@ -1,0 +1,39 @@
+{
+  "scope": "unified_offline_20261014",
+  "max_full_builds": 3,
+  "max_cumulative_seconds": 5400,
+  "attempts": [
+    {
+      "run_id": "unified_full_20261014_01",
+      "source_commit": "6470652",
+      "requested_timeout_seconds": 1800,
+      "state": "COMPLETED_TIMING_FAIL",
+      "recorded_utc": "2026-10-14T15:41:08.924061+00:00",
+      "elapsed_seconds": 379.907,
+      "timing_ns": {
+        "SWNS": -0.317,
+        "STNS": -1.143,
+        "HWNS": 0.003,
+        "HTNS": 0.0
+      },
+      "bit_sha256": "ec6d0379dfdba62e6416287e1644c46bf37d9b30bab930cbaa3d47dbce92a53b",
+      "reason": "All five setup violations lie on WAV chunk bound arithmetic pos -> payload_start -> remaining -> compare; no constraint changes."
+    },
+    {
+      "run_id": "unified_full_20261014_02",
+      "source_commit": "d812c8a",
+      "requested_timeout_seconds": 1800,
+      "state": "COMPLETED_PASS",
+      "recorded_utc": "2026-10-14T15:56:01.840203+00:00",
+      "elapsed_seconds": 369.281,
+      "timing_ns": {
+        "SWNS": 0.12,
+        "STNS": 0.0,
+        "HWNS": 0.011,
+        "HTNS": 0.0
+      },
+      "bit_sha256": "9fc30a0efa894872571f85f4155a2d2edc82b630c5b60fc43b3d5f14c735b446"
+    }
+  ],
+  "cumulative_seconds": 749.188
+}

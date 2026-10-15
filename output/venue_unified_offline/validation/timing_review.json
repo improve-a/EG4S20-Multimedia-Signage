@@ -1,0 +1,98 @@
+{
+  "status": "PASS_FOR_REPORTED_PATHS_WITH_INHERITED_WARNINGS",
+  "full_constraint_signoff": "NOT_CLAIMED",
+  "run_id": "unified_full_20261014_02",
+  "setup_hold_corners": "Slow and Fast; routed",
+  "timing_ns": {
+    "SWNS": 0.12,
+    "STNS": 0.0,
+    "HWNS": 0.011,
+    "HTNS": 0.0
+  },
+  "coverage_percent": 99.93,
+  "check_timing_categories": [
+    [
+      "no clock",
+      "0",
+      "HIGH"
+    ],
+    [
+      "clock definition",
+      "4",
+      "HIGH"
+    ],
+    [
+      "dummy node",
+      "4",
+      "HIGH"
+    ],
+    [
+      "invalid constraint",
+      "0",
+      "HIGH"
+    ],
+    [
+      "pll/clock buffer clock constraints",
+      "0",
+      "HIGH"
+    ],
+    [
+      "combinational loops",
+      "0",
+      "HIGH"
+    ],
+    [
+      "soft fifo timing exception constraints",
+      "0",
+      "HIGH"
+    ],
+    [
+      "no path constraints",
+      "0",
+      "MEDIUM"
+    ],
+    [
+      "shadowed/ignored timing exception constraints",
+      "0",
+      "MEDIUM"
+    ],
+    [
+      "no input delay",
+      "5",
+      "MEDIUM"
+    ],
+    [
+      "no output delay",
+      "20",
+      "MEDIUM"
+    ],
+    [
+      "partial input delay",
+      "1",
+      "MEDIUM"
+    ],
+    [
+      "partial output delay",
+      "0",
+      "MEDIUM"
+    ],
+    [
+      "abnormal input delay",
+      "32",
+      "MEDIUM"
+    ]
+  ],
+  "baseline_comparison": "ext_full_005 used only to identify inherited warning categories and IP exceptions, never as fresh build evidence",
+  "constraints_unchanged": true,
+  "constraints_sha256": "e1afa16ee7ac402ae4602980af884d9082564b04c009d27a4dddf9b113e9ebac",
+  "new_timing_exceptions": false,
+  "notes": [
+    "Four local/generated-master clock warnings remain; clock model is inherited.",
+    "Missing input/output delay and partial/abnormal input delay diagnostics remain; this is not complete external-IO timing signoff.",
+    "Inherited FIFO IP hold exceptions 24.700 and 9.700 unchanged.",
+    "No no-clock, invalid-constraint, combinational-loop or no-path-constraint diagnostics.",
+    "Dummy-node diagnostic category is unchanged; optimized node names differ.",
+    "No new negative setup/hold slack in final reports."
+  ],
+  "fresh_rtl_hashes_checked": 68
+}

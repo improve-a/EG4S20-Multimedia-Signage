@@ -1,0 +1,69 @@
+{
+  "utc": "2026-10-14T16:03:17.500280+00:00",
+  "RTL": "PASS",
+  "SIM": "PASS",
+  "TD_BUILD": "PASS",
+  "BITSTREAM": "GENERATED",
+  "MEDIA_PACKAGE": "PASS_OFFLINE",
+  "TF_CARD_PHYSICAL": "NOT_TESTED",
+  "HARDWARE": "NOT_TESTED",
+  "SYN": "PASS",
+  "PNR": "PASS",
+  "STA": "PASS_FOR_REPORTED_PATHS_WITH_INHERITED_WARNINGS",
+  "BITGEN": "PASS",
+  "FULL_SYSTEM_SIM": "NOT_TESTED",
+  "sim_passing_configurations": 16,
+  "sim_scope": "Directed module/component benches with behavioural storage endpoints; not encrypted-IP full-system verification",
+  "target": "HX4S20C / EG4S20BG256 / top",
+  "source_commit": "d812c8a",
+  "run_id": "unified_full_20261014_02",
+  "build_attempts": 2,
+  "build_seconds": 749.188,
+  "timing_ns": {
+    "SWNS": 0.12,
+    "STNS": 0.0,
+    "HWNS": 0.011,
+    "HTNS": 0.0
+  },
+  "coverage_percent": 99.93,
+  "resources": {
+    "lut": {
+      "used": 9482,
+      "available": 19600,
+      "percent": 48.38
+    },
+    "reg": {
+      "used": 5804,
+      "available": 19600,
+      "percent": 29.61
+    },
+    "bram": {
+      "used": 35,
+      "available": 64,
+      "percent": 54.69
+    },
+    "dsp": {
+      "used": 8,
+      "available": 29,
+      "percent": 27.59
+    },
+    "pll": {
+      "used": 2,
+      "available": 4,
+      "percent": 50.0
+    }
+  },
+  "bitstream": {
+    "file": "hx4s20_unified.bit",
+    "bytes": 633116,
+    "sha256": "9fc30a0efa894872571f85f4155a2d2edc82b630c5b60fc43b3d5f14c735b446"
+  },
+  "media_archive": {
+    "file": "unified_media.zip",
+    "sha256": "ba989bd0b08cfb387a7132d9e7ffee473679e8449b9f2ac73ada5d266efffc8a",
+    "bytes": 6389442,
+    "archive_roundtrip": "PASS",
+    "physical_layout": "NOT_TESTED"
+  },
+  "git_branch": "codex/unified-offline"
+}

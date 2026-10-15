@@ -1,0 +1,2 @@
+TEST_PASS control_modes_tb debounce legacy_keys modes parameters boundaries long_short reset
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\control_modes_tb.v:130: $finish called at 36510000 (1ps)

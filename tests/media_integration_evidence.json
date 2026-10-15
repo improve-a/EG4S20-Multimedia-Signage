@@ -1,0 +1,86 @@
+{
+  "created_utc": "2026-10-13T17:49:05.282341+00:00",
+  "INTEGRATED_STREAM_SIM": "PASS",
+  "scope": "real SD wrapper, BMP scaler, controls, sector arbiter, audio pipeline, frame writer and display_commit; SD transport, image FIFO/SDRAM port and reader ack are behavioral models",
+  "authoritative_run": "media_integration_04",
+  "result_path": "evidence/sim/media_integration_04/result/result.json",
+  "simulation_log": "evidence/sim/media_integration_04/result/simulation.log",
+  "elapsed_seconds": 1037.780999999999,
+  "pid": 18116,
+  "compile_exit": 0,
+  "simulation_exit": 0,
+  "source_sha256": {
+    "tests/media_integration_tb.v": "4c5c20ca7ae336a35cb77a0a4156b9e4d117c48fe2f1094c5ec15f74a4c1fbed",
+    "rtl/SD/sd_card_bmp.v": "bd74eef3f6f0a8be89147308c69c3826d17afd7829e4445d47b092249cff5acd",
+    "rtl/SD/bmp_read.v": "49a63a28689b32381191e1047a5b93201abda08d8a4ab7ceda1572f4de519ffd",
+    "rtl/ext/bmp_scale.v": "c1a02f9f22aaafd86a6a3307d07d4dc64c95846cf2b10abbb247faedcd69bde4",
+    "rtl/media_controls.v": "7b8ef3ab55778b67034a85b1b197a50fad5fccf275b7a0e393bfddd68eaf06c8",
+    "rtl/ext/media_sector_arbiter.v": "ba9de3e5ded912865d941a76586a68e52b417fa25182bc4a03c4548d169c7cf8",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+    "rtl/SD/frame_fifo_write.v": "13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2",
+    "rtl/display_commit.v": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+    "tests/media_integration_card.hex": "c40b82edeebaa2f1fe54b443a4557924fee8f54b60c7b9cb3b8192df992cea96",
+    "tests/scale_golden_0.hex": "80596ecfabadb8ba531df30702e6251a2b37fde4c8b4f4031b91310c3cf8c40b",
+    "tests/scale_golden_1.hex": "054b34eec9834d5895458e80aee692c2cb51ad8059c9cd226081cf12e0e12332",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "metrics": {
+    "frames": 2,
+    "pixels": 614400,
+    "PCM_prefix": 3187,
+    "WAV_material_frames": 6000,
+    "commits": 2,
+    "maxFIFO": 413,
+    "concurrentPCM": 2886,
+    "audioSectorsDuringLoad": 22,
+    "bmpSectorsDuringLoad": 451
+  },
+  "write_burst": 256,
+  "image_fifo_capacity": 512,
+  "system_clk_hz": 100000000,
+  "audio_video_clk_hz": 25000000,
+  "memory_clk_hz": 40000000,
+  "output_pixel_period_sysclks": 16,
+  "full_6000_frame_PCM_clip_verified": false,
+  "parser_and_EOF_scope": "independent shorter audio vectors only",
+  "physical_SPI_scope": "accelerated sector transport here; real64clk-per-byte BMP pressure covered independently",
+  "encrypted_IP_full_system_sim": "NOT_VERIFIED",
+  "hardware": "NOT_VERIFIED",
+  "related_current_tests": [
+    "scale_sta_valid_01",
+    "scale_sta_reject_02",
+    "scale_sta_scan_02",
+    "scale_scan_load_01",
+    "media_write256_01"
+  ],
+  "failed_or_stopped_provenance": [
+    {
+      "run": "media_integration_01",
+      "SIM": "TIMEOUT",
+      "cause": "old FIFO snapshot; behavioral SD model missed request-low drain window; no completed milestones"
+    },
+    {
+      "run": "media_integration_02",
+      "SIM": "FAIL",
+      "cause": "same SD model; stopped only confirmed VVP PID32044; model_repair.json retained"
+    },
+    {
+      "run": "media_integration_03",
+      "SIM": "FAIL",
+      "cause": "first full frame and PCM prefix completed; real scan_done persistence regression prevented second selection; stopped confirmed VVP PID30368 to prioritize STA repair; termination.json retained"
+    }
+  ],
+  "fresh_TD_provenance": {
+    "run": "ext_full_005",
+    "timing_report": "evidence/builds/ext_full_005/runs/ext_full_005/final_timing.rpt",
+    "setup_wns_ns": 0.14,
+    "hold_wns_ns": 0.003,
+    "setup_tns_ns": 0,
+    "hold_tns_ns": 0,
+    "scaler_sha256": "c1a02f9f22aaafd86a6a3307d07d4dc64c95846cf2b10abbb247faedcd69bde4",
+    "audio_media_sha256": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717"
+  }
+}

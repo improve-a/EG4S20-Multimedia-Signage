@@ -1,0 +1,2 @@
+TEST_PASS SCALE_SCAN_LOAD scan_done_sticky=1 scan_found_total=1 loads=2 pixels=614400 requests=5
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\scale_scan_load_tb.v:29: $finish called at 98319740000 (1ps)

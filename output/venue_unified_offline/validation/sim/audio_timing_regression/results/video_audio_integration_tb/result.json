@@ -1,0 +1,65 @@
+{
+  "id": "video_audio_integration_tb",
+  "recipe_reference": "video_audio_integration_004",
+  "top": "video_audio_integration_tb",
+  "started_utc": "2026-10-14T15:52:29.041676+00:00",
+  "runner_pid": 2928,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/video_audio_integration_tb.v": "4a55c177bdcec977e944b0b74ba82342d3f97738c550f9312496730908135f42",
+    "rtl/ext/audio_output_mux.v": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+    "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "rtl/ext/video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "rtl/ext/osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+    "rtl/video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/wav_stream_parser.v": "cc1ad0ba2f06057b491187b1cf78b1a2bdd4e9a3e090a12ca7f98cdd56976508",
+    "rtl/hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+    "rtl/audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+    "tests/audio_arbiter_card.hex": "0c30c2546f65dc68ca89f77526628845fcc79ba684c08f8c956c6c2add24f63c",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "video_audio_integration_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\video_audio_integration_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\tests\\video_audio_integration_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_output_mux.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\video_transition.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\video_extensions.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\pixel_adjust.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_visualizer.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\osd_overlay.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\video_rgb_to_axis_640x480.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_media.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_async_fifo.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_pcm_player.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\wav_stream_parser.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\hdmi_audio_tone_pcm_scale.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\audio_arc_calculate.v"
+  ],
+  "compile_pid": 41616,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\video_audio_integration_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 13896,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS video+audio subsystem: unified tone-valid/held WAV actual output; real WAV PCM frames=2082; checks=1090060; full VGA frames=2; pixels=614400 SOF=2 EOL=960; 5-stage RGB/sync + AXIS; off brightness math and frame change; waveform trace pixels=112 peakbar pixels=4764; ACR CTS25000/N6144 packets=43; actual RTL PPM render 640x480"
+  ],
+  "elapsed_seconds": 177.875,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "56086ea3f64e751aeee7af28c2b996f0803b4279d9997ab934b71f7e93a5c37a"
+  }
+}

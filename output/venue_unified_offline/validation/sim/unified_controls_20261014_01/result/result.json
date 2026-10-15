@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "SIM": "PASS",
+  "scope": "explicit_testbench_only",
+  "top": "control_media_tb",
+  "sources": [
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\tb\\control_media_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\rtl\\media_controls.v"
+  ],
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\tb\\control_media_tb.v": "8b893bb8bde8e3de350d04636e6b243a9c617145eda928c4d93602b5b4e26d9e",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\rtl\\media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863"
+  },
+  "started_utc": "2026-10-14T15:30:46.455872+00:00",
+  "pid": 31056,
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "control_media_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\result\\sim.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\tb\\control_media_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_controls_20261014_01\\rtl\\media_controls.v"
+  ],
+  "parameter_overrides": [],
+  "compile_exit": 0,
+  "simulation_exit": 0,
+  "elapsed_seconds": 0.09399999999732245
+}

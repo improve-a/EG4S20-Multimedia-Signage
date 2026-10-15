@@ -1,0 +1,16 @@
+# Production HDMI cadence switch diagnosis
+
+The test instantiates the current actual `audio_media` parser/FIFO/player from real WAV sector bytes, the baseline `hdmi_audio_tone_pcm_scale`, two baseline `audio_arc_calculate` instances, and the production prefill/PLAY/PAUSE/EOF sticky selection expression. It compares the previous `wav_selected ? wav_valid : tone_valid` clock-enable mux against the proposed `tone_valid` shared cadence, while both select exactly the same held WAV PCM output data. No top source is edited by the test.
+
+The 25MHz and 100MHz clocks and 48kHz frequency remain real. SD bytes are supplied as complete 512-byte sectors from the stereo 300-frame WAV vector, after a chosen ready delay. Neither PCM source has its frequency sped up for this test. The sources have different reset epochs, so their 48kHz valid pulses have an 11-clock phase offset. ACR uses the actual inherited N=6144, one measurement for every 48 audio sample enables.
+
+| Run | SD-ready delay, video clocks | Old valid-mux transition gap | Old transient CTS | Shared tone-valid cadence | Exact WAV frames old/shared |
+|---|---:|---:|---:|---|---|
+| audio_output_mux_001 | 50000 | 532 clocks (21.28us) | 25011 | 520/521 clocks; CTS 25000 after initial epoch | 300/300 |
+| audio_output_mux_002 | 50020 | 11 clocks (0.44us) | 24491 | 520/521 clocks; CTS 25000 after initial epoch | 300/300 |
+
+Both runs passed their diagnostic assertions, retained one anomalous old-mux gap and one anomalous old-mux CTS, and found zero such anomalies in the shared-cadence branch. Baseline first ACR measurement includes its reset/start epoch and is excluded from the steady-state CTS comparison for both branches. Each branch checks signed L/R PCM order for all 300 selected nonzero WAV frames; EOF occurs without FIFO underflow or overflow. The data are held by the actual player between its sample events, so the unified cadence supplies every sample exactly once despite the fixed phase offset.
+
+Based on this evidence Root changed the production top audio valid enable to `tone_valid` for every HDMI sample, keeping the data mux and the prefill selection behavior. Video integration run 003 also instantiates the actual tone generator and actual ACR with this production connection and checks its final output stream. This is unencrypted RTL subsystem verification, not a physical HDMI receiver or full encrypted transmitter test.
+
+Root then extracted the real production connection into `rtl/ext/audio_output_mux.v`. `audio_output_selection_001` passed against that actual module: initial PAUSE4 → NO_WAV B keeps tone; prefill/PLAY/EOF establish WAV; later pause/EOF/error do not restart tone; reset restores fallback; signed tone gain is checked for all volume codes 0..15 with >8 clamp; WAV data bypasses a second gain; audio valid always equals tone valid. `audio_output_actual_mux_001/002` reran the actual module with the earlier media source. The final parser-input pipeline source is covered by `audio_output_pipeline_mux_001/002`, both PASS with 300 exact real WAV frames per branch, no shared-cadence gap or CTS anomalies. The previous mux branch intentionally remains in the test only to quantify its failure; production uses the new actual module.

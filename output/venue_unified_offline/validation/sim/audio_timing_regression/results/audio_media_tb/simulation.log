@@ -1,0 +1,2 @@
+TEST_PASS TF WAV sector stream: scanned LBA0/1, RIFF LBA2, header across sectors, reread contiguous file, PCM frames, FIFO prefill, 48k cadence, clean EOF. requests=4 peak=0
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_audio_timing_20261014_02\tests\audio_media_tb.v:68: $finish called at 125840000 (1ps)

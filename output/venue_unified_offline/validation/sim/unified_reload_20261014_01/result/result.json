@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "SIM": "PASS",
+  "scope": "explicit_testbench_only",
+  "top": "scale_reload_tb",
+  "sources": [
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\tests\\scale_reload_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\SD\\sd_card_bmp.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\media_controls.v"
+  ],
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\tests\\scale_reload_tb.v": "80f205db55c04bcbb189f037385d16b182c0f58f44654e850273071235af4dca",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\SD\\sd_card_bmp.v": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863"
+  },
+  "started_utc": "2026-10-14T15:32:20.242018+00:00",
+  "pid": 41684,
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "scale_reload_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\result\\sim.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\tests\\scale_reload_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\SD\\sd_card_bmp.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_reload_20261014_01\\rtl\\media_controls.v"
+  ],
+  "parameter_overrides": [],
+  "compile_exit": 0,
+  "simulation_exit": 0,
+  "elapsed_seconds": 0.09399999999732245
+}

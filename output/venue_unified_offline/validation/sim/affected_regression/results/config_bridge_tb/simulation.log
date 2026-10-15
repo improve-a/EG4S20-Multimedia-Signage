@@ -1,0 +1,2 @@
+TEST_PASS config_bridge 352 destination cycles 5 atomic frame commits
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\config_bridge_tb.v:30: $finish called at 14083000 (1ps)

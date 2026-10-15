@@ -1,0 +1,27 @@
+{
+  "passing_run": "video_audio_integration_002",
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\tests\\video_audio_integration_tb.v": "5c812b44977d1b4b4e3ac5d8eb891446e1d507e7a4995da99e04d78119d89667",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\video_transition.v": "cdb55d46b21758336e6ebe781836855a8bc53c7ad12006b38c4f9da3e80547cc",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\osd_overlay.v": "a6e63792f68751d4f991bb4b736878081bdc553201ac3d0b9476be8a48f457de",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\audio_media.v": "44a2ba7c21c08d04452546e0a22efa2213183bb1e99741cb72c6eebced3384f3",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_002\\rtl\\ext\\wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc"
+  },
+  "simulation_scope": "unencrypted video+audio subsystems; real sector WAV model, generated VGA; encrypted HDMI/DDR/card SPI/full board excluded",
+  "preview": "tests/video_audio_integration_002_preview.png",
+  "preview_source": "evidence/sim/video_audio_integration_002/video_audio_integration.ppm.out",
+  "initial_failure": "video_audio_integration_001 detected 33-byte ticker text truncated in 32-byte register, dropping T; Root corrected to 24-byte text + explicit 8 spaces",
+  "ram_unit_passes": [
+    "audio_fifo_bram_001",
+    "audio_player_bram_001",
+    "audio_visual_bram_001",
+    "audio_media_one_frame_bram_001"
+  ],
+  "known_preview_issue": "Title showed X4S20 MEDIA: a 13-byte literal was truncated by the 12-byte register; corrected by Root after this passing run."
+}

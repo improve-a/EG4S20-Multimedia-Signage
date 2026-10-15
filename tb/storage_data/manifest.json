@@ -1,0 +1,32 @@
+[
+  {
+    "source": "tb/images/HXTEST01.BMP",
+    "sha256": "987f2c218d01625be6e930337e6cbe6ef4d6832a391ab6fab4a05161c0845301",
+    "width": 640,
+    "height": 480,
+    "pixels": 307200,
+    "offset": 54,
+    "file_bytes": 921654,
+    "sector_bytes": 922112
+  },
+  {
+    "source": "tb/images/HXTEST02.BMP",
+    "sha256": "4e7369cc433633b1cb3f63f9ffc81a4632ba96e5c7115cd2392e637dbf36b4d1",
+    "width": 640,
+    "height": 480,
+    "pixels": 307200,
+    "offset": 54,
+    "file_bytes": 921654,
+    "sector_bytes": 922112
+  },
+  {
+    "source": "tb/images/HXTEST03.BMP",
+    "sha256": "54659484e165e113b0a0c163f982174600ee5db212db95f566b932afdc6dd878",
+    "width": 640,
+    "height": 480,
+    "pixels": 307200,
+    "offset": 54,
+    "file_bytes": 921654,
+    "sector_bytes": 922112
+  }
+]

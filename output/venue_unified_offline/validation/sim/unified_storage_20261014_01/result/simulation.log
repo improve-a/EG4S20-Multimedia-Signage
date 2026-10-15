@@ -1,0 +1,6 @@
+PROGRESS scan case=0 begin time=0
+PASS discovery mode=0 count=6
+PROGRESS scan case=1 begin time=31090000
+PASS discovery mode=1 count=8
+TEST_PASS UNIFIED_STORAGE six scan-end and eight capacity discovery; requests=14
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_storage_20261014_01\tests\unified_storage_tb.v:41: $finish called at 72520000 (1ps)

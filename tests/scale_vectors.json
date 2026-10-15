@@ -1,0 +1,74 @@
+[
+  {
+    "case": 0,
+    "width": 320,
+    "height": 240,
+    "mode": 0,
+    "offset": 54,
+    "bytes": 230912,
+    "scale": 2
+  },
+  {
+    "case": 1,
+    "width": 320,
+    "height": 180,
+    "mode": 0,
+    "offset": 511,
+    "bytes": 173568,
+    "scale": 2
+  },
+  {
+    "case": 2,
+    "width": 640,
+    "height": 360,
+    "mode": 0,
+    "offset": 1027,
+    "bytes": 692736,
+    "scale": 1
+  },
+  {
+    "case": 3,
+    "width": 640,
+    "height": 480,
+    "mode": 0,
+    "offset": 54,
+    "bytes": 922112,
+    "scale": 1
+  },
+  {
+    "case": 4,
+    "width": 320,
+    "height": 240,
+    "mode": 1,
+    "offset": 124,
+    "bytes": 230912,
+    "scale": 1
+  },
+  {
+    "case": 5,
+    "width": 319,
+    "height": 179,
+    "mode": 0,
+    "offset": 513,
+    "bytes": 172544,
+    "scale": 2
+  },
+  {
+    "case": 6,
+    "width": 319,
+    "height": 179,
+    "mode": 1,
+    "offset": 108,
+    "bytes": 172032,
+    "scale": 1
+  },
+  {
+    "case": 7,
+    "width": 1,
+    "height": 1,
+    "mode": 0,
+    "offset": 54,
+    "bytes": 512,
+    "scale": 2
+  }
+]

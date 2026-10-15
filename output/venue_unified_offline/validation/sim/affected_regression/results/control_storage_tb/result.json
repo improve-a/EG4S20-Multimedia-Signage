@@ -1,0 +1,42 @@
+{
+  "id": "control_storage_tb",
+  "recipe_reference": "controls_storage_002",
+  "top": "control_storage_tb",
+  "started_utc": "2026-10-14T15:32:20.601985+00:00",
+  "runner_pid": 15992,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tb/control_storage_tb.v": "866b5fbe5fd0931f77068e1bc5cfec480f3473db283c4fbd23e84e5a57dc0172",
+    "rtl/SD/sd_card_bmp.v": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+    "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "control_storage_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_storage_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tb\\control_storage_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\sd_card_bmp.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\media_controls.v"
+  ],
+  "compile_pid": 16228,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_storage_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 28744,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS control_storage_tb source_write_both_required frame_ack back_buffer busy_coalesce pause manual_step auto_3s error_preserves_front scan_error_priority fifo_fault_blocks_commit fault_pending_ack reset_recovery"
+  ],
+  "elapsed_seconds": 0.1870000000053551,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "54a0da1716b311238e1b073348315bd7f6c279f95e8c1f071b7c2e975cdb17da"
+  }
+}

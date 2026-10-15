@@ -1,0 +1,12 @@
+{
+  "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+  "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+  "rtl/ext/audio_media.v": "44a2ba7c21c08d04452546e0a22efa2213183bb1e99741cb72c6eebced3384f3",
+  "passing_runs": [
+    "audio_fifo_bram_001",
+    "audio_player_bram_001",
+    "audio_visual_bram_001",
+    "audio_media_one_frame_bram_001"
+  ],
+  "basis": "TD ext_full_002 synthesis reported audio FIFO as Logic DRAM 2048x32 and no BRAM; Root explicitly authorized supported fehdl BRAM annotations and unreset synchronous RAM ports."
+}

@@ -1,0 +1,2 @@
+TEST_PASS SCALE_REJECT invalid_headers=12 wrap=1 short=1 extra=1 timeout_sd=1 timeout_ack=1 abort_ack=1 abort_canvas=1 transport=1
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\scale_reject_tb.v:54: $finish called at 294810000 (1ps)

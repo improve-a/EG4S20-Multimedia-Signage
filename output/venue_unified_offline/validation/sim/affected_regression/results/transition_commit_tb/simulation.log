@@ -1,0 +1,2 @@
+TEST_PASS transition_commit 86 frames 55040 RGB/sync checks 5 acknowledged swaps
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\transition_commit_tb.v:122: $finish called at 2396960000 (1ps)

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "SIM": "PASS",
+  "scope": "explicit_testbench_only",
+  "top": "unified_ui06_tb",
+  "sources": [
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\SD\\bmp_read.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\ext\\bmp_scale.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\tests\\unified_ui06_tb.v"
+  ],
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\SD\\bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\ext\\bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\tests\\unified_ui06_tb.v": "134a78ee4f00ab5d25209e584e11bcc7aeafd40e0bf6cdb5d42d4ef6dddfc616"
+  },
+  "started_utc": "2026-10-14T15:32:54.861481+00:00",
+  "pid": 39160,
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "unified_ui06_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\result\\sim.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\SD\\bmp_read.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\rtl\\ext\\bmp_scale.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_ui06_20261014_02\\tests\\unified_ui06_tb.v"
+  ],
+  "parameter_overrides": [],
+  "compile_exit": 0,
+  "simulation_exit": 0,
+  "elapsed_seconds": 335.4850000000006
+}

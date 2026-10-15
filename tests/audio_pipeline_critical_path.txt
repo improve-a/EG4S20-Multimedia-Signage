@@ -1,0 +1,75 @@
+Slack -1.311ns
+Begin Point         : wav/state_reg[0]_syn_32.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+End Point           : wav/parser/signature_reg[10]_syn_3.ce (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 10.000ns { sd_card_clk rising@10.000ns - sd_card_clk rising@0.000ns }
+Data Path Delay     : 11.031ns (cell 2.384ns (21%), net 8.647ns (79%))
+Clock Skew          : 0.064ns
+Logic Level         : 6 ( LUT3=2  LUT2=2  LUT5=1  LUT4=1 )
+Max Fanout          : 17
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=50)         x000y071            0.000          1.660          net: clk_dup_1,  ../../../user_source/hdl_source/top_tf_hdmi_audio.v(3)
+                                                                      pin: sys_pll_m0/pll_inst.refclk
+PLL                 x000y071            2.515          4.175          pin: sys_pll_m0/pll_inst.clkc[0]
+net (fo=1)                              0.000          4.175          net: sys_pll_m0/clk0_buf,  ../../../user_source/hdl_source/system_clocks.v(45)
+                                                                      pin: sys_pll_m0/bufg_feedback.clki
+GCLK                x001y070z2          0.000          4.175          pin: sys_pll_m0/bufg_feedback.clko
+net (fo=1424)                           2.276          6.451          net: sd_card_bmp_m0/clk,  ../../../user_source/hdl_source/SD/sd_card_bmp.v(13)
+                                                                      pin: wav/state_reg[0]_syn_32.clk
+launch edge                             0.000    r     6.451               
+--------------------------------------------------------------------  ---------------
+clk2q               x029y056z1          0.146    r     6.597          pin: wav/state_reg[0]_syn_32.q[0]
+net (fo=17)                             0.634          7.231          net: wav/state[3],  ../../../user_source/hdl_source/ext/audio_media.v(21)
+                                                                      pin: wav/state_reg[3]_syn_75.c[0]
+LUT3                x029y057z2          0.348    f     7.579       1  pin: wav/state_reg[3]_syn_75.f[0]
+net (fo=6)                              2.775         10.354          net: wav/parser/state_reg[0]_syn_14,  ../../../user_source/hdl_source/ext/wav_stream_parser.v(21)
+                                                                      pin: wav/state_reg[3]_syn_71.b[0]
+LUT5                x022y056z3          0.431    f    10.785       2  pin: wav/state_reg[3]_syn_71.f[0]
+net (fo=9)                              1.827         12.612          net: wav/parser/byte_valid,  ../../../user_source/hdl_source/ext/wav_stream_parser.v(4)
+                                                                      pin: wav/parser/signature_reg[14]_syn_4.a[0]
+LUT4                x027y064z2          0.424    f    13.036       3  pin: wav/parser/signature_reg[14]_syn_4.f[0]
+net (fo=4)                              1.032         14.068          net: wav/parser/mux112_syn_67,  ../../../user_source/hdl_source/ext/wav_stream_parser.v(31)
+                                                                      pin: wav/parser/file_length_reg[28]_syn_4.d[0]
+LUT2                x022y069z2          0.262    r    14.330       4  pin: wav/parser/file_length_reg[28]_syn_4.f[0]
+net (fo=5)                              0.158         14.488          net: wav/parser/mux138_syn_60,  ../../../user_source/hdl_source/ext/wav_stream_parser.v(31)
+                                                                      pin: wav/parser/file_length_reg[28]_syn_4.d[1]
+LUT2                x022y069z2          0.262    r    14.750       5  pin: wav/parser/file_length_reg[28]_syn_4.f[1]
+net (fo=2)                              0.688         15.438          net: wav/parser/mux112_syn_84,  ../../../user_source/hdl_source/ext/wav_stream_parser.v(31)
+                                                                      pin: wav/parser/pos_reg[31]_syn_4.a[1]
+LUT3                x026y067z2          0.424    f    15.862       6  pin: wav/parser/pos_reg[31]_syn_4.f[1]
+net (fo=6)                              1.533         17.395          net: wav/parser/mux112_syn_2[8],  ../../../user_source/hdl_source/ext/wav_stream_parser.v(31)
+                                                                      pin: wav/parser/signature_reg[10]_syn_3.ce
+reg                 x026y061z1          0.087    r    17.482               
+--------------------------------------------------------------------  ---------------
+Arrival                                               17.482               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=50)         x000y071            0.000          1.493          net: clk_dup_1,  ../../../user_source/hdl_source/top_tf_hdmi_audio.v(3)
+                                                                      pin: sys_pll_m0/pll_inst.refclk
+PLL                 x000y071            2.515          4.008          pin: sys_pll_m0/pll_inst.clkc[0]
+net (fo=1)                              0.000          4.008          net: sys_pll_m0/clk0_buf,  ../../../user_source/hdl_source/system_clocks.v(45)
+                                                                      pin: sys_pll_m0/bufg_feedback.clki
+GCLK                x001y070z2          0.000          4.008          pin: sys_pll_m0/bufg_feedback.clko
+net (fo=1424)                           2.045          6.053          net: sd_card_bmp_m0/clk,  ../../../user_source/hdl_source/SD/sd_card_bmp.v(13)
+                                                                      pin: wav/parser/signature_reg[10]_syn_3.clk
+capture edge                           10.000    r    16.053               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         15.937               
+clock uncertainty                      -0.100         15.837               
+clock pessimism                         0.334         16.171               
+--------------------------------------------------------------------  ---------------
+Required                                              16.171               
+--------------------------------------------------------------------  ---------------
+Slack                                                 -1.311               
+

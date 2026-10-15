@@ -1,0 +1,2 @@
+TEST_PASS video+audio subsystem: unified tone-valid/held WAV actual output; real WAV PCM frames=2082; checks=1090060; full VGA frames=2; pixels=614400 SOF=2 EOL=960; 5-stage RGB/sync + AXIS; off brightness math and frame change; waveform trace pixels=112 peakbar pixels=4764; ACR CTS25000/N6144 packets=43; actual RTL PPM render 640x480
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\video_audio_integration_tb.v:185: $finish called at 43602800000 (1ps)

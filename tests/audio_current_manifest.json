@@ -1,0 +1,39 @@
+{
+  "current_sources": {
+    "rtl/ext/audio_output_mux.v": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+    "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "rtl/ext/video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "rtl/ext/osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+    "rtl/video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+    "rtl/hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+    "rtl/audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f"
+  },
+  "final_subsystem_run": "video_audio_integration_004",
+  "full_manifest": "tests/video_audio_integration_004_manifest.json",
+  "current_regressions": [
+    "wav_pipeline_001",
+    "audio_media_pipeline_boundary_001",
+    "audio_media_pipeline_001",
+    "audio_media_pipeline_no_wav_001",
+    "audio_media_pipeline_mono_001",
+    "audio_media_pipeline_short_error_001",
+    "audio_media_pipeline_sd_error_001",
+    "audio_output_selection_001",
+    "audio_output_pipeline_mux_001",
+    "audio_output_pipeline_mux_002",
+    "audio_arbiter_pipeline_001"
+  ],
+  "historical_manifests": {
+    "audio_final_manifest.json": "Before TD number-token format repair, BRAM inference port changes and parser input timing pipeline",
+    "audio_visual_manifest.json": "Before BRAM read-hold inference change",
+    "video_audio_ram_fix_manifest.json": "First BRAM inference change, prior parser input timing pipeline",
+    "video_audio_integration_002_manifest.json": "Actual WAV-only sample cadence; title H truncated; no unified source cadence",
+    "tests/video_audio_integration_003_manifest.json": "Unified actual tone/ACR with copied mux expression; before standalone actual mux module and parser input timing pipeline"
+  }
+}

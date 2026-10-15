@@ -1,0 +1,2 @@
+TEST_PASS WAV parser: stereo/mono signed order, 513B JUNK odd pad, continuous/gapped acceptance, exact fit, one-byte overflow, outside start, stale-cache start/reset, invalid rate and RIFF bounds
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_audio_timing_20261014_02\tests\wav_tb.v:64: $finish called at 98680000 (1ps)

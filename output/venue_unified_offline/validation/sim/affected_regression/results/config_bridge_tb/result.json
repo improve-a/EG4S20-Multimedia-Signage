@@ -1,0 +1,40 @@
+{
+  "id": "config_bridge_tb",
+  "recipe_reference": "config_002",
+  "top": "config_bridge_tb",
+  "started_utc": "2026-10-14T15:32:20.826187+00:00",
+  "runner_pid": 15992,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/config_bridge_tb.v": "998079374be502239ff621d90ba20206c62bebbc8020c20692dee4617dc62712",
+    "rtl/ext/frame_config_bridge.v": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "config_bridge_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\config_bridge_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\config_bridge_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\frame_config_bridge.v"
+  ],
+  "compile_pid": 41688,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\config_bridge_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 15664,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS config_bridge 352 destination cycles 5 atomic frame commits"
+  ],
+  "elapsed_seconds": 0.09399999999732245,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "a98b854d5104a2609cabf64885568214dce9a88f08140bad34c100ee8a9aec73"
+  }
+}

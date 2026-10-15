@@ -1,0 +1,214 @@
+{
+  "created_utc": "20261014T153217Z",
+  "run_id": "unified_affected_20261014_01",
+  "tests": [
+    {
+      "id": "control_modes_tb",
+      "recipe_reference": "controls_modes_004",
+      "top": "control_modes_tb",
+      "sources": [
+        "tests/control_modes_tb.v",
+        "rtl/media_controls.v"
+      ],
+      "inputs": [
+        "tests/control_modes_tb.v",
+        "rtl/media_controls.v",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "control_storage_tb",
+      "recipe_reference": "controls_storage_002",
+      "top": "control_storage_tb",
+      "sources": [
+        "tb/control_storage_tb.v",
+        "rtl/SD/sd_card_bmp.v",
+        "rtl/media_controls.v"
+      ],
+      "inputs": [
+        "tb/control_storage_tb.v",
+        "rtl/SD/sd_card_bmp.v",
+        "rtl/media_controls.v",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "config_bridge_tb",
+      "recipe_reference": "config_002",
+      "top": "config_bridge_tb",
+      "sources": [
+        "tests/config_bridge_tb.v",
+        "rtl/ext/frame_config_bridge.v"
+      ],
+      "inputs": [
+        "tests/config_bridge_tb.v",
+        "rtl/ext/frame_config_bridge.v",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "transition_commit_tb",
+      "recipe_reference": "transition_commit_sdp_001",
+      "top": "transition_commit_tb",
+      "sources": [
+        "tests/transition_commit_tb.v",
+        "rtl/ext/video_transition.v",
+        "rtl/display_commit.v"
+      ],
+      "inputs": [
+        "tests/transition_commit_tb.v",
+        "rtl/ext/video_transition.v",
+        "rtl/display_commit.v",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "scale_scan_tb",
+      "recipe_reference": "scale_scan_01",
+      "top": "scale_scan_tb",
+      "sources": [
+        "tests/scale_scan_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "inputs": [
+        "tests/scale_scan_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_scan.hex",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "scale_reject_tb",
+      "recipe_reference": "scale_sta_reject_01",
+      "top": "scale_reject_tb",
+      "sources": [
+        "tests/scale_reject_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "inputs": [
+        "tests/scale_reject_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_invalid.hex",
+        "tests/scale_header.hex",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "scale_scan_load_tb",
+      "recipe_reference": "scale_scan_load_01",
+      "top": "scale_scan_load_tb",
+      "sources": [
+        "tests/scale_scan_load_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "inputs": [
+        "tests/scale_scan_load_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_card_7.hex",
+        "tests/scale_golden_7.hex",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    {
+      "id": "video_audio_integration_tb",
+      "recipe_reference": "video_audio_integration_004",
+      "top": "video_audio_integration_tb",
+      "sources": [
+        "tests/video_audio_integration_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/video_transition.v",
+        "rtl/ext/video_extensions.v",
+        "rtl/ext/pixel_adjust.v",
+        "rtl/ext/audio_visualizer.v",
+        "rtl/ext/osd_overlay.v",
+        "rtl/video_rgb_to_axis_640x480.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v"
+      ],
+      "inputs": [
+        "tests/video_audio_integration_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/video_transition.v",
+        "rtl/ext/video_extensions.v",
+        "rtl/ext/pixel_adjust.v",
+        "rtl/ext/audio_visualizer.v",
+        "rtl/ext/osd_overlay.v",
+        "rtl/video_rgb_to_axis_640x480.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v",
+        "tests/audio_arbiter_card.hex",
+        "harness/test_runner.py"
+      ],
+      "parameters": [],
+      "timeout": 600
+    }
+  ],
+  "source_sha256": {
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88",
+    "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+    "rtl/SD/sd_card_bmp.v": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+    "rtl/audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+    "rtl/display_commit.v": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_output_mux.v": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+    "rtl/ext/frame_config_bridge.v": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+    "rtl/ext/osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+    "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "rtl/ext/video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "rtl/ext/wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+    "rtl/hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+    "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+    "rtl/video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "tb/control_storage_tb.v": "866b5fbe5fd0931f77068e1bc5cfec480f3473db283c4fbd23e84e5a57dc0172",
+    "tests/audio_arbiter_card.hex": "0c30c2546f65dc68ca89f77526628845fcc79ba684c08f8c956c6c2add24f63c",
+    "tests/config_bridge_tb.v": "998079374be502239ff621d90ba20206c62bebbc8020c20692dee4617dc62712",
+    "tests/control_modes_tb.v": "5b6d32a9af6d8801a6a3424145bd2b4c7e5ec583a2dcfe988f0a18016c44e7fd",
+    "tests/scale_card_7.hex": "e80bfa1ea4c211eb49a49315bc9658c765ebf8111eb73ba2502a984f64adde8a",
+    "tests/scale_golden_7.hex": "591bfbef84346316689ad6f5357406862de34e266689ce98b4d75cec4f4ea28a",
+    "tests/scale_header.hex": "35e77155de3327b137c50312ca8e347099d4eeb187730c4a9f35340134c8a037",
+    "tests/scale_invalid.hex": "fe2516c602d103e92005e40f4a55e7184ea0eb41270c07b6cdb366c88b57d32c",
+    "tests/scale_reject_tb.v": "feb417f8c8d03cfeba99f4c1bcc6544cb9de7962722aa7e2c78ababbaec82e0a",
+    "tests/scale_scan.hex": "05a28278e9f3a442fe600b1f4efe519f2fcfc9bd6cf517029619574f583b89c0",
+    "tests/scale_scan_load_tb.v": "4dcd0b4c2dfb3ddd2538ef2c0acc43fcd1528bb4cf569bcfd03b830b6d17d743",
+    "tests/scale_scan_tb.v": "a5e75dc1a925539bccffcbff12e869ef4dd32560f041dec5746ffc326f13ffa6",
+    "tests/transition_commit_tb.v": "b6c85a3b008a09e7d3a6642c25a4838922ddbbab29c2a6f9935ddf525d1ac84b",
+    "tests/video_audio_integration_tb.v": "4a55c177bdcec977e944b0b74ba82342d3f97738c550f9312496730908135f42"
+  },
+  "recipe_policy": "References supply test recipes only. All inputs and results are fresh current-source data.",
+  "ui_pixel_provenance": null,
+  "remote_runner_sha256": "cd93f7e6a35e2c0220b26b550e5f8748de154151319513255961ce57a7ac1494",
+  "entry_script_sha256": "b17726e5691c397a66276e2af8a15f394bf0457c36aa9df37d8283c7ab357ef7"
+}

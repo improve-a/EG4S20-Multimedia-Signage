@@ -1,0 +1,112 @@
+--- pre_pipeline/audio_media.v
++++ timing_pipeline/audio_media.v
+@@ -17,11 +17,13 @@
+  output [FIFO_ADDRESS_BITS:0] fifo_level
+ );
+ localparam IDLE=0,SCAN_REQ=1,SCAN_WAIT=2,SCAN_EVAL=3,PLAY_RESET=4,
+- PLAY_REQ=5,PLAY_WAIT=6,PLAY_EVAL=7,FINISHED=8,FAILED=9,PLAY_HOLD=10;
++ PLAY_REQ=5,PLAY_WAIT=6,PLAY_EVAL=7,FINISHED=8,FAILED=9,PLAY_HOLD=10,SCAN_DRAIN=11,PLAY_DRAIN=12;
+ reg [3:0] state;
+ reg [31:0] candidate,current_sector,wait_count;
+ reg [9:0] sector_bytes;
+-reg parser_start,play_ready,source_eof,overflow_sys;
++reg parser_start,play_ready,source_eof,overflow_sys,file_found;
++reg parser_byte_valid;
++reg [7:0] parser_byte_data;
+ reg [3:0] fault_sys;
+ reg [5:0] clear_count;
+ wire fifo_clear=rst||(clear_count!=0);
+@@ -31,13 +33,13 @@
+ wire [15:0] pcm_left,pcm_right;
+ wire fifo_full,fifo_empty,fifo_pop;
+ wire [31:0] fifo_data;
+-wire playing=(state==PLAY_REQ||state==PLAY_WAIT||state==PLAY_EVAL||state==PLAY_HOLD);
++wire playing=(state==PLAY_REQ||state==PLAY_WAIT||state==PLAY_EVAL||state==PLAY_HOLD||state==PLAY_DRAIN);
+ assign sector_req=(state==SCAN_REQ)||(state==PLAY_REQ);
+ assign sector_addr=current_sector;
+ assign sector_urgent=playing&&(fifo_level<PREFILL_FRAMES);
+ wire fifo_push=playing&&pcm_valid;
+ wav_stream_parser parser(.clk(sys_clk),.rst(fifo_clear),.start(parser_start),
+- .byte_data(sector_data),.byte_valid(sector_valid&&(state==SCAN_WAIT||state==PLAY_WAIT)),
++ .byte_data(parser_byte_data),.byte_valid(parser_byte_valid),
+  .recognized(recognized),.header_valid(header_valid),.done(parser_done),.error_code(parser_error),
+  .stereo(parser_stereo),.data_offset(data_offset),.data_length(data_length),.file_length(file_length),
+  .pcm_valid(pcm_valid),.pcm_left(pcm_left),.pcm_right(pcm_right));
+@@ -45,7 +47,7 @@
+ (* async_reg="true" *) reg [4:0] ctrl_meta,ctrl_sync;
+ (* async_reg="true" *) reg [3:0] volume_meta,volume_sync,fault_meta,fault_sync;
+ (* async_reg="true" *) reg overflow_meta,overflow_sync;
+-(* async_reg="true" *) reg [3:0] state_meta,state_sync;
++(* async_reg="true" *) reg found_meta,found_sync;
+ wire player_rst=audio_rst||clear_sync;
+ wire drained;
+ assign overflow=overflow_sync;
+@@ -64,14 +66,14 @@
+ always @(posedge audio_clk)begin
+  if(audio_rst)begin clear_meta<=1;clear_sync<=1;ctrl_meta<=0;ctrl_sync<=0;
+  volume_meta<=8;volume_sync<=8;fault_meta<=0;fault_sync<=0;
+- overflow_meta<=0;overflow_sync<=0;state_meta<=0;state_sync<=0;status<=0;end
++ overflow_meta<=0;overflow_sync<=0;found_meta<=0;found_sync<=0;status<=0;end
+  else begin
+   clear_meta<=fifo_clear;clear_sync<=clear_meta;
+   ctrl_meta<={enable,paused,muted,play_ready,source_eof};ctrl_sync<=ctrl_meta;
+   volume_meta<=volume;volume_sync<=volume_meta;
+   fault_meta<=fault_sys;fault_sync<=fault_meta;
+   overflow_meta<=overflow_sys;overflow_sync<=overflow_meta;
+-  state_meta<=state;state_sync<=state_meta;
++  found_meta<=file_found;found_sync<=found_meta;
+   if(!ctrl_sync[4])status<=0;
+   else if(error)status <= (fault_sync == 4'd11) ? 4'hb : 4'he;
+   else if(overflow_sync)status<=4'hc;
+@@ -79,8 +81,17 @@
+   else if(drained)status<=5;
+   else if(ctrl_sync[3])status<=4;
+   else if(ctrl_sync[1])status<=3;
+-  else if(state_sync>=PLAY_RESET)status<=2;
++  else if(found_sync)status<=2;
+   else status<=1;
++ end
++end
++// Isolate the global sector-owner state decode from parser register enables.
++// The DRAIN states below settle this extra byte stage before header/EOF decisions.
++always @(posedge sys_clk)begin
++ if(fifo_clear||restart||!enable)begin parser_byte_valid<=0;parser_byte_data<=0;end
++ else begin
++  parser_byte_valid<=sector_valid&&(state==SCAN_WAIT||state==PLAY_WAIT);
++  parser_byte_data<=sector_data;
+  end
+ end
+ always @(posedge sys_clk)begin
+@@ -89,7 +100,7 @@
+  else if(clear_count!=0)clear_count<=clear_count-1'b1;
+  if(fifo_clear||restart||!enable)begin
+   state<=IDLE;candidate<=SCAN_START_SECTOR;current_sector<=SCAN_START_SECTOR;
+-  wait_count<=0;sector_bytes<=0;parser_start<=0;play_ready<=0;source_eof<=0;overflow_sys<=0;fault_sys<=0;
++  wait_count<=0;sector_bytes<=0;parser_start<=0;play_ready<=0;source_eof<=0;overflow_sys<=0;file_found<=0;fault_sys<=0;
+  end else begin
+   parser_start<=0;
+   if(sector_grant)sector_bytes<=0;
+@@ -105,10 +116,11 @@
+    case(state)
+     IDLE:if(sd_ready)begin parser_start<=1;state<=SCAN_REQ;end
+     SCAN_REQ:if(sector_grant)state<=SCAN_WAIT;
+-    SCAN_WAIT:if(sector_end)state<=SCAN_EVAL;
++    SCAN_WAIT:if(sector_end)state<=SCAN_DRAIN;
++    SCAN_DRAIN:state<=SCAN_EVAL;
+     SCAN_EVAL:begin
+      if(sector_bytes!=512)begin fault_sys<=4'd15;state<=FAILED;end
+-     else if(header_valid&&parser_error==0)begin current_sector<=candidate;state<=PLAY_RESET;end
++     else if(header_valid&&parser_error==0)begin current_sector<=candidate;file_found<=1;state<=PLAY_RESET;end
+      else if(recognized&&parser_error==0&&current_sector<SCAN_MAX_SECTOR)begin current_sector<=current_sector+1'b1;state<=SCAN_REQ;end
+      else if(candidate==SCAN_MAX_SECTOR)begin fault_sys<=4'd11;state<=FAILED;end
+      else begin candidate<=candidate+1'b1;current_sector<=candidate+1'b1;parser_start<=1;state<=SCAN_REQ;end
+@@ -116,7 +128,8 @@
+     PLAY_RESET:begin parser_start<=1;state<=PLAY_HOLD;end
+     PLAY_HOLD:if(!paused&&fifo_level<=((1<<FIFO_ADDRESS_BITS)-256))state<=PLAY_REQ;
+     PLAY_REQ:if(sector_grant)state<=PLAY_WAIT;
+-    PLAY_WAIT:if(sector_end)state<=PLAY_EVAL;
++    PLAY_WAIT:if(sector_end)state<=PLAY_DRAIN;
++    PLAY_DRAIN:state<=PLAY_EVAL;
+     PLAY_EVAL:begin
+      if(sector_bytes!=512)begin fault_sys<=4'd15;state<=FAILED;end
+      else if(parser_error!=0)begin fault_sys<=parser_error;state<=FAILED;end

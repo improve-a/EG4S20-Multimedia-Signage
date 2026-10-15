@@ -1,0 +1,8 @@
+* -text
+*.png binary
+*.ppm binary
+*.BMP binary
+*.WAV binary
+*.wav binary
+*.ttf binary
+# Preserve imported source/report bytes and their SHA256 identities across OSes.

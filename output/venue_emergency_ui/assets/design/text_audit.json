@@ -1,0 +1,2201 @@
+{
+  "font" : "NotoSansSC-Thin",
+  "font_family" : "Noto Sans SC",
+  "native_size" : [
+    640,
+    480
+  ],
+  "preview_scale" : 2,
+  "renderer" : "Swift AppKit \/ CoreGraphics",
+  "text_metrics" : [
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        438.76499999999999,
+        31.695054931640627,
+        140.28030395507815,
+        13.949999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 15,
+      "text" : "公共空间 · 有序同行",
+      "w" : 141.70530395507814,
+      "weight" : "regular",
+      "x" : 438,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.637,
+        449.1080476074219,
+        75.872844848632809,
+        13.299000000000001
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 13,
+      "text" : "01 \/ 欢迎首页",
+      "w" : 77.341844848632803,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        447.45499999999998,
+        449.09504760742186,
+        115.31765844726563,
+        13.311999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 13,
+      "text" : "场序 \/ VENUE FLOW",
+      "w" : 116.11418615722656,
+      "weight" : "regular",
+      "x" : 447,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 46.400146484375,
+      "h" : 58,
+      "ink_bounds" : [
+        33.039999999999999,
+        114.08014648437501,
+        77.279999999999987,
+        38.079999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 40,
+      "text" : "场序",
+      "w" : 80,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 102
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        33.936,
+        164.52805859374999,
+        100.38523242187497,
+        12.256
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 16,
+      "text" : "VENUE FLOW",
+      "w" : 100.6622578125,
+      "weight" : "semibold",
+      "x" : 34,
+      "y" : 158
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 35.960113525390625,
+      "h" : 45,
+      "ink_bounds" : [
+        33.177999999999997,
+        223.26911352539062,
+        152.52000000000001,
+        29.605000000000004
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 31,
+      "text" : "让信息有序",
+      "w" : 155,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 214
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 35.960113525390625,
+      "h" : 45,
+      "ink_bounds" : [
+        33.177999999999997,
+        265.6101135253906,
+        152.923,
+        29.171000000000003
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 31,
+      "text" : "让行动清晰",
+      "w" : 155,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 256
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        32.969000000000001,
+        324.87106958007814,
+        206.929,
+        17.746000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 19,
+      "text" : "公共场馆多媒体信息发布",
+      "w" : 209,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 319
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        33.082999999999998,
+        355.9280695800781,
+        169.13800000000001,
+        17.783999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 19,
+      "text" : "与应急引导演示系统",
+      "w" : 171,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 350
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        32.927999999999997,
+        422.05605859374998,
+        254.32000000000002,
+        14.831999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI01",
+      "size" : 16,
+      "text" : "面向科技馆、展览馆与公共服务大厅",
+      "w" : 256,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 417
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        438.76499999999999,
+        31.695054931640627,
+        140.28030395507815,
+        13.949999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 15,
+      "text" : "公共空间 · 有序同行",
+      "w" : 141.70530395507814,
+      "weight" : "regular",
+      "x" : 438,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.637,
+        449.01704760742189,
+        75.989844848632799,
+        13.389999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 13,
+      "text" : "02 \/ 日常信息",
+      "w" : 77.341844848632803,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        447.45499999999998,
+        449.09504760742186,
+        115.31765844726563,
+        13.311999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 13,
+      "text" : "场序 \/ VENUE FLOW",
+      "w" : 116.11418615722656,
+      "weight" : "regular",
+      "x" : 447,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 39.44012451171875,
+      "h" : 49,
+      "ink_bounds" : [
+        32.816000000000003,
+        100.13212451171874,
+        133.78999999999999,
+        32.572000000000003
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 34,
+      "text" : "今日在场",
+      "w" : 136,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 90
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        222.702,
+        110.68806591796874,
+        142.488,
+        16.686
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 18,
+      "text" : "探索、相遇与发现",
+      "w" : 144,
+      "weight" : "regular",
+      "x" : 222,
+      "y" : 105
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        58.384,
+        331.83205859374999,
+        134.33697265625003,
+        15.199999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 16,
+      "text" : "未来城市 · 主题展",
+      "w" : 135.23297265625001,
+      "weight" : "semibold",
+      "x" : 58,
+      "y" : 327
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        356.57600000000002,
+        155.99205859375002,
+        107.81904492187502,
+        16.463999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 16,
+      "text" : "活动公告 \/ 示例",
+      "w" : 109.451044921875,
+      "weight" : "semibold",
+      "x" : 356,
+      "y" : 151
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 29.000091552734375,
+      "h" : 36,
+      "ink_bounds" : [
+        356.69999999999999,
+        195.47509155273437,
+        123.72500000000001,
+        23.875000000000004
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 25,
+      "text" : "城市与未来",
+      "w" : 125,
+      "weight" : "bold",
+      "x" : 356,
+      "y" : 188
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        357.00799999999998,
+        232.74206591796874,
+        147.15128979492189,
+        16.631999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 18,
+      "text" : "主题展览 · A 展厅",
+      "w" : 149.00528979492188,
+      "weight" : "regular",
+      "x" : 356,
+      "y" : 227
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 27.840087890625,
+      "h" : 35,
+      "ink_bounds" : [
+        356.38400000000001,
+        289.15208789062501,
+        95.231999999999999,
+        22.847999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 24,
+      "text" : "创客体验",
+      "w" : 96,
+      "weight" : "bold",
+      "x" : 356,
+      "y" : 282
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        356.93599999999998,
+        325.67006591796877,
+        148.10582373046876,
+        16.667999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 18,
+      "text" : "互动工坊 · B 展厅",
+      "w" : 149.88782373046874,
+      "weight" : "regular",
+      "x" : 356,
+      "y" : 320
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        47.655999999999999,
+        405.97605859375,
+        62.848000000000006,
+        15.007999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 16,
+      "text" : "公共服务",
+      "w" : 64,
+      "weight" : "semibold",
+      "x" : 47,
+      "y" : 401
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 19.720062255859375,
+      "h" : 25,
+      "ink_bounds" : [
+        138.833,
+        405.32106225585937,
+        280.33851245117182,
+        17.442
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI02",
+      "size" : 17,
+      "text" : "咨询服务台  \/  无障碍通道  \/  文明参观",
+      "w" : 281.71551245117189,
+      "weight" : "regular",
+      "x" : 138,
+      "y" : 400
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        434.26999999999998,
+        32.515054931640627,
+        115.83010986328127,
+        15.615
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 15,
+      "text" : "模拟演示 \/ DEMO",
+      "w" : 116.91254150390624,
+      "weight" : "bold",
+      "x" : 434,
+      "y" : 28
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.637,
+        449.00404760742185,
+        76.210844848632803,
+        13.402999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 13,
+      "text" : "03 \/ 安全预警",
+      "w" : 77.341844848632803,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        447.45499999999998,
+        449.09504760742186,
+        115.31765844726563,
+        13.311999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 13,
+      "text" : "场序 \/ VENUE FLOW",
+      "w" : 116.11418615722656,
+      "weight" : "regular",
+      "x" : 447,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        44.543999999999997,
+        102.76805859375,
+        101.7286484375,
+        15.279999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 16,
+      "text" : "注意级 · 示例",
+      "w" : 103.2646484375,
+      "weight" : "bold",
+      "x" : 44,
+      "y" : 98
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 44.08013916015625,
+      "h" : 55,
+      "ink_bounds" : [
+        34.204000000000001,
+        154.40013916015624,
+        148.846,
+        36.252000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 38,
+      "text" : "安全预警",
+      "w" : 152,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 143
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 30.16009521484375,
+      "h" : 37,
+      "ink_bounds" : [
+        32.936,
+        212.82609521484375,
+        177.684,
+        24.673999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 26,
+      "text" : "请留意现场指引",
+      "w" : 182,
+      "weight" : "semibold",
+      "x" : 32,
+      "y" : 205
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 26.680084228515625,
+      "h" : 34,
+      "ink_bounds" : [
+        52.552,
+        287.94608422851564,
+        135.99900000000002,
+        21.872999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 23,
+      "text" : "通道临时维护",
+      "w" : 138,
+      "weight" : "bold",
+      "x" : 52,
+      "y" : 281
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        52.588999999999999,
+        324.96606958007811,
+        197.18238500976562,
+        17.783999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 19,
+      "text" : "模拟区域  二层东侧通道",
+      "w" : 198.49338500976563,
+      "weight" : "regular",
+      "x" : 52,
+      "y" : 319
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        402.39999999999998,
+        335.02405859375,
+        112.21372265625,
+        14.927999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 16,
+      "text" : "示例时间  14:30",
+      "w" : 113.33314453125,
+      "weight" : "semibold",
+      "x" : 402,
+      "y" : 330
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        52.531999999999996,
+        393.98506958007812,
+        283.74600000000004,
+        18.088000000000001
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 19,
+      "text" : "避开维护区域，选择其他开放通道",
+      "w" : 285,
+      "weight" : "regular",
+      "x" : 52,
+      "y" : 388
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        52.417999999999999,
+        422.98506958007812,
+        283.38499999999999,
+        18.088000000000001
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI03",
+      "size" : 19,
+      "text" : "保持通道畅通，配合现场工作人员",
+      "w" : 285,
+      "weight" : "regular",
+      "x" : 52,
+      "y" : 417
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        434.26999999999998,
+        32.515054931640627,
+        115.83010986328127,
+        15.615
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 15,
+      "text" : "模拟演示 \/ DEMO",
+      "w" : 116.91254150390624,
+      "weight" : "bold",
+      "x" : 434,
+      "y" : 28
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.637,
+        449.1080476074219,
+        100.84584484863281,
+        13.298999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 13,
+      "text" : "04 \/ 模拟紧急指引",
+      "w" : 103.3418448486328,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        447.45499999999998,
+        449.09504760742186,
+        115.31765844726563,
+        13.311999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 13,
+      "text" : "场序 \/ VENUE FLOW",
+      "w" : 116.11418615722656,
+      "weight" : "regular",
+      "x" : 447,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 40.600128173828132,
+      "h" : 51,
+      "ink_bounds" : [
+        33.189999999999998,
+        102.50012817382812,
+        310.17000000000002,
+        33.390000000000008
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 35,
+      "text" : "请有序前往安全出口",
+      "w" : 315,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 92
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 39.44012451171875,
+      "h" : 49,
+      "ink_bounds" : [
+        311.92399999999998,
+        180.20012451171874,
+        131.24000000000001,
+        32.334000000000003
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 34,
+      "text" : "向左撤离",
+      "w" : 136,
+      "weight" : "bold",
+      "x" : 309,
+      "y" : 170
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        310.79199999999997,
+        231.82008056640626,
+        152.23999999999998,
+        20.526
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 22,
+      "text" : "沿箭头方向前行",
+      "w" : 154,
+      "weight" : "regular",
+      "x" : 310,
+      "y" : 225
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        310.88200000000001,
+        285.72406591796874,
+        188.36393115234372,
+        17.081999999999997
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 18,
+      "text" : "01  保持冷静，依次通行",
+      "w" : 190.03793115234373,
+      "weight" : "regular",
+      "x" : 310,
+      "y" : 280
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        310.88200000000001,
+        317.76006591796875,
+        168.58193115234371,
+        16.631999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 18,
+      "text" : "02  服从现场人员指引",
+      "w" : 172.03793115234373,
+      "weight" : "regular",
+      "x" : 310,
+      "y" : 312
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        49.927999999999997,
+        381.80005859375001,
+        62.287999999999997,
+        15.247999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 16,
+      "text" : "安全提示",
+      "w" : 64,
+      "weight" : "bold",
+      "x" : 49,
+      "y" : 377
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        49.835999999999999,
+        407.02306958007813,
+        245.233,
+        17.556000000000001
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI04",
+      "size" : 19,
+      "text" : "不奔跑、不拥挤、不返回取物",
+      "w" : 247,
+      "weight" : "regular",
+      "x" : 49,
+      "y" : 401
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        434.26999999999998,
+        32.515054931640627,
+        115.83010986328127,
+        15.615
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 15,
+      "text" : "模拟演示 \/ DEMO",
+      "w" : 116.91254150390624,
+      "weight" : "bold",
+      "x" : 434,
+      "y" : 28
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 37.1201171875,
+      "h" : 46,
+      "ink_bounds" : [
+        32.576000000000001,
+        100.6001171875,
+        190.624,
+        30.495999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 32,
+      "text" : "模拟疏散路线",
+      "w" : 192,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 91
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        48.810000000000002,
+        158.59005493164062,
+        101.0503546142578,
+        15.524999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 15,
+      "text" : "二层 \/ 虚构场馆",
+      "w" : 102.61035461425782,
+      "weight" : "semibold",
+      "x" : 48,
+      "y" : 154
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        67.963999999999999,
+        209.42606591796874,
+        50.663775146484369,
+        16.109999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "A 展厅",
+      "w" : 51.43777514648437,
+      "weight" : "semibold",
+      "x" : 68,
+      "y" : 203
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        192.67400000000001,
+        209.42606591796874,
+        49.72037695312499,
+        16.109999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "B 展厅",
+      "w" : 52.204376953124999,
+      "weight" : "semibold",
+      "x" : 191,
+      "y" : 203
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        321.46800000000002,
+        208.59806591796877,
+        52.757999999999996,
+        16.883999999999997
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "服务区",
+      "w" : 54,
+      "weight" : "semibold",
+      "x" : 321,
+      "y" : 203
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        69.864000000000004,
+        319.94006591796875,
+        52.362000000000002,
+        16.488
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "互动区",
+      "w" : 54,
+      "weight" : "semibold",
+      "x" : 69,
+      "y" : 314
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        186.88999999999999,
+        319.52606591796877,
+        69.768000000000001,
+        16.974
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "当前区域",
+      "w" : 72,
+      "weight" : "bold",
+      "x" : 185,
+      "y" : 314
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        321.23399999999998,
+        319.43606591796873,
+        52.991999999999997,
+        17.028000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "休息区",
+      "w" : 54,
+      "weight" : "semibold",
+      "x" : 321,
+      "y" : 314
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        61.869999999999997,
+        385.50005493164065,
+        72.210303955078118,
+        14.295
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 15,
+      "text" : "安全出口 A",
+      "w" : 73.021541748046872,
+      "weight" : "bold",
+      "x" : 61,
+      "y" : 381
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        457.46800000000002,
+        162.50806591796874,
+        70.487999999999985,
+        17.135999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "路线说明",
+      "w" : 72,
+      "weight" : "bold",
+      "x" : 457,
+      "y" : 157
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        487.83999999999997,
+        205.99205859374999,
+        61.295999999999992,
+        14.863999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 16,
+      "text" : "当前位置",
+      "w" : 64,
+      "weight" : "regular",
+      "x" : 486,
+      "y" : 201
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        486.44799999999998,
+        247.02405859375,
+        62.960000000000001,
+        14.863999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 16,
+      "text" : "疏散路线",
+      "w" : 64,
+      "weight" : "regular",
+      "x" : 486,
+      "y" : 242
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 18.56005859375,
+      "h" : 24,
+      "ink_bounds" : [
+        487.08800000000002,
+        287.92805859374999,
+        60.943999999999996,
+        14.879999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 16,
+      "text" : "安全出口",
+      "w" : 64,
+      "weight" : "regular",
+      "x" : 486,
+      "y" : 283
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        457.48599999999999,
+        345.50806591796874,
+        89.009999999999991,
+        16.973999999999997
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "沿绿色路线",
+      "w" : 90,
+      "weight" : "semibold",
+      "x" : 457,
+      "y" : 340
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        457.846,
+        375.54406591796874,
+        86.634547119140606,
+        16.919999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "前往出口 A",
+      "w" : 87.43777514648437,
+      "weight" : "semibold",
+      "x" : 457,
+      "y" : 370
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 20.88006591796875,
+      "h" : 26,
+      "ink_bounds" : [
+        32.612000000000002,
+        421.41806591796876,
+        222.21109423828125,
+        17.082000000000001
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 18,
+      "text" : "虚构场馆 · 模拟疏散示意图",
+      "w" : 224.13709423828124,
+      "weight" : "semibold",
+      "x" : 32,
+      "y" : 416
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.311999999999998,
+        451.06904760742185,
+        246.08999999999997,
+        12.401999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI05",
+      "size" : 13,
+      "text" : "仅供演示，实际疏散以现场标识与指引为准",
+      "w" : 247,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 447
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 25.52008056640625,
+      "h" : 32,
+      "ink_bounds" : [
+        78.572000000000003,
+        25.644080566406252,
+        42.503999999999998,
+        20.943999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 22,
+      "text" : "场序",
+      "w" : 44,
+      "weight" : "bold",
+      "x" : 78,
+      "y" : 19
+    },
+    {
+      "actual_wght" : 600,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_SemiBold",
+      "font_ascent" : 12.760040283203125,
+      "h" : 16,
+      "ink_bounds" : [
+        132.95599999999999,
+        31.488040283203127,
+        69.014847290039057,
+        8.4260000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 11,
+      "text" : "VENUE FLOW",
+      "w" : 69.205302246093751,
+      "weight" : "semibold",
+      "x" : 133,
+      "y" : 27
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 17.400054931640625,
+      "h" : 21,
+      "ink_bounds" : [
+        434.26999999999998,
+        32.515054931640627,
+        115.83010986328127,
+        15.615
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 15,
+      "text" : "模拟演示 \/ DEMO",
+      "w" : 116.91254150390624,
+      "weight" : "bold",
+      "x" : 434,
+      "y" : 28
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        32.637,
+        449.13404760742185,
+        101.9508448486328,
+        13.273
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 13,
+      "text" : "06 \/ 恢复日常展示",
+      "w" : 103.3418448486328,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 15.080047607421875,
+      "h" : 19,
+      "ink_bounds" : [
+        447.45499999999998,
+        449.09504760742186,
+        115.31765844726563,
+        13.311999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 13,
+      "text" : "场序 \/ VENUE FLOW",
+      "w" : 116.11418615722656,
+      "weight" : "regular",
+      "x" : 447,
+      "y" : 445
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 44.08013916015625,
+      "h" : 55,
+      "ink_bounds" : [
+        32.911999999999999,
+        128.43813916015625,
+        150.09999999999999,
+        36.061999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 38,
+      "text" : "演示结束",
+      "w" : 152,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 117
+    },
+    {
+      "actual_wght" : 700,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Bold",
+      "font_ascent" : 35.960113525390625,
+      "h" : 45,
+      "ink_bounds" : [
+        32.588999999999999,
+        185.36211352539061,
+        184.88400000000001,
+        29.449999999999999
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 31,
+      "text" : "继续发现精彩",
+      "w" : 186,
+      "weight" : "bold",
+      "x" : 32,
+      "y" : 176
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 23.2000732421875,
+      "h" : 29,
+      "ink_bounds" : [
+        32.619999999999997,
+        240.2000732421875,
+        178.57999999999998,
+        18.760000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 20,
+      "text" : "模拟应急展示已完成",
+      "w" : 180,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 234
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 19.720062255859375,
+      "h" : 25,
+      "ink_bounds" : [
+        34.991999999999997,
+        341.25306225585939,
+        64.072999999999993,
+        15.878
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 17,
+      "text" : "日常信息",
+      "w" : 68,
+      "weight" : "regular",
+      "x" : 32,
+      "y" : 336
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 19.720062255859375,
+      "h" : 25,
+      "ink_bounds" : [
+        163.595,
+        341.33806225585937,
+        66.623000000000005,
+        15.759000000000002
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 17,
+      "text" : "场馆宣传",
+      "w" : 68,
+      "weight" : "regular",
+      "x" : 163,
+      "y" : 336
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 19.720062255859375,
+      "h" : 25,
+      "ink_bounds" : [
+        294.56099999999998,
+        341.40606225585935,
+        67.048000000000002,
+        15.691000000000003
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 17,
+      "text" : "媒体轮播",
+      "w" : 68,
+      "weight" : "regular",
+      "x" : 294,
+      "y" : 336
+    },
+    {
+      "actual_wght" : 400,
+      "core_text_safe" : true,
+      "font" : "NotoSansSC-Thin_Regular",
+      "font_ascent" : 22.040069580078125,
+      "h" : 27,
+      "ink_bounds" : [
+        49.588999999999999,
+        405.98506958007812,
+        292.08738500976563,
+        17.631999999999998
+      ],
+      "ink_inside_24px_safe_frame" : true,
+      "inside_canvas" : true,
+      "missing_glyph_count" : 0,
+      "missing_glyph_utf16_indices" : [
+
+      ],
+      "page" : "UI06",
+      "size" : 19,
+      "text" : "模拟演示已结束 · 日常展示待继续",
+      "w" : 293.49338500976563,
+      "weight" : "regular",
+      "x" : 49,
+      "y" : 400
+    }
+  ],
+  "variation_weights" : [
+    400,
+    600,
+    700
+  ]
+}

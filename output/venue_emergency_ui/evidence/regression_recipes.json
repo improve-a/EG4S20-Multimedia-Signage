@@ -1,0 +1,403 @@
+{
+  "policy": "Resolved existing bench recipes only; no historical results or hashes used as current evidence. Current repository inputs are always snapshotted afresh.",
+  "recipes": {
+    "controls_modes_004": {
+      "top": "control_modes_tb",
+      "inputs": [
+        "tests/control_modes_tb.v",
+        "rtl/media_controls.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/control_modes_tb.v",
+        "rtl/media_controls.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "controls_storage_002": {
+      "top": "control_storage_tb",
+      "inputs": [
+        "tb/control_storage_tb.v",
+        "rtl/SD/sd_card_bmp.v",
+        "rtl/media_controls.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tb/control_storage_tb.v",
+        "rtl/SD/sd_card_bmp.v",
+        "rtl/media_controls.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "config_002": {
+      "top": "config_bridge_tb",
+      "inputs": [
+        "tests/config_bridge_tb.v",
+        "rtl/ext/frame_config_bridge.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/config_bridge_tb.v",
+        "rtl/ext/frame_config_bridge.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "pixel_001": {
+      "top": "pixel_adjust_tb",
+      "inputs": [
+        "tests/pixel_adjust_tb.v",
+        "rtl/ext/pixel_adjust.v",
+        "tests/pixel_vectors.txt",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/pixel_adjust_tb.v",
+        "rtl/ext/pixel_adjust.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "harness_axis_001": {
+      "top": "video_axis_tb",
+      "inputs": [
+        "tb/video_axis_tb.v",
+        "rtl/video_rgb_to_axis_640x480.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tb/video_axis_tb.v",
+        "rtl/video_rgb_to_axis_640x480.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "osd_text_002": {
+      "top": "osd_tb",
+      "inputs": [
+        "tests/osd_tb.v",
+        "rtl/ext/osd_overlay.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/osd_tb.v",
+        "rtl/ext/osd_overlay.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "transition_commit_sdp_001": {
+      "top": "transition_commit_tb",
+      "inputs": [
+        "tests/transition_commit_tb.v",
+        "rtl/ext/video_transition.v",
+        "rtl/display_commit.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/transition_commit_tb.v",
+        "rtl/ext/video_transition.v",
+        "rtl/display_commit.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "scale_scan_01": {
+      "top": "scale_scan_tb",
+      "inputs": [
+        "tests/scale_scan_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_scan.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/scale_scan_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "scale_sta_reject_01": {
+      "top": "scale_reject_tb",
+      "inputs": [
+        "tests/scale_reject_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_invalid.hex",
+        "tests/scale_header.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/scale_reject_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "wav_001": {
+      "top": "wav_tb",
+      "inputs": [
+        "tests/wav_tb.v",
+        "rtl/ext/wav_stream_parser.v",
+        "tests/audio_stereo.hex",
+        "tests/audio_mono.hex",
+        "tests/audio_bad_rate.hex",
+        "tests/audio_bad_size.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/wav_tb.v",
+        "rtl/ext/wav_stream_parser.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "audio_fifo_bram_001": {
+      "top": "audio_fifo_tb",
+      "inputs": [
+        "tests/audio_fifo_tb.v",
+        "rtl/ext/audio_async_fifo.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_fifo_tb.v",
+        "rtl/ext/audio_async_fifo.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "audio_player_bram_001": {
+      "top": "audio_player_tb",
+      "inputs": [
+        "tests/audio_player_tb.v",
+        "rtl/ext/audio_pcm_player.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_player_tb.v",
+        "rtl/ext/audio_pcm_player.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "audio_media_pipeline_boundary_001": {
+      "top": "audio_media_tb",
+      "inputs": [
+        "tests/audio_media_tb.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/wav_stream_parser.v",
+        "tests/audio_card_boundary.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_media_tb.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/wav_stream_parser.v"
+      ],
+      "parameters": [
+        "audio_media_tb.MONO=1",
+        "audio_media_tb.SHORT=1",
+        "audio_media_tb.BOUNDARY=1"
+      ],
+      "timeout": 600
+    },
+    "audio_output_selection_001": {
+      "top": "audio_output_selection_tb",
+      "inputs": [
+        "tests/audio_output_selection_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_output_selection_tb.v",
+        "rtl/ext/audio_output_mux.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "audio_output_pipeline_mux_002": {
+      "top": "audio_output_mux_tb",
+      "inputs": [
+        "tests/audio_output_mux_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v",
+        "tests/audio_card.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_output_mux_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v"
+      ],
+      "parameters": [
+        "audio_output_mux_tb.READY_DELAY=50020"
+      ],
+      "timeout": 600
+    },
+    "audio_visual_bram_001": {
+      "top": "audio_visual_tb",
+      "inputs": [
+        "tests/audio_visual_tb.v",
+        "rtl/ext/audio_visualizer.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_visual_tb.v",
+        "rtl/ext/audio_visualizer.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "audio_arbiter_pipeline_001": {
+      "top": "audio_arbiter_tb",
+      "inputs": [
+        "tests/audio_arbiter_tb.v",
+        "rtl/ext/media_sector_arbiter.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/wav_stream_parser.v",
+        "tests/audio_arbiter_card.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/audio_arbiter_tb.v",
+        "rtl/ext/media_sector_arbiter.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/wav_stream_parser.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "video_audio_integration_004": {
+      "top": "video_audio_integration_tb",
+      "inputs": [
+        "tests/video_audio_integration_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/video_transition.v",
+        "rtl/ext/video_extensions.v",
+        "rtl/ext/pixel_adjust.v",
+        "rtl/ext/audio_visualizer.v",
+        "rtl/ext/osd_overlay.v",
+        "rtl/video_rgb_to_axis_640x480.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v",
+        "tests/audio_arbiter_card.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/video_audio_integration_tb.v",
+        "rtl/ext/audio_output_mux.v",
+        "rtl/ext/video_transition.v",
+        "rtl/ext/video_extensions.v",
+        "rtl/ext/pixel_adjust.v",
+        "rtl/ext/audio_visualizer.v",
+        "rtl/ext/osd_overlay.v",
+        "rtl/video_rgb_to_axis_640x480.v",
+        "rtl/ext/audio_media.v",
+        "rtl/ext/audio_async_fifo.v",
+        "rtl/ext/audio_pcm_player.v",
+        "rtl/ext/wav_stream_parser.v",
+        "rtl/hdmi_audio_tone_pcm_scale.v",
+        "rtl/audio_arc_calculate.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "scale_scan_load_01": {
+      "top": "scale_scan_load_tb",
+      "inputs": [
+        "tests/scale_scan_load_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_card_7.hex",
+        "tests/scale_golden_7.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/scale_scan_load_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "parameters": [],
+      "timeout": 600
+    },
+    "scale_case3_01": {
+      "top": "scale_tb",
+      "inputs": [
+        "tests/scale_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v",
+        "tests/scale_card_3.hex",
+        "tests/scale_golden_3.hex",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tests/scale_tb.v",
+        "rtl/SD/bmp_read.v",
+        "rtl/ext/bmp_scale.v"
+      ],
+      "parameters": [
+        "scale_tb.CASE=3"
+      ],
+      "timeout": 600
+    },
+    "existing_tb_storage_spi": {
+      "top": "storage_spi_tb",
+      "inputs": [
+        "tb/storage_spi_tb.v",
+        "rtl/SD/spi_master.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tb/storage_spi_tb.v",
+        "rtl/SD/spi_master.v"
+      ],
+      "parameters": [],
+      "timeout": 120
+    },
+    "existing_tb_storage_sd": {
+      "top": "storage_sd_tb",
+      "inputs": [
+        "tb/storage_sd_tb.v",
+        "rtl/SD/sd_card_top.v",
+        "rtl/SD/sd_card_cmd.v",
+        "rtl/SD/sd_card_sec_read_write.v",
+        "harness/test_runner.py"
+      ],
+      "sources": [
+        "tb/storage_sd_tb.v",
+        "rtl/SD/sd_card_top.v",
+        "rtl/SD/sd_card_cmd.v",
+        "rtl/SD/sd_card_sec_read_write.v"
+      ],
+      "parameters": [],
+      "timeout": 120
+    }
+  }
+}

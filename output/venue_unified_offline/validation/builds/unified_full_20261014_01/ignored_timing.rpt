@@ -1,0 +1,322 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Wed Oct 14 23:47:06 2026
+
+Top Model           : top
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 99.92%
+Constraint File     : D:/FPGA/hx4s20_extensions_20261013/builds/unified_full_20261014_01/work/design/user_source/constraints_source/timing.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+Async/Exclusive Summary
+--------------------
+
+SFP Summary
+--------------------
+
+		Max Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+
+		Min Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		        18           18            0            0   set_false_path -from [get_regs -nowarn {*/primary_addr_gray_reg[*]}] -to [get_regs -nowarn {*/sync_r1[*]}] -hold 24.700
+		        18           18            0            0   set_false_path -from [get_regs -nowarn {*/primary_addr_gray_reg[*]}] -to [get_regs -nowarn {*/sync_r1[*]}] -hold 9.700
+
+
+SFP Details
+--------------------
+
+
+
+Path Details of Ignored Path Groups
+--------------------------------------------------
+
+
+Set False Path
+--------------------
+
+From ip sdc
+--------------------
+
+frame_read_write_m0/read_buf
+--------------------
+----------------------------------------------------------------------------------------------------
+Path Group     :     Set False Path
+Constr         :     set_false_path -from [get_regs -nowarn {*/primary_addr_gray_reg[*]}] -to [get_regs -nowarn {*/sync_r1[*]}] -hold 24.700
+
+Statistics:
+	Setup Check    :             18   end points,              18   paths
+----------------------------------------------------------------------------------------------------
+
+
+Min Delay Paths
+----------------------------------------------------------------------------------------------------
+Begin Point         : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[0]_syn_3.mi[0](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x019y006z0                                        pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[1],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[0]_syn_3.mi[0]
+reg                 x021y006z3                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[1],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[0]_syn_3.mi[1](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x019y006z0                                        pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[0],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[0]_syn_3.mi[1]
+reg                 x021y006z3                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[0],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/read_buf/lt0_syn_35.mi[0](triggered by clock video_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x026y004z2                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[4],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/lt0_syn_35.mi[0]
+ADDER (reg)         x026y002z0                                        net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/sync_r1[4],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/read_buf/lt0_syn_35.mi[1](triggered by clock video_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x025y005z3                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[5],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/lt0_syn_35.mi[1]
+ADDER (reg)         x026y002z0                                        net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/sync_r1[5],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[0](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x022y006z2                                        pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[3],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[0]
+reg                 x028y005z1                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[3],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[8]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[1](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x021y005z1                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[8]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[2],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[1]
+reg                 x028y005z1                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[2],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[8]_syn_3.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[0]_syn_3.mi[0](triggered by clock video_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x020y007z0                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[8]_syn_3.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[8],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[0]_syn_3.mi[0]
+reg                 x019y004z1                                        net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/sync_r1[8],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/read_buf/sub0_syn_49.mi[1](triggered by clock video_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x025y005z3                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[2],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/sub0_syn_49.mi[1]
+ADDER (reg)         x025y004z2                                        net: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/sync_r1[2],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[4]_syn_3.mi[0](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x022y006z2                                        pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[5],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[4]_syn_3.mi[0]
+reg                 x030y005z1                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[5],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/read_buf/wr_to_rd_cross_inst/secondary_addr_o_reg[1]_syn_4.clk(triggered by clock video_clk)
+End Point           : frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[4]_syn_3.mi[1](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x020y006z1                                        pin: frame_read_write_m0/read_buf/wr_to_rd_cross_inst/secondary_addr_o_reg[1]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[4],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(263)
+                                                                      pin: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1_reg[4]_syn_3.mi[1]
+reg                 x030y005z1                                        net: frame_read_write_m0/read_buf/rd_to_wr_cross_inst/sync_r1[4],  ../../../user_source/hdl_source/ip/afifo_32_16_256.v(264)
+
+
+
+frame_read_write_m0/write_buf
+--------------------
+----------------------------------------------------------------------------------------------------
+Path Group     :     Set False Path
+Constr         :     set_false_path -from [get_regs -nowarn {*/primary_addr_gray_reg[*]}] -to [get_regs -nowarn {*/sync_r1[*]}] -hold 9.700
+
+Statistics:
+	Setup Check    :             18   end points,              18   paths
+----------------------------------------------------------------------------------------------------
+
+
+Min Delay Paths
+----------------------------------------------------------------------------------------------------
+Begin Point         : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[5]_syn_3.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/secondary_addr_o_reg[2]_syn_4.mi[0](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x037y030z3                                        pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[5]_syn_3.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[8],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/secondary_addr_o_reg[2]_syn_4.mi[0]
+reg                 x035y029z1                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[8],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_sync_reg[3]_syn_3.mi[0](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y032z2                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[1],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_sync_reg[3]_syn_3.mi[0]
+reg                 x037y032z2                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[1],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[5]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[0](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y031z0                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[5]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[5],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[0]
+reg                 x038y032z1                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[5],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[1](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y032z2                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[2],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[2]_syn_3.mi[1]
+reg                 x038y032z1                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[2],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[7]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_sync_reg[6]_syn_3.mi[0](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y030z1                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[7]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[0],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_sync_reg[6]_syn_3.mi[0]
+reg                 x037y032z3                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[0],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[3]_syn_3.mi[0](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y031z1                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[4],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[3]_syn_3.mi[0]
+reg                 x038y032z0                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[4],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock sd_card_clk)
+End Point           : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1_reg[0]_syn_3.mi[0](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x033y030z2                                        pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[1],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1_reg[0]_syn_3.mi[0]
+reg                 x035y028z1                                        net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1[1],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.clk(triggered by clock sd_card_clk)
+End Point           : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1_reg[0]_syn_3.mi[1](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x033y030z2                                        pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[1]_syn_4.q[0]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[0],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1_reg[0]_syn_3.mi[1]
+reg                 x035y028z1                                        net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1[0],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.clk(triggered by clock ext_mem_clk)
+End Point           : frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[3]_syn_3.mi[1](triggered by clock sd_card_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x038y031z1                                        pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg_reg[3]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/primary_addr_gray_reg[3],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1_reg[3]_syn_3.mi[1]
+reg                 x038y032z0                                        net: frame_read_write_m0/write_buf/rd_to_wr_cross_inst/sync_r1[3],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+
+Begin Point         : frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.clk(triggered by clock sd_card_clk)
+End Point           : frame_read_write_m0/write_buf/sub0_syn_61.mi[0](triggered by clock ext_mem_clk)
+Check Type          : hold
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+clk2q               x033y031z3                                        pin: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg_reg[2]_syn_4.q[1]
+net (fo=1)                                                            net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/primary_addr_gray_reg[2],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(263)
+                                                                      pin: frame_read_write_m0/write_buf/sub0_syn_61.mi[0]
+ADDER (reg)         x033y028z0                                        net: frame_read_write_m0/write_buf/wr_to_rd_cross_inst/sync_r1[2],  ../../../user_source/hdl_source/ip/afifo_16_32_256.v(264)
+
+

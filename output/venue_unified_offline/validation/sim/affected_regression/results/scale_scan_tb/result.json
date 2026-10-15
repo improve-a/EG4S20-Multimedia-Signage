@@ -1,0 +1,43 @@
+{
+  "id": "scale_scan_tb",
+  "recipe_reference": "scale_scan_01",
+  "top": "scale_scan_tb",
+  "started_utc": "2026-10-14T15:32:21.665875+00:00",
+  "runner_pid": 15992,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/scale_scan_tb.v": "a5e75dc1a925539bccffcbff12e869ef4dd32560f041dec5746ffc326f13ffa6",
+    "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+    "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+    "tests/scale_scan.hex": "05a28278e9f3a442fe600b1f4efe519f2fcfc9bd6cf517029619574f583b89c0",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "scale_scan_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\scale_scan_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\bmp_read.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\bmp_scale.v"
+  ],
+  "compile_pid": 8152,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 36808,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS SCALE_SCAN rejected_width0=1 found=2 variable_file_skip=1 requests=3"
+  ],
+  "elapsed_seconds": 0.125,
+  "log_sha256": {
+    "compile.log": "c7554dd64ae2665fb9a0482ef02ebf8c4e35ec4f08ef88e9a82af57b0a7cb63a",
+    "simulation.log": "c545e3d2b4a4ce9cefd675b4d3c88ce789a37222fff3744c9a6b95afb835dbb2"
+  }
+}

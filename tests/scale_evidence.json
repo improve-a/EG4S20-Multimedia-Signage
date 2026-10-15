@@ -1,0 +1,183 @@
+{
+  "created_utc": "2026-10-13T17:27:27.152996+00:00",
+  "UNIT_SIM": "PASS",
+  "scope": "current header pipeline and sticky scan contract plus scaler/frame-writer production-burst model",
+  "source_sha256": {
+    "rtl/SD/bmp_read.v": "49a63a28689b32381191e1047a5b93201abda08d8a4ab7ceda1572f4de519ffd",
+    "rtl/ext/bmp_scale.v": "c1a02f9f22aaafd86a6a3307d07d4dc64c95846cf2b10abbb247faedcd69bde4"
+  },
+  "current_canvas_pixels_compared": 1228800,
+  "production_write_burst": 256,
+  "production_write_fifo_peak": 412,
+  "production_write_fifo_capacity": 512,
+  "STA": "Root fresh ext_full005: SWNS +0.140ns, HWNS +0.003ns, TNS0; source hash c1a02f9f matched. See actual timing report and Root coverage assessment.",
+  "full_system_encrypted_IP_simulation": "NOT_VERIFIED",
+  "hardware": "NOT_VERIFIED",
+  "runs": [
+    {
+      "run": "scale_sta_valid_01",
+      "result": "evidence/sim/scale_sta_valid_01/result/result.json",
+      "SIM": "PASS",
+      "elapsed_seconds": 198.98399999999674,
+      "pid": 39680,
+      "completion": "SCALE case=1 count=307200 requests=340 cycles=5747562 gap=2"
+    },
+    {
+      "run": "scale_sta_reject_02",
+      "result": "evidence/sim/scale_sta_reject_02/result/result.json",
+      "SIM": "PASS",
+      "elapsed_seconds": 0.4530000000013388,
+      "pid": 13440,
+      "completion": "SCALE_REJECT invalid_headers=12 wrap=1 short=1 extra=1 timeout_sd=1 timeout_ack=1 abort_ack=1 abort_canvas=1 transport=1"
+    },
+    {
+      "run": "scale_sta_scan_02",
+      "result": "evidence/sim/scale_sta_scan_02/result/result.json",
+      "SIM": "PASS",
+      "elapsed_seconds": 0.125,
+      "pid": 34052,
+      "completion": "SCALE_SCAN rejected_width0=1 found=2 variable_file_skip=1 requests=3"
+    },
+    {
+      "run": "scale_scan_load_01",
+      "result": "evidence/sim/scale_scan_load_01/result/result.json",
+      "SIM": "PASS",
+      "elapsed_seconds": 304.3590000000004,
+      "pid": 16884,
+      "completion": "SCALE_SCAN_LOAD scan_done_sticky=1 scan_found_total=1 loads=2 pixels=614400 requests=5"
+    },
+    {
+      "run": "media_write256_01",
+      "result": "evidence/sim/media_write256_01/result/result.json",
+      "SIM": "PASS",
+      "elapsed_seconds": 55.17099999999846,
+      "pid": 8340,
+      "completion": "MEDIA_PRODUCTION_WRITE_PRESSURE pixels=307200 max_fifo=412 capacity=512 burst=256 memclk=40MHz sourceclk=100MHz"
+    }
+  ],
+  "historical_before_sta_and_scan_contract_fix": {
+    "created_utc": "2026-10-13T16:36:51.011696+00:00",
+    "UNIT_SIM": "PASS",
+    "scope": "bmp_scale + bmp_scale_read + inherited frame writer contract with behavioural FIFO",
+    "source_sha256": {
+      "rtl/SD/bmp_read.v": "49a63a28689b32381191e1047a5b93201abda08d8a4ab7ceda1572f4de519ffd",
+      "rtl/ext/bmp_scale.v": "225b34a8c33857580a33c7c02bc896d54a9aa3b5065e1026033158d4df0c121c"
+    },
+    "canvas_cases": 8,
+    "canvas_pixels_compared": 2457600,
+    "full_system_encrypted_IP_simulation": "NOT_VERIFIED",
+    "hardware": "NOT_VERIFIED",
+    "runs": [
+      {
+        "run": "scale_case0_03",
+        "result": "evidence/sim/scale_case0_03/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:27:51.363936+00:00",
+        "elapsed_seconds": 129.93800000000192,
+        "pid": 10292,
+        "completion": "SCALE case=0 count=307200 requests=452 cycles=6025040 gap=2"
+      },
+      {
+        "run": "scale_case1_spi64_01",
+        "result": "evidence/sim/scale_case1_spi64_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:27:52.602266+00:00",
+        "elapsed_seconds": 351.9220000000023,
+        "pid": 3904,
+        "completion": "SCALE case=1 count=307200 requests=340 cycles=16314531 gap=63"
+      },
+      {
+        "run": "scale_case2_01",
+        "result": "evidence/sim/scale_case2_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:23:24.256513+00:00",
+        "elapsed_seconds": 186.46899999999732,
+        "pid": 17636,
+        "completion": "SCALE case=2 count=307200 requests=1354 cycles=8235769 gap=2"
+      },
+      {
+        "run": "scale_case3_01",
+        "result": "evidence/sim/scale_case3_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:23:50.311313+00:00",
+        "elapsed_seconds": 215.21800000000076,
+        "pid": 36156,
+        "completion": "SCALE case=3 count=307200 requests=1802 cycles=9343790 gap=2"
+      },
+      {
+        "run": "scale_case4_01",
+        "result": "evidence/sim/scale_case4_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:29:54.979231+00:00",
+        "elapsed_seconds": 129.39100000000326,
+        "pid": 36296,
+        "completion": "SCALE case=4 count=307200 requests=452 cycles=6023222 gap=2"
+      },
+      {
+        "run": "scale_case5_01",
+        "result": "evidence/sim/scale_case5_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:30:59.481757+00:00",
+        "elapsed_seconds": 125.15700000000288,
+        "pid": 39608,
+        "completion": "SCALE case=5 count=307200 requests=338 cycles=5701156 gap=2"
+      },
+      {
+        "run": "scale_case6_01",
+        "result": "evidence/sim/scale_case6_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:32:36.289275+00:00",
+        "elapsed_seconds": 124.56299999999828,
+        "pid": 33124,
+        "completion": "SCALE case=6 count=307200 requests=337 cycles=5740225 gap=2"
+      },
+      {
+        "run": "scale_case7_01",
+        "result": "evidence/sim/scale_case7_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:34:16.065276+00:00",
+        "elapsed_seconds": 94.42099999999846,
+        "pid": 39544,
+        "completion": "SCALE case=7 count=307200 requests=2 cycles=4917015 gap=2"
+      },
+      {
+        "run": "scale_reject_04",
+        "result": "evidence/sim/scale_reject_04/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:28:31.047074+00:00",
+        "elapsed_seconds": 0.26599999999962165,
+        "pid": 9836,
+        "completion": "SCALE_REJECT invalid_headers=12 wrap=1 short=1 extra=1 timeout_sd=1 timeout_ack=1 abort_ack=1 abort_canvas=1 transport=1"
+      },
+      {
+        "run": "scale_scan_01",
+        "result": "evidence/sim/scale_scan_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:27:28.670760+00:00",
+        "elapsed_seconds": 0.10900000000037835,
+        "pid": 37988,
+        "completion": "SCALE_SCAN rejected_width0=1 found=2 variable_file_skip=1 requests=3"
+      },
+      {
+        "run": "scale_frame_01",
+        "result": "evidence/sim/scale_frame_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:25:10.362401+00:00",
+        "elapsed_seconds": 57.125,
+        "pid": 29544,
+        "completion": "SCALE_FRAME pixels=307200 max_fifo=284 capacity=512 memclk=40MHz sourceclk=100MHz"
+      },
+      {
+        "run": "scale_legacy_01",
+        "result": "evidence/sim/scale_legacy_01/result/result.json",
+        "SIM": "PASS",
+        "started_utc": "2026-10-13T16:35:59.114467+00:00",
+        "elapsed_seconds": 104.89100000000326,
+        "pid": 37404,
+        "completion": "storage_bmp checks=14 sector_requests=7266"
+      }
+    ],
+    "legacy_default_regression": "PASS: original storage_bmp_tb, 14 checks, 4 complete frames, only bmp_read.v source, scale_mode unconnected"
+  },
+  "STA_report": "evidence/builds/ext_full_005/runs/ext_full_005/final_timing.rpt"
+}

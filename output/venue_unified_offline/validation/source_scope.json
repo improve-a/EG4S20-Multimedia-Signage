@@ -1,0 +1,466 @@
+{
+  "utc": "2026-10-14T15:56:01.840975+00:00",
+  "baseline_commit": "48f2a99",
+  "files": [
+    {
+      "path": "rtl/IP/afifo_16_256.tcl",
+      "previous_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "current_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_256.v",
+      "previous_sha256": "dab43a76a35e21df4064a25edb940699b041427d70bae89cc03c5280b7bf4bf8",
+      "current_sha256": "dab43a76a35e21df4064a25edb940699b041427d70bae89cc03c5280b7bf4bf8",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_256.vhd",
+      "previous_sha256": "50d6d10017b63e1ce5a77bad4a80e9a3de81402909d30ca0818674a1887eb46d",
+      "current_sha256": "50d6d10017b63e1ce5a77bad4a80e9a3de81402909d30ca0818674a1887eb46d",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_256_sim.v",
+      "previous_sha256": "55b81ab3aa699902b6f11fe766658b852e0740844879a942dca81cd57b40f729",
+      "current_sha256": "55b81ab3aa699902b6f11fe766658b852e0740844879a942dca81cd57b40f729",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_32_256.ipc",
+      "previous_sha256": "9df57c0b914f2f6222f88e356528947224fddb866be2468f1391c26d4e60d371",
+      "current_sha256": "9df57c0b914f2f6222f88e356528947224fddb866be2468f1391c26d4e60d371",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_32_256.tcl",
+      "previous_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "current_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_16_32_256.v",
+      "previous_sha256": "3d29b06655482184a9ad157b9bd71b79032debe3199168d3b4d9570fdac31835",
+      "current_sha256": "3d29b06655482184a9ad157b9bd71b79032debe3199168d3b4d9570fdac31835",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_32_16_256.ipc",
+      "previous_sha256": "a74955dc68a02bbfb36780127008c4737ec80e0888a4648e98e6eac9f5d2c349",
+      "current_sha256": "a74955dc68a02bbfb36780127008c4737ec80e0888a4648e98e6eac9f5d2c349",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_32_16_256.tcl",
+      "previous_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "current_sha256": "5807155b00f2f749328339e01a85b4bb836f91598286dd167513836b60af33db",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/afifo_32_16_256.v",
+      "previous_sha256": "7c3ee41f30be75ae686c9abff3a840fc5439209cda077e4aa275eac0dab9f564",
+      "current_sha256": "7c3ee41f30be75ae686c9abff3a840fc5439209cda077e4aa275eac0dab9f564",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sdram.ipc",
+      "previous_sha256": "c3092876d4a66739dfc52cbda4fe84eab75099218f65db7e7d922c41dee1c201",
+      "current_sha256": "c3092876d4a66739dfc52cbda4fe84eab75099218f65db7e7d922c41dee1c201",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sdram.v",
+      "previous_sha256": "1487e8583bbf52fe6d079a2854c10ebff2e569a3872a9088c1c9717ba14d17fe",
+      "current_sha256": "1487e8583bbf52fe6d079a2854c10ebff2e569a3872a9088c1c9717ba14d17fe",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sdram.vhd",
+      "previous_sha256": "853170e99291fb6b2b1bf3f5f20cd1dd0cc723052864147810b674e18cd70705",
+      "current_sha256": "853170e99291fb6b2b1bf3f5f20cd1dd0cc723052864147810b674e18cd70705",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sys_pll.ipc",
+      "previous_sha256": "5199d4459b3437892ed6be21a62f7528d3ce534bd9b1001a84e42074122266fe",
+      "current_sha256": "5199d4459b3437892ed6be21a62f7528d3ce534bd9b1001a84e42074122266fe",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sys_pll.v",
+      "previous_sha256": "02da17afa1b3f23c880254924437b9529ef7ab872b888073fce43d3dce07a4f6",
+      "current_sha256": "02da17afa1b3f23c880254924437b9529ef7ab872b888073fce43d3dce07a4f6",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/sys_pll.vhd",
+      "previous_sha256": "0ba7e030d4e3d459d6e411a037b731700f4cb259be92b2e444b4deba10d301d2",
+      "current_sha256": "0ba7e030d4e3d459d6e411a037b731700f4cb259be92b2e444b4deba10d301d2",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/video_pll.ipc",
+      "previous_sha256": "b717f646067025a69b4021ed85adeeb6531fad881bce5a49fcb2171ccf401076",
+      "current_sha256": "b717f646067025a69b4021ed85adeeb6531fad881bce5a49fcb2171ccf401076",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/video_pll.v",
+      "previous_sha256": "57e45a062814673e97773cf6c58ff1629fa45895e30de9d2c2b6bdd30bd9bb13",
+      "current_sha256": "57e45a062814673e97773cf6c58ff1629fa45895e30de9d2c2b6bdd30bd9bb13",
+      "changed": false
+    },
+    {
+      "path": "rtl/IP/video_pll.vhd",
+      "previous_sha256": "4c23a8a81b28c81bed4834e1e9a757db01eebd360c7fe3a7066f8f8f7b6a36c4",
+      "current_sha256": "4c23a8a81b28c81bed4834e1e9a757db01eebd360c7fe3a7066f8f8f7b6a36c4",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/ax_debounce.v",
+      "previous_sha256": "93aa6dd38051250cc7f777c88466ac180afe9bcdce7838b9ea506455d8cbc9b8",
+      "current_sha256": "93aa6dd38051250cc7f777c88466ac180afe9bcdce7838b9ea506455d8cbc9b8",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/bmp_read.v",
+      "previous_sha256": "49a63a28689b32381191e1047a5b93201abda08d8a4ab7ceda1572f4de519ffd",
+      "current_sha256": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+      "changed": true
+    },
+    {
+      "path": "rtl/SD/color_bar.v",
+      "previous_sha256": "afe1f56714ec58d2477ba1717e5a36c5a0da5fe5c07d70d11aa5ace710c4b152",
+      "current_sha256": "afe1f56714ec58d2477ba1717e5a36c5a0da5fe5c07d70d11aa5ace710c4b152",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/frame_fifo_read.v",
+      "previous_sha256": "0f186d8460d613ba010cefaa2e1625b115b1feff96bf28d3bb2a57d02f9eb69d",
+      "current_sha256": "0f186d8460d613ba010cefaa2e1625b115b1feff96bf28d3bb2a57d02f9eb69d",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/frame_fifo_write.v",
+      "previous_sha256": "13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2",
+      "current_sha256": "13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/frame_read_write.v",
+      "previous_sha256": "733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1",
+      "current_sha256": "733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/sd_card_bmp.v",
+      "previous_sha256": "bd74eef3f6f0a8be89147308c69c3826d17afd7829e4445d47b092249cff5acd",
+      "current_sha256": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+      "changed": true
+    },
+    {
+      "path": "rtl/SD/sd_card_cmd.v",
+      "previous_sha256": "7d108a1efb9c5f6f756c1fd7bf88eea84715fbbd921f9a78241393ff4d70604d",
+      "current_sha256": "7d108a1efb9c5f6f756c1fd7bf88eea84715fbbd921f9a78241393ff4d70604d",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/sd_card_sec_read_write.v",
+      "previous_sha256": "da4409408c9547d24702eb4d8d64e667b1ef0681b8d2cd9349e3ded50c61a4d4",
+      "current_sha256": "da4409408c9547d24702eb4d8d64e667b1ef0681b8d2cd9349e3ded50c61a4d4",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/sd_card_top.v",
+      "previous_sha256": "75b6e19b148da0fe28bd8e8e33ba83f419cdd74b74c0285c5d62ec3379750d0c",
+      "current_sha256": "75b6e19b148da0fe28bd8e8e33ba83f419cdd74b74c0285c5d62ec3379750d0c",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/sdram.v",
+      "previous_sha256": "2d985c2477384e677c25714241e1a50206def8916aa03189a5b313b2d22dfc99",
+      "current_sha256": "2d985c2477384e677c25714241e1a50206def8916aa03189a5b313b2d22dfc99",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/seg_decoder.v",
+      "previous_sha256": "62a2664be7db6d0dace31fc97a8faef0c43f44b639b1d5a6a2c49773812a3b5e",
+      "current_sha256": "62a2664be7db6d0dace31fc97a8faef0c43f44b639b1d5a6a2c49773812a3b5e",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/seg_scan.v",
+      "previous_sha256": "c61d6b6808e06dd0edc6db2d8f214426a1fb96d546556ecd1f74ea9ca6889f52",
+      "current_sha256": "c61d6b6808e06dd0edc6db2d8f214426a1fb96d546556ecd1f74ea9ca6889f52",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/spi_master.v",
+      "previous_sha256": "37f7a21144fa5cca3cc5c3b5f68a5ad40b3108336b600e45a1367734ac61403c",
+      "current_sha256": "37f7a21144fa5cca3cc5c3b5f68a5ad40b3108336b600e45a1367734ac61403c",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/video_define.v",
+      "previous_sha256": "77748966850a8f5af0d77f2cdb08006088ba5e1a31b98391fba6cc61c5247da2",
+      "current_sha256": "77748966850a8f5af0d77f2cdb08006088ba5e1a31b98391fba6cc61c5247da2",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/video_delay.v",
+      "previous_sha256": "f47c4b63f8baa6d8874c87dca5b72dfdadd19f4a107403da98752bce98936433",
+      "current_sha256": "f47c4b63f8baa6d8874c87dca5b72dfdadd19f4a107403da98752bce98936433",
+      "changed": false
+    },
+    {
+      "path": "rtl/SD/video_timing_data.v",
+      "previous_sha256": "ee597befff727c5c81b38359049dc8131aec5ed2aa44233b12c5cd3c481bde44",
+      "current_sha256": "ee597befff727c5c81b38359049dc8131aec5ed2aa44233b12c5cd3c481bde44",
+      "changed": false
+    },
+    {
+      "path": "rtl/audio_arc_calculate.v",
+      "previous_sha256": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+      "current_sha256": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+      "changed": false
+    },
+    {
+      "path": "rtl/display_commit.v",
+      "previous_sha256": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+      "current_sha256": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/audio_async_fifo.v",
+      "previous_sha256": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+      "current_sha256": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/audio_media.v",
+      "previous_sha256": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+      "current_sha256": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/audio_output_mux.v",
+      "previous_sha256": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+      "current_sha256": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/audio_pcm_player.v",
+      "previous_sha256": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+      "current_sha256": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/audio_visualizer.v",
+      "previous_sha256": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+      "current_sha256": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/bmp_scale.v",
+      "previous_sha256": "c1a02f9f22aaafd86a6a3307d07d4dc64c95846cf2b10abbb247faedcd69bde4",
+      "current_sha256": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+      "changed": true
+    },
+    {
+      "path": "rtl/ext/frame_config_bridge.v",
+      "previous_sha256": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+      "current_sha256": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/media_sector_arbiter.v",
+      "previous_sha256": "ba9de3e5ded912865d941a76586a68e52b417fa25182bc4a03c4548d169c7cf8",
+      "current_sha256": "ba9de3e5ded912865d941a76586a68e52b417fa25182bc4a03c4548d169c7cf8",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/osd_overlay.v",
+      "previous_sha256": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+      "current_sha256": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/pixel_adjust.v",
+      "previous_sha256": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+      "current_sha256": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/video_extensions.v",
+      "previous_sha256": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+      "current_sha256": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/video_transition.v",
+      "previous_sha256": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+      "current_sha256": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+      "changed": false
+    },
+    {
+      "path": "rtl/ext/wav_stream_parser.v",
+      "previous_sha256": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+      "current_sha256": "cc1ad0ba2f06057b491187b1cf78b1a2bdd4e9a3e090a12ca7f98cdd56976508",
+      "changed": true
+    },
+    {
+      "path": "rtl/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v",
+      "previous_sha256": "867e0b0bdd874bc383d00918c9e1be3fe01edf41f343b6a0d73e262776596a63",
+      "current_sha256": "867e0b0bdd874bc383d00918c9e1be3fe01edf41f343b6a0d73e262776596a63",
+      "changed": false
+    },
+    {
+      "path": "rtl/hdmi_audio_tone_pcm_scale.v",
+      "previous_sha256": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+      "current_sha256": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+      "changed": false
+    },
+    {
+      "path": "rtl/hdmi_phy_warpper.v",
+      "previous_sha256": "416b082b0987001bdbc0a7e20a557cb8fb1dca34e25dc881e6d28a8cb3cf4300",
+      "current_sha256": "416b082b0987001bdbc0a7e20a557cb8fb1dca34e25dc881e6d28a8cb3cf4300",
+      "changed": false
+    },
+    {
+      "path": "rtl/include/global_def.v",
+      "previous_sha256": "349fe577393fadef138debc8c27e8417c5b4663f52f68dfc9477c3c64975b4ef",
+      "current_sha256": "349fe577393fadef138debc8c27e8417c5b4663f52f68dfc9477c3c64975b4ef",
+      "changed": false
+    },
+    {
+      "path": "rtl/include/sdr_as_ram.enc.v",
+      "previous_sha256": "767dbdfbd83d42223b77dfa7deab42ce8216a8fd6f6cb41b7e7593d9a345ba57",
+      "current_sha256": "767dbdfbd83d42223b77dfa7deab42ce8216a8fd6f6cb41b7e7593d9a345ba57",
+      "changed": false
+    },
+    {
+      "path": "rtl/include/sdr_init_ref.enc.v",
+      "previous_sha256": "6da5945f4af793610d0d64c65c7e5d2d1c86ed4c11bc5fdeacd27eb03178b9f6",
+      "current_sha256": "6da5945f4af793610d0d64c65c7e5d2d1c86ed4c11bc5fdeacd27eb03178b9f6",
+      "changed": false
+    },
+    {
+      "path": "rtl/include/sdr_wrrd.enc.v",
+      "previous_sha256": "c7d7fe07d75f66aa88d9f986b3006319c995162434f104f9990664b374cdfdd2",
+      "current_sha256": "c7d7fe07d75f66aa88d9f986b3006319c995162434f104f9990664b374cdfdd2",
+      "changed": false
+    },
+    {
+      "path": "rtl/key_remove_shakes.v",
+      "previous_sha256": "8832f59e7ba94bfb8cf31e4f5a772ef7177d5257a5a2532d53cbfa1d9b7f5cd9",
+      "current_sha256": "8832f59e7ba94bfb8cf31e4f5a772ef7177d5257a5a2532d53cbfa1d9b7f5cd9",
+      "changed": false
+    },
+    {
+      "path": "rtl/lane_lvds_10_1.v",
+      "previous_sha256": "de9529321354f04837e051d0ec1681cf44783d4be3284703a788e081147500bc",
+      "current_sha256": "de9529321354f04837e051d0ec1681cf44783d4be3284703a788e081147500bc",
+      "changed": false
+    },
+    {
+      "path": "rtl/media_controls.v",
+      "previous_sha256": "7b8ef3ab55778b67034a85b1b197a50fad5fccf275b7a0e393bfddd68eaf06c8",
+      "current_sha256": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+      "changed": true
+    },
+    {
+      "path": "rtl/reset_sync.v",
+      "previous_sha256": "cf1fecba11ade8d6329a6641064e3f107dffedf6d4634bac137d1f5d3b731625",
+      "current_sha256": "cf1fecba11ade8d6329a6641064e3f107dffedf6d4634bac137d1f5d3b731625",
+      "changed": false
+    },
+    {
+      "path": "rtl/startup_pulse.v",
+      "previous_sha256": "396e1e56febb8028339e646bc2f06b83e07ab11ef840e447422fb941956741c9",
+      "current_sha256": "396e1e56febb8028339e646bc2f06b83e07ab11ef840e447422fb941956741c9",
+      "changed": false
+    },
+    {
+      "path": "rtl/system_clocks.v",
+      "previous_sha256": "bec2ca9a89ad5699c967e8e0b4f96d80f5565c3405b6d33eb1217143c64df50b",
+      "current_sha256": "bec2ca9a89ad5699c967e8e0b4f96d80f5565c3405b6d33eb1217143c64df50b",
+      "changed": false
+    },
+    {
+      "path": "rtl/top_tf_hdmi_audio.v",
+      "previous_sha256": "c7eeedb69a52cf9d016a829cc56d4f5a7c810e31c732ae4fd4602918af998808",
+      "current_sha256": "f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b",
+      "changed": true
+    },
+    {
+      "path": "rtl/video_clocks.v",
+      "previous_sha256": "c0e1064c9ad9ff4635f659bbf5fc52fc301526224861a92695621f5022c0843f",
+      "current_sha256": "c0e1064c9ad9ff4635f659bbf5fc52fc301526224861a92695621f5022c0843f",
+      "changed": false
+    },
+    {
+      "path": "rtl/video_rgb_to_axis_640x480.v",
+      "previous_sha256": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+      "current_sha256": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+      "changed": false
+    },
+    {
+      "path": "rtl/video_source_test.v",
+      "previous_sha256": "39cc05c9684a594d4254d11e66e97344053ab75bdb00f3f5a301643fd7aadbfc",
+      "current_sha256": "39cc05c9684a594d4254d11e66e97344053ab75bdb00f3f5a301643fd7aadbfc",
+      "changed": false
+    },
+    {
+      "path": "project/td_project/al_ip/PLL.ipc",
+      "previous_sha256": "8cb6df3a1bb99cf2f95f9a535d7f33213b837207b36e336848a6ed0db29ab8b5",
+      "current_sha256": "8cb6df3a1bb99cf2f95f9a535d7f33213b837207b36e336848a6ed0db29ab8b5",
+      "changed": false
+    },
+    {
+      "path": "project/td_project/al_ip/PLL.v",
+      "previous_sha256": "4e873eef9499fa93508d8cf2cac90eea0e16c6f649ae29502cdc4c5886cd32aa",
+      "current_sha256": "4e873eef9499fa93508d8cf2cac90eea0e16c6f649ae29502cdc4c5886cd32aa",
+      "changed": false
+    },
+    {
+      "path": "project/td_project/al_ip/PLL.vhd",
+      "previous_sha256": "e46792bb3d2b72621b18b323c472213fd5880eb29e5e85f0b7d50e5117e47494",
+      "current_sha256": "e46792bb3d2b72621b18b323c472213fd5880eb29e5e85f0b7d50e5117e47494",
+      "changed": false
+    },
+    {
+      "path": "project/td_project/hx4s20_basic.al",
+      "previous_sha256": "eed3d97a9c7ffe9be834a77b8265af49f657124c5023e8b8ba37ef0c7a95bf1f",
+      "current_sha256": "eed3d97a9c7ffe9be834a77b8265af49f657124c5023e8b8ba37ef0c7a95bf1f",
+      "changed": false
+    },
+    {
+      "path": "project/user_source/constraints_source/edid_debug.cwc",
+      "previous_sha256": "6716411e2346de08976e0ad8ed2e09eb93bdc0f60efc31bf75ba70e6cebe1f95",
+      "current_sha256": "6716411e2346de08976e0ad8ed2e09eb93bdc0f60efc31bf75ba70e6cebe1f95",
+      "changed": false
+    },
+    {
+      "path": "project/user_source/constraints_source/pin.adc",
+      "previous_sha256": "ae389336106ded640427eb1af73adec46b6ce13d9c07808577533c953a95b6c1",
+      "current_sha256": "ae389336106ded640427eb1af73adec46b6ce13d9c07808577533c953a95b6c1",
+      "changed": false
+    },
+    {
+      "path": "project/user_source/constraints_source/timing.sdc",
+      "previous_sha256": "e1afa16ee7ac402ae4602980af884d9082564b04c009d27a4dddf9b113e9ebac",
+      "current_sha256": "e1afa16ee7ac402ae4602980af884d9082564b04c009d27a4dddf9b113e9ebac",
+      "changed": false
+    }
+  ],
+  "changed_files": [
+    "rtl/SD/bmp_read.v",
+    "rtl/SD/sd_card_bmp.v",
+    "rtl/ext/bmp_scale.v",
+    "rtl/ext/wav_stream_parser.v",
+    "rtl/media_controls.v",
+    "rtl/top_tf_hdmi_audio.v"
+  ],
+  "preserved_scope": "board constraints, clock/reset, SD transport, SDRAM and HDMI/audio architecture",
+  "timing_repair": "WAV chunk boundary arithmetic precomputed one accepted header byte early; interface/state/byte acceptance latency unchanged."
+}

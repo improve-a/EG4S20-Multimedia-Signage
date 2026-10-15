@@ -1,0 +1,2 @@
+TEST_PASS SCALE_SCAN rejected_width0=1 found=2 variable_file_skip=1 requests=3
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_affected_20261014_01\tests\scale_scan_tb.v:36: $finish called at 31365000 (1ps)

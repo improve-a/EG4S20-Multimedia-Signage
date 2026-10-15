@@ -1,0 +1,6 @@
+PROGRESS UI06 pixels=76800 cycles=2338639
+PROGRESS UI06 pixels=153600 cycles=4673704
+PROGRESS UI06 pixels=230400 cycles=7008754
+PROGRESS UI06 pixels=307200 cycles=9343789
+TEST_PASS UNIFIED_UI06_REAL_BMP case=3 count=307200 requests=1802 cycles=9343790 gap=2
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_ui06_20261014_02\tests\unified_ui06_tb.v:74: $finish called at 93437955000 (1ps)

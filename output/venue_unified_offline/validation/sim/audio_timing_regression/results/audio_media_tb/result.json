@@ -1,0 +1,50 @@
+{
+  "id": "audio_media_tb",
+  "recipe_reference": "audio_media_pipeline_boundary_001",
+  "top": "audio_media_tb",
+  "started_utc": "2026-10-14T15:52:28.847725+00:00",
+  "runner_pid": 2928,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/audio_media_tb.v": "926717c46533d39b33e34257a229ce34a79292bfb83320ad40419d50e37e1d36",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/wav_stream_parser.v": "cc1ad0ba2f06057b491187b1cf78b1a2bdd4e9a3e090a12ca7f98cdd56976508",
+    "tests/audio_card_boundary.hex": "3d1763ac404afa25cbcb7679090f92730e4b9df86c8886a36bf968650f783119",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "audio_media_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\audio_media_tb\\simulation.vvp",
+    "-Paudio_media_tb.MONO=1",
+    "-Paudio_media_tb.SHORT=1",
+    "-Paudio_media_tb.BOUNDARY=1",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\tests\\audio_media_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_media.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_pcm_player.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\audio_async_fifo.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\wav_stream_parser.v"
+  ],
+  "compile_pid": 31512,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\audio_media_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 38268,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS TF WAV sector stream: scanned LBA0/1, RIFF LBA2, header across sectors, reread contiguous file, PCM frames, FIFO prefill, 48k cadence, clean EOF. requests=4 peak=0"
+  ],
+  "elapsed_seconds": 0.17199999999138527,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "5d376248d170ff3e81377d28881231173ce34981a5eaba7a0bbb4134de8281d8"
+  }
+}

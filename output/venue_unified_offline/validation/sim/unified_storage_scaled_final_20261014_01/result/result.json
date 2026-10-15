@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "SIM": "PASS",
+  "scope": "explicit_testbench_only",
+  "top": "unified_storage_tb",
+  "sources": [
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\SD\\bmp_read.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\ext\\bmp_scale.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\tests\\unified_storage_tb.v"
+  ],
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\SD\\bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\ext\\bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\tests\\unified_storage_tb.v": "677395a13d96f8cce5da21dc5c5a11a906d22a883a1b6624614cc78d76116e77"
+  },
+  "started_utc": "2026-10-14T15:43:16.501402+00:00",
+  "pid": 42000,
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "unified_storage_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\result\\sim.vvp",
+    "-Punified_storage_tb.ENABLE_SCALE=1",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\SD\\bmp_read.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\rtl\\ext\\bmp_scale.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_storage_scaled_final_20261014_01\\tests\\unified_storage_tb.v"
+  ],
+  "parameter_overrides": [
+    "unified_storage_tb.ENABLE_SCALE=1"
+  ],
+  "compile_exit": 0,
+  "simulation_exit": 0,
+  "elapsed_seconds": 0.1879999999946449
+}

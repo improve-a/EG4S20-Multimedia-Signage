@@ -1,0 +1,2 @@
+TEST_PASS control_media_tb bounce next auto pause long_mute reset
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_controls_20261014_01\tb\control_media_tb.v:53: $finish called at 5060000 (1ps)

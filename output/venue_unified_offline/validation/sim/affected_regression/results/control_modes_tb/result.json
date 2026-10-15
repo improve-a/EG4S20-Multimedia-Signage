@@ -1,0 +1,40 @@
+{
+  "id": "control_modes_tb",
+  "recipe_reference": "controls_modes_004",
+  "top": "control_modes_tb",
+  "started_utc": "2026-10-14T15:32:20.449313+00:00",
+  "runner_pid": 15992,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/control_modes_tb.v": "5b6d32a9af6d8801a6a3424145bd2b4c7e5ec583a2dcfe988f0a18016c44e7fd",
+    "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "control_modes_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_modes_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\control_modes_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\media_controls.v"
+  ],
+  "compile_pid": 37984,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_modes_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 18084,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS control_modes_tb debounce legacy_keys modes parameters boundaries long_short reset"
+  ],
+  "elapsed_seconds": 0.10899999999674037,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "bbbe08939f7aea04553b5063dc57b926056b5d4681959fe3fb8462c144f00e61"
+  }
+}

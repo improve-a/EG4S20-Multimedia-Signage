@@ -1,0 +1,410 @@
+{
+  "utc": "2026-10-14T15:40:43.932088+00:00",
+  "status": "PASS",
+  "fresh_tests": 8,
+  "wall_seconds": 503.4850000000006,
+  "tests": [
+    {
+      "id": "control_modes_tb",
+      "recipe_reference": "controls_modes_004",
+      "top": "control_modes_tb",
+      "started_utc": "2026-10-14T15:32:20.449313+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/control_modes_tb.v": "5b6d32a9af6d8801a6a3424145bd2b4c7e5ec583a2dcfe988f0a18016c44e7fd",
+        "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "control_modes_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_modes_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\control_modes_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\media_controls.v"
+      ],
+      "compile_pid": 37984,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_modes_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 18084,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS control_modes_tb debounce legacy_keys modes parameters boundaries long_short reset"
+      ],
+      "elapsed_seconds": 0.10899999999674037,
+      "log_sha256": {
+        "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "simulation.log": "bbbe08939f7aea04553b5063dc57b926056b5d4681959fe3fb8462c144f00e61"
+      }
+    },
+    {
+      "id": "control_storage_tb",
+      "recipe_reference": "controls_storage_002",
+      "top": "control_storage_tb",
+      "started_utc": "2026-10-14T15:32:20.601985+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tb/control_storage_tb.v": "866b5fbe5fd0931f77068e1bc5cfec480f3473db283c4fbd23e84e5a57dc0172",
+        "rtl/SD/sd_card_bmp.v": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+        "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "control_storage_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_storage_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tb\\control_storage_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\sd_card_bmp.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\media_controls.v"
+      ],
+      "compile_pid": 16228,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\control_storage_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 28744,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS control_storage_tb source_write_both_required frame_ack back_buffer busy_coalesce pause manual_step auto_3s error_preserves_front scan_error_priority fifo_fault_blocks_commit fault_pending_ack reset_recovery"
+      ],
+      "elapsed_seconds": 0.1870000000053551,
+      "log_sha256": {
+        "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "simulation.log": "54a0da1716b311238e1b073348315bd7f6c279f95e8c1f071b7c2e975cdb17da"
+      }
+    },
+    {
+      "id": "config_bridge_tb",
+      "recipe_reference": "config_002",
+      "top": "config_bridge_tb",
+      "started_utc": "2026-10-14T15:32:20.826187+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/config_bridge_tb.v": "998079374be502239ff621d90ba20206c62bebbc8020c20692dee4617dc62712",
+        "rtl/ext/frame_config_bridge.v": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "config_bridge_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\config_bridge_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\config_bridge_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\frame_config_bridge.v"
+      ],
+      "compile_pid": 41688,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\config_bridge_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 15664,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS config_bridge 352 destination cycles 5 atomic frame commits"
+      ],
+      "elapsed_seconds": 0.09399999999732245,
+      "log_sha256": {
+        "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "simulation.log": "a98b854d5104a2609cabf64885568214dce9a88f08140bad34c100ee8a9aec73"
+      }
+    },
+    {
+      "id": "transition_commit_tb",
+      "recipe_reference": "transition_commit_sdp_001",
+      "top": "transition_commit_tb",
+      "started_utc": "2026-10-14T15:32:20.957060+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/transition_commit_tb.v": "b6c85a3b008a09e7d3a6642c25a4838922ddbbab29c2a6f9935ddf525d1ac84b",
+        "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+        "rtl/display_commit.v": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "transition_commit_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\transition_commit_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\transition_commit_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\video_transition.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\display_commit.v"
+      ],
+      "compile_pid": 41116,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\transition_commit_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 28960,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS transition_commit 86 frames 55040 RGB/sync checks 5 acknowledged swaps"
+      ],
+      "elapsed_seconds": 0.6560000000026776,
+      "log_sha256": {
+        "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "simulation.log": "65b5364d96402dabc2558c73eddf130bb0eea7fd462ec9f243c39fe48aa6d233"
+      }
+    },
+    {
+      "id": "scale_scan_tb",
+      "recipe_reference": "scale_scan_01",
+      "top": "scale_scan_tb",
+      "started_utc": "2026-10-14T15:32:21.665875+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/scale_scan_tb.v": "a5e75dc1a925539bccffcbff12e869ef4dd32560f041dec5746ffc326f13ffa6",
+        "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+        "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+        "tests/scale_scan.hex": "05a28278e9f3a442fe600b1f4efe519f2fcfc9bd6cf517029619574f583b89c0",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "scale_scan_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\scale_scan_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\bmp_read.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\bmp_scale.v"
+      ],
+      "compile_pid": 8152,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 36808,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS SCALE_SCAN rejected_width0=1 found=2 variable_file_skip=1 requests=3"
+      ],
+      "elapsed_seconds": 0.125,
+      "log_sha256": {
+        "compile.log": "c7554dd64ae2665fb9a0482ef02ebf8c4e35ec4f08ef88e9a82af57b0a7cb63a",
+        "simulation.log": "c545e3d2b4a4ce9cefd675b4d3c88ce789a37222fff3744c9a6b95afb835dbb2"
+      }
+    },
+    {
+      "id": "scale_reject_tb",
+      "recipe_reference": "scale_sta_reject_01",
+      "top": "scale_reject_tb",
+      "started_utc": "2026-10-14T15:32:21.870687+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/scale_reject_tb.v": "feb417f8c8d03cfeba99f4c1bcc6544cb9de7962722aa7e2c78ababbaec82e0a",
+        "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+        "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+        "tests/scale_invalid.hex": "fe2516c602d103e92005e40f4a55e7184ea0eb41270c07b6cdb366c88b57d32c",
+        "tests/scale_header.hex": "35e77155de3327b137c50312ca8e347099d4eeb187730c4a9f35340134c8a037",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "scale_reject_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_reject_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\scale_reject_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\bmp_read.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\bmp_scale.v"
+      ],
+      "compile_pid": 29692,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_reject_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 41968,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS SCALE_REJECT invalid_headers=12 wrap=1 short=1 extra=1 timeout_sd=1 timeout_ack=1 abort_ack=1 abort_canvas=1 transport=1"
+      ],
+      "elapsed_seconds": 0.375,
+      "log_sha256": {
+        "compile.log": "b6aa9907638872f09f9f2dadcf33674978e7a123ce628515d52cf9145301c617",
+        "simulation.log": "6129d0f88a49ddc6baf94663ebe8e1ea6df3e59014b951f232a227b493dd7b86"
+      }
+    },
+    {
+      "id": "scale_scan_load_tb",
+      "recipe_reference": "scale_scan_load_01",
+      "top": "scale_scan_load_tb",
+      "started_utc": "2026-10-14T15:32:22.286748+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/scale_scan_load_tb.v": "4dcd0b4c2dfb3ddd2538ef2c0acc43fcd1528bb4cf569bcfd03b830b6d17d743",
+        "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+        "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+        "tests/scale_card_7.hex": "e80bfa1ea4c211eb49a49315bc9658c765ebf8111eb73ba2502a984f64adde8a",
+        "tests/scale_golden_7.hex": "591bfbef84346316689ad6f5357406862de34e266689ce98b4d75cec4f4ea28a",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "scale_scan_load_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_load_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\scale_scan_load_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\SD\\bmp_read.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\bmp_scale.v"
+      ],
+      "compile_pid": 41908,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\scale_scan_load_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 36468,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS SCALE_SCAN_LOAD scan_done_sticky=1 scan_found_total=1 loads=2 pixels=614400 requests=5"
+      ],
+      "elapsed_seconds": 320.07799999999406,
+      "log_sha256": {
+        "compile.log": "6f872bbace3a092ea9dd023bc4cab39d81b55a14c3e94d93288a1cabcd9b03b2",
+        "simulation.log": "350d983e872d532b2cfb562edb9c4db12d2119e4ea230df08680e7a74fac73df"
+      }
+    },
+    {
+      "id": "video_audio_integration_tb",
+      "recipe_reference": "video_audio_integration_004",
+      "top": "video_audio_integration_tb",
+      "started_utc": "2026-10-14T15:37:42.439439+00:00",
+      "runner_pid": 15992,
+      "SIM": "PASS",
+      "scope": "explicit existing unencrypted testbench only",
+      "source_sha256": {
+        "tests/video_audio_integration_tb.v": "4a55c177bdcec977e944b0b74ba82342d3f97738c550f9312496730908135f42",
+        "rtl/ext/audio_output_mux.v": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+        "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+        "rtl/ext/video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+        "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+        "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+        "rtl/ext/osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+        "rtl/video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+        "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+        "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+        "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+        "rtl/ext/wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+        "rtl/hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+        "rtl/audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+        "tests/audio_arbiter_card.hex": "0c30c2546f65dc68ca89f77526628845fcc79ba684c08f8c956c6c2add24f63c",
+        "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "video_audio_integration_tb",
+        "-o",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\video_audio_integration_tb\\simulation.vvp",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\video_audio_integration_tb.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\audio_output_mux.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\video_transition.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\video_extensions.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\pixel_adjust.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\audio_visualizer.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\osd_overlay.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\video_rgb_to_axis_640x480.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\audio_media.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\audio_async_fifo.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\audio_pcm_player.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\wav_stream_parser.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\hdmi_audio_tone_pcm_scale.v",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\audio_arc_calculate.v"
+      ],
+      "compile_pid": 34400,
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\video_audio_integration_tb\\simulation.vvp"
+      ],
+      "simulation_pid": 30140,
+      "simulation_exit": 0,
+      "completion_lines": [
+        "TEST_PASS video+audio subsystem: unified tone-valid/held WAV actual output; real WAV PCM frames=2082; checks=1090060; full VGA frames=2; pixels=614400 SOF=2 EOL=960; 5-stage RGB/sync + AXIS; off brightness math and frame change; waveform trace pixels=112 peakbar pixels=4764; ACR CTS25000/N6144 packets=43; actual RTL PPM render 640x480"
+      ],
+      "elapsed_seconds": 181.25,
+      "log_sha256": {
+        "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "simulation.log": "eda0ff52b117dbe161c12cfbbb8e3b863759a92f4fc07628e46605081803c4e4"
+      }
+    }
+  ],
+  "source_sha256": {
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88",
+    "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+    "rtl/SD/sd_card_bmp.v": "778b586e9e3c1cdafc1c2696693a02b294649f8515ec317b7110566a08b00559",
+    "rtl/audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f",
+    "rtl/display_commit.v": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+    "rtl/ext/audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "rtl/ext/audio_media.v": "87682b3b8c0059d23b1561fecfe37affe111e01fbff70a0c8b3154a7a37f5717",
+    "rtl/ext/audio_output_mux.v": "6371a18c15926ebfd3437aa83b75adaf96fab16bc7f83ee3ed744cd093ec546e",
+    "rtl/ext/audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "rtl/ext/audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+    "rtl/ext/frame_config_bridge.v": "109e1455a0013c65c2c6e3d97719d53b3dffce624039944188e046e4f42e147f",
+    "rtl/ext/osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+    "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "rtl/ext/video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "rtl/ext/wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+    "rtl/hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+    "rtl/media_controls.v": "d45b667085c7160af58031f7432c5a38a3c97f8163e7a6580acdce95f629e863",
+    "rtl/video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "tb/control_storage_tb.v": "866b5fbe5fd0931f77068e1bc5cfec480f3473db283c4fbd23e84e5a57dc0172",
+    "tests/audio_arbiter_card.hex": "0c30c2546f65dc68ca89f77526628845fcc79ba684c08f8c956c6c2add24f63c",
+    "tests/config_bridge_tb.v": "998079374be502239ff621d90ba20206c62bebbc8020c20692dee4617dc62712",
+    "tests/control_modes_tb.v": "5b6d32a9af6d8801a6a3424145bd2b4c7e5ec583a2dcfe988f0a18016c44e7fd",
+    "tests/scale_card_7.hex": "e80bfa1ea4c211eb49a49315bc9658c765ebf8111eb73ba2502a984f64adde8a",
+    "tests/scale_golden_7.hex": "591bfbef84346316689ad6f5357406862de34e266689ce98b4d75cec4f4ea28a",
+    "tests/scale_header.hex": "35e77155de3327b137c50312ca8e347099d4eeb187730c4a9f35340134c8a037",
+    "tests/scale_invalid.hex": "fe2516c602d103e92005e40f4a55e7184ea0eb41270c07b6cdb366c88b57d32c",
+    "tests/scale_reject_tb.v": "feb417f8c8d03cfeba99f4c1bcc6544cb9de7962722aa7e2c78ababbaec82e0a",
+    "tests/scale_scan.hex": "05a28278e9f3a442fe600b1f4efe519f2fcfc9bd6cf517029619574f583b89c0",
+    "tests/scale_scan_load_tb.v": "4dcd0b4c2dfb3ddd2538ef2c0acc43fcd1528bb4cf569bcfd03b830b6d17d743",
+    "tests/scale_scan_tb.v": "a5e75dc1a925539bccffcbff12e869ef4dd32560f041dec5746ffc326f13ffa6",
+    "tests/transition_commit_tb.v": "b6c85a3b008a09e7d3a6642c25a4838922ddbbab29c2a6f9935ddf525d1ac84b",
+    "tests/video_audio_integration_tb.v": "4a55c177bdcec977e944b0b74ba82342d3f97738c550f9312496730908135f42"
+  },
+  "source_unchanged_after": true,
+  "RTL_MODIFIED_BY_RUNNER": false,
+  "TD_RUN": false,
+  "NEW_BITSTREAM": false,
+  "FULL_SYSTEM_SIM": "NOT_VERIFIED",
+  "HARDWARE": "NOT_TESTED"
+}

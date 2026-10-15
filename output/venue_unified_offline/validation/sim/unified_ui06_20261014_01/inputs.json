@@ -1,0 +1,9 @@
+{
+  "rtl/SD/bmp_read.v": "28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882",
+  "rtl/ext/bmp_scale.v": "51e022c644d8727669a91e697400daed4d869bcada06ad442a95a5a43c07379d",
+  "tests/unified_ui06_tb.v": "90f2d912a4638d723c12ab72968ed63487fd292f725458165913027dcce948e3",
+  "tests/unified_ui06_card.hex": "09bcdfc359cf430ab6b8795b5f55233321b8bb772b54dcaa2ae49611400ab330",
+  "tests/unified_ui06_rgb.hex": "86e36a4a10a71b87f52ce2c7278b4674cd9c21bac0c49fcfef7aee50ff0f0943",
+  "tests/unified_ui06_vectors.json": "bad5d1fadde6edd49fb0686e47f231ed3a0b51cc8fc2787e046b8a0824c625bc",
+  "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+}

@@ -1,0 +1,42 @@
+{
+  "id": "transition_commit_tb",
+  "recipe_reference": "transition_commit_sdp_001",
+  "top": "transition_commit_tb",
+  "started_utc": "2026-10-14T15:32:20.957060+00:00",
+  "runner_pid": 15992,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/transition_commit_tb.v": "b6c85a3b008a09e7d3a6642c25a4838922ddbbab29c2a6f9935ddf525d1ac84b",
+    "rtl/ext/video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "rtl/display_commit.v": "52738f815f0c3ce1f046eb432b135fd2165fc9db2b845598a2e1b8dd18c45202",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "transition_commit_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\transition_commit_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\tests\\transition_commit_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\ext\\video_transition.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\rtl\\display_commit.v"
+  ],
+  "compile_pid": 41116,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_affected_20261014_01\\results\\transition_commit_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 28960,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS transition_commit 86 frames 55040 RGB/sync checks 5 acknowledged swaps"
+  ],
+  "elapsed_seconds": 0.6560000000026776,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "65b5364d96402dabc2558c73eddf130bb0eea7fd462ec9f243c39fe48aa6d233"
+  }
+}

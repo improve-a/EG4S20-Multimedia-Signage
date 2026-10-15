@@ -1,0 +1,22 @@
+{
+  "run": "video_audio_integration_003",
+  "SIM": "PASS",
+  "source_sha256": {
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\tests\\video_audio_integration_tb.v": "c86275ac38e1d158bdf57051e9e2ed2f51a628637a70d89987bbe84afc56c9a8",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\video_transition.v": "967caee2f1cdc2a260be2871b8445058942efa2d615b4036a563ab4c5d82745f",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\video_extensions.v": "e96069ae8aa6e640ed885606d89e73b1b0ab439e0ded7956d702c43103a20d2d",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\audio_visualizer.v": "c7a371a8492b38dcb445b347469075442beeb003dbba422c05b5f0dbf1952fd9",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\osd_overlay.v": "da16b15632186043dab2de8dd76bd7376256251fa03b91a476084b5a4a1cb097",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\video_rgb_to_axis_640x480.v": "c051f6df03d8010e36d28980c63f68b9ffa7363e669f759893b0af17220c2c77",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\audio_media.v": "44a2ba7c21c08d04452546e0a22efa2213183bb1e99741cb72c6eebced3384f3",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\audio_async_fifo.v": "dbf71a1886fedc650cedb4dd12ecb8d75c9168860abcfc8a9b5f890366cd710b",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\audio_pcm_player.v": "64790d32328b31cbb44c53031f2a2abdd02692d1bf0b4eefed60536b5ab03b91",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\ext\\wav_stream_parser.v": "c92c69611ab9c7524ddb088accbe3fa70e2301f32b2be6f74bcac95ea35733dc",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\hdmi_audio_tone_pcm_scale.v": "34a63735d46060cf0d398e29bfa8684bcba125ca2db08e5476fe4e66d9fddb47",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\video_audio_integration_003\\rtl\\audio_arc_calculate.v": "e045c5555382a5de4e8eca8d7e5cc8b5ddc63a7f84a8dd15bf97457709e2602f"
+  },
+  "preview": "tests/video_audio_integration_003_preview.png",
+  "preview_source": "evidence/sim/video_audio_integration_003/video_audio_integration_final.ppm.out",
+  "scope": "unencrypted video/audio production subgraphs; copied unified mux expression; before separate audio_output_mux module and audio_media input timing pipeline"
+}

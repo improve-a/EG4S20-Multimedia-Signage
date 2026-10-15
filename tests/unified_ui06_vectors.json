@@ -1,0 +1,10 @@
+{
+  "source": "output/venue_unified_offline/media/UI06.BMP",
+  "source_sha256": "eceee860fb2418dc1778cc0f7cd6821d9df9454338707aa6b322d42a1b680db5",
+  "pixel_count": 307200,
+  "oracle": "file-order BGR-to-RGB; inherited WRITE_V_FLIP",
+  "vectors": {
+    "tests/unified_ui06_card.hex": "09bcdfc359cf430ab6b8795b5f55233321b8bb772b54dcaa2ae49611400ab330",
+    "tests/unified_ui06_rgb.hex": "86e36a4a10a71b87f52ce2c7278b4674cd9c21bac0c49fcfef7aee50ff0f0943"
+  }
+}

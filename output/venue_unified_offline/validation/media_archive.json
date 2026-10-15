@@ -1,0 +1,7 @@
+{
+  "file": "unified_media.zip",
+  "sha256": "ba989bd0b08cfb387a7132d9e7ffee473679e8449b9f2ac73ada5d266efffc8a",
+  "bytes": 6389442,
+  "archive_roundtrip": "PASS",
+  "physical_layout": "NOT_TESTED"
+}

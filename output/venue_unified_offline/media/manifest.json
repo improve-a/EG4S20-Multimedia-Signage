@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "physical_layout": "NOT_TESTED",
+  "intended_image_order": [
+    "UI01.BMP",
+    "UI02.BMP",
+    "UI03.BMP",
+    "UI04.BMP",
+    "UI05.BMP",
+    "UI06.BMP"
+  ],
+  "assets": [
+    {
+      "name": "UI01.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI01.BMP",
+      "bytes": 921654,
+      "sha256": "90cbc0fb9f8940bad89599fef7ccf6e741a8d5fdae7b2480abd9cc14ec65f8c2",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 0,
+      "content_mode": "daily"
+    },
+    {
+      "name": "UI02.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI02.BMP",
+      "bytes": 921654,
+      "sha256": "92e4e77b53823110cf06ced7e08ba4f6bd93c4563c3c88f7ee3e282c79a03686",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 1,
+      "content_mode": "daily"
+    },
+    {
+      "name": "UI03.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI03.BMP",
+      "bytes": 921654,
+      "sha256": "bd13f5cac2dc04b7ea7a72426dfa59fb38c3ce7ce1661e8ba992be9463784189",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 2,
+      "content_mode": "emergency"
+    },
+    {
+      "name": "UI04.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI04.BMP",
+      "bytes": 921654,
+      "sha256": "dba5dfe9c9002fa511ff38ad0f9e02b27ca89cdc9d07408032dcbddd97dce827",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 3,
+      "content_mode": "emergency"
+    },
+    {
+      "name": "UI05.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI05.BMP",
+      "bytes": 921654,
+      "sha256": "30956853a08cd466b59d0b90f849339efae3ab4733786101501b8898384a65a9",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 4,
+      "content_mode": "emergency"
+    },
+    {
+      "name": "UI06.BMP",
+      "source": "output/venue_emergency_ui/tf_card_package/master_media/UI06.BMP",
+      "bytes": 921654,
+      "sha256": "eceee860fb2418dc1778cc0f7cd6821d9df9454338707aa6b322d42a1b680db5",
+      "format": {
+        "format": "BMP BI_RGB24 bottom-up",
+        "width": 640,
+        "height": 480,
+        "pixels": 307200
+      },
+      "physical_index_intended": 5,
+      "content_mode": "emergency"
+    },
+    {
+      "name": "07_MUSIC.WAV",
+      "source": "output/venue_emergency_ui/tf_card_package/A_daily/03_MUSIC.WAV",
+      "bytes": 7680044,
+      "sha256": "c0671b035fdd04465ae6280427bbd5732e065693dd066a511a74e9426e818886",
+      "format": {
+        "format": "PCM16 mono",
+        "rate": 48000,
+        "seconds": 80
+      },
+      "audio_policy": "global continuous; independent of content mode; no mode/audio synchronization"
+    }
+  ]
+}

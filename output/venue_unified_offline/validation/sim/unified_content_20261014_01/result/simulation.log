@@ -1,0 +1,2 @@
+TEST_PASS content_modes_tb capacity8 daily_manual emergency_manual daily_auto emergency_auto busy_switch pending_commit long_exclusive
+D:\FPGA\hx4s20_extensions_20261013\sim\unified_content_20261014_01\tests\content_modes_tb.v:68: $finish called at 40450000 (1ps)

@@ -1,0 +1,18 @@
+[
+  {
+    "source": "G:\\anlu\\sim_release\\eg4\\eg_phy_pll.v",
+    "source_sha256": "73671e13f74679ac630f68506ce67408455734b21cacae62aeb94f284d7a8eb8",
+    "source_bytes": 43440,
+    "prefix_bytes": 40096,
+    "prefix_sha256": "8151af638b6d4a83a949fc5e14373c36e58abdc1c7fd47c4af67624eb2480fcf",
+    "transform": "Byte-exact public module prefix only; original file unmodified; protected trailer not interpreted or rewritten."
+  },
+  {
+    "source": "G:\\anlu\\sim_release\\eg4\\eg_logic_clk.v",
+    "source_sha256": "686ce0c1e4df0bc3cbe1afc4de359f78da57d5521671cc27b8dc5181412a04f2",
+    "source_bytes": 6726,
+    "prefix_bytes": 3382,
+    "prefix_sha256": "3d9e35aff6da39ee55b3ed9b2c3966e7278bf5ecca99d3035c73e30744288702",
+    "transform": "Byte-exact public module prefix only; original file unmodified; protected trailer not interpreted or rewritten."
+  }
+]

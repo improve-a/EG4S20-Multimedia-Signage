@@ -1,0 +1,14 @@
+{
+  "utc": "2026-10-14T15:36:33.597892+00:00",
+  "status": "OFFLINE_MEDIA_PASS",
+  "physical_layout": "NOT_TESTED",
+  "command": [
+    "python3",
+    "scripts/package_unified_offline.py",
+    "--validate-only"
+  ],
+  "exit_code": 0,
+  "stdout": "OFFLINE_MEDIA_PASS six distinct canonical BMPs + original daily WAV; physical_layout=NOT_TESTED\n",
+  "validator_sha256": "ad339107214c9e1851db05a290169def424baa2d8926753dc30f8634e62ab3d9",
+  "manifest_sha256": "ae363f9bd13b5df810b57cb4bd044761c81687c8755047c18291a085aa41b9fd"
+}

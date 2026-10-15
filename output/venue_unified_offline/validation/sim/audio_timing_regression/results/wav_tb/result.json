@@ -1,0 +1,44 @@
+{
+  "id": "wav_tb",
+  "recipe_reference": "wav_001",
+  "top": "wav_tb",
+  "started_utc": "2026-10-14T15:52:28.648818+00:00",
+  "runner_pid": 2928,
+  "SIM": "PASS",
+  "scope": "explicit existing unencrypted testbench only",
+  "source_sha256": {
+    "tests/wav_tb.v": "14a993a618aaa6ad4f72da0b3dafe6b7cae53aa78f2fd73c461c01fe14c69b3f",
+    "rtl/ext/wav_stream_parser.v": "cc1ad0ba2f06057b491187b1cf78b1a2bdd4e9a3e090a12ca7f98cdd56976508",
+    "tests/audio_stereo.hex": "a21478bfcc811f6dc7cfe88bf4fa981023ffff58cc6d8c1ed7e56cad88fab21a",
+    "tests/audio_mono.hex": "533e33cf99ad0ab88bc7c03d768e98f9cdf75dd08238711355fe6697b5984818",
+    "tests/audio_bad_rate.hex": "e3bf1b583e0fdc0cca487f6ca04b7474be9de7c96270f394c87893dcb888e2c5",
+    "tests/audio_bad_size.hex": "98c561913c90d2eb6fd55d44e639db3ac3e07ca9f561657f256287b864448724",
+    "harness/test_runner.py": "c32f6bde2ceb722a4e98501dad7f8be118cfd02160f6bd12c4d2c595a279cc88"
+  },
+  "compile_command": [
+    "C:\\iverilog\\bin\\iverilog.exe",
+    "-g2012",
+    "-s",
+    "wav_tb",
+    "-o",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\wav_tb\\simulation.vvp",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\tests\\wav_tb.v",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\rtl\\ext\\wav_stream_parser.v"
+  ],
+  "compile_pid": 42728,
+  "compile_exit": 0,
+  "simulation_command": [
+    "C:\\iverilog\\bin\\vvp.exe",
+    "D:\\FPGA\\hx4s20_extensions_20261013\\sim\\unified_audio_timing_20261014_02\\results\\wav_tb\\simulation.vvp"
+  ],
+  "simulation_pid": 19972,
+  "simulation_exit": 0,
+  "completion_lines": [
+    "TEST_PASS WAV parser: stereo/mono signed order, 513B JUNK odd pad, continuous/gapped acceptance, exact fit, one-byte overflow, outside start, stale-cache start/reset, invalid rate and RIFF bounds"
+  ],
+  "elapsed_seconds": 0.11000000000058208,
+  "log_sha256": {
+    "compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "simulation.log": "4a1b313ef41283c02b7733bfbe74ef85f310d24dad1e2c5ed93f274e31194594"
+  }
+}
