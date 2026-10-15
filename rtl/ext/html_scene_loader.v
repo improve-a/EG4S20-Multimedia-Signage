@@ -1,0 +1,143 @@
+// Six finite HFXL scene atlases. Loads sector-aligned BMP trailers through the
+// existing SD/audio arbiter and existing write FIFO; no PC runtime dependency.
+module html_scene_loader #(
+ parameter TIMEOUT_CYCLES=1_000_000_000,
+ parameter [31:0] SET_ID=32'h687d5bbc,
+ parameter [125:0] BASE_WORDS={21'd1514240,21'd1202688,21'd890880,21'd586240,21'd275200,21'd0},
+ parameter [125:0] LENGTH_WORDS={21'd289536,21'd311552,21'd311808,21'd304640,21'd311040,21'd275200}
+)(
+ input clk,rst,enable,input [31:0] sector0,sector1,sector2,sector3,sector4,sector5,
+ output reg active,ready,error,output reg [5:0] page_ready,
+ output reg sector_req,output reg [31:0] sector_addr,
+ input [7:0] sector_data,input sector_valid,sector_end,sector_error,
+ output reg write_req,input write_req_ack,
+ output reg write_en,output reg [31:0] write_data,
+ output reg [20:0] write_base,write_len,input write_finish_toggle
+);
+ localparam IDLE=0,HREQ=1,HWAIT=2,WREQ=3,DREQ=4,DWAIT=5,FINISH=6,NEXT=7,DONE=8,FAIL=9,WRELEASE=10;
+ reg [3:0] state;
+ reg [2:0] page;
+ reg [9:0] byte_index;
+ reg [12:0] sector_index,sector_count;
+ reg [31:0] origin,payload_sector,timeout_count;
+ reg [23:0] assembled;
+ reg [31:0] file_len,pixel_offset,dib_size,width,height,compression;
+ reg [15:0] signature,planes,bit_count;
+ wire [31:0] scene_offset,payload_bytes,locator_base,set_id;
+ wire [15:0] page_index;
+ wire locator_valid;
+ reg [31:0] pixel_end;
+ wire [20:0] expected_base=BASE_WORDS[page*21+:21];
+ wire [20:0] expected_words=LENGTH_WORDS[page*21+:21];
+ reg [31:0] body_magic,body_version,body_words,body_count,body_set,body_base,body_page;
+ reg [31:0] body_desc_offset,body_desc_stride,body_bg_stride,body_width,body_height;
+ reg body_ok;
+ (* async_reg="true" *) reg [2:0] finish_sync;
+ reg finish_seen;
+ wire finish_pulse=finish_sync[2]^finish_sync[1];
+ wire [31:0] assembled_word={sector_data,assembled};
+ wire [32:0] resource_last_sector={1'b0,origin}+{10'd0,file_len[31:9]}-1'b1;
+ wire header_ok=locator_valid && signature==16'h4d42 && planes==1 && bit_count==24 && compression==0 &&
+  page_index=={13'd0,page} && set_id==SET_ID && locator_base=={11'd0,expected_base} &&
+  payload_bytes=={9'd0,expected_words,2'b00};
+ html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
+  .byte_valid(state==HWAIT&&sector_valid),.byte_index(byte_index),.byte_data(sector_data),
+  .file_len(file_len),.pixel_offset(pixel_offset),.pixel_end(pixel_end),.dib_size(dib_size),.width(width),.height(height),
+  .valid(locator_valid),.scene_offset(scene_offset),.payload_bytes(payload_bytes),.word_base(locator_base),.set_id(set_id),.page_index(page_index));
+ always @(posedge clk)begin
+  if(rst)begin pixel_end<=0;body_ok<=0;end
+  else begin
+   pixel_end<=pixel_offset+32'd921600;
+   body_ok<=body_magic==32'h4c584648 && body_version==1 && body_words=={11'd0,expected_words} &&
+    body_set==SET_ID && body_base=={11'd0,expected_base} && body_page=={29'd0,page} &&
+    body_count==(page==0 ? 9 : page==5 ? 10 : 12) &&
+    body_desc_offset==64 && body_desc_stride==8 && body_bg_stride==214 && body_width==640 && body_height==480;
+  end
+ end
+ always @(posedge clk)begin
+  if(rst)begin
+   state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;
+   sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
+   byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;assembled<=0;
+   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;signature<=0;planes<=0;bit_count<=0;compression<=0;
+   body_magic<=0;body_version<=0;body_words<=0;body_count<=0;body_set<=0;body_base<=0;body_page<=0;
+   body_desc_offset<=0;body_desc_stride<=0;body_bg_stride<=0;body_width<=0;body_height<=0;
+   finish_sync<=0;finish_seen<=0;
+  end else begin
+   finish_sync<={finish_sync[1:0],write_finish_toggle};write_en<=0;
+   if(sector_valid||sector_end||write_req_ack||finish_pulse||!active)timeout_count<=0;
+   else if(timeout_count<TIMEOUT_CYCLES)timeout_count<=timeout_count+1'b1;
+   if(finish_pulse&&state>=WREQ&&state<=FINISH)finish_seen<=1;
+   if(active&&(sector_error||timeout_count==TIMEOUT_CYCLES))begin
+    error<=1;active<=0;state<=FAIL;write_req<=0;sector_req<=0;
+   end else case(state)
+    IDLE:if(enable)begin active<=1;page<=0;origin<=sector0;state<=HREQ;end
+    HREQ:begin
+     sector_req<=1;sector_addr<=origin;byte_index<=0;signature<=0;file_len<=0;pixel_offset<=0;
+     dib_size<=0;width<=0;height<=0;planes<=0;bit_count<=0;compression<=0;state<=HWAIT;
+    end
+    HWAIT:begin
+     if(sector_valid)begin
+      if(byte_index<513)byte_index<=byte_index+1'b1;
+      case(byte_index)
+       0:signature[7:0]<=sector_data;1:signature[15:8]<=sector_data;
+       2:file_len[7:0]<=sector_data;3:file_len[15:8]<=sector_data;4:file_len[23:16]<=sector_data;5:file_len[31:24]<=sector_data;
+       10:pixel_offset[7:0]<=sector_data;11:pixel_offset[15:8]<=sector_data;12:pixel_offset[23:16]<=sector_data;13:pixel_offset[31:24]<=sector_data;
+       14:dib_size[7:0]<=sector_data;15:dib_size[15:8]<=sector_data;16:dib_size[23:16]<=sector_data;17:dib_size[31:24]<=sector_data;
+       18:width[7:0]<=sector_data;19:width[15:8]<=sector_data;20:width[23:16]<=sector_data;21:width[31:24]<=sector_data;
+       22:height[7:0]<=sector_data;23:height[15:8]<=sector_data;24:height[23:16]<=sector_data;25:height[31:24]<=sector_data;
+       26:planes[7:0]<=sector_data;27:planes[15:8]<=sector_data;28:bit_count[7:0]<=sector_data;29:bit_count[15:8]<=sector_data;
+       30:compression[7:0]<=sector_data;31:compression[15:8]<=sector_data;32:compression[23:16]<=sector_data;33:compression[31:24]<=sector_data;
+      endcase
+     end
+     if(sector_end)begin
+      sector_req<=0;
+      if(header_ok && byte_index+sector_valid==512 && !resource_last_sector[32])begin
+       write_base<=expected_base;write_len<=expected_words;write_req<=1;finish_seen<=0;
+       payload_sector<=origin+(scene_offset>>9);sector_count<=payload_bytes[21:9];sector_index<=0;
+       body_magic<=0;body_version<=0;body_words<=0;body_count<=0;body_set<=0;body_base<=0;body_page<=0;
+       body_desc_offset<=0;body_desc_stride<=0;body_bg_stride<=0;body_width<=0;body_height<=0;state<=WREQ;
+      end else begin error<=1;state<=FAIL;end
+     end
+    end
+    WREQ:if(write_req_ack)begin write_req<=0;state<=WRELEASE;end
+    // ACK low confirms the memory side released FIFO clear before any payload.
+    WRELEASE:if(!write_req_ack)state<=DREQ;
+    DREQ:begin sector_req<=1;sector_addr<=payload_sector+sector_index;byte_index<=0;state<=DWAIT;end
+    DWAIT:begin
+     if(sector_valid)begin
+      if(byte_index<513)byte_index<=byte_index+1'b1;
+      case(byte_index[1:0])
+       0:assembled[7:0]<=sector_data;1:assembled[15:8]<=sector_data;2:assembled[23:16]<=sector_data;
+       3:begin
+        write_data<=assembled_word;write_en<=1;
+        if(sector_index==0)case(byte_index[8:2])
+         0:body_magic<=assembled_word;1:body_version<=assembled_word;2:body_words<=assembled_word;3:body_count<=assembled_word;
+         4:body_desc_offset<=assembled_word;5:body_desc_stride<=assembled_word;7:body_bg_stride<=assembled_word;
+         10:body_width<=assembled_word;11:body_height<=assembled_word;13:body_set<=assembled_word;
+         14:body_base<=assembled_word;15:body_page<=assembled_word;
+        endcase
+       end
+      endcase
+     end
+     if(sector_end)begin
+      sector_req<=0;
+      if(byte_index+sector_valid!=512 || (sector_index==0&&!body_ok))begin error<=1;state<=FAIL;end
+      else if(sector_index+1==sector_count)state<=FINISH;
+      else begin sector_index<=sector_index+1'b1;state<=DREQ;end
+     end
+    end
+    FINISH:if(finish_seen||finish_pulse)begin page_ready[page]<=1;state<=NEXT;end
+    NEXT:if(page==5)begin active<=0;ready<=1;state<=DONE;end
+     else begin
+      page<=page+1'b1;
+      case(page)0:origin<=sector1;1:origin<=sector2;2:origin<=sector3;3:origin<=sector4;default:origin<=sector5;endcase
+      state<=HREQ;
+     end
+    DONE:;
+    FAIL:begin active<=0;write_req<=0;sector_req<=0;end
+    default:state<=FAIL;
+   endcase
+  end
+ end
+endmodule

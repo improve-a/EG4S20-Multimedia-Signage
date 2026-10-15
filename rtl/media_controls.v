@@ -44,6 +44,7 @@ module media_controls #(
     reg next_long_done, next_key_held, next_play_held;
     reg [2:0] next_gesture_mode;
     reg chord_active;
+    reg [3:0] interval_fraction; // tenths within the displayed whole second
     wire chord_now=ENABLE_EXHIBIT && mode==0 && next_down && key4_down && !next_long_done && !key4_long_done;
 
     media_button #(.CLK_FREQ_HZ(CLK_FREQ_HZ), .DEBOUNCE_MS(DEBOUNCE_MS)) next_button
@@ -70,6 +71,7 @@ module media_controls #(
             contrast <= 3'd2;
             interval_seconds <= ENABLE_EXHIBIT ? AUTO_PERIOD_MILLISECONDS / 1000 : DEFAULT_INTERVAL;
             interval_milliseconds <= ENABLE_EXHIBIT ? AUTO_PERIOD_MILLISECONDS : DEFAULT_INTERVAL * 1000;
+            interval_fraction <= ENABLE_EXHIBIT ? (AUTO_PERIOD_MILLISECONDS % 1000) / 100 : 0;
             osd_enable <= 1'b1;
             transition_mode <= ENABLE_EXHIBIT ? 2'd1 : 2'd0;
             scale_mode <= 2'd0;
@@ -145,7 +147,10 @@ module media_controls #(
                         end
                         3'd3: if (ENABLE_EXHIBIT ? interval_milliseconds > 1000 : interval_seconds > 1) begin
                             interval_milliseconds <= ENABLE_EXHIBIT ? interval_milliseconds - 16'd100 : (interval_seconds - 1'b1) * 1000;
-                            interval_seconds <= ENABLE_EXHIBIT ? (interval_milliseconds - 16'd100) / 1000 : interval_seconds - 1'b1;
+                            if(ENABLE_EXHIBIT)begin
+                                if(interval_fraction==0)begin interval_fraction<=9;interval_seconds<=interval_seconds-1'b1;end
+                                else interval_fraction<=interval_fraction-1'b1;
+                            end else interval_seconds<=interval_seconds-1'b1;
                             mode_changed <= 1'b1;
                             param_changed <= 1'b1;
                         end
@@ -186,7 +191,10 @@ module media_controls #(
                     end
                     3'd3: if (ENABLE_EXHIBIT ? interval_milliseconds < 15000 : interval_seconds < 15) begin
                         interval_milliseconds <= ENABLE_EXHIBIT ? interval_milliseconds + 16'd100 : (interval_seconds + 1'b1) * 1000;
-                        interval_seconds <= ENABLE_EXHIBIT ? (interval_milliseconds + 16'd100) / 1000 : interval_seconds + 1'b1;
+                        if(ENABLE_EXHIBIT)begin
+                            if(interval_fraction==9)begin interval_fraction<=0;interval_seconds<=interval_seconds+1'b1;end
+                            else interval_fraction<=interval_fraction+1'b1;
+                        end else interval_seconds<=interval_seconds+1'b1;
                         mode_changed <= 1'b1;
                         param_changed <= 1'b1;
                     end

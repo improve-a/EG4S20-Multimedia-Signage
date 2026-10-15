@@ -4,7 +4,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'harness'))
 from windows_runner import remote_python
 REMOTE=r'D:\FPGA\hx4s20_extensions_20261013'
-a=argparse.ArgumentParser();a.add_argument('action',choices=['launch','status','collect']);a.add_argument('run_id');a.add_argument('--timeout',type=int,default=1800);a.add_argument('--synth-top');a.add_argument('--build-root',type=pathlib.Path);x=a.parse_args()
+a=argparse.ArgumentParser();a.add_argument('action',choices=['launch','status','collect']);a.add_argument('run_id');a.add_argument('--timeout',type=int,default=1800);a.add_argument('--synth-top');a.add_argument('--probe-source',action='append',default=[]);a.add_argument('--build-root',type=pathlib.Path);x=a.parse_args()
 if os.name=='nt':
     base=x.build_root or ROOT/'output/html_fidelity/builds'
     dest=base/x.run_id
@@ -12,7 +12,7 @@ if os.name=='nt':
         (ROOT/'output/html_fidelity/audit').mkdir(parents=True,exist_ok=True)
         check=subprocess.run(['powershell','-NoProfile','-Command','Get-Process td_commands_prompt,td,fdp,synpwrap -ErrorAction SilentlyContinue | Select-Object Id,ProcessName | ConvertTo-Json'],capture_output=True,text=True)
         if check.stdout.strip():raise RuntimeError('Heavy TD already present: '+check.stdout)
-        subprocess.run([sys.executable,str(ROOT/'scripts/prepare_snapshot.py'),x.run_id,'--build-root',str(base)]+(['--synth-top',x.synth_top] if x.synth_top else []),check=True,cwd=ROOT)
+        subprocess.run([sys.executable,str(ROOT/'scripts/prepare_snapshot.py'),x.run_id,'--build-root',str(base)]+(['--synth-top',x.synth_top] if x.synth_top else [])+sum((['--probe-source',v] for v in x.probe_source),[]),check=True,cwd=ROOT)
         dest.mkdir(parents=True,exist_ok=False)
         archive=ROOT/'artifacts'/(x.run_id+'_source.zip')
         with zipfile.ZipFile(archive) as z:z.extractall(dest)
@@ -40,7 +40,7 @@ if x.action=='launch':
     # Check process names before preparing; the supervisor also owns a lock.
     text=remote_python("import subprocess,json\np=subprocess.run(['powershell','-NoProfile','-Command',\"Get-Process td_commands_prompt,td,fdp,synpwrap -ErrorAction SilentlyContinue | Select-Object Id,ProcessName | ConvertTo-Json\"],capture_output=True)\nprint(p.stdout.decode(errors='replace'))")
     if text.strip():raise RuntimeError('A potentially heavy TD process is present: '+text)
-    subprocess.run([sys.executable,str(ROOT/'scripts/prepare_snapshot.py'),x.run_id]+(['--synth-top',x.synth_top] if x.synth_top else []),check=True)
+    subprocess.run([sys.executable,str(ROOT/'scripts/prepare_snapshot.py'),x.run_id]+(['--synth-top',x.synth_top] if x.synth_top else [])+sum((['--probe-source',v] for v in x.probe_source),[]),check=True)
     print(remote_python(f"from pathlib import Path\np=Path({REMOTE!r});(p/'artifacts').mkdir(exist_ok=True);(p/'audit').mkdir(exist_ok=True)\n"))
     archive=ROOT/'artifacts'/(x.run_id+'_source.zip')
     subprocess.run(['scp',str(archive),'thinkpad:'+REMOTE.replace('\\','/')+'/artifacts/'],check=True)

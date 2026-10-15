@@ -16,7 +16,9 @@ GROUP=["rtl/ext/html_memory_bridge.v","rtl/ext/exhibit_viewport.v","rtl/SD/frame
 CASES=[
  case("control_modes_tb",CONTROL,"Legacy key/settings behavior"),
  case("content_modes_tb",SD,"Legacy daily/emergency grouping and eight-slot discovery"),
+ case("exhibit_interval_tb",CONTROL,"100ms interval updates, second carry/borrow, saturation, reset and no runtime divider"),
  case("exhibit_keys_tb",CONTROL,"Physical debounce, previous chord, six focus presets, zoom and pause/mute"),
+ case("exhibit_layer_control_tb",SD,"External HFXL page readiness, six-sector catalog, no ordinary BMP load and actual ACK ownership"),
  case("exhibit_control_tb",SD,"Six-page resident readiness, real ACK ownership, late resources, rapid previous/next and exact5400ms"),
  case("exhibit_panel_mux_tb",SD,"One existing physical SD arbiter, audio/panel routing and parser isolation; transport modeled"),
  case("exhibit_packed_tb",VIEW,"Logical address geometry only: six full640x480 packed/zoom/focus frames"),
@@ -49,7 +51,8 @@ def main():
     for exe in [r"C:\iverilog\bin\iverilog.exe",r"C:\iverilog\bin\vvp.exe"]:
         p=subprocess.run([exe,"-V"],capture_output=True,timeout=30)
         report["tools"][exe]={"exit":p.returncode,"identity":(p.stdout+p.stderr).decode(errors="replace")}
-    files=sorted({"harness/test_runner.py","scripts/html_control_verify.py"}|{s for c in selected for s in c["sources"]})
+    fixtures={"tests/audio_arbiter_card.hex"} if any(c["top"]=="audio_arbiter_tb" for c in selected) else set()
+    files=sorted({"harness/test_runner.py","scripts/html_control_verify.py"}|{s for c in selected for s in c["sources"]}|fixtures)
     report["source_sha256"]={name:sha(root/name) for name in files}
     (out/"inputs.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
     started=time.monotonic()

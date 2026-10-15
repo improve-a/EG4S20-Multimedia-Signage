@@ -82,7 +82,7 @@ initial begin
 end
 initial begin #2000000;$fatal(1,"timeout");end
 endmodule
-module bmp_read #(parameter ENABLE_SCALE=0) (
+module bmp_read #(parameter ENABLE_SCALE=0,ENABLE_HFXL=0) (
   input [1:0] scale_mode,
   input clk,rst,scan_start,
   output reg ready,

@@ -2,10 +2,13 @@
 import argparse,datetime,hashlib,json,pathlib,re,subprocess,zipfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 REMOTE=r'D:\FPGA\hx4s20_extensions_20261013'
-a=argparse.ArgumentParser();a.add_argument('run_id');a.add_argument('--synth-top');a.add_argument('--build-root');x=a.parse_args()
+a=argparse.ArgumentParser();a.add_argument('run_id');a.add_argument('--synth-top');a.add_argument('--probe-source',action='append',default=[]);a.add_argument('--build-root');x=a.parse_args()
 assert re.fullmatch('[A-Za-z0-9_-]+',x.run_id)
 if x.synth_top:assert re.fullmatch('[A-Za-z_][A-Za-z0-9_]*',x.synth_top)
 dest=str(pathlib.Path(x.build_root)/x.run_id) if x.build_root else REMOTE+'\\builds\\'+x.run_id
+if (ROOT/'rtl/ext/html_caption_column_rom.v').exists() and not (ROOT/'rtl/ext/html_assets/html_caption_columns.hex').exists():
+    from html_caption_columns import main as generate_caption_columns
+    generate_caption_columns()
 from html_rom_init import generate as generate_html_rom_init
 if (ROOT/'rtl/ext/html_assets/bot_body_argb4444.hex').exists():generate_html_rom_init(ROOT)
 files={}
@@ -15,6 +18,23 @@ for folder,prefix in [('rtl','user_source/hdl_source'),('project/user_source/con
             files[prefix+'/'+p.relative_to(ROOT/folder).as_posix()]=p.read_bytes()
 project='td_project/hx4s20_basic.al'
 txt=files[project].decode('utf-8')
+if x.probe_source and not x.synth_top:a.error('--probe-source requires --synth-top')
+for order,source in enumerate(x.probe_source,90):
+    source=pathlib.PurePosixPath(source.replace('\\','/'))
+    if source.is_absolute() or '..' in source.parts:a.error('Probe source must be relative to rtl')
+    path='user_source/hdl_source/'+source.as_posix()
+    if path not in files:a.error('Probe source missing: '+str(source))
+    if '../'+path in txt:continue
+    entry=('            <File Path="../'+path+'">\n'
+           '                <FileInfo>\n'
+           '                    <Attr Name="UsedInSyn" Val="true"/>\n'
+           '                    <Attr Name="UsedInP&R" Val="true"/>\n'
+           '                    <Attr Name="BelongTo" Val="design_1"/>\n'
+           '                    <Attr Name="CompileOrder" Val="'+str(order)+'"/>\n'
+           '                </FileInfo>\n'
+           '            </File>\n')
+    txt=txt.replace('        </Verilog>',entry+'        </Verilog>',1)
+
 txt=re.sub(r'(<Project Version="3" Minor="2" Path=")[^"]*',lambda m:m[1]+dest.replace('\\','/')+'/work/design/td_project',txt)
 files[project]=txt.encode()
 # Resolve initialization files to this immutable snapshot before synthesis.

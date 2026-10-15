@@ -5,7 +5,7 @@ reg rst=1,active=0,preq=0,areq=0;
 wire[7:0]pdata,adata;wire pv,pe,px,av,ae,ax,agrant;
 reg[7:0]data=0;reg sv=0,se=0,sx=0;
 integer pbytes=0,abytes=0,pends=0,aends=0,busy=0,pos=0,requestcount=0;
-reg[31:0]held;reg wasaudio;
+reg[31:0]held;reg wasaudio;reg transport_checks=1;
 sd_card_bmp #(.CLK_FREQ_HZ(1000),.ENABLE_EXHIBIT(1),.ENABLE_AUDIO(1),.DEBOUNCE_MS(5))dut(
 .clk(clk),.rst(rst),.key_next(1'b1),.key_auto(1'b1),.key_pause_mute(1'b1),.bmp_width(16'd640),.bmp_height(16'd480),
 .write_finish_toggle(1'b0),.display_commit_ack_toggle(1'b0),.storage_fault_async(1'b0),.write_req_ack(1'b0),.SD_MISO(1'b1),
@@ -23,7 +23,7 @@ always@(negedge clk)begin
   end else if(busy==2 && !dut.physical_req)busy=0;
  end
 end
-always@(posedge clk)if(!rst)begin
+always@(posedge clk)if(!rst && transport_checks)begin
  if(agrant)areq<=0;
  if(pv)begin if(pdata!==(pbytes[7:0]^8'h50))$fatal(1,"panelbyte");pbytes=pbytes+1;end
  if(av)begin if(adata!==(abytes[7:0]^8'ha0))$fatal(1,"audiobyte");abytes=abytes+1;end
@@ -40,13 +40,29 @@ initial begin
  active=1;preq=1;areq=1;
  wait(pends==1 && aends==1);repeat(10)@(negedge clk);
  if(pbytes!=512 || abytes!=512 || requestcount!=2)$fatal(1,"sectorcount/order");
- active=0;repeat(2)@(negedge clk);force dut.bmp_client_valid=1;
- #1;if(!dut.sd_sec_read_data_valid || pv)$fatal(1,"legacyBMProutingnotrestored");release dut.bmp_client_valid;
- $display("TEST_PASS exhibit_panel_mux existingphysicalSDarbiter audio512panel512 isolation stableLBA nosecondreader restoreBMP");$finish;
+ // Response bundle is registered together only on the BMP path. Panel
+ // responses remain direct; ownership switches occur after idle sector drain.
+ transport_checks=0;active=0;repeat(2)@(negedge clk);
+ force dut.bmp_client_data=8'h3c;force dut.bmp_client_valid=1;
+ force dut.bmp_client_end=1;force dut.bmp_client_error=1;
+ #1;if(dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error || pv)$fatal(1,"BMPnotregistered");
+ @(posedge clk);#1;
+ if(!dut.sd_sec_read_data_valid || !dut.sd_sec_read_end || !dut.sd_sec_read_error || dut.sd_sec_read_data!==8'h3c || pv)$fatal(1,"BMPbundlealignment");
+ @(negedge clk);force dut.bmp_client_data=8'hf1;force dut.bmp_client_valid=0;
+ force dut.bmp_client_end=0;force dut.bmp_client_error=0;
+ #1;if(!dut.sd_sec_read_data_valid || !dut.sd_sec_read_end || !dut.sd_sec_read_error || dut.sd_sec_read_data!==8'h3c)$fatal(1,"BMPbundlehold");
+ @(posedge clk);#1;
+ if(dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error || dut.sd_sec_read_data!==8'hf1)$fatal(1,"BMPbundleclear");
+ @(negedge clk);active=1;force dut.bmp_client_data=8'ha5;force dut.bmp_client_valid=1;
+ force dut.bmp_client_end=1;force dut.bmp_client_error=1;
+ #1;if(!pv || !pe || !px || pdata!==8'ha5)$fatal(1,"paneldirectbundle");
+ @(posedge clk);#1;if(dut.sd_sec_read_data_valid || dut.sd_sec_read_end || dut.sd_sec_read_error)$fatal(1,"panelBMPisolationregistered");
+ release dut.bmp_client_data;release dut.bmp_client_valid;release dut.bmp_client_end;release dut.bmp_client_error;
+ $display("TEST_PASS exhibit_panel_mux existingphysicalSDarbiter audio512panel512 isolation stableLBA nosecondreader BMPbundle1cycle data_valid_end_error paneldirect");$finish;
 end
 initial begin #1000000;$fatal(1,"timeout");end
 endmodule
-module bmp_read #(parameter ENABLE_SCALE=0) (
+module bmp_read #(parameter ENABLE_SCALE=0,ENABLE_HFXL=0) (
   input [1:0] scale_mode,
   input clk,rst,scan_start,
   output reg ready,

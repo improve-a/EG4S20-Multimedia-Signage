@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# Apply authored top-level and linear-write integration to local dependencies.
+# Apply authored top-level, linear-write and tagged BMP integration to local dependencies.
 # Restore docs/local_dependencies.json first. Apply the SD and memory-controller
 # scripts separately, then this script. Tracked project configuration and authored
 # modules already come from Git. Only integration deltas are embedded here.
 import argparse,hashlib,json,pathlib
 FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
                              'baseline_text_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
-                             'result_text_sha256': '08fb977ed84393224a64e4e07fe70520b03bae9f06489b8afb3940d8a9b3799e',
+                             'result_text_sha256': '326b3c3f5cf7e61be606b874c93b250da6dbc4a55c82371dad89ea54dc2f1a7c',
                              'edits': [{'start': 0,
                                         'end': 0,
                                         'old': [],
@@ -44,9 +44,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'always @(posedge '
                                                 'video_clk)if(video_rst)commit_previous<=0;else '
                                                 'commit_previous<=commit_ack_toggle;\n',
-                                                'assign fifo_fault=frame_fifo_fault|tag_fault;\n',
-                                                'assign '
-                                                'sd_card_write_req_ack=write_ack&&!panel_active;\n',
+                                                'assign fifo_fault=frame_fifo_fault|tag_fault|panel_error;\n',
+                                                'assign sd_card_write_req_ack=write_ack&&!panel_active;\n',
                                                 'frame_config_bridge #(.WIDTH(3),.RESET_VALUE(0)) '
                                                 'focus_bridge(\n',
                                                 ' '
@@ -209,7 +208,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '(panel_active?panel_write_data:sd_card_write_data)\n']}]},
  'rtl/SD/frame_fifo_write.v': {'baseline_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
                                'baseline_text_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
-                               'result_text_sha256': '51d6c801f8b617cbd677f30969ddcb727fbf8fde551dcc438e1277c973e3ec79',
+                               'result_text_sha256': 'f226456b201e5f0d34919d8767686dfacf65842c80f43357ebf87cc1fd863edb',
                                'edits': [{'start': 0,
                                           'end': 0,
                                           'old': [],
@@ -225,51 +224,67 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                          {'start': 42,
                                           'end': 42,
                                           'old': [],
-                                          'new': ['reg [1:0] linear_sync;\n',
+                                          'new': ['// Bundled write metadata stays stable until completion '
+                                                  'in the source domain.\n',
+                                                  '// Two capture stages precede the existing three-stage '
+                                                  'request/ACK handshake;\n',
+                                                  '// perform vertical-flip arithmetic only on the captured '
+                                                  'memory-domain base.\n',
+                                                  '(* async_reg="true" *) reg [ADDR_BITS-1:0] '
+                                                  'base_sync0,base_sync1;\n',
+                                                  'wire [ADDR_BITS-1:0] selected_base = write_addr_index==0 '
+                                                  '? write_addr_0 :\n',
+                                                  ' write_addr_index==1 ? write_addr_1 : write_addr_index==2 '
+                                                  '? write_addr_2 : write_addr_3;\n',
+                                                  'always @(posedge mem_clk or posedge rst)\n',
+                                                  ' if(rst)begin base_sync0<=0;base_sync1<=0;end\n',
+                                                  ' else begin '
+                                                  'base_sync0<=selected_base;base_sync1<=base_sync0;end\n',
+                                                  '(* async_reg="true" *) reg [1:0] linear_sync;\n',
                                                   'reg linear_latched;\n',
                                                   'always @(posedge mem_clk or posedge rst)\n',
                                                   ' if(rst)begin linear_sync<=0;linear_latched<=0;end\n',
                                                   ' else begin '
                                                   'linear_sync<={linear_sync[0],(ENABLE_LINEAR_CONFIG ? '
                                                   "write_linear : 1'b0)};\n",
-                                                  ' '
-                                                  'if(state==S_ACK)linear_latched<=linear_sync[1];end\n']},
-                                         {'start': 138,
-                                          'end': 139,
-                                          'old': ['\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
-                                                  '(write_addr_0 + VFLIP_FIRST_ADDR_OFFSET) : '
-                                                  'write_addr_0;\n'],
-                                          'new': ['\t\t\t\t\tApp_wr_addr_r <= (WRITE_V_FLIP && '
-                                                  '!linear_sync[1]) ? (write_addr_0 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_0;\n']},
-                                         {'start': 140,
-                                          'end': 141,
-                                          'old': ['\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
-                                                  '(write_addr_1 + VFLIP_FIRST_ADDR_OFFSET) : '
-                                                  'write_addr_1;\n'],
-                                          'new': ['\t\t\t\t\tApp_wr_addr_r <= (WRITE_V_FLIP && '
-                                                  '!linear_sync[1]) ? (write_addr_1 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_1;\n']},
-                                         {'start': 142,
-                                          'end': 143,
-                                          'old': ['\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
-                                                  '(write_addr_2 + VFLIP_FIRST_ADDR_OFFSET) : '
-                                                  'write_addr_2;\n'],
-                                          'new': ['\t\t\t\t\tApp_wr_addr_r <= (WRITE_V_FLIP && '
-                                                  '!linear_sync[1]) ? (write_addr_2 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_2;\n']},
-                                         {'start': 144,
+                                                  ' if(state==S_ACK)linear_latched<=linear_sync[1];end\n']},
+                                         {'start': 137,
                                           'end': 145,
-                                          'old': ['\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
-                                                  '(write_addr_3 + VFLIP_FIRST_ADDR_OFFSET) : '
-                                                  'write_addr_3;\n'],
-                                          'new': ['\t\t\t\t\tApp_wr_addr_r <= (WRITE_V_FLIP && '
-                                                  '!linear_sync[1]) ? (write_addr_3 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_3;\n']},
+                                          'old': ["\t\t\t\tif(write_addr_index_d1 == 2'd0)\n",
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_0 + '
+                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_0;\n',
+                                                  "\t\t\t\telse if(write_addr_index_d1 == 2'd1)\n",
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_1 + '
+                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_1;\n',
+                                                  "\t\t\t\telse if(write_addr_index_d1 == 2'd2)\n",
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_2 + '
+                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_2;\n',
+                                                  "\t\t\t\telse if(write_addr_index_d1 == 2'd3)\n",
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_3 + '
+                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_3;\n'],
+                                          'new': ['                App_wr_addr_r <= (WRITE_V_FLIP && '
+                                                  '!linear_sync[1]) ?\n',
+                                                  '                    (base_sync1 + '
+                                                  'VFLIP_FIRST_ADDR_OFFSET) : base_sync1;\n']},
                                          {'start': 148,
                                           'end': 149,
                                           'old': ['\t\t\t\tif(WRITE_V_FLIP)\n'],
-                                          'new': ['\t\t\t\tif(WRITE_V_FLIP && !linear_latched)\n']}]}}
+                                          'new': ['\t\t\t\tif(WRITE_V_FLIP && !linear_latched)\n']}]},
+ 'rtl/SD/bmp_read.v': {'baseline_sha256': '28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882',
+                       'baseline_text_sha256': '28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882',
+                       'result_text_sha256': '317b451bb56d1094861ddbdc983b2abfc4cf9b69e4f89314e9938b6dd026fc4d',
+                       'edits': [{'start': 1,
+                                  'end': 2,
+                                  'old': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter '
+                                          'ENABLE_SCALE=0)(\n'],
+                                  'new': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter '
+                                          'ENABLE_SCALE=0, parameter ENABLE_HFXL=0)(\n']},
+                                 {'start': 19,
+                                  'end': 20,
+                                  'old': [' bmp_scale_read #(.TIMEOUT_CYCLES(TIMEOUT_CYCLES)) impl(\n'],
+                                  'new': [' bmp_scale_read '
+                                          '#(.TIMEOUT_CYCLES(TIMEOUT_CYCLES),.ENABLE_HFXL(ENABLE_HFXL)) '
+                                          'impl(\n']}]}}
 
 def digest(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()

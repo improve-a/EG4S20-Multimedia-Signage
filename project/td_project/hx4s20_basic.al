@@ -479,6 +479,22 @@
                     <Attr Name="CompileOrder" Val="79"/>
                 </FileInfo>
             </File>
+            <File Path="../user_source/hdl_source/ext/html_caption_column_rom.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true"/>
+                    <Attr Name="UsedInP&R" Val="true"/>
+                    <Attr Name="BelongTo" Val="design_1"/>
+                    <Attr Name="CompileOrder" Val="80"/>
+                </FileInfo>
+            </File>
+            <File Path="../user_source/hdl_source/ext/html_resource_locator.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true"/>
+                    <Attr Name="UsedInP&R" Val="true"/>
+                    <Attr Name="BelongTo" Val="design_1"/>
+                    <Attr Name="CompileOrder" Val="81"/>
+                </FileInfo>
+            </File>
         </Verilog>
         <ADC_FILE>
             <File Path="../user_source/constraints_source/pin.adc">

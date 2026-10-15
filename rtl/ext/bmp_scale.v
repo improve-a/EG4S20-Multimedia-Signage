@@ -78,7 +78,7 @@ endmodule
 // Buffer a complete sector before parsing it. Pausing the parser while a line
 // is emitted cannot lose SPI bytes, and the next sector is requested only after
 // the buffer has been consumed. Header reread follows the legacy write handshake.
-module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000)(
+module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_HFXL=0)(
  input clk,rst, output ready,
  input scan_start, input [31:0] scan_start_sector,scan_max_sector,
  input [3:0] scan_target_count,
@@ -118,6 +118,16 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000)(
  wire [31:0] rgb_row={20'd0,rgb_row_narrow};
  wire [31:0] row_stride={20'd0,row_stride_narrow};
  wire [31:0] pixel_end=pixel_end_wide[31:0];
+ wire hfxl_extent_ok;
+ generate if(ENABLE_HFXL)begin: layer_locator
+  html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
+   .byte_valid(state==HRECV && sd_sec_read_data_valid),.byte_index(receive_count),
+   .byte_data(sd_sec_read_data),.file_len(file_len),.pixel_offset(pixel_offset),
+   .pixel_end(pixel_end),.dib_size(dib_size),.width(width),.height(height),
+   .valid(hfxl_extent_ok),.scene_offset(),.payload_bytes(),.word_base(),.set_id(),.page_index());
+ end else begin: ordinary_bmp
+  assign hfxl_extent_ok=1'b0;
+ end endgenerate
  always @(posedge clk) begin
   if(rst) begin
    rgb_row_narrow<=0;row_stride_narrow<=0;image_bytes<=0;
@@ -158,7 +168,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000)(
    offset_lower_ok<=!dib_end[32]&&({1'b0,pixel_offset}>=dib_end);
    offset_upper_ok<=pixel_offset<=32'd1048576;
    extent_lower_ok<=file_len>=pixel_end;
-   extent_upper_ok<=file_len<=max_file_len;
+   extent_upper_ok<=(file_len<=max_file_len)||hfxl_extent_ok;
    end_ok<=!pixel_end_wide[32];lba_ok<=!last_sector[32];
    dimensions_ok<=signature_ok&&width_ok&&height_ok;
    format_ok<=planes_ok&&bits_ok&&compression_ok&&dib_ok;

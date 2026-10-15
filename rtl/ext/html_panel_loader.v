@@ -14,7 +14,7 @@ module html_panel_loader #(
  output reg [20:0] write_base,output [20:0] write_len,
  input write_finish_toggle
 );
- localparam IDLE=0,HREQ=1,HWAIT=2,WREQ=3,DREQ=4,DWAIT=5,FINISH=6,NEXT=7,DONE=8,FAIL=9;
+ localparam IDLE=0,HREQ=1,HWAIT=2,WREQ=3,DREQ=4,DWAIT=5,FINISH=6,NEXT=7,DONE=8,FAIL=9,WRELEASE=10;
  reg [3:0] state;
  reg [1:0] panel;
  reg [9:0] byte_index;
@@ -70,7 +70,8 @@ module html_panel_loader #(
       else begin error<=1;state<=FAIL;end
      end
     end
-    WREQ:if(write_req_ack)begin write_req<=0;sector_index<=1;state<=DREQ;end
+    WREQ:if(write_req_ack)begin write_req<=0;sector_index<=1;state<=WRELEASE;end
+    WRELEASE:if(!write_req_ack)state<=DREQ;
     DREQ:begin sector_req<=1;sector_addr<=origin+sector_index;byte_index<=0;state<=DWAIT;end
     DWAIT:begin
      if(sector_valid)begin
