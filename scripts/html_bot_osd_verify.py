@@ -3,7 +3,7 @@ import hashlib,json,os,shutil,struct,subprocess,sys,time,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'output/html_fidelity/bot_osd'
-SOURCES=['rtl/ext/html_bot_overlay.v','rtl/ext/html_osd_overlay.v',
+SOURCES=['rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','rtl/ext/html_osd_overlay.v',
  'rtl/ext/html_assets/html_caption_map.v','tests/html_bot_osd_tb.v']
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def png_from_ppm(p):
@@ -27,7 +27,7 @@ def main():
  def save():
   blob=json.dumps(evidence,indent=2);(OUT/'verification.json').write_text(blob);(snapshot/'verification.json').write_text(blob)
  save()
- cmds=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-Wall','-s','html_bot_osd_tb','-o',str(OUT/'sim.vvp')]+SOURCES),
+ cmds=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM','-Wall','-s','html_bot_osd_tb','-o',str(OUT/'sim.vvp')]+SOURCES),
        ('simulation',[r'C:\iverilog\bin\vvp.exe',str(OUT/'sim.vvp')]+(['+quick'] if '--quick' in sys.argv else []))]
  for name,cmd in cmds:
   start=time.time()

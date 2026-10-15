@@ -1,7 +1,7 @@
 // A-frame is addressed/zoomed in SDRAM; independent B/C layers remain in screen coordinates.
 module html_video_overlay(
  input clk,rst,i_hs,i_vs,i_de,input [23:0] i_rgb,
- input [46:0] config_data,input page_event,input [2:0] page_index,input dual_enable,input page_reverse,
+ input [46:0] config_data,input page_event,input [2:0] page_index,input dual_enable,input page_reverse,input [2:0] focus,
  input [15:0] audio_peak,input [3:0] audio_status,
  output o_hs,o_vs,o_de,output [23:0] o_rgb
 );
@@ -19,7 +19,7 @@ module html_video_overlay(
   .brightness(brightness),.contrast(contrast),.o_hs(ah),.o_vs(av),.o_de(ad),.o_rgb(argb));
  html_osd_overlay osd(.clk(clk),.rst(rst),.i_hs(ah),.i_vs(av),.i_de(ad),.i_rgb(argb),
   .osd_enable(osd_enable),.page_event(page_event),.page_index(page_index),.dual_enable(dual_enable),
-  .zoom_enable(scale_mode!=0),.progress(progress),.brightness(brightness),.contrast(contrast),
+  .zoom_enable(scale_mode!=0),.scale_mode(scale_mode),.focus(focus),.progress(progress),.brightness(brightness),.contrast(contrast),
   .mode(mode),.volume(volume),.mute(mute),.paused(paused),.auto_mode(auto_mode),.interval(interval_seconds),
   .audio_peak(audio_peak),.audio_status(audio_status),.speaking(speaking),.syllable(syllable),
   .o_hs(bh),.o_vs(bv),.o_de(bd),.o_rgb(brgb));

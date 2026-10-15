@@ -1,20 +1,21 @@
+// HTML_FIDELITY_INTEGRATED
 // Source holds the candidate until acknowledgement. Synchronize the event, then
 // allow an extra destination cycle before sampling the bundled address. A source
 // acknowledgement releases the old front buffer only after the reader accepts.
-module display_commit(
+module display_commit #(parameter BUFFER_BITS=2)(
  input video_clk, rst,
  input raw_read_req,
  output reg raw_read_ack,
  output reg mem_read_req,
  input mem_read_ack,
  input commit_toggle_async,
- input [1:0] candidate_async,
+ input [BUFFER_BITS-1:0] candidate_async,
  input fault_async,
- output reg [1:0] active_buf,
+ output reg [BUFFER_BITS-1:0] active_buf,
  output reg commit_ack_toggle
 );
  (* async_reg = "true" *) reg [1:0] commit_sync, fault_sync;
- reg [1:0] candidate_meta, candidate_sync, previous_buf;
+ reg [BUFFER_BITS-1:0] candidate_meta, candidate_sync, previous_buf;
  reg [2:0] state;
  reg [1:0] settle;
  reg accepted_toggle,accept_commit;

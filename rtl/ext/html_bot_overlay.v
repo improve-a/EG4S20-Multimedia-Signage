@@ -13,8 +13,6 @@ module html_bot_overlay #(
  output reg o_hs,o_vs,o_de,
  output reg [23:0] o_rgb
 );
- reg [15:0] body [0:10399];
- initial $readmemh(BODY_FILE,body);
  reg [9:0] x,y; reg prev_de,prev_vs;
  wire [9:0] px=prev_de?x:10'd0;
  wire frame_start=i_vs&&!prev_vs;
@@ -135,7 +133,9 @@ module html_bot_overlay #(
  reg [23:0] bg0,bg1,bg2;
  reg signed [10:0] lx0,ly0,ux1,uy1;
  reg en0,en1;
- reg [15:0] tex2;
+ wire [15:0] body_rom_data;
+ reg texvalid2;
+ wire [15:0] tex2=texvalid2 ? body_rom_data : 16'd0;
  reg [1:0] eye2;
  reg [3:0] alpha2;
  reg [7:0] red2,green2,blue2;
@@ -157,6 +157,8 @@ module html_bot_overlay #(
  reg signed [10:0] eye_cx,eye_cy;
  reg [3:0] left_width,right_width;
  integer addr;
+ html_rom16 #(.WORDS(10400),.ADDR_BITS(14),.INIT_FILE(BODY_FILE)) body_rom(
+  .clk(clk),.address(addr[13:0]),.data(body_rom_data));
  always @*begin
   shape_int=(shape>>>4)+(breath_phase<104?($signed({1'b0,breath_phase})>>>5):((16'sd274-$signed({1'b0,breath_phase}))>>>6));
   tilt_int=tilt>>>4;hop_int=hop>>>4;
@@ -200,7 +202,7 @@ module html_bot_overlay #(
  always @(posedge clk)begin
   if(rst)begin
    sync0<=0;sync1<=0;sync2<=0;sync3<=0;bg0<=0;bg1<=0;bg2<=0;
-   lx0<=0;ly0<=0;ux1<=0;uy1<=0;en0<=0;en1<=0;tex2<=0;eye2<=0;
+   lx0<=0;ly0<=0;ux1<=0;uy1<=0;en0<=0;en1<=0;texvalid2<=0;eye2<=0;
    red3<=0;green3<=0;blue3<=0;alpha3<=0;bg3r<=0;bg3g<=0;bg3b<=0;fg3r<=0;fg3g<=0;fg3b<=0;
    o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
   end else begin
@@ -209,9 +211,10 @@ module html_bot_overlay #(
    sync1<=sync0;bg1<=bg0;en1<=en0;
    ux1<=tx_calc[10:0];uy1<=ty_calc[10:0];
    sync2<=sync1;bg2<=bg1;
-   if(en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100)begin
-    tex2<=body[addr];eye2<=eye_left>eye_right?eye_left:eye_right;
-   end else begin tex2<=0;eye2<=0;end
+   texvalid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100;
+   if(en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100)
+    eye2<=eye_left>eye_right ? eye_left : eye_right;
+   else eye2<=0;
    sync3<=sync2;alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bg2[23:16];bg3g<=bg2[15:8];bg3b<=bg2[7:0];
    red3<=blend_product(red2,bg2[23:16],alpha2);
    green3<=blend_product(green2,bg2[15:8],alpha2);

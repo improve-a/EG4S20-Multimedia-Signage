@@ -6,6 +6,8 @@ a=argparse.ArgumentParser();a.add_argument('run_id');a.add_argument('--synth-top
 assert re.fullmatch('[A-Za-z0-9_-]+',x.run_id)
 if x.synth_top:assert re.fullmatch('[A-Za-z_][A-Za-z0-9_]*',x.synth_top)
 dest=str(pathlib.Path(x.build_root)/x.run_id) if x.build_root else REMOTE+'\\builds\\'+x.run_id
+from html_rom_init import generate as generate_html_rom_init
+if (ROOT/'rtl/ext/html_assets/bot_body_argb4444.hex').exists():generate_html_rom_init(ROOT)
 files={}
 for folder,prefix in [('rtl','user_source/hdl_source'),('project/user_source/constraints_source','user_source/constraints_source'),('project/td_project','td_project')]:
     for p in (ROOT/folder).rglob('*'):

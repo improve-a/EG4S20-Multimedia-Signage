@@ -11,7 +11,7 @@ module html_bot_osd_tb;
  wire h1,v1,d1,h2,v2,d2,speaking,syllable;
  wire [23:0] rgb1,rgb2;
  html_osd_overlay osd(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
-  .osd_enable(osd_enable),.page_event(page_event),.page_index(page),.dual_enable(dual),.zoom_enable(zoom),
+  .osd_enable(osd_enable),.page_event(page_event),.page_index(page),.dual_enable(dual),.zoom_enable(zoom),.scale_mode(2'd0),.focus(3'd0),
   .progress(8'd128),.brightness(brightness),.contrast(3'd2),.mode(mode),.volume(4'd8),
   .mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd5),
   .audio_peak(16'd24576),.audio_status(4'd2),.speaking(speaking),.syllable(syllable),.o_hs(h1),.o_vs(v1),.o_de(d1),.o_rgb(rgb1));
@@ -88,7 +88,7 @@ module html_bot_osd_tb;
   repeat(3)step;rst=0;repeat(12)step;
   if(bot.eye_coverage(0,0,7,7)!==3||bot.eye_coverage(6,6,7,7)!==0||bot.eye_coverage(0,2,7,1)!==0)
    $fatal(1,"eyes must be circular, with independent blink compression");
-  if(bot.body[0][15:12]!==0||bot.body[103][15:12]!==0)$fatal(1,"body texture opaque rectangle at transparent corner");
+  if(bot.body_rom.memory[0][15:12]!==0||bot.body_rom.memory[103][15:12]!==0)$fatal(1,"body texture opaque rectangle at transparent corner");
   if($test$plusargs("quick"))begin
    bypass_check=0;enable=1;osd_enable=1;quick_check=1;advance_frames(80);
    render("output/html_fidelity/bot_osd/final_target.ppm");
