@@ -145,9 +145,11 @@ python3 scripts/package_unified_offline.py
 
 本 Mac 仓库是后续源码主目录，旧 `hx4s20_extensions` 留作冻结来源；不要在两边并行开发。
 Windows 的裸仓库只中转提交，没有第二份工作分支或工作区。
-本次发布实际使用已连接的 GitHub 插件：Windows 的 GitHub CLI 旧令牌已失效，
-Git HTTPS 凭据亦不可用；没有重置认证。认证恢复前，可让 Codex 通过已连接 GitHub
-提交当前树并把 Mac `main` 快进到远端；下面的 Windows 推送脚本供认证有效时使用。
+本次首次推送尚被认证权限阻塞：Windows 的 GitHub CLI 旧令牌已失效，Git HTTPS
+凭据亦不可用；已连接 GitHub 插件的实际写入返回 403（Resource not accessible by
+integration）。没有重置认证或复制凭据。需先恢复既有 Windows 推送认证，或给现有
+GitHub 连接授予目标仓库 Contents 写权限。下面的脚本供 Windows 认证有效时使用；
+远端 `main` 创建前，暂不执行 `git pull`。
 
 ```sh
 git pull --ff-only origin main
