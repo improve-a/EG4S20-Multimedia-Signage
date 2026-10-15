@@ -13,7 +13,7 @@ module html_bot_osd_tb;
  html_osd_overlay osd(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
   .osd_enable(osd_enable),.page_event(page_event),.page_index(page),.dual_enable(dual),.zoom_enable(zoom),.scale_mode(2'd0),.focus(3'd0),
   .progress(8'd128),.brightness(brightness),.contrast(3'd2),.mode(mode),.volume(4'd8),
-  .mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd5),
+  .mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd5),.interval_fraction(4'd0),
   .audio_peak(16'd24576),.audio_status(4'd2),.speaking(speaking),.syllable(syllable),.o_hs(h1),.o_vs(v1),.o_de(d1),.o_rgb(rgb1));
  html_bot_overlay bot(.clk(clk),.rst(rst),.i_hs(h1),.i_vs(v1),.i_de(d1),.i_rgb(rgb1),
   .enable(enable),.page_event(page_event),.page_direction(direction),

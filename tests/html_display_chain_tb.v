@@ -265,6 +265,7 @@ module html_display_chain_tb;
  begin
   // State fixture only; no pixels are forced. Sources and transforms still
   // execute in real DUT logic. The natural choreography has separate tests.
+  overlay.osd.swap_age=31;overlay.osd.swap_values=overlay.osd.SWAP_STEADY;overlay.osd.palette_loading=0;overlay.osd.palette_valid0=0;overlay.osd.swap_palette_ready=1;
   overlay.osd.typed_count=127;overlay.osd.typing_delay=0;overlay.osd.typing_phase=0;
   overlay.osd.speaking=0;overlay.osd.event_pending=0;overlay.osd.cursor_frame=64;
   overlay.bot.frame_count=128;overlay.bot.breath_phase=0;overlay.bot.reaction_age=255;

@@ -3,7 +3,7 @@ import hashlib,json,os,shutil,struct,subprocess,sys,time,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'output/html_fidelity/bot_osd'
-SOURCES=['rtl/ext/html_caption_column_rom.v','rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','rtl/ext/html_osd_overlay.v',
+SOURCES=['rtl/ext/html_osd_swap_rom.v','rtl/ext/html_caption_column_rom.v','rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','rtl/ext/html_osd_overlay.v',
  'rtl/ext/html_assets/html_caption_map.v','tests/html_bot_osd_tb.v']
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def png_from_ppm(p):

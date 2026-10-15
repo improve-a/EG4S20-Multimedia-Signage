@@ -7,12 +7,12 @@ module html_osd_columns_tb;
  html_osd_overlay dut(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
  .osd_enable(1'b1),.page_event(1'b0),.page_index(page),.dual_enable(dual),.zoom_enable(1'b1),
  .scale_mode(2'd2),.focus(3'd5),.progress(8'd127),.brightness(brightness),.contrast(3'd3),.mode(3'd1),
- .volume(4'd12),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd255),
+ .volume(4'd12),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd255),.interval_fraction(4'd0),
  .audio_peak(16'd20000),.audio_status(4'd2),.speaking(),.syllable(),.o_hs(dh),.o_vs(dv),.o_de(dd),.o_rgb(drgb));
  html_osd_reference refdut(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
  .osd_enable(1'b1),.page_event(1'b0),.page_index(page),.dual_enable(dual),.zoom_enable(1'b1),
  .scale_mode(2'd2),.focus(3'd5),.progress(8'd127),.brightness(brightness),.contrast(3'd3),.mode(3'd1),
- .volume(4'd12),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd255),
+ .volume(4'd12),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd255),.interval_fraction(4'd0),
  .audio_peak(16'd20000),.audio_status(4'd2),.speaking(),.syllable(),.o_hs(rh),.o_vs(rv),.o_de(rd),.o_rgb(rrgb));
  integer checks=0,pixels=0,xx=0,yy=0,layout,pass,seg,first,last,j;
  reg compare=0;integer xq[0:4],yq[0:4];
@@ -33,6 +33,7 @@ module html_osd_columns_tb;
    page=layout%6;dual=layout>=6;brightness=layout%2 ? -255 : 255;
    vs=1;step;vs=0;repeat(8)step;
    for(pass=0;pass<(layout==0 ? 4 : 1);pass=pass+1)begin
+    dut.swap_age=31;dut.swap_values=dut.SWAP_STEADY;dut.palette_loading=0;dut.palette_valid0=0;dut.swap_palette_ready=1;
     dut.typed_count=pass==0 ? 127 : pass==1 ? 0 : pass==2 ? 5 : 25;
     refdut.typed_count=dut.typed_count;dut.cursor_frame=0;refdut.cursor_frame=0;
     for(seg=0;seg<2;seg=seg+1)begin

@@ -10,7 +10,7 @@ module html_zoom_indicator_tb;
  html_osd_overlay dut(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
   .osd_enable(1'b1),.page_event(1'b0),.page_index(page),.dual_enable(1'b0),.zoom_enable(scale!=0),
   .scale_mode(scale),.focus(focus),.progress(8'd0),.brightness(9'd0),.contrast(3'd2),.mode(3'd0),
-  .volume(4'd8),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd5),
+  .volume(4'd8),.mute(1'b0),.paused(1'b0),.auto_mode(1'b1),.interval(8'd5),.interval_fraction(4'd0),
   .audio_peak(16'd0),.audio_status(4'd0),.speaking(sp),.syllable(sy),
   .o_hs(oh),.o_vs(ov),.o_de(od),.o_rgb(out));
  exhibit_viewport mapper(.clk(clk),.rst(rst),.frame_latch(1'b0),.pixel_step(1'b0),

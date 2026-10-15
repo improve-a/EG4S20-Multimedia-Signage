@@ -18,6 +18,7 @@ module html_osd_overlay #(
  input wire [3:0] volume,
  input wire mute,paused,auto_mode,
  input wire [7:0] interval,
+ input wire [3:0] interval_fraction,
  input wire [15:0] audio_peak,
  input wire [3:0] audio_status,
  output reg speaking,syllable,
@@ -36,13 +37,86 @@ module html_osd_overlay #(
  reg signed [8:0] bright;
  reg [3:0] vol;
  reg [7:0] prog,seconds;
+ reg [3:0] seconds_fraction;
  reg event_pending;
+ reg [5:0] swap_age;
+ reg [146:0] swap_values;
+ wire [2:0] swap_y=swap_values[146:144];
+ wire [9:0] card_y=y-{7'd0,swap_y};
+ // BEGIN GENERATED SWAP
+ localparam [146:0] SWAP_STEADY=147'h0a7a49e605e5a1a1916c6c2ba9e9a9377736b;
+ function [2:0] swap_offset;input[5:0] a;begin case(a)
+   6'd0:swap_offset=3'd6;
+   6'd1:swap_offset=3'd5;
+   6'd2:swap_offset=3'd4;
+   6'd3:swap_offset=3'd3;
+   6'd4:swap_offset=3'd2;
+   6'd5:swap_offset=3'd2;
+   6'd6:swap_offset=3'd1;
+   6'd7:swap_offset=3'd1;
+   6'd8:swap_offset=3'd1;
+   6'd9:swap_offset=3'd1;
+   6'd10:swap_offset=3'd1;
+   6'd11:swap_offset=3'd0;
+   6'd12:swap_offset=3'd0;
+   6'd13:swap_offset=3'd0;
+   6'd14:swap_offset=3'd0;
+   6'd15:swap_offset=3'd0;
+   6'd16:swap_offset=3'd0;
+   6'd17:swap_offset=3'd0;
+   6'd18:swap_offset=3'd0;
+   6'd19:swap_offset=3'd0;
+   6'd20:swap_offset=3'd0;
+   6'd21:swap_offset=3'd0;
+   6'd22:swap_offset=3'd0;
+   6'd23:swap_offset=3'd0;
+   6'd24:swap_offset=3'd0;
+   6'd25:swap_offset=3'd0;
+   6'd26:swap_offset=3'd0;
+   6'd27:swap_offset=3'd0;
+   6'd28:swap_offset=3'd0;
+   6'd29:swap_offset=3'd0;
+   6'd30:swap_offset=3'd0;
+   6'd31:swap_offset=3'd0;
+   default:swap_offset=0;
+  endcase end endfunction
+ // END GENERATED SWAP
  reg [6:0] typed_count;
  reg [5:0] typing_delay;
  reg [10:0] typing_phase;
  reg [6:0] cursor_frame;
  reg [4:0] audio_history[0:8];
  reg [3:0] pcm_status;integer ah;
+ // Serial18-byte prefill shares one9K ROM instead of144 parallel lookup bits.
+ // It finishes19 pixel clocks after VS, well before active video33 lines later.
+ wire swap_restart=page_event||event_pending||page_index!=page||dual_enable!=dual;
+ reg [9:0] palette_base;
+ reg [4:0] palette_issue;
+ reg palette_loading,palette_valid0,swap_palette_ready;
+ wire [9:0] palette_address=palette_loading ? palette_base+{5'd0,palette_issue} : 10'd0;
+ wire [7:0] palette_byte;
+ html_osd_swap_rom swap_rom(.clk(clk),.address(palette_address),.data(palette_byte));
+ always @(posedge clk)begin
+  if(rst)begin
+   swap_age<=31;swap_values<=SWAP_STEADY;palette_base<=0;palette_issue<=0;
+   palette_loading<=0;palette_valid0<=0;swap_palette_ready<=1;
+  end else if(frame_start&&(swap_restart||swap_age<31))begin
+   swap_age<=swap_restart ? 6'd0 : swap_age+1'b1;
+   swap_values[146:144]<=swap_offset(swap_restart ? 6'd0 : swap_age+1'b1);
+   palette_base<=swap_restart ? 10'd0 : (swap_age+6'd1)*10'd18;
+   palette_issue<=0;palette_loading<=1;palette_valid0<=0;swap_palette_ready<=0;
+  end else begin
+   palette_valid0<=palette_loading;
+   if(palette_loading)begin
+    if(palette_issue==17)palette_loading<=0;
+    else palette_issue<=palette_issue+1'b1;
+   end
+   if(palette_valid0)begin
+    swap_values[143:0]<={swap_values[135:0],palette_byte};
+    if(!palette_loading)swap_palette_ready<=1;
+   end
+  end
+ end
  wire [7:0] glyph_id;
  wire [3:0] glyph_x;wire [4:0] glyph_y;
  wire [6:0] char_index,total_chars;
@@ -140,7 +214,7 @@ module html_osd_overlay #(
   if(rst)begin
    x<=0;y<=0;prev_de<=0;prev_vs<=0;enabled<=0;dual<=0;zoom<=0;
    muted<=0;stopped<=0;auto_flag<=0;page<=0;ccontrast<=2;cmode<=0;
-   bright<=0;vol<=8;prog<=0;seconds<=5;event_pending<=0;zoom_mode<=0;focus_l<=0;mini_bounds<=0;
+   bright<=0;vol<=8;prog<=0;seconds<=5;seconds_fraction<=0;event_pending<=0;zoom_mode<=0;focus_l<=0;mini_bounds<=0;
    body_base<=0;header_base<=13'd6720;index_base<=13'd7616;typed_count<=0;typing_delay<=6;typing_phase<=0;cursor_frame<=0;speaking<=0;syllable<=0;
    for(ah=0;ah<9;ah=ah+1)audio_history[ah]<=0;pcm_status<=0;
   end else begin
@@ -155,14 +229,15 @@ module html_osd_overlay #(
     index_base<=13'd7616+next_page*13'd80;zoom<=resolved_scale!=0;zoom_mode<=resolved_scale;focus_l<=focus;
     mini_bounds<=mini_geometry(page_index,focus,resolved_scale);
     bright<=brightness;ccontrast<=contrast;cmode<=mode;vol<=volume;
-    muted<=mute;stopped<=paused;auto_flag<=auto_mode;prog<=progress;seconds<=interval;
+    muted<=mute;stopped<=paused;auto_flag<=auto_mode;prog<=progress;seconds<=interval;seconds_fraction<=interval_fraction<10 ? interval_fraction : 4'd0;
     cursor_frame<=cursor_frame+1'b1;pcm_status<=audio_status;
     for(ah=8;ah>0;ah=ah-1)audio_history[ah]<=audio_history[ah-1];
     audio_history[0]<=(mute||paused)?5'd0:(audio_peak>=16'd32768 ?5'd29:audio_peak[14:10]);
     if(page_event||event_pending||page_index!=page||dual_enable!=dual)begin
      event_pending<=0;typed_count<=0;typing_delay<=(page_event||event_pending||page_index!=page)?6'd33:6'd6;
      typing_phase<=0;speaking<=0;
-    end else if(typing_delay!=0)begin typing_delay<=typing_delay-1'b1;speaking<=0;end
+    end else begin
+     if(typing_delay!=0)begin typing_delay<=typing_delay-1'b1;speaking<=0;end
     else if(typed_count<total_chars)begin
      speaking<=1;
      // 19 characters/second / 59.5238095frames/second =399/1250.
@@ -173,6 +248,7 @@ module html_osd_overlay #(
       if(typed_count+1'b1>=total_chars)speaking<=0;
      end else typing_phase<=typing_phase+11'd399;
     end else speaking<=0;
+    end
    end
   end
  end
@@ -209,6 +285,7 @@ module html_osd_overlay #(
   ":":digit=35'b00000001000010000000001000010000000;
   "+":digit=35'b00000001000010011111001000010000000;
   "-":digit=35'b00000000000000011111000000000000000;
+  "s":digit=35'b01111100001000001110000010000111110;
   "X":digit=35'b00000100010101000100010101000100000;
   ".":digit=35'b00000000000000000000000000010000100;
   default:digit=0;
@@ -218,22 +295,30 @@ module html_osd_overlay #(
  input [5:0] n;
  reg [8:0] mag;
  reg [31:0] ratio;
+ reg [5:0] position;
  begin
   mag=bright[8]?-bright:bright;live_char=" ";
+  position=(seconds_fraction!=0&&n>=28) ? n-6'd3 : n;
   case(ccontrast)
    0:ratio="0.50";1:ratio="0.75";3:ratio="1.25";4:ratio="1.50";
    5:ratio="1.75";6:ratio="2.00";default:ratio="1.00";
   endcase
-  case(n)
+  case(position)
    0:live_char="B";1:live_char=":";2:live_char=bright[8]?"-":"+";
    3:live_char="0"+mag/100;4:live_char="0"+(mag/10)%10;5:live_char="0"+mag%10;
    7:live_char="C";8:live_char=":";9:live_char=ratio[31:24];10:live_char=ratio[23:16];11:live_char=ratio[15:8];12:live_char=ratio[7:0];
    14:live_char="V";15:live_char=":";16:live_char="0"+vol/10;17:live_char="0"+vol%10;
-   19:live_char="T";20:live_char=":";21:live_char="0"+seconds/100;
-   22:live_char="0"+(seconds/10)%10;23:live_char="0"+seconds%10;
+   19:live_char="T";20:live_char=":";21:live_char=seconds_fraction!=0&&seconds<100 ? " " : "0"+seconds/100;
+   22:live_char=seconds_fraction!=0&&seconds<10 ? " " : "0"+(seconds/10)%10;23:live_char="0"+seconds%10;
    25:live_char="Z";26:live_char=":";27:live_char=zoom_mode==0 ? "1" : zoom_mode==1 ? "2" : "3";
    29:live_char=auto_flag?"A":"M";31:live_char=stopped?"P":" ";33:live_char=muted?"M":" ";
   endcase
+  if(seconds_fraction!=0)begin
+   case(n)
+    24:live_char=".";25:live_char="0"+seconds_fraction;26:live_char="s";27:live_char=" ";
+    default:begin end
+   endcase
+  end
  end
  endfunction
  reg [23:0] plate_rgb,text_rgb;
@@ -310,10 +395,10 @@ module html_osd_overlay #(
     if(live_col<5&&live_bits[font_bit])begin plate_rgb=24'hede9e2;plate_alpha=15;end
    end
    // Live adjustment strip appears while a parameter mode is selected.
-   if(cmode!=0&&px>=24&&px<238&&y>=467&&y<478)begin
+   if(cmode!=0&&px>=24&&px<(seconds_fraction!=0 ? 10'd256 : 10'd238)&&y>=467&&y<478)begin
     plate_rgb=24'h141311;plate_alpha=13;
     live_x=px-10'd28;live_y=y-10'd469;
-    if(px>=28&&px<232&&y>=469&&y<476)begin
+    if(px>=28&&px<(seconds_fraction!=0 ? 10'd250 : 10'd232)&&y>=469&&y<476)begin
      live_bits=digit(live_char(live_x/8'd6));
      live_col=live_x%8'd6;font_bit=6'd34-live_y*6'd5-live_col;
      if(live_col<5)live_ink=live_bits[font_bit];
@@ -327,30 +412,31 @@ module html_osd_overlay #(
  // A synchronous column descriptor replaces parallel comparisons of758 runs.
  // Metadata, glyph read and alpha arithmetic retain five registered stages.
  reg [12:0] column_address;
- reg column_valid,column_caption;
+ reg column_valid,column_caption,column_card;
  reg [4:0] column_row;
  reg [1:0] column_style;
  always @*begin
-  column_address=13'd0;column_valid=0;column_caption=0;column_row=0;
+  column_address=13'd0;column_valid=0;column_caption=0;column_card=0;column_row=0;
   column_style=y<62 ? 2'd2 : ((y<411&&px>=72) ? 2'd1 : 2'd0);
-  if(px>=42&&px<170&&y>=397&&y<417)begin
-   column_address=header_base+px-10'd42;column_valid=1;column_row=y-10'd397;
-  end else if(px>=42&&px<434&&y>=416&&y<435)begin
-   column_address=body_base+px-10'd42;column_valid=1;column_caption=1;column_row=y-10'd416;
-  end else if(px>=42&&px<210&&y>=435&&y<455)begin
-   column_address=body_base+13'd392+px-10'd42;column_valid=1;column_caption=1;column_row=y-10'd435;
+  if(px>=42&&px<170&&card_y>=397&&card_y<417)begin
+   column_address=header_base+px-10'd42;column_valid=1;column_card=1;column_row=card_y-10'd397;
+  end else if(px>=42&&px<434&&card_y>=416&&card_y<435)begin
+   column_address=body_base+px-10'd42;column_valid=1;column_caption=1;column_card=1;column_row=card_y-10'd416;
+  end else if(px>=42&&px<210&&card_y>=435&&card_y<455)begin
+   column_address=body_base+13'd392+px-10'd42;column_valid=1;column_caption=1;column_card=1;column_row=card_y-10'd435;
   end else if(px>=528&&px<608&&y>=22&&y<43)begin
    column_address=index_base+px-10'd528;column_valid=1;column_row=y-(px>=584 ? 10'd23 : 10'd22);
   end else if(px>=468&&px<486&&y>=433&&y<453)begin
    column_address=13'd8096+px-10'd468;column_valid=1;column_row=y-10'd433;
   end
+  if(column_card)column_style=card_y<411&&px>=72 ? 2'd1 : 2'd0;
  end
  wire [17:0] column_word0;
  html_caption_column_rom column_rom(.clk(clk),.address(column_address),.data(column_word0));
  reg [2:0] sync0,sync1,sync2,sync3;
  reg [23:0] bg0,bg1,bg2,plate0,plate1,plate2;
  reg [3:0] pa0,pa1,pa2;
- reg column_valid0,caption0;
+ reg column_valid0,caption0,card0,card1,card2;
  reg [4:0] row0;
  reg [3:0] px_low0;
  reg [1:0] style0,style1,style2;
@@ -393,7 +479,17 @@ module html_osd_overlay #(
   // Atlas codes represent exactly0,1/3,2/3,1 coverage.
   if(coverage2!=0)begin
    alpha_calc=15;
-   if(coverage2==3)fg_calc=text_color;
+   if(card2)begin
+    if(style2==1)begin
+     case(coverage2)
+      1:fg_calc=swap_values[71:48];2:fg_calc=swap_values[47:24];default:fg_calc=swap_values[23:0];
+     endcase
+    end else begin
+     case(coverage2)
+      1:fg_calc=swap_values[143:120];2:fg_calc=swap_values[119:96];default:fg_calc=swap_values[95:72];
+     endcase
+    end
+   end else if(coverage2==3)fg_calc=text_color;
    else if(pa2==15)begin
     if(style2==1)fg_calc=coverage2==1 ? 24'hc6c2ba : 24'h9e9a93;
     else fg_calc=coverage2==1 ? 24'ha7a49e : 24'h605e5a;
@@ -408,18 +504,18 @@ module html_osd_overlay #(
   if(rst)begin
    sync0<=0;sync1<=0;sync2<=0;sync3<=0;bg0<=0;bg1<=0;bg2<=0;
    plate0<=0;plate1<=0;plate2<=0;pa0<=0;pa1<=0;pa2<=0;
-   column_valid0<=0;caption0<=0;row0<=0;px_low0<=0;style0<=0;style1<=0;style2<=0;
+   column_valid0<=0;caption0<=0;card0<=0;card1<=0;card2<=0;row0<=0;px_low0<=0;style0<=0;style1<=0;style2<=0;
    glyph_addr1<=0;glyph_col1<=0;glyph_col2<=0;text_en1<=0;text_en2<=0;
    r3<=0;g3<=0;b3<=0;fg3<=0;bg3<=0;alpha3<=0;
    o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
   end else begin
    sync0<={i_hs,i_vs,i_de};bg0<=i_rgb;plate0<=plate_rgb;pa0<=plate_alpha;
-   column_valid0<=column_valid&&enabled&&i_de;caption0<=column_caption;row0<=column_row;px_low0<=px[3:0];style0<=column_style;
-   sync1<=sync0;bg1<=bg0;plate1<=cursor_ink0 ? 24'h1a1916 : plate0;pa1<=cursor_ink0 ? 4'd15 : pa0;style1<=style0;
+   column_valid0<=column_valid&&enabled&&i_de;caption0<=column_caption;card0<=column_card;row0<=column_row;px_low0<=px[3:0];style0<=column_style;
+   sync1<=sync0;bg1<=bg0;plate1<=cursor_ink0 ? swap_values[95:72] : plate0;pa1<=cursor_ink0 ? 4'd15 : pa0;style1<=style0;card1<=card0;
    glyph_addr1<=column_word0[17:10]*14'd40+{row0,1'b0}+local_x0[3];
    glyph_col1<=local_x0[2:0];
    text_en1<=descriptor_valid0&&row0<20&&(!caption0||{1'b0,column_word0[5:0]}<typed_count);
-   sync2<=sync1;bg2<=bg1;plate2<=plate1;pa2<=pa1;style2<=style1;
+   sync2<=sync1;bg2<=bg1;plate2<=plate1;pa2<=pa1;style2<=style1;card2<=card1;
    glyph_col2<=glyph_col1;text_en2<=text_en1;
    sync3<=sync2;fg3<=fg_calc;bg3<=bg_calc;alpha3<=alpha_calc;
    r3<=blend_product(fg_calc[23:16],bg_calc[23:16],alpha_calc);

@@ -26,6 +26,12 @@ module html_bot_overlay #(
  reg [3:0] blink_phase;
  reg signed [15:0] gaze_x,gaze_y,gaze_vx,gaze_vy;
  reg signed [15:0] tilt,tilt_v,shape,shape_v,hop,hop_v;
+ // Targets belong to the frame now being committed, before spring integration.
+ // Pixel geometry still uses the registered age/state of the rendered frame.
+ wire [7:0] target_age=(page_event||event_pending) ? 8'd0 :
+  (reaction_age==255 ? 8'd255 : reaction_age+1'b1);
+ wire signed [1:0] target_direction=page_event ? page_direction : (event_pending ? event_direction : dir);
+ wire [15:0] target_frame=frame_count+1'b1;
  reg signed [15:0] gx_target,gy_target,tilt_target,shape_target,hop_target;
  reg signed [15:0] gx_acc,gy_acc,tilt_acc,shape_acc,hop_acc;
  reg signed [7:0] float_y;
@@ -43,16 +49,16 @@ module html_bot_overlay #(
  endfunction
  always @* begin
   gx_target=-16'sd64;gy_target=-16'sd16;tilt_target=0;shape_target=0;hop_target=0;
-  if(frame_count[8:7]==1)begin gx_target=0;gy_target=0;end
-  if(frame_count[8:7]==2)begin gx_target=16'sd64;gy_target=-16'sd32;end
-  if(reaction_age<6)begin gx_target=dir*16'sd144;gy_target=-16'sd16;shape_target=-16'sd32;end
-  else if(reaction_age<25)begin gx_target=dir*16'sd144;gy_target=-16'sd16;
-   tilt_target=dir*16'sd288;shape_target=-16'sd64;hop_target=-16'sd64;end
-  else if(reaction_age<66)begin gx_target=-dir*16'sd80;gy_target=-16'sd48;
-   tilt_target=-dir*16'sd112;shape_target=16'sd16;hop_target=-16'sd16;end
-  else if(reaction_age<92)begin gx_target=-16'sd112;gy_target=-16'sd64;shape_target=16'sd32;end
-  else if(reaction_age<114)begin gx_target=0;gy_target=0;end
-  if(speaking && reaction_age>=114)begin gx_target=0;gy_target=-16'sd16;end
+  if(target_frame[8:7]==1)begin gx_target=0;gy_target=0;end
+  if(target_frame[8:7]==2)begin gx_target=16'sd64;gy_target=-16'sd32;end
+  if(target_age<6)begin gx_target=target_direction*16'sd144;gy_target=-16'sd16;shape_target=-16'sd32;end
+  else if(target_age<25)begin gx_target=target_direction*16'sd144;gy_target=-16'sd16;
+   tilt_target=target_direction*16'sd288;shape_target=-16'sd64;hop_target=-16'sd64;end
+  else if(target_age<66)begin gx_target=-target_direction*16'sd80;gy_target=-16'sd48;
+   tilt_target=-target_direction*16'sd112;shape_target=16'sd16;hop_target=-16'sd16;end
+  else if(target_age<93)begin gx_target=-16'sd112;gy_target=-16'sd64;shape_target=16'sd32;end
+  else if(target_age<114)begin gx_target=0;gy_target=0;end
+  if(speaking && target_age>=114)begin gx_target=0;gy_target=-16'sd16;end
   gx_acc=((gx_target-gaze_x)>>>3)-(gaze_vx>>>1);
   gy_acc=((gy_target-gaze_y)>>>3)-(gaze_vy>>>1);
   tilt_acc=((tilt_target-tilt)>>>5)-(tilt_v>>>2);
@@ -129,6 +135,145 @@ module html_bot_overlay #(
   else eye_coverage=3;
  end
  endfunction
+ // Subpixel ellipse coverage uses two vertical samples and quarter-pixel
+ // analytic edge radii. Radius and color tables are distributed logic, not BRAM.
+ // Source t0 centers41.4/62.6,52.06 and radius6.5 are retained inQ4.
+ // BEGIN GENERATED EYE TABLES
+ function [12:0] eye_unit;input[7:0] code;begin case(code)
+   8'd32:eye_unit=13'd3966;
+   8'd33:eye_unit=13'd2709;
+   8'd64:eye_unit=13'd4082;
+   8'd65:eye_unit=13'd3966;
+   8'd66:eye_unit=13'd3724;
+   8'd67:eye_unit=13'd3327;
+   8'd68:eye_unit=13'd2709;
+   8'd69:eye_unit=13'd1637;
+   8'd96:eye_unit=13'd4091;
+   8'd97:eye_unit=13'd4050;
+   8'd98:eye_unit=13'd3966;
+   8'd99:eye_unit=13'd3837;
+   8'd100:eye_unit=13'd3658;
+   8'd101:eye_unit=13'd3421;
+   8'd102:eye_unit=13'd3113;
+   8'd103:eye_unit=13'd2709;
+   8'd104:eye_unit=13'd2158;
+   8'd105:eye_unit=13'd1279;
+   8'd128:eye_unit=13'd4093;
+   8'd129:eye_unit=13'd4072;
+   8'd130:eye_unit=13'd4030;
+   8'd131:eye_unit=13'd3966;
+   8'd132:eye_unit=13'd3879;
+   8'd133:eye_unit=13'd3767;
+   8'd134:eye_unit=13'd3628;
+   8'd135:eye_unit=13'd3459;
+   8'd136:eye_unit=13'd3255;
+   8'd137:eye_unit=13'd3009;
+   8'd138:eye_unit=13'd2709;
+   8'd139:eye_unit=13'd2336;
+   8'd140:eye_unit=13'd1845;
+   8'd141:eye_unit=13'd1085;
+   8'd160:eye_unit=13'd4094;
+   8'd161:eye_unit=13'd4082;
+   8'd162:eye_unit=13'd4056;
+   8'd163:eye_unit=13'd4018;
+   8'd164:eye_unit=13'd3966;
+   8'd165:eye_unit=13'd3900;
+   8'd166:eye_unit=13'd3820;
+   8'd167:eye_unit=13'd3724;
+   8'd168:eye_unit=13'd3611;
+   8'd169:eye_unit=13'd3479;
+   8'd170:eye_unit=13'd3327;
+   8'd171:eye_unit=13'd3151;
+   8'd172:eye_unit=13'd2947;
+   8'd173:eye_unit=13'd2709;
+   8'd174:eye_unit=13'd2427;
+   8'd175:eye_unit=13'd2082;
+   8'd176:eye_unit=13'd1637;
+   8'd177:eye_unit=13'd959;
+   8'd192:eye_unit=13'd4095;
+   8'd193:eye_unit=13'd4086;
+   8'd194:eye_unit=13'd4069;
+   8'd195:eye_unit=13'd4044;
+   8'd196:eye_unit=13'd4009;
+   8'd197:eye_unit=13'd3966;
+   8'd198:eye_unit=13'd3913;
+   8'd199:eye_unit=13'd3851;
+   8'd200:eye_unit=13'd3778;
+   8'd201:eye_unit=13'd3694;
+   8'd202:eye_unit=13'd3599;
+   8'd203:eye_unit=13'd3492;
+   8'd204:eye_unit=13'd3371;
+   8'd205:eye_unit=13'd3234;
+   8'd206:eye_unit=13'd3080;
+   8'd207:eye_unit=13'd2907;
+   8'd208:eye_unit=13'd2709;
+   8'd209:eye_unit=13'd2482;
+   8'd210:eye_unit=13'd2217;
+   8'd211:eye_unit=13'd1896;
+   8'd212:eye_unit=13'd1487;
+   8'd213:eye_unit=13'd868;
+   8'd224:eye_unit=13'd4095;
+   8'd225:eye_unit=13'd4089;
+   8'd226:eye_unit=13'd4077;
+   8'd227:eye_unit=13'd4059;
+   8'd228:eye_unit=13'd4034;
+   8'd229:eye_unit=13'd4003;
+   8'd230:eye_unit=13'd3966;
+   8'd231:eye_unit=13'd3922;
+   8'd232:eye_unit=13'd3871;
+   8'd233:eye_unit=13'd3813;
+   8'd234:eye_unit=13'd3747;
+   8'd235:eye_unit=13'd3674;
+   8'd236:eye_unit=13'd3592;
+   8'd237:eye_unit=13'd3501;
+   8'd238:eye_unit=13'd3400;
+   8'd239:eye_unit=13'd3288;
+   8'd240:eye_unit=13'd3166;
+   8'd241:eye_unit=13'd3029;
+   8'd242:eye_unit=13'd2878;
+   8'd243:eye_unit=13'd2709;
+   8'd244:eye_unit=13'd2519;
+   8'd245:eye_unit=13'd2303;
+   8'd246:eye_unit=13'd2053;
+   8'd247:eye_unit=13'd1752;
+   8'd248:eye_unit=13'd1371;
+   8'd249:eye_unit=13'd799;
+   default:eye_unit=0;endcase end endfunction
+ function [6:0] eye_edge;input[12:0] code;
+ reg[12:0] unit;reg[7:0] radius;reg[20:0] product;begin
+  unit=eye_unit(code[7:0]);radius={code[12:9],4'b0}-8'd8;
+  product=unit*radius+21'd2048;eye_edge=product[18:12];
+ end endfunction
+ // END GENERATED EYE TABLES
+ function [4:0] eye_line_coverage;
+ input [6:0] radius;input[7:0] ax;
+ reg [8:0] left_edge,right_edge;
+ begin
+  left_edge={1'b0,ax}+9'd8;right_edge={2'b0,radius}+9'd8;
+  if(radius==0)eye_line_coverage=0;
+  else if(left_edge<=radius)eye_line_coverage=16;
+  else if(ax>=right_edge)eye_line_coverage=0;
+  else if(ax<8&&radius<8-ax)eye_line_coverage={radius,1'b0};
+  else eye_line_coverage=right_edge-ax;
+ end endfunction
+ function [3:0] eye_coverage_q4;
+ input signed [11:0] dx,dy;input[3:0] rx,ry;
+ reg [11:0] ax,ay0,ay1;
+ reg signed [11:0] y0,y1;
+ reg [6:0] r0,r1;
+ reg [5:0] sum;
+ reg [9:0] scaled;
+ begin
+  ax=dx<0 ? -dx : dx;y0=dy-12'sd4;y1=dy+12'sd4;
+  ay0=y0<0 ? -y0 : y0;ay1=y1<0 ? -y1 : y1;
+  r0=0;r1=0;sum=0;scaled=0;eye_coverage_q4=0;
+  if(ax<136&&ay0<128&&ay1<128)begin
+   r0=eye_edge({rx,ry,ay0[6:2]});r1=eye_edge({rx,ry,ay1[6:2]});
+   sum={1'b0,eye_line_coverage(r0,ax[7:0])}+{1'b0,eye_line_coverage(r1,ax[7:0])};
+   scaled={sum,4'b0}-{4'b0,sum}+10'd16;
+   eye_coverage_q4=scaled[8:5];
+  end
+ end endfunction
  reg [2:0] sync0,sync1,sync2,sync3;
  reg [23:0] bg0,bg1,bg2;
  reg signed [10:0] lx0,ly0,ux1,uy1;
@@ -136,25 +281,37 @@ module html_bot_overlay #(
  wire [15:0] body_rom_data;
  reg texvalid2;
  wire [15:0] tex2=texvalid2 ? body_rom_data : 16'd0;
- reg [1:0] eye2;
+ reg [3:0] eye2;
  reg [3:0] alpha2;
  reg [7:0] red2,green2,blue2;
+ reg [23:0] bot_background;
  function [12:0] blend_product;
  input [7:0] foreground,background;input [3:0] alpha;
  reg signed [8:0] delta;reg signed [13:0] value;
  begin
   delta=$signed({1'b0,foreground})-$signed({1'b0,background});
-  value=delta*$signed({1'b0,alpha})+$signed({1'b0,background,4'b0});
+  value=delta*$signed({1'b0,alpha})+$signed({1'b0,background,4'b0})-$signed({5'b0,background});
   blend_product=value[12:0];
  end endfunction
+ function [7:0] alpha15_result;
+ input [12:0] product;
+ reg [11:0] rounded;reg [7:0] folded;reg[4:0] remainder;reg[8:0] quotient;
+ begin rounded=product[11:0]+12'd7;
+  folded=rounded[11:4]+{4'd0,rounded[3:0]};
+  remainder={1'b0,folded[7:4]}+{1'b0,folded[3:0]};
+  quotient={1'b0,rounded[11:4]}+{5'd0,folded[7:4]}+(remainder>=15)+(remainder>=30);
+  alpha15_result=quotient[7:0];
+ end
+ endfunction
  reg [12:0] red3,green3,blue3;
  reg [7:0] bg3r,bg3g,bg3b,fg3r,fg3g,fg3b;
  reg [3:0] alpha3;
  reg signed [21:0] tx_calc,ty_calc;
  reg signed [10:0] dx_calc,dy_calc;
  reg signed [7:0] shape_int,tilt_int,hop_int;
- reg [1:0] eye_left,eye_right;
- reg signed [10:0] eye_cx,eye_cy;
+ reg [3:0] eye_coverage_calc,selected_eye_width;
+ reg signed [11:0] eye_dx_q4;
+ reg signed [11:0] eye_cx_q4,eye_cy_q4,sample_x_q4,sample_y_q4;
  reg [3:0] left_width,right_width;
  integer addr;
  html_rom16 #(.WORDS(10400),.ADDR_BITS(14),.INIT_FILE(BODY_FILE)) body_rom(
@@ -168,11 +325,14 @@ module html_bot_overlay #(
   ty_calc=dy_calc+((dy_calc*shape_int)>>>6)-((dx_calc*tilt_int)>>>7)+11'sd56;
   // Shadow is anchored to the floor, independently from body float/hop.
   if(ly0>=90)begin tx_calc=lx0;ty_calc=ly0;end
-  eye_cx=11'sd52+(gaze_x>>>4);eye_cy=11'sd51+(gaze_y>>>4);
+  eye_cx_q4=16'sd832+gaze_x;eye_cy_q4=16'sd833+gaze_y;
+  sample_x_q4=$signed({ux1,4'b1000});sample_y_q4=$signed({uy1,4'b1000});
   left_width=eye_width-((gaze_x< -48)?1'b1:1'b0);
   right_width=eye_width-((gaze_x>48)?1'b1:1'b0);
-  eye_left=eye_coverage(ux1-eye_cx+11'sd10,uy1-eye_cy,left_width,eye_height);
-  eye_right=eye_coverage(ux1-eye_cx-11'sd10,uy1-eye_cy,right_width,eye_height);
+  // The eye discs never overlap: select spatially before the shared AA unit.
+  if(sample_x_q4<eye_cx_q4)begin eye_dx_q4=sample_x_q4-eye_cx_q4+16'sd170;selected_eye_width=left_width;end
+  else begin eye_dx_q4=sample_x_q4-eye_cx_q4-16'sd170;selected_eye_width=right_width;end
+  eye_coverage_calc=eye_coverage_q4(eye_dx_q4,sample_y_q4-eye_cy_q4,selected_eye_width,eye_height);
   addr=uy1*104+ux1;
  end
  // Perceptual RGB444 codebook retains near-black gradient detail at16bits/texel.
@@ -188,15 +348,12 @@ module html_bot_overlay #(
  // Stage 2 texel and stage 2 eye coverage are resolved together before blending.
  always @*begin
   alpha2=tex2[15:12];red2=texture_channel(tex2[11:8]);
-  green2=texture_channel(tex2[7:4]);blue2=texture_channel(tex2[3:0]);
+  green2=texture_channel(tex2[7:4]);blue2=texture_channel(tex2[3:0]);bot_background=bg2;
   if(eye2!=0)begin
    // Eye coverage includes its own soft edge over the opaque face.
-   alpha2=15;
-   case(eye2)
-    1:begin red2=red2-red2/4+8'd61;green2=green2-green2/4+8'd60;blue2=blue2-blue2/4+8'd58;end
-    2:begin red2=red2/4+8'd183;green2=green2/4+8'd180;blue2=blue2/4+8'd175;end
-    default:begin red2=244;green2=241;blue2=234;end
-   endcase
+   // Reuse the existing three pixel blend multipliers for eye-over-face.
+   // Eye coverage is inside the opaque body, so its background is the texel.
+   bot_background={red2,green2,blue2};alpha2=eye2;red2=244;green2=241;blue2=234;
   end
  end
  always @(posedge clk)begin
@@ -213,17 +370,17 @@ module html_bot_overlay #(
    sync2<=sync1;bg2<=bg1;
    texvalid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100;
    if(en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100)
-    eye2<=eye_left>eye_right ? eye_left : eye_right;
+    eye2<=eye_coverage_calc;
    else eye2<=0;
-   sync3<=sync2;alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bg2[23:16];bg3g<=bg2[15:8];bg3b<=bg2[7:0];
-   red3<=blend_product(red2,bg2[23:16],alpha2);
-   green3<=blend_product(green2,bg2[15:8],alpha2);
-   blue3<=blend_product(blue2,bg2[7:0],alpha2);
+   sync3<=sync2;alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bot_background[23:16];bg3g<=bot_background[15:8];bg3b<=bot_background[7:0];
+   red3<=blend_product(red2,bot_background[23:16],alpha2);
+   green3<=blend_product(green2,bot_background[15:8],alpha2);
+   blue3<=blend_product(blue2,bot_background[7:0],alpha2);
    {o_hs,o_vs,o_de}<=sync3;
-   // alpha15 is exactly opaque (the multiply uses denominator16 for all else).
+   // Linear alpha4 is encoded0..15, so partial coverage also divides by15.
    if(alpha3==15)o_rgb<={fg3r,fg3g,fg3b};
    else if(alpha3==0)o_rgb<={bg3r,bg3g,bg3b};
-   else o_rgb<={red3[11:4],green3[11:4],blue3[11:4]};
+   else o_rgb<={alpha15_result(red3),alpha15_result(green3),alpha15_result(blue3)};
   end
  end
 endmodule
