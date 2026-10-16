@@ -98,7 +98,6 @@ def prepare_layered_vectors():
  report['vectors']={p.name:{'sha256':sha(p),'bytes':p.stat().st_size} for p in VECTORS.glob('*.hex')};atomic_json(VECTORS/'manifest.json',report);return report
 
 def png_write(p,w,h,rgb):
- if not frames or len(frames)!=len(durations_ps):raise ValueError('APNG frame/duration count mismatch')
  def chunk(t,d):return struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(t+d)&0xffffffff)
  scan=b''.join(b'\0'+rgb[y*w*3:(y+1)*w*3] for y in range(h))
  p.write_bytes(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(scan))+chunk(b'IEND',b''))

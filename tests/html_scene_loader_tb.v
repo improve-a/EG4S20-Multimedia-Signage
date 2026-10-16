@@ -31,7 +31,7 @@ module html_scene_loader_tb;
   if(c==18)h[0]=0;
   case(c)1:h[84]=2;2:put32(104,0);3:put32(96,256);4:begin put32(92,8192);put32(2,930304);end endcase
   // Every bit of every streamed fixed header byte must reject independently.
-  if(c>=28)begin
+  if(c>=28 && c<172)begin
    case((c-28)/8)
     0:fixed_byte=84;1:fixed_byte=85;2:fixed_byte=86;3:fixed_byte=87;
     4:fixed_byte=102;5:fixed_byte=103;6:fixed_byte=108;7:fixed_byte=109;
@@ -40,6 +40,7 @@ module html_scene_loader_tb;
    endcase
    h[fixed_byte]=h[fixed_byte]^(1<<((c-28)%8));
   end
+  if(c>=172)h[14+(c-172)/8]=h[14+(c-172)/8]^(1<<((c-172)%8));
  end endtask
  function [31:0] payload;input integer page,word;begin
   payload=32'h9e3779b9^(page*32'h10204080)^word;
@@ -105,7 +106,7 @@ module html_scene_loader_tb;
   if(page_ready & ~((1<<page_count)-1))$fatal(1,"page ready before physical write completion");
  end
  initial begin
-  for(c=0;c<172;c=c+1)begin
+  for(c=0;c<268;c=c+1)begin
    @(posedge clk);#1;rst=1;enable=0;ack=0;valid=0;ending=0;sd_error=0;finish_toggle=0;
    s0=(c==16)?32'hfffffc00:17;
    busy=0;cycles=0;grant=0;ack_wait=0;ack_tail=0;word_count=0;page_count=0;finish_wait=0;request_count=0;
@@ -119,6 +120,6 @@ module html_scene_loader_tb;
    repeat(10)@(posedge clk);#1;
    if(req||wreq||active)$fatal(1,"transaction held after terminal state");
   end
-  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 170 malformed/transport/timeout cases (including 144 fixed-field bit flips) plus ordinary adaptive-BMP fallback",all_words);$finish;
+  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 266 malformed/transport/timeout cases (including 240 fixed-field bit flips) plus ordinary adaptive-BMP fallback",all_words);$finish;
  end
 endmodule

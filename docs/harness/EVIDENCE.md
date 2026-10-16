@@ -106,3 +106,13 @@ Current source binding and protected dependency evidence: `audit/full04_freeze.j
 `regression/20261015T201246394876Z/results/regression_summary.json`: current narrowed BMP source2f308000... passes5cases,1247.062s; previous15case syncRAM suite alsoPASS. `bot_osd/final_source_proofs_v5.json` binds approvedfont8/spring/reset3RTLfiles,6byteidenticalDUTframes,fulltargetchecks and1221490actualRTLspring transitions. `audit/rom_init_font8_v1.json` proves15active/source numeric HEX/BIN roundtrips including1024×8utilityROM. Decimal andconstantforeground variants are rejectedbymeasuredarea, notclaimedproduction.
 
 Top usesREAD_BURST_SIZE128/READ_DRAIN_CYCLES13; writerBURST_SIZE256 and legacydefaults remain. `verification/read_burst128_v1/{audit,memory_replay_v2,integration_replay_v5}.json` records exactdiffs and reproducibility. The final18displaybench uses the actual vendorFIFO/GrayCDC RTL and PCM-derived peakROM; WAVparser/player/SDaudioRTL are covered separately, not instantiated by this displaychain suite.
+
+
+## 恢复后full04及资源头位宽收敛
+
+- full04 commit8a0358f：SYN PASS/PNR FAIL_PACKING，5006>4900MSlice，17484LUT9773REG64×9K16×32K20DSP，274.156秒/exit2。源快照51ae5d994fbf57f16b0c48f157472ba7df8e37f676617ade75a55bf0bd8ece75，包3d3443b921c4410035cb15cea2df15f59d99d29bf667fc28bcb2107cedc1bac4。audit/full04_result.json保留status/area/PNR日志哈希，无新STA或BIT。
+- verification/locator_compact_v1：3014组完整头部原/新对照（有效字段相同，非法字段返回载荷不作为语义）；798接受/2216拒绝。范围证明pixel_offset≤1048576、640×480×3=921600、aligned_scene≤1970176，省略的地址/长度对齐位和高位均显式检查。另6页8831字、266错误/传输/超时用例含240固定字段逐位破坏及普通BMP回退PASS。verification SHA3f47771eb364bbd10580fc914070bd6b74b7111e8927061609858333428e8b52。
+- 同工具独立scene原/新综合957LUT636REG→865LUT400REG，分别9.609秒与7.531秒；不将局部综合当整机PNR结果。synthesis_comparison.json SHA26853894b186320872f66e6713088d1212f53a98302fa84bd96bed99610096e3。
+- scene_verification/20261015T202112951932Z/result.json SHA530ac86c74c59cdc9d292e6d2c14fcffc79a55ffb3f7d8e6a72ef00eb328315a：压缩前冻结loader真实全6资源和PCM客户端PASS，491.437秒；不混作压缩后证据。压缩后的新run20261016T023956349464Z已启动。
+- lateage25凤凰+持续写反例表明静态六页PASS不足。pending全队列排空/always-drain/read64隔离失败保留在page_control；没有放宽FIFO断言。真实vendor FIFO使用512物理字但full阈值511，新行为压力模型按511可用字校核。
+- display_chain/layered_20261016_102316：8a0358f不可变18帧运行快照。public PNG函数一行误入APNG专用检查，修复后独立7×5/105RGB字节双解码往返PASS（png_roundtrip_20261016_102700）；当前VVP不受后处理修复影响，保留原异常与恢复元数据，不重新绘制DUT图像。

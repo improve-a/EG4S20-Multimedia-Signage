@@ -46,6 +46,21 @@ D:\python3.12.3\python.exe scripts/build.py status replay_YYYYMMDD_01
 
 模块/组件测试、完整系统仿真、SYN、PNR、STA、BITGEN 和硬件状态分别报告。加密 SDRAM/HDMI IP 全系统仿真和本版本硬件均未验证。当前资源与时序限制见 STATUS；不通过添加无依据的例外制造 STA_PASS。
 
+## 初始化资源复核
+
+当前数值ROM包括眼睛半径表和OSD参数字形表。`html_osd_utility_rom.py`保留现有576字节颜色表，再装入RTL原有24个5×7参数字符；它不替换正文中文字形。正文继续使用实际用字覆盖率图集。
+
+在已补齐本地素材的工作区，可把以下结果生成到独立输出目录并与当前HEX/BIN哈希比较；这两条命令不会修改RTL：
+
+```powershell
+D:\python3.12.3\python.exe scripts/html_bot_eye_radius.py --output-dir output/html_fidelity/numeric_replay
+D:\python3.12.3\python.exe scripts/html_osd_utility_rom.py --output-dir output/html_fidelity/numeric_replay
+```
+
+完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_font8_v1.json`。
+
+后台读写压力复现需使用 `scripts/html_layer_render_verify.py` 的 `--writer-stress --read-burst 128`；默认256读突发保留用于历史反例，不能把它作为当前顶层配置。
+
 ## 素材与后续实板验收
 
 只使用 `output/html_fidelity/media/` 的 UI01.BMP 至 UI06.BMP 与 07_MUSIC.WAV。BMP 含原生图像及标识明确的 HFXL/HFXC 尾部资源，不能重编码、裁剪头或删除尾部。读取器扫描前 64 MiB 的物理文件头，不按 FAT 文件名排序；要求连续存储、正确物理发现顺序和无残留旧头。普通复制顺序不能证明卡布局。
