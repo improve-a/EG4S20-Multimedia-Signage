@@ -228,3 +228,28 @@ natural原子集的VVP36448及supervisor/runner在04:48UTC已不存在；原RUNN
 ## full07独立最终时序复核（2026-10-15 22:15 PDT）
 
 `audit/full07_independent_page_control_review.json`，SHA256 `09b68bbf8f06d0a7725203451808119748a548ab4c660bc621d1e1aac7534d1d`。与full06完整timing报告仅生成时间和约束路径两行不同，其他字符一致；负路径、cell延时及全部组统计可延续既有分类。full07报告SHA256为`a37471915781d64d344572bde1b8d7b1fba41f09643b52958f85e93cfc37cc08`，报告和新位流mtime均在本次fresh运行窗口，未复用旧报告。132快照文件归一化比较仅6项字幕内容/深度变化，pipeline、renderer、握手、约束和reset不变。59保护依赖为53项原基线相同与6项已核对自研replay，不能全部称厂商原件。仍为STA_FAIL，1 setup、12 hold、7 reset removal，HW_NOT_VERIFIED。
+
+
+## 最终静态画面完成（2026-10-15 22:33 PDT）
+
+normal012重跑`layered_normal012_20261016_125647` DISPLAY_CHAIN_SIM_PASS，verification SHA256 `624185e8d2e41114c6c15e223eeaea14b983ec286e7bc818b4b123173465b3c6`，921600实际像素、873032成对请求/返回、1715383同步检查、6188刷新；当前猎鹰actualPPM SHA256 `bf733e02d87a1639c803e9275e33dd636bb014dc5296032169e88fae16235a7e`。
+
+compare_zoom重跑`layered_compare_zoom_20261016_130114` DISPLAY_CHAIN_SIM_PASS，verification SHA256 `11457dec90b8fc84d8c0a1b05ad32c2deb95af1d25bf117c0c349f81b05f068b`。当前修正HTML参考只在两个字符格内改变246像素，其他像素相同；原参考与旧metrics不覆盖。最终猎鹰及2×/3×字幕矩形MAE6.74195、源墨迹37.38374；放大产品transformed-alpha MAE2.24888/3.50867，场景文字1.69381/1.74268。指标为0..255原始RGB误差，不是还原百分比。静态总10帧中7帧来自当前源重跑，normal345三帧沿用原完整PASS及明确的未变布局证明。
+
+Root以1:1查看当前Eagle和2×/3×三联图及字幕条，确认文案与固定OSD位置，记录最近邻块状边缘、字幕字重等已知差异。核查文件为`audit/root_visual_review_final.json`，natural仍在运行，尚不把局部预览当连续整链PASS。
+
+
+## 最终连续动作显示链完成（2026-10-15 23:01 PDT）
+
+`display_chain/layered_natural_20261016_125647/verification.json` DISPLAY_CHAIN_SIM_PASS，SHA256 `72b656a1a78821c06c0863cf7baf32d03034e254f00b7958900bc8a20db20057`。VVP36392退出0、仿真3842.517秒，runner含后处理3845.776秒。9检查帧含不导出的静态预热1帧及自然动作8帧；2764800实际像素计数、4235383同步检查、2622476成对读请求/响应、14630刷新，5..10周期延迟覆盖，欠流粘滞位与非请求返回故障注入检测PASS。
+
+action00首像素35016181000ps，action07首像素152616181000ps、末像素167969741000ps；首像素严格相隔16800000000ps，无跳帧。动作8帧相对时刻0..117.6ms、预览循环134.4ms。实际场景motion已释放，由真实页面提交推进；动态检查同步、完整像素数、knownRGB、提交/视线/倾斜/字幕语义及故障状态，不使用静态或浏览器动画RGB oracle。旧/新页区域选择和CSS分层运动参数并用，不宣称浏览器动画逐像素一致。
+
+静态10帧汇总`display_chain/final_current_20261016_125646/static_verification.json` SHA256 `7c4f6b8cd1cc35b35ae8b88ea6e225f150163252fa34dc74df6155ceced37e4f`。范围为底图logical golden+遮罩外finalRGB断言，以及B/C独立测试/原型局部差分；normal345旧捕获及未变布局证明单独标识。显示链使用真实511可用容量FIFO、模型SDRAM、WAV-derived峰值刺激，后台writer竞争和真实音频播放由独立套件覆盖。
+
+
+## 最终显示交付冻结
+
+`display_chain/final_current_20261016_125646/final_verification.json` SHA256 `fad96d250e941563a2944069db32e0ea2a635257609fe99aef670d3947490e0c`；`bot_osd/final_source_proofs_v6.json` SHA256 `6b5c013070acf2873dc03be6668aea0057dd59e25c8f2c256e261407ee06d6be`。18张实际导出代表帧，含warmup共19检查帧/5836800像素计数/9801532同步；是有来源边界的多个子集汇总，normal345沿用原捕获及精确不变布局证明，不是一次完整整机仿真。
+
+连续8帧APNG SHA256 `27e476556c7eb80dbd615cdef5f3a818504e54b43cea60a644b58675d4e1ef8a`，逐帧解码RGB与原DUT PPM一致。Root查看起末帧：早期转场仍可见大部分旧Eagle底图，新Phoenix页头/OSD已随页提交更新，眼睛/身体开始反应及字幕开始揭示；不能把0..117.6ms片段当成完成整段入场的证明。稀疏0..1680ms overlay样本仍单独说明。最终132项硬件输入再次逐项匹配full07冻结源，无差异。

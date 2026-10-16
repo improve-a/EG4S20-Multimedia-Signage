@@ -2,7 +2,7 @@
 
 目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
 
-**最终生产源码96cd7bd已通过full07综合、布局布线和位流生成，包含mA对应静态电流的字幕修正。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+**最终生产源码96cd7bd已通过full07综合、布局布线和位流生成，包含mA对应静态电流的字幕修正。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。六页/两组双图/两种放大共10静态代表帧及连续8动作帧已通过限定范围的显示链验证；3个未变静态页沿用既有捕获并附精确数据证明。位流、素材和实际输出的对应关系见本地`output/html_fidelity/delivery_manifest.json`。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
 
 ## 当前工作区与目录
 

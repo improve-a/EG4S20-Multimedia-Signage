@@ -1,6 +1,6 @@
 # HTML 分层移植状态
 
-更新2026-10-15 22:19 PDT。Windows主仓库 `D:/FPGA/EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`。最终生产构建源码为96cd7bd90f143a0d74f4b447bfd358409dd3302f，目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮为赛题一，不是同目录的PH1P35摄像头工程。没有操作硬件、物理卡、JTAG或串口。
+更新2026-10-15 23:03 PDT。Windows主仓库 `D:/FPGA/EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`。最终生产构建源码为96cd7bd90f143a0d74f4b447bfd358409dd3302f，目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮为赛题一，不是同目录的PH1P35摄像头工程。没有操作硬件、物理卡、JTAG或串口。
 
 ## 构建与时序
 
@@ -24,12 +24,12 @@
 
 ## 最终画面与交付进度
 
-当前生产源的normal012/natural分别为`display_chain/layered_normal012_20261016_125647`、`layered_natural_20261016_125647`，compare/zoom为`layered_compare_zoom_20261016_130114`。均有逐项96cd7bd源码关联；尚在运行，不以部分帧冒充完整PASS。三页未受影响的normal345保留`layered_normal345_20261016_120043`完整PASS捕获，并附`bot_osd/caption_current_candidate/unchanged_layouts_proof.json`证明11个其他布局、原字模及非字幕列不变；旧捕获不改写为新commit。
+当前生产源的normal012/natural分别为`display_chain/layered_normal012_20261016_125647`、`layered_natural_20261016_125647`，compare/zoom为`layered_compare_zoom_20261016_130114`。均有逐项96cd7bd源码关联且全部终态DISPLAY_CHAIN_SIM_PASS。三页未受影响的normal345保留`layered_normal345_20261016_120043`完整PASS捕获，并附`bot_osd/caption_current_candidate/unchanged_layouts_proof.json`证明11个其他布局、原字模及非字幕列不变；旧捕获不改写为新commit。
 
-六个名义时刻0/84/420/1092/1545.6/1680ms的实际overlay RTL样本`bot_action_samples/run_20261016_125647`已PASS；加速空白帧、固定背景/音频，属于稀疏局部预览，不是连续整机动画。natural子集另验证真实视频时序连续8帧。此前natural进程失联记INTERRUPTED_UNKNOWN，原记录保留；旧8a的18帧仿真PASS而PNG后处理NameError，已仅从原DUT PPM恢复后处理，不冒充新生产源。
+六个名义时刻0/84/420/1092/1545.6/1680ms的实际overlay RTL样本`bot_action_samples/run_20261016_125647`已PASS；加速空白帧、固定背景/音频，属于稀疏局部预览，不是连续整机动画。natural子集已验证真实视频时序连续8帧，另有1个不导出预热帧；共9帧/2764800像素计数、4235383同步检查、2622476成对请求/返回、14630次刷新。动作帧首像素相隔16.8ms、覆盖0..117.6ms；APNG完整循环134.4ms。动态帧无浏览器RGB oracle，不宣称像素一致。此前natural进程失联记INTERRUPTED_UNKNOWN，原记录保留；旧8a的18帧仿真PASS而PNG后处理NameError，已仅从原DUT PPM恢复后处理，不冒充新生产源。
 
 正式SET_ID003adc1b，六HFXL BMP和07_MUSIC.WAV位于`output/html_fidelity/media`；数据8214528字节，8MiB剩174080字节。统一普通FAT32镜像`card_images/unified_003adc1b_v2.img`只读检查PASS；模拟LBA不是物理卡证据。媒体未随字幕修改而改变。
 
 Root负责Git/top/TD，B/C实际gpt-6.1-sol/high，无Astra或递归编排。完整vendor/派生源、IP、位流和未授权完整素材保留本地；公开范围经历史与增量审查。GitHub预检连接重置，尚未push；结束时正常尝试并记录结果。
 
-当前结论：组件RTL_SIM在以上范围PASS；BUILD full07 PASS；STA FAIL；FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE NOT_TESTED_THIS_RUN。仍需最终完整画面/连续动作验证、视觉查看及Git交付。没有新的生产RTL修改或再次TD构建计划。
+当前结论：组件RTL_SIM在以上范围PASS；BUILD full07 PASS；STA FAIL；FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE NOT_TESTED_THIS_RUN。全部预定离线功能与显示测试已完成，正在冻结最终清单及Git交付。没有新的生产RTL修改或再次TD构建计划。
