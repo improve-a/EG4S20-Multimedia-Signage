@@ -8,7 +8,7 @@ wire[2:0]page;wire[20:0]bg,a0,a1,da;wire[1:0]lane,rep,rc;wire[7:0]op0,op1;wire d
 integer limit=DESC_COUNT,empty_push=0,last_pop_push=0,held_output=0;integer sent=0,received=0,i,phase=0,base=0,cycles=0,writecount=0,groups=0;reg[31:0]rng=32'h39d713a5;
 assign {page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da}=descs[sent];
 reg[9:0]rv=0;reg[31:0]pipe[0:9];
-html_layer_pixel_engine #(.CONTEXT_BITS(CONTEXT_BITS),.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS))dut(clk,rst,flush,iv,ir,page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da,pr,pa,pd,raw,logical_ready,logical_response,pixel,1'b1,refresh,writing,re,ra,rv[9],pipe[9],busy,fault);
+html_layer_pixel_engine #(.CONTEXT_BITS(CONTEXT_BITS),.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS))dut(clk,rst,flush,iv,ir,page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da,pr,pa,pd,raw,logical_ready,logical_response,pixel,1'b1,refresh,writing,re,ra,rv[9],pipe[9],busy,fault,1'b0,);
 always@(posedge clk)begin
  if(rst)begin rv<=0;refresh<=0;writing<=0;end
  else begin

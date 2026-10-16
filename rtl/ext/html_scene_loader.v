@@ -21,6 +21,7 @@ module html_scene_loader #(
  reg [9:0] byte_index;
  reg [12:0] sector_index,sector_count;
  reg [31:0] origin,payload_sector,timeout_count;
+ reg timeout_expired;
  reg [23:0] assembled;
  reg [31:0] file_len,pixel_offset;
  reg [15:0] signature;
@@ -50,6 +51,8 @@ module html_scene_loader #(
  // avoids retaining twelve words after their single comparison.
  reg body_ok,body_checked;
  reg [31:0] expected_body_word;
+ reg body_checked_q;reg [31:0] expected_body_word_q;
+ reg header_ok_q,resource_range_ok;
  always @*begin
   body_checked=1;expected_body_word=0;
   case(byte_index[8:2])
@@ -84,44 +87,68 @@ module html_scene_loader #(
   if(rst)pixel_end<=0;
   else pixel_end<=pixel_offset+32'd921600;
  end
+ // Header fields settle long before the 512-byte decision. Keep their
+ // enables local; transport abort/timeout only controls the transaction FSM.
  always @(posedge clk)begin
   if(rst)begin
-   state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;mode_valid<=0;layer_mode<=0;
-   sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
-   byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;assembled<=0;
    file_len<=0;pixel_offset<=0;signature<=0;bmp_constants_ok<=0;
-   body_ok<=0;
-   finish_sync<=0;finish_seen<=0;
-  end else begin
-   finish_sync<={finish_sync[1:0],write_finish_toggle};write_en<=0;
-   if(sector_valid||sector_end||write_req_ack||finish_pulse||!active)timeout_count<=0;
-   else if(timeout_count<TIMEOUT_CYCLES)timeout_count<=timeout_count+1'b1;
-   if(finish_pulse&&state>=WREQ&&state<=FINISH)finish_seen<=1;
-   if(active&&(sector_error||timeout_count==TIMEOUT_CYCLES))begin
-    error<=1;active<=0;state<=FAIL;write_req<=0;sector_req<=0;
-   end else case(state)
-    IDLE:if(enable)begin active<=1;page<=0;origin<=sector0;state<=HREQ;end
-    HREQ:begin
-     sector_req<=1;sector_addr<=origin;byte_index<=0;signature<=0;file_len<=0;pixel_offset<=0;
-     bmp_constants_ok<=1;state<=HWAIT;
-    end
-    HWAIT:begin
-     if(sector_valid)begin
+  end else if(state==HREQ)begin
+   file_len<=0;pixel_offset<=0;signature<=0;bmp_constants_ok<=1;
+  end else if(state==HWAIT&&sector_valid)begin
       if(bmp_check_constant && sector_data!=bmp_expected_constant)bmp_constants_ok<=0;
-      if(byte_index<513)byte_index<=byte_index+1'b1;
       case(byte_index)
        0:signature[7:0]<=sector_data;1:signature[15:8]<=sector_data;
        2:file_len[7:0]<=sector_data;3:file_len[15:8]<=sector_data;4:file_len[23:16]<=sector_data;5:file_len[31:24]<=sector_data;
        10:pixel_offset[7:0]<=sector_data;11:pixel_offset[15:8]<=sector_data;12:pixel_offset[23:16]<=sector_data;13:pixel_offset[31:24]<=sector_data;
       endcase
+  end
+ end
+ // Four byte clocks separate successive body words. Register the expected
+ // word before its fourth byte, cutting the selector out of the comparison.
+ always @(posedge clk)begin
+  if(rst)begin
+   header_ok_q<=0;resource_range_ok<=0;body_checked_q<=0;expected_body_word_q<=0;body_ok<=0;
+  end else begin
+   header_ok_q<=header_ok;resource_range_ok<=!resource_last_sector[32];
+   body_checked_q<=body_checked;expected_body_word_q<=expected_body_word;
+   if(state==HREQ)body_ok<=1;
+   else if(state==DWAIT&&sector_valid&&byte_index[1:0]==3&&sector_index==0&&
+           body_checked_q&&assembled_word!=expected_body_word_q)body_ok<=0;
+  end
+ end
+ always @(posedge clk)begin
+  if(rst)begin
+   state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;mode_valid<=0;layer_mode<=0;
+   sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
+   byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;timeout_expired<=(TIMEOUT_CYCLES==0);assembled<=0;
+
+   finish_sync<=0;finish_seen<=0;
+  end else begin
+   finish_sync<={finish_sync[1:0],write_finish_toggle};write_en<=0;
+   if(sector_valid||sector_end||write_req_ack||finish_pulse||!active)begin
+    timeout_count<=0;timeout_expired<=(TIMEOUT_CYCLES==0);
+   end else if(timeout_count<TIMEOUT_CYCLES)begin
+    timeout_count<=timeout_count+1'b1;timeout_expired<=(timeout_count==TIMEOUT_CYCLES-1);
+   end else timeout_expired<=1;
+   if(finish_pulse&&(state==WREQ||state==DREQ||state==DWAIT||state==FINISH))finish_seen<=1;
+   if(active&&(sector_error||timeout_expired))begin
+    error<=1;active<=0;state<=FAIL;write_req<=0;sector_req<=0;
+   end else case(state)
+    IDLE:if(enable)begin active<=1;page<=0;origin<=sector0;state<=HREQ;end
+    HREQ:begin
+     sector_req<=1;sector_addr<=origin;byte_index<=0;state<=HWAIT;
+    end
+    HWAIT:begin
+     if(sector_valid)begin
+      if(byte_index<513)byte_index<=byte_index+1'b1;
      end
      if(sector_end)begin
       sector_req<=0;
-      if(header_ok && byte_index+sector_valid==512 && !resource_last_sector[32])begin
+      if(header_ok_q && byte_index+sector_valid==512 && resource_range_ok)begin
        mode_valid<=1;layer_mode<=1;
        write_base<=expected_base;write_len<=expected_words;write_req<=1;finish_seen<=0;
        payload_sector<=origin+(scene_offset>>9);sector_count<=payload_bytes[21:9];sector_index<=0;
-       body_ok<=1;state<=WREQ;
+       state<=WREQ;
       end else if(page==0 && !locator_present && signature==16'h4d42 && byte_index+sector_valid==512)begin
        // An ordinary first BMP selects the existing adaptive-BMP pipeline.
        // That parser still performs all original dimensions/extent checks.
@@ -141,7 +168,7 @@ module html_scene_loader #(
        0:assembled[7:0]<=sector_data;1:assembled[15:8]<=sector_data;2:assembled[23:16]<=sector_data;
        3:begin
         write_data<=assembled_word;write_en<=1;
-        if(sector_index==0&&body_checked&&assembled_word!=expected_body_word)body_ok<=0;
+
        end
       endcase
      end

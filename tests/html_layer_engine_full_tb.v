@@ -8,7 +8,7 @@ integer sent=0,consumed=0,produced=0,i,phase=0,base=0,cycles=0,groups=0,used=0,w
 integer rowfile,tasks=0,physical=0,lasttasks=0,lastphysical=0,lastproduced=0,rowmin=512,maxtasks=0,maxphysical=0;
 assign {page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da}=descs[sent];
 reg[9:0]rv=0;reg[31:0]pipe[0:9];
-html_layer_pixel_engine #(.CONTEXT_BITS(CONTEXT_BITS),.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS))dut(clk,rst,1'b0,iv,ir,page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da,pr,pa,pd,raw,lr,lv,pixel,1'b1,refresh,1'b0,re,ra,rv[9],pipe[9],busy,fault);
+html_layer_pixel_engine #(.CONTEXT_BITS(CONTEXT_BITS),.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS))dut(clk,rst,1'b0,iv,ir,page,bg,lane,rep,rc,a0,a1,op0,op1,direct,is_packed,half,black,da,pr,pa,pd,raw,lr,lv,pixel,1'b1,refresh,1'b0,re,ra,rv[9],pipe[9],busy,fault,1'b0,);
 always@(posedge clk)begin
  if(rst)begin rv<=0;refresh<=0;end else begin
   cycles=cycles+1;refresh<=cycles%312<20;

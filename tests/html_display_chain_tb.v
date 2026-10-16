@@ -35,6 +35,7 @@ module html_display_chain_tb;
  wire [20:0] raw_addr,mapped_addr;
  wire [31:0] fifo_data,mapped_response;
  wire fifo_fault,map_fault,logical_ready,logical_response,bridge_busy,write_busy_mem;
+ wire physical_busy,read_burst_busy_mem,write_pending_mem;
  wire write_cmd;wire [20:0] write_addr;wire [31:0] write_data;wire [3:0] write_mask;
  reg [31:0] memory[0:2093055];
  // Ordered SDRAM model. Only first address of each4-beat group is honored.
@@ -59,11 +60,12 @@ module html_display_chain_tb;
  video_timing_data timing(.video_clk(video_clk),.rst(rst),.read_req(timing_req),
   .read_req_ack(timing_ack),.hs(hs),.vs(vs),.de(de));
 `ifdef HTML_LAYERED
- localparam READER_BURST_SIZE=128,READER_DRAIN_CYCLES=13;
+ localparam READER_BURST_SIZE=128,READER_DRAIN_CYCLES=13,PHYSICAL_FAIRNESS=1;
 `else
- localparam READER_BURST_SIZE=256,READER_DRAIN_CYCLES=10;
+ localparam READER_BURST_SIZE=256,READER_DRAIN_CYCLES=10,PHYSICAL_FAIRNESS=0;
+ assign physical_busy=1'b0;
 `endif
- frame_read_write #(.READ_BURST_SIZE(READER_BURST_SIZE),.READ_DRAIN_CYCLES(READER_DRAIN_CYCLES),.ENABLE_READ_SOURCE(1)) reader(.rst(memory_rst),.mem_clk(mem_clk),.Sdr_init_done(1'b1),
+ frame_read_write #(.READ_BURST_SIZE(READER_BURST_SIZE),.READ_DRAIN_CYCLES(READER_DRAIN_CYCLES),.ENABLE_READ_SOURCE(1),.ENABLE_PHYSICAL_FAIRNESS(PHYSICAL_FAIRNESS),.WRITE_RESERVE_WORDS(384)) reader(.rst(memory_rst),.mem_clk(mem_clk),.Sdr_init_done(1'b1),
   .Sdr_init_ref_vld(refresh),.Sdr_busy(refresh),
   .App_rd_en(raw_read_enable),.App_rd_addr(raw_addr),.Sdr_rd_en(logical_response),.Sdr_rd_dout(mapped_response),
   .read_clk(video_clk),
@@ -80,9 +82,10 @@ module html_display_chain_tb;
   .write_addr_0(21'd0),.write_addr_1(21'd0),.write_addr_2(21'd0),.write_addr_3(21'd0),
   .write_addr_index(2'd0),.write_len(21'd0),.write_en(1'b0),.write_data(32'd0),.write_linear(1'b0),
   .read_source_ready(logical_ready),.read_source_busy(bridge_busy),.write_busy_mem(write_busy_mem),
+  .read_source_physical_busy(physical_busy),.read_burst_busy_mem(read_burst_busy_mem),.write_pending_mem(write_pending_mem),
   .display_valid_video(display_valid),.fifo_fault(fifo_fault));
  `ifdef HTML_LAYERED
- html_layer_memory_bridge bridge(.layer_resources_enabled(1'b1),.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(commit_req),
+ html_layer_memory_bridge #(.ENABLE_PHYSICAL_FAIRNESS(1)) bridge(.layer_resources_enabled(1'b1),.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(commit_req),
 `else
  html_memory_bridge bridge(.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(timing_req),
 `endif
@@ -90,7 +93,11 @@ module html_display_chain_tb;
   .write_busy_mem(write_busy_mem),.mem_ready(1'b1),.refresh_active(refresh),
   .logical_ready(logical_ready),.logical_response(logical_response),.busy(bridge_busy),
   .panels_ready(1'b1),.raw_read_en(raw_read_enable),.read_en(mapped_read_enable),.read_addr(mapped_addr),
-  .response(memory_response),.memory_data(memory_data),.pixel_data(mapped_response),.fault(map_fault));
+  .response(memory_response),.memory_data(memory_data),.pixel_data(mapped_response),.fault(map_fault)
+`ifdef HTML_LAYERED
+  ,.pause_new_groups(write_pending_mem&&!read_burst_busy_mem),.physical_busy(physical_busy)
+`endif
+ );
  video_delay delay(.video_clk(video_clk),.rst(rst),.read_en(read_enable),.read_data(fifo_data[31:8]),
   .hs(hs),.vs(vs),.de(de),.hs_r(dh),.vs_r(dv),.de_r(dd),.vout_data(delay_rgb));
  html_video_overlay overlay(.clk(video_clk),.rst(rst),.i_hs(dh),.i_vs(dv),.i_de(dd),.i_rgb(delay_rgb),
@@ -361,7 +368,7 @@ module html_display_chain_tb;
   if(fifo_fault||map_fault)$fatal(1,"fault after completed visible frame");
   $display("FRAME_PASS %0s pixels%0d accepted%0d returned%0d view%h zoom%0d age%0d first_pixel_time%0t last_pixel_time%0t",filename,frame_pixels,accepted,returned,view,magnify,overlay.bot.reaction_age,capture_first_time,capture_last_time);$fflush();
  end endtask
- integer f;
+ integer f,subset=0;
  initial begin
   for(f=5;f<=10;f=f+1)latency_seen[f]=0;
   $readmemh("output/html_fidelity/display_vectors/memory_words.hex",memory);
@@ -374,20 +381,36 @@ module html_display_chain_tb;
   $readmemh("output/html_fidelity/display_vectors/real_wav_peaks.hex",real_peak);
   $readmemh("output/html_fidelity/display_vectors/aperture_width.hex",aperture_vector);
   $display("PROGRESS fixture loaded2093056words plus realWAV peaks");$fflush();
+  if($value$plusargs("subset=%d",subset))begin end
+  if(subset<0||subset>4)$fatal(1,"invalid subset");
+`ifdef HTML_LAYERED
+  // Hold the initial candidate before the first source toggle crosses CDC.
+  if(subset==2)requested_view=3;
+  if(subset==3)requested_view=9;
+  if(subset==4)requested_view=1;
+`endif
   repeat(10)@(negedge video_clk);rst=0;
+  if(subset==0||subset==1)begin
   render_view(5'd0,2'd0,1,"output/html_fidelity/display_chain/page0.ppm");
   if($test$plusargs("smoke"))begin
    $display("DISPLAY_CHAIN_SIM_PASS smoke one full640x480 real FIFO/timing + memory model");$finish;
   end
   render_view(5'd1,2'd0,1,"output/html_fidelity/display_chain/page1.ppm");
   render_view(5'd2,2'd0,1,"output/html_fidelity/display_chain/page2.ppm");
+  end
+  if(subset==0||subset==2)begin
   render_view(5'd3,2'd0,1,"output/html_fidelity/display_chain/page3.ppm");
   render_view(5'd4,2'd0,1,"output/html_fidelity/display_chain/page4.ppm");
   render_view(5'd5,2'd0,1,"output/html_fidelity/display_chain/page5.ppm");
+  end
+  if(subset==0||subset==3)begin
   render_view(5'd9,2'd0,1,"output/html_fidelity/display_chain/compare_eagle_phoenix.ppm");
   render_view(5'd11,2'd0,1,"output/html_fidelity/display_chain/compare_elf_dragon.ppm");
   render_view(5'd1,2'd1,1,"output/html_fidelity/display_chain/zoom2.ppm");
   render_view(5'd1,2'd2,1,"output/html_fidelity/display_chain/zoom3.ppm");
+  end
+  if(subset==4)render_view(5'd1,2'd2,1,""); // checked static warmup, no exported image
+  if(subset==0||subset==4)begin
   // A real committed page event starts aperture, gaze and caption reset together.
   `ifdef HTML_LAYERED
   release bridge.geometry.motion.frame_age;layer_static=0;
@@ -404,6 +427,8 @@ module html_display_chain_tb;
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action06.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action07.ppm");
   if(overlay.bot.tilt<=0)$fatal(1,"body did not follow page gaze at90ms");
+  end
+  if(frame_number!=(subset==0?18:subset==4?9:subset==3?4:3))$fatal(1,"subset frame count");
   // Negative diagnostics: an unsolicited SDRAM response must trip tag fault.
   allow_requests=0;normal_checks=0;
   wait(!bridge_busy&&response_count==0&&!raw_read_enable);repeat(20)@(negedge mem_clk);

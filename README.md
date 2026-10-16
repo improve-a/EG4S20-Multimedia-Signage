@@ -2,7 +2,7 @@
 
 目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
 
-**最终集成仍在验证。** 第一阶段完整构建已通过，最新分层版本仍在资源收敛，不能用旧位流搭配最终 HFXL 素材宣称验收通过。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+**最终集成仍在验证。** 分层full05完整构建已通过，但时序仍有负裕量；当前流水线和字幕修正待匹配的新构建，不能用旧位流宣称当前源码验收通过。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
 
 ## 当前工作区与目录
 

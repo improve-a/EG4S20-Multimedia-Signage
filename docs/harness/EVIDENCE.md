@@ -136,3 +136,45 @@ Top usesREAD_BURST_SIZE128/READ_DRAIN_CYCLES13; writerBURST_SIZE256 and legacyde
 Root采用最终两个SD候选和top接线，新增写准入默认关闭，生产top显式启用和384字储备。verification/physical_fairness_root_v1保存集成diff、原始基线重建、重复运行不改动和拒绝未知修改的证明；53个原样保护依赖仍逐字相同，六项授权派生差异继续由精确最小补丁重放。top SHA43e74baf569cbdfca4b75f6a84ddd44b26aaa1706564b90bb99cbf03f0201785。公开html_layer_render_verify入口已包含真实FIFO/转场时刻/储备参数，正式入口复测进行中。
 
 Windows build.py仅修复WMI返回输出解码：原始CLIXML字节保留，避免本地中文代码页stderr在TD已经启动后触发UTF8解码异常；不修改启动命令、工具、构建步骤或系统编码。下一次完整构建将使用该真实入口验证。
+
+
+### 六页局部视觉比较（真实DUT，完整套件继续运行）
+
+原始报告display_chain/layered_20261016_102316/regional_normal6_20261016_111200.json，SHA 2a1bd4aaec878369ca65f97881712ea1c5191364f843ff0c1fd90128d2d730a0。比较范围、源参考和alpha遮罩均有哈希；不同区域允许重叠。Bot为已声明固定姿态，字幕为完整文本；音柱位于字幕遮罩之外。以下是RGB原始平均绝对差，范围0..255，不是还原百分比或PASS阈值。
+
+| 页面 | 产品支持区 | 场景文字/数据支持区 | Bot104×100 | 眼睛区域 | 字幕源墨迹 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| home | 0.048 | 0.374 | 0.718 | 2.454 | 51.287 |
+| eagle | 0.227 | 0.432 | 0.725 | 2.454 | 51.512 |
+| phoenix | 0.234 | 0.369 | 0.717 | 2.454 | 52.476 |
+| elf | 0.2 | 0.407 | 0.717 | 2.454 | 51.596 |
+| dragon | 0.219 | 0.418 | 0.722 | 2.454 | 50.786 |
+| eco | 0.752 | 0.277 | 0.716 | 2.454 | 51.496 |
+
+字幕正文内容/位置已对齐，但2位覆盖率和逐字渲染的抗锯齿、子像素及字重与原浏览器存在可见差异，不宣称字形像素完全相同。六常态页共1843200像素已完成；对比/放大/自然动作帧仍在原不可变快照中继续。
+
+
+### Caption coverage correction and parallel final display subsets (2026-10-16 04:00 UTC)
+
+The caption weight difference was traced to foreground-dependent browser text rasterization, not an RTL palette or whole-pixel alignment error. The original white-on-transparent canvas mask for the same glyph/font had alpha sum66.729; source dark ink on paper gave effective linear-RGB alpha sum51.085. The original atlas reproduces all15,288 actual Phoenix say pixels exactly, while a global shift search is best at(0,0). Actual source CSS is400/12.5px, line-height18.75px, letter-spacing0.125px, ink(26,25,22), paper(237,233,226), antialiased smoothing. Fractional character origins and the second-line baseline still differ from integer ROM coordinates.
+
+`scripts/html_caption_coverage.py` (SHA256 d3db0b141498e5875f1b1eebb8a331526ff3a7ae4e983f4ec38b17bafbad58f7) samples source dark-on-paper RGB and selects the nearest existing thirds palette. It preserves original alpha/ROM and changes only165 caption-font masks, retaining228glyphs/9120words and all12 layouts/IDs/fonts. Replay produces atlas3492deff81aae8cb50ee93e33411dda2e01471bf10593e5211c67fd2ff9065be; native binaryfe15660598e12eddd8c064d32e2ebb6a7a891ac130c1b00676e3da4cd33ba30e. Root promotion is separately recorded in `bot_osd/caption_darkpaper_candidate/promotion_applied.json`.
+
+The isolated candidate passes six actual25MHz640x480 overlay RTL captures (1,843,200pixels,393.2s), with91,728 say-area palette pixels exactly matching the regenerated masks. All12 normal/comparison layouts and every revealed character retain cycle-identical typing/speaking/syllable/swap controls over307,244cycles. `bot_osd/caption_darkpaper_candidate/native_palette_validation.json` SHA256 aa723e0f973d675b8c05f4bcddf8860f2acd22cb58e40e6457d5d76c47cbfeac; reveal proof SHA256 345dd77e24e2637449fcc38d531283417b82cde97ae925c2cff3f3e2b51850aa. Actual full-caption rectangle MAE is6.72..8.32 and source-ink MAE37.41..41.07, improved from prior8.36..10.95 and50.79..52.48. These are raw regional differences, not fidelity percentages or pixel-perfect claims. The 1:1 source/oldDUT/candidateDUT review uses actual exported frames.
+
+The existing display runner now supports `--subset normal012`, `normal345`, `compare_zoom`, and `natural`; default remains all18. Natural retains a fully checked, unexported static Eagle3x warmup before eight consecutive16.8ms action frames. Each process prepares private fixtures, summaries and temporary files. Four concurrent preparations/compiles pass with identical formal memory/oracle/WAV-vector hashes (`display_chain/subset_preparation/verification_parallel_v3.json`). No timing, pixel, aligned-four-beat SDRAM-model, refresh, latency or fault assertion is disabled. Layered tests enable production physical fairness/reserve384 with writer traffic explicitly idle; physicalFIFO capacity512words, usable511.
+
+Root authorized the final engine+corrected-caption four-subset run at `display_chain/final_parallel_20261016_120043`. It is RUNNING, with exact per-child source snapshots and explicit pending-diff provenance from base38925f7; no final simulation PASS is claimed here. The older8a0358f18-frame run remains separate. Its expected original PNG postprocessing error will be preserved and recovered only from unchanged actual DUT PPMs using the retained one-line-fixed9c14b9 helper; no resimulation or redraw can relabel its source version.
+
+
+## full05与关键路径修复（2026-10-15 21:06 PDT）
+
+full05冻结38925f7，fresh SYN/PNR/BITGEN PASS，退出0，828.953秒；最终17429LUT/9202REG、64×9K/16×32K/20DSP、4733MSlices。routed setup WNS−1.967ns/TNS−256.206ns（364端点）；最小延迟WNS−2.859ns/TNS−17.669ns（24端点），包括reset removal，STA仍FAIL。coverage99.96%不等于约束签核。full05_result.json及原报告保留。位流729728字节，SHA256 c6eabeedaddbb877601b1c1c0c2d1e36e6666f6a6bd391cebed903a83d41cf57；后续源码/ROM修改不能使用它作最终证明。
+
+最差23级存储路径的真实launch net为engine/wp，经过geometry的bank/span寻址与first-task选择后直接进入cache比较/优先级。报告OSD起点是综合共享名称。30FF弹性请求寄存分开两部分；busy计入待发缓冲，physical_busy仍只统计已发物理读。54,012混合像素、3,107稳定背压周期、254仅buffer-busy周期及flush丢弃1个尚未发送请求后重放均PASS。真实FIFO phi25继续通过307200逻辑/视频像素与6400有序写，最低显示余量90字。候选已推广，SHA dffdc73eae74d9afb4104f61abbda102112b8c20f9e9ed6efb1605151755cf94；证据page_control/late_transition_v1/task_pipeline_candidate_evidence.json与engine_pipeline_promoted.json。
+
+wholebridge串行SYN探针50/51：4836→4678LUT，2048→2077REG，15×9K/4×32K/3DSP不变，35.484/33.453秒。这里只证明资源，不证明postroute时序。public engine两个旧位置端口TB补入新增pause输入和未使用physical输出，不删断言；历史编译失败与修复后基线/候选PASS都保留。
+
+scene loader用局部header字段使能、对齐饱和timeout的expired寄存、body expected word寄存以及header/range判定寄存缩短SD100MHz路径。去除state范围数值比较后，TD确认自动one_hot编码。原/新接口每周期比较，六页8831字、266错误/传输/超时及普通BMP fallback，原间隔输入与每周期连续字节输入均PASS。候选ed60638a3f847fef1c624958090d9a3118a8b8bfec0363b8bc8e018cdbfd4b3e已推广；完整实际六资源+PCM复测正在进行。SYN探针52为987LUT/437REG、零BRAM/DSP，7.454秒；比此前compact scene probe增加122LUT/37REG，换取流水及one_hot，仍待整机资源/时序验证。证据verification/header_timing_v1。
+
+累计52次TD尝试、5次完整流程、4118.690秒。没有同时运行两个重型TD。初始化caption ROM的新3492deff覆盖率由source dark-ink/paper重生，仅改变FPGA内字形ROM；正式HFXL/HFXC/WAV及SET_ID003adc1b不变，旧alpha/layout保留为生成输入。

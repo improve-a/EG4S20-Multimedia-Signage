@@ -8,7 +8,7 @@
   Do not add official, derived or encrypted vendor HDL, tool models, source bundles,
   bitstreams or the old repository history without documented redistribution rights.
 - Existing SSH host `thinkpad`; TD G:\anlu\bin\td_commands_prompt.exe.
-  Builds use clean unique NTFS snapshots under D:\FPGA\hx4s20_extensions_20261013.
+  Builds use clean unique NTFS snapshots under D:\FPGA\EG4S20-Multimedia-Signage\output\html_fidelity\builds.
   The bare Git relay is transport only, never a second development checkout.
 - Preserve board pins, inherited PLL/reset and HDMI/SDRAM IP. Hardware/card operations
   require a separate user task; Git publication does not authorize them.
