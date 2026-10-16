@@ -9,11 +9,26 @@ module html_display_chain_tb;
  reg rst=1,fault_reset=0;
  wire memory_rst=rst|fault_reset;
  reg refresh=0;
+ `ifdef HTML_LAYERED
+ reg[4:0]requested_view=0;wire[4:0]active_view;reg source_commit=1;
+ wire commit_req,reader_ack,commit_ack;reg commit_previous=0;
+ wire page_event=commit_ack^commit_previous;
+ display_commit #(.BUFFER_BITS(5),.REQUIRE_INITIAL_COMMIT(1)) frame_commit(
+ .video_clk(video_clk),.rst(rst),.raw_read_req(timing_req&&allow_requests),.raw_read_ack(timing_ack),
+ .mem_read_req(commit_req),.mem_read_ack(reader_ack),.commit_toggle_async(source_commit),.candidate_async(requested_view),
+ .fault_async(fifo_fault|map_fault),.active_buf(active_view),.commit_ack_toggle(commit_ack));
+ reg layer_static=1;
+ reg[23:0]static_gold[0:1843199];
+`else
  reg [4:0] active_view=0;
+`endif
  reg [1:0] zoom=0,transition_mode=0;
  reg [2:0] focus=0;
  reg allow_requests=1,display_valid=0;
- reg page_event=0,commit_pending=1;
+ reg commit_pending=1;
+`ifndef HTML_LAYERED
+ reg page_event=0;
+`endif
  wire signed [1:0] direction=active_view[4]?-2'sd1:2'sd1;
  wire timing_req,timing_ack,read_accept,read_finish;
  wire hs,vs,de,read_enable,raw_read_enable,mapped_read_enable;
@@ -36,17 +51,28 @@ module html_display_chain_tb;
  wire memory_response=inject_response|normal_memory_response;
  wire [31:0] memory_data=inject_response?32'h12345600:response_data[response_rp];
  wire [23:0] delay_rgb,out_rgb;wire dh,dv,dd,oh,ov,od;
- wire [46:0] config_data={4'd0,1'b0,1'b0,1'b1,8'd0,4'd8,zoom,transition_mode,
+ wire [50:0] config_data={4'd4,4'd0,1'b0,1'b0,1'b1,8'd0,4'd8,zoom,transition_mode,
                           1'b1,8'd5,3'd2,9'd0,3'd0};
  reg [15:0] real_peak[0:255];
  reg [7:0] peak_index=0;
  wire [15:0] audio_peak=real_peak[peak_index];
  video_timing_data timing(.video_clk(video_clk),.rst(rst),.read_req(timing_req),
   .read_req_ack(timing_ack),.hs(hs),.vs(vs),.de(de));
- frame_read_write #(.ENABLE_READ_SOURCE(1)) reader(.rst(memory_rst),.mem_clk(mem_clk),.Sdr_init_done(1'b1),
+`ifdef HTML_LAYERED
+ localparam READER_BURST_SIZE=128,READER_DRAIN_CYCLES=13;
+`else
+ localparam READER_BURST_SIZE=256,READER_DRAIN_CYCLES=10;
+`endif
+ frame_read_write #(.READ_BURST_SIZE(READER_BURST_SIZE),.READ_DRAIN_CYCLES(READER_DRAIN_CYCLES),.ENABLE_READ_SOURCE(1)) reader(.rst(memory_rst),.mem_clk(mem_clk),.Sdr_init_done(1'b1),
   .Sdr_init_ref_vld(refresh),.Sdr_busy(refresh),
   .App_rd_en(raw_read_enable),.App_rd_addr(raw_addr),.Sdr_rd_en(logical_response),.Sdr_rd_dout(mapped_response),
-  .read_clk(video_clk),.read_req(timing_req&&allow_requests),.read_req_ack(timing_ack),.read_accept_mem(read_accept),
+  .read_clk(video_clk),
+`ifdef HTML_LAYERED
+  .read_req(commit_req),.read_req_ack(reader_ack),
+`else
+  .read_req(timing_req&&allow_requests),.read_req_ack(timing_ack),
+`endif
+  .read_accept_mem(read_accept),
   .read_finish(read_finish),.read_addr_0(21'd0),.read_addr_1(21'd0),.read_addr_2(21'd0),.read_addr_3(21'd0),
   .read_addr_index(2'd0),.read_len(21'd307200),.read_en(read_enable),.read_data(fifo_data),
   .App_wr_en(write_cmd),.App_wr_addr(write_addr),.App_wr_din(write_data),.App_wr_dm(write_mask),
@@ -55,7 +81,11 @@ module html_display_chain_tb;
   .write_addr_index(2'd0),.write_len(21'd0),.write_en(1'b0),.write_data(32'd0),.write_linear(1'b0),
   .read_source_ready(logical_ready),.read_source_busy(bridge_busy),.write_busy_mem(write_busy_mem),
   .display_valid_video(display_valid),.fifo_fault(fifo_fault));
+ `ifdef HTML_LAYERED
+ html_layer_memory_bridge bridge(.layer_resources_enabled(1'b1),.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(commit_req),
+`else
  html_memory_bridge bridge(.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(timing_req),
+`endif
   .read_accept_mem(read_accept),.active_view(active_view),.zoom(zoom),.transition_mode(transition_mode),.focus(focus),
   .write_busy_mem(write_busy_mem),.mem_ready(1'b1),.refresh_active(refresh),
   .logical_ready(logical_ready),.logical_response(logical_response),.busy(bridge_busy),
@@ -128,7 +158,11 @@ module html_display_chain_tb;
  reg [31:0] word;
  begin
   where=golden_location(index,view,z);word=memory[where[20:0]];
+  `ifdef HTML_LAYERED
+  expected_rgb=where[23]?rgb565(where[22]?word[31:16]:word[15:0]):static_gold[where[20:0]];
+`else
   expected_rgb=where[23]?rgb565(where[22]?word[31:16]:word[15:0]):word[31:8];
+`endif
  end endfunction
  integer physical_addr,planned_due,planned_latency,observed_latency;
  reg [23:0] logical_gold;
@@ -167,7 +201,11 @@ module html_display_chain_tb;
    if(raw_read_enable)begin
     if(read_index>=307200)$fatal(1,"logical frame overfetch");
     logical_gold=expected_rgb(read_index,model_view,model_zoom);
-    if(normal_checks&&mapped_response[31:8]!==logical_gold)
+    if(normal_checks
+`ifdef HTML_LAYERED
+       &&layer_static
+`endif
+       &&mapped_response[31:8]!==logical_gold)
      $fatal(1,"logical source pixel frame%0d index%0d got%h expected%h",frame_acks,read_index,mapped_response[31:8],logical_gold);
     read_index=read_index+1;logical_checks=logical_checks+1;
    end
@@ -206,13 +244,28 @@ module html_display_chain_tb;
  reg ack_prev=0;
  integer ack_video=0;
  always @(posedge video_clk)begin
-  if(rst)begin ack_prev<=0;page_event<=0;display_valid<=0;end
+  if(rst)begin ack_prev<=0;display_valid<=0;
+`ifndef HTML_LAYERED
+   page_event<=0;
+`endif
+`ifdef HTML_LAYERED
+   commit_previous<=0;
+`endif
+  end
   else begin
-   ack_prev<=timing_ack;page_event<=0;
+   ack_prev<=timing_ack;
+`ifndef HTML_LAYERED
+   page_event<=0;
+`endif
+`ifdef HTML_LAYERED
+   commit_previous<=commit_ack;
+`endif
    if(timing_ack&&!ack_prev)begin
     ack_video=ack_video+1;display_valid<=1;peak_index<=peak_index+1'b1;
     $display("PROGRESS readerACK%0d time%0t physical%0d logical%0d",ack_video,$time,accepted,logical_checks);$fflush();
+    `ifndef HTML_LAYERED
     if(commit_pending)begin page_event<=1;commit_pending<=0;end
+`endif
    end
   end
  end
@@ -222,6 +275,7 @@ module html_display_chain_tb;
  reg old_timing_de=0,old_timing_vs=0;
  integer timing_x=0,timing_y=0,xi[0:31],yi[0:31],q;
  integer sync_checks=0,base_pixel_checks=0,frame_pixels=0,fd=0,frame_number=0;
+ time capture_first_time,capture_last_time;
  integer out_vs_count=0;
  reg prev_out_vs=0,capturing=0,verify_pixels=0;
  reg [4:0] capture_view=0;
@@ -247,11 +301,16 @@ module html_display_chain_tb;
    end
    prev_out_vs=ov;
    if(verify_pixels&&od)begin
+    if(frame_pixels==0)capture_first_time=$time;capture_last_time=$time;
     if(^out_rgb===1'bx)$fatal(1,"unknown DUT pixel x%0d y%0d",xi[31],yi[31]);
     if(xi[31]>=640||yi[31]>=480)$fatal(1,"bad active geometry");
     // Static A-layer equality outside all B/C overlays. This is a data oracle,
     // not a software image renderer; every exported pixel comes from out_rgb.
-    if(yi[31]<380&&!(xi[31]>=500&&yi[31]<105))begin
+    if(yi[31]<380&&!(xi[31]>=500&&yi[31]<105)
+`ifdef HTML_LAYERED
+       &&layer_static
+`endif
+    )begin
      wanted=expected_rgb(yi[31]*640+xi[31],capture_view,capture_zoom);
      if(out_rgb!==wanted)$fatal(1,"source RGB mismatch frame%0d x%0d y%0d got%h expected%h",frame_number,xi[31],yi[31],out_rgb,wanted);
      base_pixel_checks=base_pixel_checks+1;
@@ -282,8 +341,13 @@ module html_display_chain_tb;
  integer ack_before,vs_before;
  begin
   @(negedge video_clk);ack_before=ack_video;
+  `ifdef HTML_LAYERED
+  if(requested_view!=view)begin requested_view=view;source_commit=~source_commit;end
+`else
   if(active_view!=view)commit_pending=1;
-  active_view=view;zoom=magnify;capture_view=view;capture_zoom=magnify;
+  active_view=view;
+`endif
+  zoom=magnify;capture_view=view;capture_zoom=magnify;
   wait(ack_video>ack_before);vs_before=out_vs_count;wait(out_vs_count>vs_before);
   @(negedge video_clk);
   if(static_pose)seed_static_pose;
@@ -295,12 +359,18 @@ module html_display_chain_tb;
   wait(frame_pixels==307200);@(negedge video_clk);verify_pixels=0;
   if(capturing)begin capturing=0;$fclose(fd);end
   if(fifo_fault||map_fault)$fatal(1,"fault after completed visible frame");
-  $display("FRAME_PASS %0s pixels%0d accepted%0d returned%0d view%h zoom%0d age%0d",filename,frame_pixels,accepted,returned,view,magnify,overlay.bot.reaction_age);$fflush();
+  $display("FRAME_PASS %0s pixels%0d accepted%0d returned%0d view%h zoom%0d age%0d first_pixel_time%0t last_pixel_time%0t",filename,frame_pixels,accepted,returned,view,magnify,overlay.bot.reaction_age,capture_first_time,capture_last_time);$fflush();
  end endtask
  integer f;
  initial begin
   for(f=5;f<=10;f=f+1)latency_seen[f]=0;
   $readmemh("output/html_fidelity/display_vectors/memory_words.hex",memory);
+`ifdef HTML_LAYERED
+  $readmemh("output/html_fidelity/display_vectors/static_scene_gold.hex",static_gold);
+  // Static scene fixture only. Force age before ACK parameter queries; every
+  // texture, palette, blend and exported RGB still executes in real DUT RTL.
+  force bridge.geometry.motion.frame_age=7'd127;
+`endif
   $readmemh("output/html_fidelity/display_vectors/real_wav_peaks.hex",real_peak);
   $readmemh("output/html_fidelity/display_vectors/aperture_width.hex",aperture_vector);
   $display("PROGRESS fixture loaded2093056words plus realWAV peaks");$fflush();
@@ -319,13 +389,18 @@ module html_display_chain_tb;
   render_view(5'd1,2'd1,1,"output/html_fidelity/display_chain/zoom2.ppm");
   render_view(5'd1,2'd2,1,"output/html_fidelity/display_chain/zoom3.ppm");
   // A real committed page event starts aperture, gaze and caption reset together.
+  `ifdef HTML_LAYERED
+  release bridge.geometry.motion.frame_age;layer_static=0;
+`endif
   transition_mode=1;
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action00.ppm");
   if(overlay.osd.typed_count!=0)$fatal(1,"caption started before550ms");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action01.ppm");
   if(overlay.bot.gaze_x<=0)$fatal(1,"committed page event did not drive gaze");
-  render_view(5'd2,2'd0,0,"");render_view(5'd2,2'd0,0,"");
-  render_view(5'd2,2'd0,0,"");render_view(5'd2,2'd0,0,"");
+  render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action02.ppm");
+  render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action03.ppm");
+  render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action04.ppm");
+  render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action05.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action06.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action07.ppm");
   if(overlay.bot.tilt<=0)$fatal(1,"body did not follow page gaze at90ms");
@@ -336,7 +411,7 @@ module html_display_chain_tb;
   if(!map_fault)$fatal(1,"unsolicited response not diagnosed by tag FIFO");
   // Empty the real FIFO under active-video demand and prove sticky underflow.
   fault_reset=1;repeat(10)@(negedge video_clk);fault_reset=0;
-  wait(reader.rd_underflow);if(!fifo_fault)$fatal(1,"empty read not diagnosed");
+  wait(reader.rd_underflow);#1;if(!fifo_fault)$fatal(1,"empty read not diagnosed");
   for(f=5;f<=10;f=f+1)if(!latency_seen[f])$fatal(1,"missing response latency%0d coverage",f);
   if(refresh_starts==0||refresh_min<20)$fatal(1,"no20cycle refresh coverage");
   $display("DISPLAY_CHAIN_SIM_PASS frames%0d sync_checks%0d source_pixels%0d physicalrequests%0d physicalresponses%0d refreshes%0d minimum%0d cycles logicalchecks%0d latencies5..10 FIFOunderflow/tagfaultverified",frame_number,sync_checks,base_pixel_checks,accepted,returned,refresh_starts,refresh_min,logical_checks);$finish;

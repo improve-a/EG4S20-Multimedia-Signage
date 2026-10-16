@@ -6,7 +6,7 @@
 import argparse,hashlib,json,pathlib
 FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
                              'baseline_text_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
-                             'result_text_sha256': 'e87a626c8059e3640afc1bf2935a4bdbc16880a4b71540dab7111cf99bb7414a',
+                             'result_text_sha256': 'b01132128041c7917946e854f1f3826358e79428769a9f2738de8ac88f07079f',
                              'edits': [{'start': 0,
                                         'end': 0,
                                         'old': [],
@@ -232,7 +232,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'end': 365,
                                         'old': ['    .WRITE_V_FLIP     (1),\n'],
                                         'new': ['    .WRITE_V_FLIP     '
-                                                '(1),.READ_DRAIN_CYCLES(13),.ENABLE_LINEAR_CONFIG(1),.ENABLE_READ_SOURCE(1),\n']},
+                                                '(1),.READ_DRAIN_CYCLES(13),.READ_BURST_SIZE(128),.ENABLE_LINEAR_CONFIG(1),.ENABLE_READ_SOURCE(1),\n']},
                                        {'start': 368,
                                         'end': 368,
                                         'old': [],

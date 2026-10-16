@@ -7,21 +7,34 @@ module html_resource_locator(
  output reg [31:0] scene_offset,payload_bytes,word_base,set_id,
  output reg [15:0] page_index
 );
- reg [31:0] magic,reserved;
+ reg [31:0] magic;
+ reg constants_ok,constants_done;
+ reg check_constant;reg [7:0] expected_constant;
+ always @*begin
+  check_constant=1;expected_constant=0;
+  case(byte_index)
+   84:expected_constant=1;
+   86:expected_constant=32;
+   102:expected_constant=6;
+   85,87,103,108,109,110,111:expected_constant=0;
+   default:check_constant=0;
+  endcase
+ end
  assign present=magic==32'h4c584648;
- reg [15:0] version,locator_len,page_count;
  reg [32:0] aligned_pixel_end,scene_end,memory_end;
  reg format_ok,layout_ok,extent_ok;
  always @(posedge clk)begin
   if(rst||header_start)begin
-   magic<=0;version<=0;locator_len<=0;scene_offset<=0;payload_bytes<=0;
-   word_base<=0;page_index<=0;page_count<=0;set_id<=0;reserved<=0;
+   magic<=0;constants_ok<=1;constants_done<=0;scene_offset<=0;payload_bytes<=0;
+   word_base<=0;page_index<=0;set_id<=0;
   end else if(byte_valid)begin
+   // Callers deliver one sequential 512-byte sector; constants are checked
+   // once on arrival and used only after the complete header transport.
+   if(check_constant && byte_data!=expected_constant)constants_ok<=0;
+   if(byte_index==111)constants_done<=1;
    case(byte_index)
     80:magic[7:0]<=byte_data;81:magic[15:8]<=byte_data;
     82:magic[23:16]<=byte_data;83:magic[31:24]<=byte_data;
-    84:version[7:0]<=byte_data;85:version[15:8]<=byte_data;
-    86:locator_len[7:0]<=byte_data;87:locator_len[15:8]<=byte_data;
     88:scene_offset[7:0]<=byte_data;89:scene_offset[15:8]<=byte_data;
     90:scene_offset[23:16]<=byte_data;91:scene_offset[31:24]<=byte_data;
     92:payload_bytes[7:0]<=byte_data;93:payload_bytes[15:8]<=byte_data;
@@ -29,11 +42,8 @@ module html_resource_locator(
     96:word_base[7:0]<=byte_data;97:word_base[15:8]<=byte_data;
     98:word_base[23:16]<=byte_data;99:word_base[31:24]<=byte_data;
     100:page_index[7:0]<=byte_data;101:page_index[15:8]<=byte_data;
-    102:page_count[7:0]<=byte_data;103:page_count[15:8]<=byte_data;
     104:set_id[7:0]<=byte_data;105:set_id[15:8]<=byte_data;
     106:set_id[23:16]<=byte_data;107:set_id[31:24]<=byte_data;
-    108:reserved[7:0]<=byte_data;109:reserved[15:8]<=byte_data;
-    110:reserved[23:16]<=byte_data;111:reserved[31:24]<=byte_data;
    endcase
   end
  end
@@ -47,8 +57,8 @@ module html_resource_locator(
    aligned_pixel_end<=({1'b0,pixel_end}+33'd511)&33'h1fffffe00;
    scene_end<={1'b0,scene_offset}+{1'b0,payload_bytes};
    memory_end<={1'b0,word_base}+{3'b000,payload_bytes[31:2]};
-   format_ok<=magic==32'h4c584648 && version==1 && locator_len==32 &&
-    page_index<6 && page_count==6 && reserved==0 &&
+   format_ok<=magic==32'h4c584648 && constants_ok && constants_done &&
+    page_index<6 &&
     width==640 && height==480 && dib_size==40;
    layout_ok<=pixel_offset>=512 && pixel_offset<=1048576 &&
     scene_offset[8:0]==0 && payload_bytes[9:0]==0 &&

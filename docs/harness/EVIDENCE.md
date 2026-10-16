@@ -86,3 +86,23 @@ Formal output/html_fidelity/media is now a single six-HFXL-BMP/one-WAV pack. scr
 - control_storage旧替身参数遗漏导致原快照编译FAIL，补齐ENABLE_HFXL声明后regression/20261015T193237292810Z PASS，未改DUT或放宽断言。
 - 受保护依赖审计audit/protected_dependencies_20261015T1914.json：59项中53项与基线相同，6项为授权的最小可重放补丁。引脚、时钟/复位架构和vendor IP未更改。
 - 两bank调色板只读穷举31种分组，最优UI01/04/05=1060色、UI02/03/06=1059色，各超1024；因此不采用，SET_ID仍003adc1b。总色并集1994，不以总数误判分组可行。
+
+
+### full03 packing failure and bounded recovery
+
+`audit/full03_result.json` pins commit5aa8501, snapshot2f6d33865832799d25d892684db5dc582049c0cf570b5af62ab982033911871b, status/PIDs/TD identity/313.938s/exit2 and report hashes. SYN succeeded; PlacePacking required5494MSlices against4900. No final routedSTA or bitstream exists for this snapshot. The older full02 bit remains first-phase only.
+
+`verification/20261015T194733755081Z/result.json`: streamed panel headers PASS all4panels249856words plus24 independent fixed-byte rejections and all prior transport/timeout checks. Isolated old/new SYN391LUT309REG vs328LUT118REG. `verification/locator_scene_stream_v1/verification.json`: current locator/scene fixed fields PASS6pages8831words and170 rejection cases including144singlebit faults; originals and exactdiffs retained.
+
+Strict simultaneous reader/writer test found a real native eagle FIFO underrun with read256/write256. The identical legal continuous SPI input model passes eagle/home after read128 only; remaining page run is pending. Source rate comes from existing100MHz SPI/HIGH_SPEED_DIV=2, byteevery64systemclocks, 32bitwordevery102.4memoryclocks. Writer actualoccupied259memoryclocks. No hardwarebandwidthclaim.
+
+OSD font and compact color candidate:3,687,348RGB/control comparisonsPASS. Spring width:1,221,490actualRTL transition checksPASS plus reachable-state closure. Data reset fill:200,004RGB/sync cycles over200resetsPASS. Isolated combinedSYN3729LUT898REG18×9K11×32K12DSP; production not replaced at this checkpoint. Formalmedia003adc1b unchanged. Optional palette candidate4c74bf6d is not a delivered asset set.
+
+
+### Final candidate freeze after resume
+
+Current source binding and protected dependency evidence: `audit/full04_freeze.json` and `audit/protected_dependencies_full04.json`. The active BG16/task32/group-return candidate passes all6native writer128 tests in `page_control/layer_final_bg16_writer128_{home_eagle,phoenix,remaining}_v1`. Eachframe307200RGBexact; legalcontinuousSPIinput and actualread/writecontrollers. BG8phoenix/dragon writerFIFO failures remain separate and are not promoted.
+
+`regression/20261015T201246394876Z/results/regression_summary.json`: current narrowed BMP source2f308000... passes5cases,1247.062s; previous15case syncRAM suite alsoPASS. `bot_osd/final_source_proofs_v5.json` binds approvedfont8/spring/reset3RTLfiles,6byteidenticalDUTframes,fulltargetchecks and1221490actualRTLspring transitions. `audit/rom_init_font8_v1.json` proves15active/source numeric HEX/BIN roundtrips including1024×8utilityROM. Decimal andconstantforeground variants are rejectedbymeasuredarea, notclaimedproduction.
+
+Top usesREAD_BURST_SIZE128/READ_DRAIN_CYCLES13; writerBURST_SIZE256 and legacydefaults remain. `verification/read_burst128_v1/{audit,memory_replay_v2,integration_replay_v5}.json` records exactdiffs and reproducibility. The final18displaybench uses the actual vendorFIFO/GrayCDC RTL and PCM-derived peakROM; WAVparser/player/SDaudioRTL are covered separately, not instantiated by this displaychain suite.

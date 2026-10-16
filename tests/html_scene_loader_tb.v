@@ -10,7 +10,7 @@ module html_scene_loader_tb;
  integer ack_wait=0,ack_tail=0,word_count=0,page_count=0,finish_wait=0,all_words=0;
  integer request_count=0,expected_word,header_words;
  reg busy=0,is_header=0;reg [31:0] locked_addr;
- reg [7:0] h[0:511];integer k;
+ reg [7:0] h[0:511];integer k;integer fixed_byte;
  html_scene_loader #(.TIMEOUT_CYCLES(400),
  .BASE_WORDS({21'd5120,21'd4096,21'd3072,21'd2048,21'd1024,21'd0}),
  .LENGTH_WORDS({6{21'd1024}})) dut(
@@ -30,6 +30,16 @@ module html_scene_loader_tb;
   if(c==17)begin put32(80,0);put32(10,54);put32(18,320);put32(22,240);put32(2,230454);end
   if(c==18)h[0]=0;
   case(c)1:h[84]=2;2:put32(104,0);3:put32(96,256);4:begin put32(92,8192);put32(2,930304);end endcase
+  // Every bit of every streamed fixed header byte must reject independently.
+  if(c>=28)begin
+   case((c-28)/8)
+    0:fixed_byte=84;1:fixed_byte=85;2:fixed_byte=86;3:fixed_byte=87;
+    4:fixed_byte=102;5:fixed_byte=103;6:fixed_byte=108;7:fixed_byte=109;
+    8:fixed_byte=110;9:fixed_byte=111;
+    default:fixed_byte=26+((c-28)/8)-10;
+   endcase
+   h[fixed_byte]=h[fixed_byte]^(1<<((c-28)%8));
+  end
  end endtask
  function [31:0] payload;input integer page,word;begin
   payload=32'h9e3779b9^(page*32'h10204080)^word;
@@ -95,7 +105,7 @@ module html_scene_loader_tb;
   if(page_ready & ~((1<<page_count)-1))$fatal(1,"page ready before physical write completion");
  end
  initial begin
-  for(c=0;c<28;c=c+1)begin
+  for(c=0;c<172;c=c+1)begin
    @(posedge clk);#1;rst=1;enable=0;ack=0;valid=0;ending=0;sd_error=0;finish_toggle=0;
    s0=(c==16)?32'hfffffc00:17;
    busy=0;cycles=0;grant=0;ack_wait=0;ack_tail=0;word_count=0;page_count=0;finish_wait=0;request_count=0;
@@ -109,6 +119,6 @@ module html_scene_loader_tb;
    repeat(10)@(posedge clk);#1;
    if(req||wreq||active)$fatal(1,"transaction held after terminal state");
   end
-  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 26 malformed/transport/timeout cases plus ordinary adaptive-BMP fallback",all_words);$finish;
+  $display("TEST_PASS scene loader 6 ready-after-write pages, %0d checked words, 170 malformed/transport/timeout cases (including 144 fixed-field bit flips) plus ordinary adaptive-BMP fallback",all_words);$finish;
  end
 endmodule

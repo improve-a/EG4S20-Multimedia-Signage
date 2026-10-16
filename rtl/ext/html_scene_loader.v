@@ -22,8 +22,19 @@ module html_scene_loader #(
  reg [12:0] sector_index,sector_count;
  reg [31:0] origin,payload_sector,timeout_count;
  reg [23:0] assembled;
- reg [31:0] file_len,pixel_offset,dib_size,width,height,compression;
- reg [15:0] signature,planes,bit_count;
+ reg [31:0] file_len,pixel_offset,dib_size,width,height;
+ reg [15:0] signature;
+ reg bmp_constants_ok;
+ reg bmp_check_constant;reg [7:0] bmp_expected_constant;
+ always @*begin
+  bmp_check_constant=1;bmp_expected_constant=0;
+  case(byte_index)
+   26:bmp_expected_constant=1;
+   28:bmp_expected_constant=24;
+   27,29,30,31,32,33:bmp_expected_constant=0;
+   default:bmp_check_constant=0;
+  endcase
+ end
  wire [31:0] scene_offset,payload_bytes,locator_base,set_id;
  wire [15:0] page_index;
  wire locator_valid,locator_present;
@@ -57,7 +68,7 @@ module html_scene_loader #(
  wire finish_pulse=finish_sync[2]^finish_sync[1];
  wire [31:0] assembled_word={sector_data,assembled};
  wire [32:0] resource_last_sector={1'b0,origin}+{10'd0,file_len[31:9]}-1'b1;
- wire header_ok=locator_valid && signature==16'h4d42 && planes==1 && bit_count==24 && compression==0 &&
+ wire header_ok=locator_valid && signature==16'h4d42 && bmp_constants_ok &&
   page_index=={13'd0,page} && set_id==SET_ID && locator_base=={11'd0,expected_base} &&
   payload_bytes=={9'd0,expected_words,2'b00};
  html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
@@ -73,7 +84,7 @@ module html_scene_loader #(
    state<=IDLE;page<=0;active<=0;ready<=0;error<=0;page_ready<=0;mode_valid<=0;layer_mode<=0;
    sector_req<=0;sector_addr<=0;write_req<=0;write_en<=0;write_data<=0;write_base<=0;write_len<=0;
    byte_index<=0;sector_index<=0;sector_count<=0;origin<=0;payload_sector<=0;timeout_count<=0;assembled<=0;
-   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;signature<=0;planes<=0;bit_count<=0;compression<=0;
+   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;signature<=0;bmp_constants_ok<=0;
    body_ok<=0;
    finish_sync<=0;finish_seen<=0;
   end else begin
@@ -87,10 +98,11 @@ module html_scene_loader #(
     IDLE:if(enable)begin active<=1;page<=0;origin<=sector0;state<=HREQ;end
     HREQ:begin
      sector_req<=1;sector_addr<=origin;byte_index<=0;signature<=0;file_len<=0;pixel_offset<=0;
-     dib_size<=0;width<=0;height<=0;planes<=0;bit_count<=0;compression<=0;state<=HWAIT;
+     dib_size<=0;width<=0;height<=0;bmp_constants_ok<=1;state<=HWAIT;
     end
     HWAIT:begin
      if(sector_valid)begin
+      if(bmp_check_constant && sector_data!=bmp_expected_constant)bmp_constants_ok<=0;
       if(byte_index<513)byte_index<=byte_index+1'b1;
       case(byte_index)
        0:signature[7:0]<=sector_data;1:signature[15:8]<=sector_data;
@@ -99,8 +111,6 @@ module html_scene_loader #(
        14:dib_size[7:0]<=sector_data;15:dib_size[15:8]<=sector_data;16:dib_size[23:16]<=sector_data;17:dib_size[31:24]<=sector_data;
        18:width[7:0]<=sector_data;19:width[15:8]<=sector_data;20:width[23:16]<=sector_data;21:width[31:24]<=sector_data;
        22:height[7:0]<=sector_data;23:height[15:8]<=sector_data;24:height[23:16]<=sector_data;25:height[31:24]<=sector_data;
-       26:planes[7:0]<=sector_data;27:planes[15:8]<=sector_data;28:bit_count[7:0]<=sector_data;29:bit_count[15:8]<=sector_data;
-       30:compression[7:0]<=sector_data;31:compression[15:8]<=sector_data;32:compression[23:16]<=sector_data;33:compression[31:24]<=sector_data;
       endcase
      end
      if(sector_end)begin

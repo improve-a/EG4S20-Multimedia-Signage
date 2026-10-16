@@ -2,7 +2,7 @@
 DUT writes every exported RGB pixel. PC prepares static storage vectors and
 independent pixel/address expectations, never pretends to render DUT output.
 """
-import argparse,datetime,hashlib,json,os,shutil,struct,subprocess,time,wave,zlib
+import argparse,datetime,fractions,hashlib,json,os,re,shutil,struct,subprocess,time,wave,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'output/html_fidelity/display_chain'
@@ -57,7 +57,48 @@ def prepare_vectors():
  (VECTORS/'aperture_width.hex').write_text(''.join(f'{v:03x}\n' for v in values))
  report['vectors']={p.name:{'sha256':sha(p),'bytes':p.stat().st_size} for p in VECTORS.glob('*.hex')};atomic_json(VECTORS/'manifest.json',report)
  return report
+def prepare_layered_vectors():
+ # Formal trailer bytes are the storage stimulus. Python below is an independent
+ # static integer-alpha oracle only; it never writes any DUT exported frame.
+ report=prepare_vectors();manifest_path=ROOT/'output/html_fidelity/layers/hfxl_payload_manifest.json'
+ manifest=json.loads(manifest_path.read_text(encoding='utf8'));memory=[0]*2093056;golds=[];trailers=[]
+ for page in manifest['pages']:
+  i=page['page_index'];bmp=MEDIA/f'UI{i+1:02d}.BMP';data=bmp.read_bytes()
+  magic,version,length,offset,size,base,pi,count,set_id,reserved=struct.unpack_from('<IHHIIIHHII',data,80)
+  if (magic,version,length,base,pi,count,set_id,reserved)!=(0x4c584648,1,32,page['global_word_base'],i,6,manifest['set_id'],0):raise ValueError(f'formal HFXL locator mismatch {bmp}')
+  payload=data[offset:offset+size]
+  if len(payload)!=page['payload_bytes'] or hashlib.sha256(payload).hexdigest()!=page['sha256']:raise ValueError(f'formal trailer differs from sealedmanifest {bmp}')
+  words=struct.unpack('<'+str(len(payload)//4)+'I',payload);memory[base:base+len(words)]=words
+  palette=words[page['palette_word_offset']:page['palette_word_offset']+page['palette_entries']];gold=[]
+  for y in range(480):
+   for x in range(640):
+    index=(words[page['bg_word_offset']+y*214+x//3]>>(10*(x%3)))&1023
+    if index>=len(palette):raise ValueError('invalid background palette index')
+    gold.append(palette[index]>>8)
+  for component in page['components']:
+   bx,by,w,h=component['bbox'];tex=component['texture_word_offset']
+   for ty in range(h):
+    y=by+ty
+    if y<0 or y>=480:continue
+    for tx in range(w):
+     x=bx+tx
+     if x<0 or x>=640:continue
+     fg=words[tex+ty*w+tx];alpha=fg&255;bg=gold[y*640+x];rgb=0
+     for shift in [16,8,0]:rgb|=((((fg>>(shift+8))&255)*alpha+((bg>>shift)&255)*(255-alpha)+127)//255)<<shift
+     gold[y*640+x]=rgb
+  golds.extend(gold);trailers.append({'file':str(bmp),'sha256':sha(bmp),'scene_offset':offset,'payload_sha256':hashlib.sha256(payload).hexdigest(),'word_base':base,'words':len(words)})
+ for i in range(2,6):
+  p=MEDIA/f'UI{i:02d}.BMP';data=p.read_bytes();offset=struct.unpack_from('<I',data,72)[0]
+  # HFXC metadata has payload offset at byte72, fixed512 in this media set.
+  if offset!=512:raise ValueError('unexpected HFXC offset')
+  words=struct.unpack_from('<62464I',data,offset);base=1843200+(i-2)*62464;memory[base:base+62464]=words
+ (VECTORS/'memory_words.hex').write_text(''.join(f'{v:08x}\n' for v in memory),newline='\n')
+ (VECTORS/'static_scene_gold.hex').write_text(''.join(f'{v:06x}\n' for v in golds),newline='\n')
+ report.update(mode='layered',scope='Formal HFXL+HFXC storage stimulus; independent static palette/straight-alpha oracle, never DUT image generation',trailers=trailers,manifest_sha256=sha(manifest_path),static_oracle='perchannel (src*a+dst*(255-a)+127)//255 in descriptor paintorder; identity age127; runtime action RGB not compared against staticoracle')
+ report['vectors']={p.name:{'sha256':sha(p),'bytes':p.stat().st_size} for p in VECTORS.glob('*.hex')};atomic_json(VECTORS/'manifest.json',report);return report
+
 def png_write(p,w,h,rgb):
+ if not frames or len(frames)!=len(durations_ps):raise ValueError('APNG frame/duration count mismatch')
  def chunk(t,d):return struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(t+d)&0xffffffff)
  scan=b''.join(b'\0'+rgb[y*w*3:(y+1)*w*3] for y in range(h))
  p.write_bytes(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',w,h,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(scan))+chunk(b'IEND',b''))
@@ -87,9 +128,9 @@ def ppm_read(p):
  if magic!=b'P6' or wh!=b'640 480' or depth!=b'255' or len(rgb)!=921600:raise ValueError(f'incomplete DUT frame {p}')
  return rgb
 def compare_frames(run):
- result=[];names=['home','eagle','phoenix','elf','dragon','eco']
+ result=[];destination=run/'frames';destination.mkdir(exist_ok=True);names=['home','eagle','phoenix','elf','dragon','eco']
  for ppm in sorted((run/'output/html_fidelity/display_chain').glob('*.ppm')):
-  rgb=ppm_read(ppm);target=OUT/ppm.name;shutil.copy2(ppm,target);png_write(target.with_suffix('.png'),640,480,rgb)
+  rgb=ppm_read(ppm);target=destination/ppm.name;shutil.copy2(ppm,target);png_write(target.with_suffix('.png'),640,480,rgb)
   item={'frame':ppm.name,'sha256':sha(ppm),'source':'real RTL out_rgb fwrite;640x480307200pixels'}
   reference=None;clean=None
   if ppm.stem.startswith('page'):
@@ -100,7 +141,7 @@ def compare_frames(run):
    w,h,ref=png_read(reference)
    if (w,h)!=(640,480):raise ValueError('reference is not stage640x480')
    diff=bytes(min(255,abs(a-b)*4) for a,b in zip(rgb,ref));triptych=b''.join(ref[y*1920:(y+1)*1920]+rgb[y*1920:(y+1)*1920]+diff[y*1920:(y+1)*1920] for y in range(480))
-   png_write(OUT/(ppm.stem+'_reference_dut_diff.png'),1920,480,triptych)
+   png_write(destination/(ppm.stem+'_reference_dut_diff.png'),1920,480,triptych)
    item.update(reference=str(reference),reference_sha256=sha(reference),full_rgb_mae=sum(abs(a-b) for a,b in zip(rgb,ref))/len(rgb),comparison='left sourceHTML;middle actualDUT;right4xabsoluteRGBdifference. Pose/bars differ by disclosed fixture.')
   if clean and clean.exists():
    w,h,base=png_read(clean);err=0;count=0;bad=0
@@ -110,35 +151,95 @@ def compare_frames(run):
      k=(y*640+x)*3;delta=sum(abs(rgb[k+c]-base[k+c]) for c in range(3));err+=delta;count+=3;bad+=delta!=0
    item.update(clean_A_sha256=sha(clean),clean_A_rgb_mae=err/count,clean_A_nonmatching_pixels=bad,clean_A_mask='y<380 excluding x>=500,y<105; excludes all OSD,Bot and zoomindicator')
   result.append(item)
- atomic_json(OUT/'pixel_comparisons.json',result);return result
+ atomic_json(run/'pixel_comparisons.json',result);return result
+def completion_counts(text,smoke):
+ frames=re.findall(r'^FRAME_PASS .* pixels(\d+) accepted(\d+) returned(\d+)',text,re.M)
+ expected=1 if smoke else 18
+ if len(frames)!=expected or any(int(p)!=307200 or a!=b for p,a,b in frames):raise ValueError('incomplete/mismatched actual DUT fullframe results')
+ result={'mode':'smoke' if smoke else 'full18','full_frames':len(frames),'active_pixels':len(frames)*307200,'physical_requests_at_lastframe':int(frames[-1][1]),'physical_returns_at_lastframe':int(frames[-1][2])}
+ if not smoke:
+  m=re.search(r'DISPLAY_CHAIN_SIM_PASS frames(\d+) sync_checks(\d+) source_pixels(\d+) physicalrequests(\d+) physicalresponses(\d+) refreshes(\d+) minimum(\d+) cycles logicalchecks(\d+) latencies5..10 FIFOunderflow/tagfaultverified',text)
+  if not m:raise ValueError('missing final actual timing/FIFO/refresh diagnostic counters')
+  values=list(map(int,m.groups()));keys=['frames','sync_checks','source_pixel_checks','physical_requests','physical_responses','refresh_count','minimum_refresh_cycles','logical_pixel_checks'];result.update(dict(zip(keys,values)))
+  if values[0]!=18 or values[3]!=values[4] or values[6]<20 or values[7]!=18*307200:raise ValueError('invalid actualDUT completion totals')
+  result.update(latency_cycles_covered=list(range(5,11)),sticky_underflow_verified=True,unsolicited_response_verified=True)
+ return result
+
+def write_apng(path,frames,durations_ps,metadata):
+ # Full source RGB frames, lossless, no blending/interpolation or palette mapping.
+ # Exact rational delay21/1250s preserves the native16.8ms frame period.
+ if not frames or len(frames)!=len(durations_ps):raise ValueError('APNG frame/duration count mismatch')
+ def chunk(t,d):return struct.pack('>I',len(d))+t+d+struct.pack('>I',zlib.crc32(t+d)&0xffffffff)
+ blob=bytearray(b'\x89PNG\r\n\x1a\n');blob+=chunk(b'IHDR',struct.pack('>IIBBBBB',640,480,8,2,0,0,0))
+ blob+=chunk(b'acTL',struct.pack('>II',len(frames),0))
+ blob+=chunk(b'tEXt',b'DUTFrameProvenance\0'+json.dumps(metadata,ensure_ascii=True,separators=(',',':')).encode('ascii'))
+ sequence=0
+ for i,(rgb,period) in enumerate(zip(frames,durations_ps)):
+  if len(rgb)!=640*480*3:raise ValueError('APNG source is not a completeDUTframe')
+  delay=fractions.Fraction(period,10**12)
+  if delay.numerator>65535 or delay.denominator>65535:raise ValueError('APNG duration exceeds exact16bit rational')
+  blob+=chunk(b'fcTL',struct.pack('>IIIIIHHBB',sequence,640,480,0,0,delay.numerator,delay.denominator,0,0));sequence+=1
+  scan=b''.join(b'\0'+rgb[y*1920:(y+1)*1920] for y in range(480));packed=zlib.compress(scan)
+  if i==0:blob+=chunk(b'IDAT',packed)
+  else:blob+=chunk(b'fdAT',struct.pack('>I',sequence)+packed);sequence+=1
+ blob+=chunk(b'IEND',b'');path.write_bytes(blob)
+ # Existing Pillow is verification only: decode everyAPNGframe and compareRGB.
+ from PIL import Image,__version__ as pillow_version
+ with Image.open(path) as image:
+  if image.n_frames!=len(frames):raise ValueError('APNG lost source frames')
+  for i,rgb in enumerate(frames):
+   image.seek(i)
+   if image.convert('RGB').tobytes()!=rgb:raise ValueError('APNG changed actualDUT RGB')
+   if abs(image.info.get('duration',-1)-durations_ps[i]/10**9)>1e-8:raise ValueError('APNG changed actualframe time')
+ return {'path':str(path),'sha256':sha(path),'decoded_frames':len(frames),'lossless_rgb_verified':True,'pillow_version':pillow_version}
+
+def make_action_preview(run):
+ log=(run/'simulation.log').read_text();stamps={}
+ for index,age,first,last in re.findall(r'^FRAME_PASS .*[/\\]action(\d\d)\.ppm .* age(\d+) first_pixel_time(\d+) last_pixel_time(\d+)',log,re.M):
+  stamps[int(index)]=(int(age),int(first),int(last))
+ if sorted(stamps)!=list(range(8)):raise ValueError('missing8 actualDUT action timestamps')
+ frames=[];sources=[];zero=stamps[0][1]
+ for i in range(8):
+  source=run/'frames'/f'action{i:02d}.ppm';age,first,last=stamps[i]
+  if age!=i or first-zero!=i*16_800_000_000:raise ValueError('action capture not consecutive native16.8ms frames')
+  frames.append(ppm_read(source));sources.append({'frame':str(source.relative_to(run)),'sha256':sha(source),'reaction_age_frames':age,'first_pixel_time_ps':first,'last_pixel_time_ps':last,'relative_first_pixel_time_ms':(first-zero)/10**9})
+ metadata={'scope':'Eight actualDUT native640x480 frames0..7 only, sampledtransition window0..117.6ms. Loop resets after134.4ms. No interpolation, redraw, palettequantization or claimtofull1.55s transition.','time_origin':'first active pixel of capturedaction00, absolute simulator timestamps retained','native_frame_period_ps':16_800_000_000,'sources':sources}
+ metadata['apng']=write_apng(run/'frames/action_samples.apng',frames,[16_800_000_000]*8,metadata)
+ atomic_json(run/'frames/action_samples_provenance.json',metadata);return metadata
+
 def source_files():
  local=['tests/html_display_chain_tb.v','rtl/SD/frame_read_write.v','rtl/SD/frame_fifo_read.v','rtl/SD/frame_fifo_write.v',
         'rtl/SD/video_delay.v','rtl/SD/video_timing_data.v','rtl/SD/color_bar.v','rtl/IP/afifo_32_16_256.v','rtl/IP/afifo_16_32_256.v',
-        'rtl/ext/pixel_adjust.v','rtl/ext/html_assets/html_caption_map.v']
+        'rtl/display_commit.v','rtl/ext/pixel_adjust.v','rtl/ext/html_assets/html_caption_map.v']
  local += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'rtl/ext').glob('html*.v')]
  local += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'rtl/ext').glob('exhibit*.v')]
  return sorted(set(local))
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--prepare-only',action='store_true');ap.add_argument('--smoke',action='store_true');ap.add_argument('--timeout',type=int,default=6000);a=ap.parse_args()
- vectors=prepare_vectors()
+ global VECTORS
+ ap=argparse.ArgumentParser();ap.add_argument('--layered',action='store_true');ap.add_argument('--compile-only',action='store_true');ap.add_argument('--prepare-only',action='store_true');ap.add_argument('--smoke',action='store_true');ap.add_argument('--timeout',type=int,default=6000);a=ap.parse_args()
+ if a.layered:VECTORS=ROOT/'output/html_fidelity/display_vectors_layered'
+ vectors=prepare_layered_vectors() if a.layered else prepare_vectors()
  if a.prepare_only:print(json.dumps(vectors,indent=2));return 0
- OUT.mkdir(parents=True,exist_ok=True);run=OUT/('run_'+time.strftime('%Y%m%d_%H%M%S'));run.mkdir()
+ OUT.mkdir(parents=True,exist_ok=True);run=OUT/(('layered_' if a.layered else 'run_')+time.strftime('%Y%m%d_%H%M%S'));run.mkdir()
  sources=source_files()
- dependencies=sources+['rtl/SD/video_define.v']+[str(p.relative_to(ROOT)) for p in (ROOT/'rtl/ext/html_assets').glob('*.hex')]
+ dependencies=sources+['scripts/html_display_chain_verify.py','rtl/SD/video_define.v']+[str(p.relative_to(ROOT)) for p in (ROOT/'rtl/ext/html_assets').glob('*.hex')]
  for name in dependencies:
   dst=run/name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dst)
- for folder in ['display_vectors']:
-  shutil.copytree(ROOT/'output/html_fidelity'/folder,run/'output/html_fidelity'/folder)
+ shutil.copytree(VECTORS,run/'output/html_fidelity/display_vectors')
  (run/'output/html_fidelity/display_chain').mkdir(parents=True)
  evidence={'state':'RUNNING','scope':'Display-chain RTL with real FIFOs/timing; encrypted SDRAM replaced by4-beatgroup model. No SDphysical,PHY,HW orSTAclaim.',
- 'snapshot':str(run),'supervisor_pid':os.getpid(),'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'started_epoch':time.time(),
+ 'fifo_implementation':{'read_module':'rfifo_32_32_512','read_source':'rtl/IP/afifo_32_16_256.v','capacity_words':512,'word_bits':32,'implementation':'Actual unencrypted generatedvendorRTL including Graypointer CDC,flags and ram_infer_rfifo_32_32_512 arrayRAM. No simplified occupancyFIFO replacement.','cdc':'SourceGrayregister,two destination synchronizerstages,registeredGray-to-binary;40MHzwrite/25MHzread clocks at testphase. Digitalcycle semantics only; no analogmetastability, siliconBRAMdelay orpostroute claim.','writer_module':'wfifo_32_32_512','writer_source':'rtl/IP/afifo_16_32_256.v','writer_scope':'ActualgeneratedRTLcompiled butwrite_req/write_en tiedzero; simultaneouswriteroccupation covered by separateCunit proofs, notthisdisplaychainsuite.'},
+ 'read_configuration':{'burst_pixels':128 if a.layered else 256,'drain_cycles':13 if a.layered else 10,'enable_read_source':True},
+ 'audio_stimulus':{'input':'256entry peakROM from formal07_MUSIC.WAV, prepared by Pythonwave PCM16 decode; maxabsolute channel sample per16.8ms, sourceWAV SHA in vectors.audio','advance':'peak_index increments on eachactualvideo readACK','audio_status':'fixed4d2 teststimulus','scope':'ActualOSD history/bar RTL executes; WAVparser/player,PCMdecoder,I2S,DAC,audioarbiter andSDaudioI/O RTL are not instantiated here. Separateaudio proofs apply; thisisnot integratedA/V verification.'},
+ 'layered':a.layered,'test_mode':'smoke' if a.smoke else 'full18','oracle_scope':{'full_rgb_compared_frames':1 if a.smoke else 10 if a.layered else 18,'natural_layered_frames':'8 actualDUT frames checked for sync,knownRGB,fullpixelcounts,commit/gaze/tilt/caption semantics and stickyfaults; no staticRGBoracle comparison during changing scene transforms'},'snapshot':str(run),'supervisor_pid':os.getpid(),'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'started_epoch':time.time(),
  'sources':{n:sha(run/n) for n in dependencies},'vectors':vectors,'steps':[],
- 'fixtures':'Static captures seed only caption complete and known Botmotion registers atverticalblank; noRGBpixel forcing. Natural committedpageaction frames runnormally.'}
+ 'fixtures':'Layered static scene age127 pinned before ACK queries, then released for natural action; static scene oracle skipped for natural action. Static captures seed only caption complete and known Botmotion registers atverticalblank; noRGBpixel forcing. Natural committedpageaction frames runnormally.'}
  def save():atomic_json(run/'verification.json',evidence);atomic_json(OUT/'verification.json',evidence)
  save()
- commands=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM','-Irtl/SD','-s','html_display_chain_tb','-o','sim.vvp']+sources),
+ commands=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM']+(['-DHTML_LAYERED'] if a.layered else [])+['-Irtl/SD','-s','html_display_chain_tb','-o','sim.vvp']+sources),
            ('simulation',[r'C:\iverilog\bin\vvp.exe','sim.vvp']+(['+smoke'] if a.smoke else []))]
  for name,cmd in commands:
+  if a.compile_only and name=='simulation':break
   t=time.time()
   with (run/(name+'.log')).open('wb') as log:
    child=subprocess.Popen(cmd,cwd=run,stdout=log,stderr=subprocess.STDOUT);step={'name':name,'pid':child.pid,'command':cmd,'state':'RUNNING'};evidence['steps'].append(step);save()
@@ -146,6 +247,10 @@ def main():
    except subprocess.TimeoutExpired:child.kill();child.wait();code=-999
   step.update(exit_code=code,wall_seconds=time.time()-t,state='PASS' if code==0 else 'FAIL');save()
   if code:evidence.update(state='FAIL',wall_seconds=time.time()-evidence['started_epoch']);save();print((run/(name+'.log')).read_text(errors='replace'));return code
+ if a.compile_only:evidence.update(state='COMPILE_PASS');save();print(run);return 0
  if b'DISPLAY_CHAIN_SIM_PASS' not in (run/'simulation.log').read_bytes():raise ValueError('missing real DUT completionmarker')
- evidence['frames']=compare_frames(run);evidence.update(state='DISPLAY_CHAIN_SIM_PASS',wall_seconds=time.time()-evidence['started_epoch']);save();print(json.dumps(evidence,indent=2));return 0
+ evidence['completion']=completion_counts((run/'simulation.log').read_text(),a.smoke);evidence['frames']=compare_frames(run);
+ if len(evidence['frames'])!=(1 if a.smoke else 18):raise ValueError('captured DUT files incomplete')
+ if not a.smoke:evidence['action_preview']=make_action_preview(run)
+ evidence.update(state='DISPLAY_CHAIN_SIM_PASS',wall_seconds=time.time()-evidence['started_epoch']);save();print(json.dumps(evidence,indent=2));return 0
 if __name__=='__main__':raise SystemExit(main())

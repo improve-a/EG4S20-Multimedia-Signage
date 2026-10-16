@@ -24,16 +24,17 @@ module html_bot_overlay #(
  reg [7:0] reaction_age;
  reg [8:0] blink_wait;
  reg [3:0] blink_phase;
- reg signed [15:0] gaze_x,gaze_y,gaze_vx,gaze_vy;
- reg signed [15:0] tilt,tilt_v,shape,shape_v,hop,hop_v;
+ reg signed [9:0] gaze_x;reg signed[7:0]gaze_vx,gaze_y;reg signed[4:0]gaze_vy;
+ reg signed[10:0]tilt;reg signed[7:0]tilt_v,hop;reg signed[4:0]hop_v;
+ reg signed [15:0] shape,shape_v;
  // Targets belong to the frame now being committed, before spring integration.
  // Pixel geometry still uses the registered age/state of the rendered frame.
  wire [7:0] target_age=(page_event||event_pending) ? 8'd0 :
   (reaction_age==255 ? 8'd255 : reaction_age+1'b1);
  wire signed [1:0] target_direction=page_event ? page_direction : (event_pending ? event_direction : dir);
  wire [15:0] target_frame=frame_count+1'b1;
- reg signed [15:0] gx_target,gy_target,tilt_target,shape_target,hop_target;
- reg signed [15:0] gx_acc,gy_acc,tilt_acc,shape_acc,hop_acc;
+ reg signed[9:0]gx_target;reg signed[7:0]gy_target,hop_target;reg signed[10:0]tilt_target;reg signed[15:0]shape_target;
+ reg signed[7:0]gx_acc;reg signed[4:0]gy_acc;reg signed[6:0]tilt_acc;reg signed[3:0]hop_acc;reg signed[15:0]shape_acc;
  reg signed [7:0] float_y;
  reg [3:0] eye_height,eye_width;
  function signed [7:0] sine32;
@@ -372,30 +373,38 @@ module html_bot_overlay #(
    bot_background={red2,green2,blue2};alpha2=eye2;red2=244;green2=241;blue2=234;
   end
  end
+ reg[3:0]pipe_valid;
  always @(posedge clk)begin
-  if(rst)begin
-   sync0<=0;sync1<=0;sync2<=0;sync3<=0;bg0<=0;bg1<=0;bg2<=0;
-   lx0<=0;ly0<=0;ux1<=0;uy1<=0;en0<=0;en1<=0;texvalid2<=0;eye_ax2<=0;eye_valid2<=0;
-   red3<=0;green3<=0;blue3<=0;alpha3<=0;bg3r<=0;bg3g<=0;bg3b<=0;fg3r<=0;fg3g<=0;fg3b<=0;
-   o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
-  end else begin
-   sync0<={i_hs,i_vs,i_de};bg0<=i_rgb;en0<=enabled&&i_de;
+
+bg0<=i_rgb;en0<=enabled&&i_de;
    lx0<=$signed({1'b0,px})-11'sd520;ly0<=$signed({1'b0,y})-11'sd368;
-   sync1<=sync0;bg1<=bg0;en1<=en0;
+bg1<=bg0;en1<=en0;
    ux1<=tx_calc[10:0];uy1<=ty_calc[10:0];
-   sync2<=sync1;bg2<=bg1;
+bg2<=bg1;
    texvalid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100;
    eye_ax2<=eye_ax_calc[7:0];
    eye_valid2<=en1 && ux1>=0 && ux1<104 && uy1>=0 && uy1<100 &&
     eye_ax_calc<136 && eye_ay0_calc<128 && eye_ay1_calc<128 &&
     selected_eye_width>=6 && selected_eye_width<=8 && eye_height>=1 && eye_height<=7;
-   sync3<=sync2;alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bot_background[23:16];bg3g<=bot_background[15:8];bg3b<=bot_background[7:0];
+alpha3<=alpha2;fg3r<=red2;fg3g<=green2;fg3b<=blue2;bg3r<=bot_background[23:16];bg3g<=bot_background[15:8];bg3b<=bot_background[7:0];
    red3<=blend_product(red2,bot_background[23:16],alpha2);
    green3<=blend_product(green2,bot_background[15:8],alpha2);
    blue3<=blend_product(blue2,bot_background[7:0],alpha2);
-   {o_hs,o_vs,o_de}<=sync3;
+
    // Linear alpha4 is encoded0..15, so partial coverage also divides by15.
-   o_rgb<={alpha15_result(red3),alpha15_result(green3),alpha15_result(blue3)};
+
+
+  if(rst)begin
+   pipe_valid<=0;sync0<=0;sync1<=0;sync2<=0;sync3<=0;o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
+  end else begin
+   pipe_valid<={pipe_valid[2:0],1'b1};
+   sync0<={i_hs,i_vs,i_de};
+   sync1<=sync0;
+   sync2<=sync1;
+   sync3<=sync2;
+   {o_hs,o_vs,o_de}<=sync3;
+   if(!pipe_valid[3])o_rgb<=0;
+   else o_rgb<={alpha15_result(red3),alpha15_result(green3),alpha15_result(blue3)};
   end
  end
 endmodule

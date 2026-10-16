@@ -44,7 +44,7 @@ task send_sector(input integer panel,input integer sec,input integer count,input
  requests=requests+1;
  for(b=0;b<count;b=b+1)begin
   gi=rnd(4);repeat(gi)begin @(negedge clk);sd_valid=0;sd_end=0;end
-  @(negedge clk);idx=panel*250368+sec*512+b;sd_data=media[idx];if(bad&&b==54)sd_data=8'h00;sd_valid=1;sd_end=(joint_end&&b==count-1);
+  @(negedge clk);idx=panel*250368+sec*512+b;sd_data=media[idx];if(bad==1&&b==54)sd_data=8'h00;else if(bad>=2&&b==bad-2)sd_data=media[idx]^8'h01;sd_valid=1;sd_end=(joint_end&&b==count-1);
  end
  @(negedge clk);sd_valid=0;sd_end=!joint_end;
  @(negedge clk);sd_end=0;
@@ -73,6 +73,14 @@ initial begin
  if(write_base+write_len>2097152)$fatal(1,"SDRAM overflow");
  $display("FULL_RESOURCES_PASS panels4 words%0d requests%0d",words,requests);
  checking=0;mode=1;reset_dut;wait(sd_req);send_sector(0,0,512,1,1);wait_failure;if(acks||words)$fatal(1,"bad header wrote memory");$display("BAD_HEADER_PASS");
+ // Flip every byte of each required header field independently. No write
+ // handshake is allowed after any mismatch, including zero-valued bytes.
+ for(j=0;j<24;j=j+1)begin
+  mode=9+j;reset_dut;wait(sd_req);
+  send_sector(0,0,512,(j<2?j:54+j-2)+2,j%2);wait_failure;
+  if(acks||words)$fatal(1,"mutated header wrote memory byte%0d",j<2?j:54+j-2);
+ end
+ $display("HEADER_BYTES_REJECT_PASS checked24");
  mode=2;reset_dut;wait(sd_req);send_sector(0,0,511,0,0);wait_failure;$display("SHORT_HEADER_PASS");
  mode=3;reset_dut;wait(sd_req);send_sector(0,0,512,0,1);wait(sd_req);send_sector(0,1,509,0,1);wait_failure;if(words!=127)$fatal(1,"short data words%0d",words);$display("SHORT_DATA_PASS");
  mode=4;reset_dut;wait(sector_req);wait_failure;$display("HEADER_TIMEOUT_PASS");

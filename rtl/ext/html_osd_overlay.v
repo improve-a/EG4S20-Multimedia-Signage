@@ -93,7 +93,8 @@ module html_osd_overlay #(
  reg [9:0] palette_base;
  reg [4:0] palette_issue;
  reg palette_loading,palette_valid0,swap_palette_ready;
- wire [9:0] palette_address=palette_loading ? palette_base+{5'd0,palette_issue} : 10'd0;
+ wire [9:0] font_address=10'd576+font_index(font_character)*10'd7+{7'd0,live_y[2:0]};
+ wire [9:0] palette_address=palette_loading ? palette_base+{5'd0,palette_issue} : (font_active ? font_address : 10'd0);
  wire [7:0] palette_byte;
  html_osd_swap_rom swap_rom(.clk(clk),.address(palette_address),.data(palette_byte));
  always @(posedge clk)begin
@@ -321,10 +322,38 @@ module html_osd_overlay #(
   end
  end
  endfunction
+ function [4:0] font_index;input [7:0] c;begin case(c)
+  "0":font_index=5'd0;
+  "1":font_index=5'd1;
+  "2":font_index=5'd2;
+  "3":font_index=5'd3;
+  "4":font_index=5'd4;
+  "5":font_index=5'd5;
+  "6":font_index=5'd6;
+  "7":font_index=5'd7;
+  "8":font_index=5'd8;
+  "9":font_index=5'd9;
+  "B":font_index=5'd10;
+  "C":font_index=5'd11;
+  "V":font_index=5'd12;
+  "T":font_index=5'd13;
+  "Z":font_index=5'd14;
+  "P":font_index=5'd15;
+  "A":font_index=5'd16;
+  "M":font_index=5'd17;
+  ":":font_index=5'd18;
+  "+":font_index=5'd19;
+  "-":font_index=5'd20;
+  "s":font_index=5'd21;
+  "X":font_index=5'd22;
+  ".":font_index=5'd23;
+  default:font_index=5'd24;endcase end endfunction
  reg [23:0] plate_rgb,text_rgb;
+ reg [2:0] plate_code;
  reg [3:0] plate_alpha;
  reg [34:0] live_bits;
- reg live_ink;
+ reg live_ink,font_active;
+ reg [7:0] font_character;
  reg [2:0] tick;
  reg [9:0] tx,ty;
  reg [7:0] live_x;
@@ -337,24 +366,24 @@ module html_osd_overlay #(
  reg [3:0] bar_index;reg [2:0] bar_col;reg [4:0] bar_height;reg [9:0] bar_top,bar_bottom;
  reg [15:0] live_word;
  always @*begin
-  plate_rgb=0;plate_alpha=0;text_rgb=24'h1a1916;
-  tick=0;tx=0;ty=0;live_x=0;live_y=0;live_bits=0;live_ink=0;live_word=0;bar_index=0;bar_col=0;bar_height=0;bar_top=0;bar_bottom=0;mini_x0=0;mini_y0=0;mini_x1=0;mini_y1=0;zoom_char=" ";tick_col=0;bar_x=0;font_bit=0;live_col=0;
+  plate_rgb=0;plate_code=0;plate_alpha=0;text_rgb=24'h1a1916;
+  font_active=0;font_character=" ";tick=0;tx=0;ty=0;live_x=0;live_y=0;live_bits=0;live_ink=0;live_word=0;bar_index=0;bar_col=0;bar_height=0;bar_top=0;bar_bottom=0;mini_x0=0;mini_y0=0;mini_x1=0;mini_y1=0;zoom_char=" ";tick_col=0;bar_x=0;font_bit=0;live_col=0;
   if(enabled&&i_de)begin
    // Rounded paper plate and directional tail.
    if(px>=24&&px<510&&y>=386&&y<458)begin
     tx=px-24;ty=y-386;
     if(!((tx<2||tx>=484)&&(ty<2||ty>=70)))begin
-     plate_rgb=(tx<3)?page_accent(page):24'hede9e2;plate_alpha=15;
+     plate_code=(tx<3) ? 3'd1 : 3'd2;plate_alpha=15;
     end
    end
    if(px>=510&&px<516&&y>=416&&y<429)begin
     ty=y>422?y-422:422-y;
-    if(ty<516-px)begin plate_rgb=24'hede9e2;plate_alpha=15;end
+    if(ty<516-px)begin plate_code=3'd2;plate_alpha=15;end
    end
    // Soft floor shadow under the card stays alpha blended.
-   if(px>=30&&px<506&&y>=458&&y<466)begin plate_rgb=0;plate_alpha=(466-y)>>1;end
+   if(px>=30&&px<506&&y>=458&&y<466)begin plate_code=0;plate_alpha=(466-y)>>1;end
    // Audio panel divider; waveform itself remains real-audio driven elsewhere.
-   if(px==443&&y>=386&&y<458)begin plate_rgb=24'hd7d3cc;plate_alpha=15;end
+   if(px==443&&y>=386&&y<458)begin plate_code=3'd3;plate_alpha=15;end
    // Nine temporal PCM-peak samples, not frequency bins or simulated bars.
    if(px>=455&&px<500&&y>=399&&y<429)begin
     bar_x=px-10'd455;bar_index=bar_x/6'd5;bar_col=bar_x%6'd5;
@@ -363,25 +392,25 @@ module html_osd_overlay #(
     bar_top=414-(bar_height>>1);bar_bottom=414+((bar_height+1'b1)>>1);
     if(bar_col<3&&bar_height!=0&&y>=bar_top&&y<bar_bottom&&
        (bar_col==1||(y>bar_top&&y+1<bar_bottom)))begin
-     plate_rgb=24'h1a1916;plate_alpha=15;
+     plate_code=3'd4;plate_alpha=15;
     end
    end
    // Native six-page ticks, selected tick fills from the actual page progress.
    if(y>=42&&y<44&&px>=504&&px<608)begin
     tx=px-10'd504;tick=tx/10'd18;tick_col=tx%10'd18;
     if(tick<6&&tick_col<14)begin
-     plate_rgb=24'hede9e2;plate_alpha=tick==page?5:3;
-     if(tick==page&&{tick_col,8'b0}-tick_col<prog*12'd14)begin plate_rgb=page_accent(page);plate_alpha=15;end
+     plate_code=3'd2;plate_alpha=tick==page?5:3;
+     if(tick==page&&{tick_col,8'b0}-tick_col<prog*12'd14)begin plate_code=3'd1;plate_alpha=15;end
     end
    end
    // Source zoom badge: outer mini x521.64,y62,w52,h39; label x581.64.
    // Integer raster usesx522 andx582. OSD remains fixed while A layer zooms.
    if(zoom&&px>=522&&px<574&&y>=62&&y<101)begin
-    if(px==522||px==573||y==62||y==100)begin plate_rgb=24'hede9e2;plate_alpha=6;end
+    if(px==522||px==573||y==62||y==100)begin plate_code=3'd2;plate_alpha=6;end
     mini_x0=523+mini_bounds[23:18];mini_y0=63+mini_bounds[17:12];
     mini_x1=mini_x0+mini_bounds[11:6];mini_y1=mini_y0+mini_bounds[5:0];
     if(px>=mini_x0&&px<mini_x1&&y>=mini_y0&&y<mini_y1)begin
-     plate_rgb=24'hede9e2;
+     plate_code=3'd2;
      plate_alpha=(px==mini_x0||px+1==mini_x1||y==mini_y0||y+1==mini_y1) ? 15 : 2;
     end
    end
@@ -390,22 +419,18 @@ module html_osd_overlay #(
     case(live_x/8'd6)
      0:zoom_char=zoom_mode==1 ? "2" : "3";1:zoom_char=".";2:zoom_char="0";default:zoom_char="X";
     endcase
-    live_bits=digit(zoom_char);
-    live_col=live_x%8'd6;font_bit=6'd34-live_y*6'd5-live_col;
-    if(live_col<5&&live_bits[font_bit])begin plate_rgb=24'hede9e2;plate_alpha=15;end
+    font_active=1;font_character=zoom_char;
    end
    // Live adjustment strip appears while a parameter mode is selected.
    if(cmode!=0&&px>=24&&px<(seconds_fraction!=0 ? 10'd256 : 10'd238)&&y>=467&&y<478)begin
-    plate_rgb=24'h141311;plate_alpha=13;
+    plate_code=3'd5;plate_alpha=13;
     live_x=px-10'd28;live_y=y-10'd469;
     if(px>=28&&px<(seconds_fraction!=0 ? 10'd250 : 10'd232)&&y>=469&&y<476)begin
-     live_bits=digit(live_char(live_x/8'd6));
-     live_col=live_x%8'd6;font_bit=6'd34-live_y*6'd5-live_col;
-     if(live_col<5)live_ink=live_bits[font_bit];
-     if(live_ink)begin plate_rgb=24'hede9e2;plate_alpha=15;end
+     font_active=1;font_character=live_char(live_x/8'd6);
     end
    end
   end
+  live_col=live_x%8'd6;
   if(y<62)text_rgb=24'hede9e2;
   else if(y<411&&px>=72)text_rgb=24'h77736b;
  end
@@ -434,9 +459,12 @@ module html_osd_overlay #(
  wire [17:0] column_word0;
  html_caption_column_rom column_rom(.clk(clk),.address(column_address),.data(column_word0));
  reg [2:0] sync0,sync1,sync2,sync3;
- reg [23:0] bg0,bg1,bg2,plate0,plate1,plate2;
+ reg [23:0] bg0,bg1,bg2;
+ reg [2:0] plate0,plate1,plate2;
  reg [3:0] pa0,pa1,pa2;
  reg column_valid0,caption0,card0,card1,card2;
+ reg font_valid0;reg[2:0]font_col0;
+ wire font_ink0=font_valid0&&palette_byte[3'd4-font_col0];
  reg [4:0] row0;
  reg [3:0] px_low0;
  reg [1:0] style0,style1,style2;
@@ -474,7 +502,11 @@ module html_osd_overlay #(
  reg [23:0] fg3,bg3;
  reg [3:0] alpha3;
  always @*begin
-  fg_calc=plate2;bg_calc=bg2;alpha_calc=pa2;
+  case(plate2)
+   1:fg_calc=page_accent(page);2:fg_calc=24'hede9e2;3:fg_calc=24'hd7d3cc;
+   4:fg_calc=24'h1a1916;5:fg_calc=24'h141311;6:fg_calc=swap_values[95:72];default:fg_calc=0;
+  endcase
+  bg_calc=bg2;alpha_calc=pa2;
   text_color=style2==2 ? 24'hede9e2 : style2==1 ? 24'h77736b : 24'h1a1916;
   // Atlas codes represent exactly0,1/3,2/3,1 coverage.
   if(coverage2!=0)begin
@@ -500,29 +532,35 @@ module html_osd_overlay #(
    end
   end
  end
+ reg[3:0]pipe_valid;
  always @(posedge clk)begin
-  if(rst)begin
-   sync0<=0;sync1<=0;sync2<=0;sync3<=0;bg0<=0;bg1<=0;bg2<=0;
-   plate0<=0;plate1<=0;plate2<=0;pa0<=0;pa1<=0;pa2<=0;
-   column_valid0<=0;caption0<=0;card0<=0;card1<=0;card2<=0;row0<=0;px_low0<=0;style0<=0;style1<=0;style2<=0;
-   glyph_addr1<=0;glyph_col1<=0;glyph_col2<=0;text_en1<=0;text_en2<=0;
-   r3<=0;g3<=0;b3<=0;fg3<=0;bg3<=0;alpha3<=0;
-   o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
-  end else begin
-   sync0<={i_hs,i_vs,i_de};bg0<=i_rgb;plate0<=plate_rgb;pa0<=plate_alpha;
-   column_valid0<=column_valid&&enabled&&i_de;caption0<=column_caption;card0<=column_card;row0<=column_row;px_low0<=px[3:0];style0<=column_style;
-   sync1<=sync0;bg1<=bg0;plate1<=cursor_ink0 ? swap_values[95:72] : plate0;pa1<=cursor_ink0 ? 4'd15 : pa0;style1<=style0;card1<=card0;
+
+bg0<=i_rgb;plate0<=plate_code;pa0<=plate_alpha;
+   font_valid0<=font_active&&live_col<5;font_col0<=live_col;column_valid0<=column_valid&&enabled&&i_de;caption0<=column_caption;card0<=column_card;row0<=column_row;px_low0<=px[3:0];style0<=column_style;
+bg1<=bg0;plate1<=cursor_ink0 ? 3'd6 : (font_ink0 ? 3'd2 : plate0);pa1<=(cursor_ink0||font_ink0) ? 4'd15 : pa0;style1<=style0;card1<=card0;
    glyph_addr1<=column_word0[17:10]*14'd40+{row0,1'b0}+local_x0[3];
    glyph_col1<=local_x0[2:0];
    text_en1<=descriptor_valid0&&row0<20&&(!caption0||{1'b0,column_word0[5:0]}<typed_count);
-   sync2<=sync1;bg2<=bg1;plate2<=plate1;pa2<=pa1;style2<=style1;card2<=card1;
+bg2<=bg1;plate2<=plate1;pa2<=pa1;style2<=style1;card2<=card1;
    glyph_col2<=glyph_col1;text_en2<=text_en1;
-   sync3<=sync2;fg3<=fg_calc;bg3<=bg_calc;alpha3<=alpha_calc;
+fg3<=fg_calc;bg3<=bg_calc;alpha3<=alpha_calc;
    r3<=blend_product(fg_calc[23:16],bg_calc[23:16],alpha_calc);
    g3<=blend_product(fg_calc[15:8],bg_calc[15:8],alpha_calc);
    b3<=blend_product(fg_calc[7:0],bg_calc[7:0],alpha_calc);
+
+
+
+  if(rst)begin
+   pipe_valid<=0;sync0<=0;sync1<=0;sync2<=0;sync3<=0;o_hs<=0;o_vs<=0;o_de<=0;o_rgb<=0;
+  end else begin
+   pipe_valid<={pipe_valid[2:0],1'b1};
+   sync0<={i_hs,i_vs,i_de};
+   sync1<=sync0;
+   sync2<=sync1;
+   sync3<=sync2;
    {o_hs,o_vs,o_de}<=sync3;
-   if(alpha3==15)o_rgb<=fg3;
+   if(!pipe_valid[3])o_rgb<=0;
+   else if(alpha3==15)o_rgb<=fg3;
    else o_rgb<={r3[11:4],g3[11:4],b3[11:4]};
   end
  end

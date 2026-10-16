@@ -14,6 +14,7 @@ def generate(root=ROOT):
     # initialization numerically identical in the immutable build snapshot.
     optional=[("html_eye_radius.hex",1024,9),
               ("html_osd_swap_palette.hex",576,8),
+              ("html_osd_swap_font.hex",1024,8),
               ("html_motion_alpha_scale.hex",1536,16),
               ("html_motion_offset.hex",1536,16),
               ("html_layer_palette.hex",3072,24),

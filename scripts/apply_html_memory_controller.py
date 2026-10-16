@@ -55,7 +55,7 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                                  '!source_busy)state <= S_ACK;\n']}]},
  'rtl/SD/frame_read_write.v': {'baseline_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
                                'baseline_text_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
-                               'result_text_sha256': '9571028beb218c2619bb7c355c1094d8891caeb347796dfb6697d22d1d8de080',
+                               'result_text_sha256': '7c9eceabec73f990904ea3e08fa0eaf1caca394cc3ba269364597baafb8201da',
                                'edits': [{'start': 0,
                                           'end': 0,
                                           'old': [],
@@ -63,7 +63,9 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                          {'start': 10,
                                           'end': 10,
                                           'old': [],
-                                          'new': ['\tparameter READ_DRAIN_CYCLES=10, ENABLE_LINEAR_CONFIG=0, '
+                                          'new': ['\tparameter READ_BURST_SIZE        = BURST_SIZE, // '
+                                                  'display reserve independent of write burst\n',
+                                                  '\tparameter READ_DRAIN_CYCLES=10, ENABLE_LINEAR_CONFIG=0, '
                                                   'ENABLE_READ_SOURCE=0,\n']},
                                          {'start': 15,
                                           'end': 15,
@@ -96,6 +98,12 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                           'old': [],
                                           'new': ['\t'
                                                   '.READ_DRAIN_CYCLES(READ_DRAIN_CYCLES),.ENABLE_SOURCE_READY(ENABLE_READ_SOURCE),\n']},
+                                         {'start': 193,
+                                          'end': 194,
+                                          'old': ['\t.BURST_SIZE                 (BURST_SIZE               '
+                                                  ')\n'],
+                                          'new': ['\t.BURST_SIZE                 (READ_BURST_SIZE          '
+                                                  ')\n']},
                                          {'start': 197,
                                           'end': 197,
                                           'old': [],

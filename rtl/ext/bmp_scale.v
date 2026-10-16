@@ -101,7 +101,11 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg [15:0] planes,bit_count;
  reg [15:0] signature;
  reg [9:0] receive_count,parse_index;
- reg [31:0] file_position,row_position;
+ // Accepted BMPs have width<=640, height<=480 and pixel_offset<=1048576.
+ // Thus stride<=1920 and pixel_end<=1970176; these counters cannot wrap
+ // before DRAIN. Keep header extent arithmetic wide for malformed inputs.
+ reg [20:0] file_position;
+ reg [10:0] row_position;
  reg [1:0] component;
  reg [23:0] source_pixel;
  reg source_valid,scale_start;
@@ -115,7 +119,6 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg [32:0] pixel_end_wide,next_sector,last_sector;
  reg [31:0] file_sectors,max_file_len;
  wire [31:0] rgb_row={20'd0,rgb_row_narrow};
- wire [31:0] row_stride={20'd0,row_stride_narrow};
  wire [31:0] pixel_end=pixel_end_wide[31:0];
  wire hfxl_extent_ok;
  generate if(ENABLE_HFXL)begin: layer_locator
@@ -294,7 +297,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
     PARSE: if(parser_can_step) begin
      file_position<=file_position+1'b1;parse_index<=parse_index+1'b1;
      if(file_position>=pixel_offset && file_position<pixel_end) begin
-      if(row_position==row_stride-1) row_position<=0;
+      if(row_position==row_stride_narrow[10:0]-11'd1) row_position<=0;
       else row_position<=row_position+1'b1;
       if(is_rgb) begin
        case(component)

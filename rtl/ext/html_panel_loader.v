@@ -21,22 +21,52 @@ module html_panel_loader #(
  reg [9:0] sector_index;
  reg [31:0] origin,timeout_count;
  reg [23:0] assembled;
- reg [31:0] magic,resource_bytes,resource_offset;
- reg [15:0] signature,version,texture_width,texture_height,low_width,low_height;
+ reg header_ok;
+ reg checked_header_byte;reg [7:0] expected_header_byte;
+ localparam [31:0] RESOURCE_BYTES=PANEL_SECTORS*512;
  (* async_reg="true" *) reg [2:0] finish_sync;
  reg finish_seen;
  assign write_len=PANEL_WORDS;
  wire finish_pulse=finish_sync[2]^finish_sync[1];
- wire header_ok=(signature==16'h4d42)&&(magic==32'h43584648)&&
-   version==1&&texture_width==320&&texture_height==384&&low_width==80&&low_height==24&&
-   resource_bytes==PANEL_SECTORS*512&&resource_offset==512;
+ // All accepted header fields are fixed constants. Compare each arriving
+ // byte once; the sticky result replaces 192 stored field bits. Last checked
+ // byte75 precedes the complete 512-byte sector decision by436 clocks.
+ always @*begin
+  checked_header_byte=1;expected_header_byte=0;
+  case(byte_index)
+   10'd0:expected_header_byte=8'h42;
+   10'd1:expected_header_byte=8'h4d;
+   10'd54:expected_header_byte=8'h48;
+   10'd55:expected_header_byte=8'h46;
+   10'd56:expected_header_byte=8'h58;
+   10'd57:expected_header_byte=8'h43;
+   10'd58:expected_header_byte=8'h01;
+   10'd59:expected_header_byte=8'h00;
+   10'd60:expected_header_byte=8'h40;
+   10'd61:expected_header_byte=8'h01;
+   10'd62:expected_header_byte=8'h80;
+   10'd63:expected_header_byte=8'h01;
+   10'd64:expected_header_byte=8'h50;
+   10'd65:expected_header_byte=8'h00;
+   10'd66:expected_header_byte=8'h18;
+   10'd67:expected_header_byte=8'h00;
+   10'd68:expected_header_byte=RESOURCE_BYTES[7:0];
+   10'd69:expected_header_byte=RESOURCE_BYTES[15:8];
+   10'd70:expected_header_byte=RESOURCE_BYTES[23:16];
+   10'd71:expected_header_byte=RESOURCE_BYTES[31:24];
+   10'd72:expected_header_byte=8'h00;
+   10'd73:expected_header_byte=8'h02;
+   10'd74:expected_header_byte=8'h00;
+   10'd75:expected_header_byte=8'h00;
+   default:checked_header_byte=0;
+  endcase
+ end
  always @(posedge clk)begin
   if(rst)begin
    state<=IDLE;panel<=0;active<=0;ready<=0;error<=0;sector_req<=0;sector_addr<=0;
    write_req<=0;write_en<=0;write_data<=0;write_base<=BASE_WORD;
    byte_index<=0;sector_index<=0;origin<=0;timeout_count<=0;assembled<=0;
-   magic<=0;resource_bytes<=0;resource_offset<=0;signature<=0;version<=0;
-   texture_width<=0;texture_height<=0;low_width<=0;low_height<=0;
+   header_ok<=0;
    finish_sync<=0;finish_seen<=0;
   end else begin
    finish_sync<={finish_sync[1:0],write_finish_toggle};
@@ -48,21 +78,11 @@ module html_panel_loader #(
     error<=1;active<=0;state<=FAIL;write_req<=0;sector_req<=0;
    end else case(state)
     IDLE:if(enable)begin active<=1;panel<=0;origin<=sector1;write_base<=BASE_WORD;state<=HREQ;end
-    HREQ:begin sector_req<=1;sector_addr<=origin;byte_index<=0;signature<=0;magic<=0;state<=HWAIT;end
+    HREQ:begin sector_req<=1;sector_addr<=origin;byte_index<=0;header_ok<=1;state<=HWAIT;end
     HWAIT:begin
      if(sector_valid)begin
       byte_index<=byte_index+1'b1;
-      case(byte_index)
-       0:signature[7:0]<=sector_data;1:signature[15:8]<=sector_data;
-       54:magic[7:0]<=sector_data;55:magic[15:8]<=sector_data;56:magic[23:16]<=sector_data;57:magic[31:24]<=sector_data;
-       58:version[7:0]<=sector_data;59:version[15:8]<=sector_data;
-       60:texture_width[7:0]<=sector_data;61:texture_width[15:8]<=sector_data;
-       62:texture_height[7:0]<=sector_data;63:texture_height[15:8]<=sector_data;
-       64:low_width[7:0]<=sector_data;65:low_width[15:8]<=sector_data;
-       66:low_height[7:0]<=sector_data;67:low_height[15:8]<=sector_data;
-       68:resource_bytes[7:0]<=sector_data;69:resource_bytes[15:8]<=sector_data;70:resource_bytes[23:16]<=sector_data;71:resource_bytes[31:24]<=sector_data;
-       72:resource_offset[7:0]<=sector_data;73:resource_offset[15:8]<=sector_data;74:resource_offset[23:16]<=sector_data;75:resource_offset[31:24]<=sector_data;
-      endcase
+      if(checked_header_byte&&sector_data!=expected_header_byte)header_ok<=0;
      end
      if(sector_end)begin
       sector_req<=0;

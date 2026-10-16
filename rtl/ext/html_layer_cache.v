@@ -68,23 +68,19 @@ module html_layer_cache #(
  assign read_addr={issue_base,issue_phase};
  wire take_job=!flush && jobs_count!=0 && mem_ready && !refresh_active && !write_busy_mem &&
                (!issue_active || (read_en && issue_phase==3));
- reg return_head_valid;
- reg [5:0] twp,trp;
- reg [6:0] return_count;
- wire [WORD_BITS-1:0] returning;
- wire [5:0] return_read_addr=response?trp+1'b1:trp;
- // Small return-tag storage deliberately stays in flip-flops, freeing
- // its32K block for the much larger BMP sector buffer. Separate word cells
- // and the flat mux prevent this head register from inferring another RAM.
- wire[64*WORD_BITS-1:0]return_words;genvar tag_word;
- generate for(tag_word=0;tag_word<64;tag_word=tag_word+1)begin: return_registers
-  reg[WORD_BITS-1:0]tag;
-  always@(posedge clk)if(read_en&&twp==tag_word)tag<={issue_slot,issue_phase};
-  assign return_words[tag_word*WORD_BITS+:WORD_BITS]=tag;
- end endgenerate
- reg[WORD_BITS-1:0]return_head;
- always@(posedge clk)if(return_count!=0)return_head<=return_words[return_read_addr*WORD_BITS+:WORD_BITS];
- assign returning=return_head;
+ // APUG011 responses preserve the order of issued four-word groups.
+ // A slot cannot be reused while filling; hence at most SLOTS distinct
+ // groups can be outstanding. Store the slot once, not once per word.
+ reg[CACHE_SLOT_BITS-1:0]return_groups[0:SLOTS-1];
+ reg[CACHE_SLOT_BITS-1:0]twp,trp;
+ reg[CACHE_SLOT_BITS:0]return_groups_count;
+ reg[1:0]return_phase;
+ reg[6:0]return_count;
+ wire group_push=read_en&&issue_phase==0;
+ wire group_pop=response&&return_phase==3;
+ wire[WORD_BITS-1:0]returning={return_groups[trp],return_phase};
+ wire return_head_valid=return_groups_count!=0;
+ always@(posedge clk)if(group_push)return_groups[twp]<=issue_slot;
  assign busy=issue_active || jobs_count!=0 || return_count!=0;
  integer i;
  // The RAM read and payload write both remain outside reset/flush logic.
@@ -94,22 +90,21 @@ module html_layer_cache #(
  end
  always @(posedge clk)begin
   if(rst)begin
-   allocated<=0;complete<=0;filling<=0;wp<=0;rp<=0;queued<=0;entry_valid<=0;return_head_valid<=0;
+   allocated<=0;complete<=0;filling<=0;wp<=0;rp<=0;queued<=0;entry_valid<=0;
    jwp<=0;jrp<=0;jobs_count<=0;issue_active<=0;issue_phase<=0;issue_slot<=0;issue_base<=0;
-   twp<=0;trp<=0;return_count<=0;fault<=0;
+   twp<=0;trp<=0;return_count<=0;return_phase<=0;return_groups_count<=0;fault<=0;
    read_pending<=0;output_wp<=0;output_rp<=0;output_count<=0;pending_tag<=0;
    for(i=0;i<SLOTS;i=i+1)begin cache_tag[i]<=0;references[i]<=0;end
   end else if(flush)begin
    if(busy || response)fault<=1;
-   allocated<=0;complete<=0;filling<=0;wp<=0;rp<=0;queued<=0;entry_valid<=0;return_head_valid<=0;
+   allocated<=0;complete<=0;filling<=0;wp<=0;rp<=0;queued<=0;entry_valid<=0;
    jwp<=0;jrp<=0;jobs_count<=0;issue_active<=0;issue_phase<=0;
-   twp<=0;trp<=0;return_count<=0;
+   twp<=0;trp<=0;return_count<=0;return_phase<=0;return_groups_count<=0;
    read_pending<=0;output_wp<=0;output_rp<=0;output_count<=0;
    for(i=0;i<SLOTS;i=i+1)references[i]<=0;
   end else begin
    if(accept)wp<=wp+1'b1;
    if(lookup)entry_valid<=queued>1;else if(queued!=0)entry_valid<=1;
-   if(response)return_head_valid<=return_count>1;else if(return_count!=0)return_head_valid<=1;
    if(lookup)rp<=rp+1'b1;
    read_pending<=lookup;
    if(lookup)pending_tag<=head[TAG_BITS+WORD_BITS-1:WORD_BITS];
@@ -135,12 +130,14 @@ module html_layer_cache #(
     else issue_phase<=issue_phase+1'b1;
    end
    case({allocate,take_job})2'b10:jobs_count<=jobs_count+1'b1;2'b01:jobs_count<=jobs_count-1'b1;endcase
-   if(read_en)twp<=twp+1'b1;
-   if(response)trp<=trp+1'b1;
+   if(group_push)twp<=twp+1'b1;
+   if(group_pop)trp<=trp+1'b1;
+   if(response)return_phase<=return_phase+1'b1;
+   case({group_push,group_pop})2'b10:return_groups_count<=return_groups_count+1'b1;2'b01:return_groups_count<=return_groups_count-1'b1;endcase
    case({read_en,response})2'b10:return_count<=return_count+1'b1;2'b01:return_count<=return_count-1'b1;endcase
    if((allocate&&!free_found)||(allocate&&jobs_count==SLOTS&&!take_job)||
       (response&&(return_count==0||!return_head_valid))||(read_en&&return_count==64&&!response)||
-      (read_en&&write_busy_mem)||(lookup&&references[head_slot]==0)||(output_count==2&&read_pending&&!retire))fault<=1;
+      (group_push&&return_groups_count==SLOTS&&!group_pop)||(read_en&&write_busy_mem)||(lookup&&references[head_slot]==0)||(output_count==2&&read_pending&&!retire))fault<=1;
   end
  end
 endmodule
@@ -149,19 +146,9 @@ endmodule
 // block RAM. Ownership counters and valid bits remain in the caller.
 module html_layer_queue_ram #(parameter WIDTH=8)(input clk,input write_en,input[5:0]write_addr,input[WIDTH-1:0]write_data,
  input read_en,input[5:0]read_addr,output[WIDTH-1:0]read_data);
-`ifdef HTML_SIM
- reg[WIDTH-1:0]memory[0:63];reg[WIDTH-1:0]q;
- always@(posedge clk)begin if(write_en)memory[write_addr]<=write_data;if(read_en)q<=memory[read_addr];end
+
+ reg[WIDTH-1:0]memory[0:31];reg[WIDTH-1:0]q;
+ always@(posedge clk)begin if(write_en)memory[write_addr[4:0]]<=write_data;if(read_en)q<=memory[read_addr[4:0]];end
  assign read_data=q;
-`else
- localparam PHYSICAL_WIDTH=WIDTH<=8?8:WIDTH<=16?16:32;
- wire[PHYSICAL_WIDTH-1:0]q;
- EG_LOGIC_BRAM #(.DATA_WIDTH_A(PHYSICAL_WIDTH),.ADDR_WIDTH_A(6),.DATA_DEPTH_A(64),
- .DATA_WIDTH_B(PHYSICAL_WIDTH),.ADDR_WIDTH_B(6),.DATA_DEPTH_B(64),.MODE("DP"),
- .REGMODE_A("NOREG"),.REGMODE_B("NOREG"),.WRITEMODE_A("NORMAL"),.WRITEMODE_B("NORMAL"),
- .RESETMODE("SYNC"),.BYTE_ENABLE(0),.IMPLEMENT("32K"),.INIT_FILE("NONE"))storage(
- .clka(clk),.addra(write_addr),.dia({{(PHYSICAL_WIDTH-WIDTH){1'b0}},write_data}),.cea(1'b1),.ocea(1'b1),.wea(write_en),.rsta(1'b0),.bea(1'b1),.doa(),
- .clkb(clk),.addrb(read_addr),.dib({PHYSICAL_WIDTH{1'b0}}),.ceb(read_en),.oceb(1'b1),.web(1'b0),.rstb(1'b0),.beb(1'b1),.dob(q));
- assign read_data=q[WIDTH-1:0];
-`endif
+
 endmodule
