@@ -1,6 +1,6 @@
 # HTML 分层移植状态
 
-更新2026-10-15 21:04 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`；full04冻结8a0358fc7ceb4457ea1ab90086538ca3cb01e74e；资源头和PNG修复已提交e024987，BMP头和OSD数字寻址压缩已提交6c80f82；后台写修复已提交38925f7，full05已完成BUILD_PASS但TIMING_FAIL；现已推广经测试的engine任务流水、scene时序调整和字幕覆盖率修正，等待BMP timing候选与下一轮构建。目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮赛题一工程，不是同目录的PH1P35摄像头项目。没有硬件/物理卡操作，尚未推送。
+更新2026-10-15 21:14 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`；full04冻结8a0358fc7ceb4457ea1ab90086538ca3cb01e74e；资源头和PNG修复已提交e024987，BMP头和OSD数字寻址压缩已提交6c80f82；后台写修复已提交38925f7，full05已完成BUILD_PASS但TIMING_FAIL；现已推广经测试的engine任务流水、scene时序调整和字幕覆盖率修正，BMP timing候选已按3543头部/完整CASE7/超时边界证据推广12e584，剩余7scale和实际HFXL逐周期测试继续运行，准备冻结full06。目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮赛题一工程，不是同目录的PH1P35摄像头项目。没有硬件/物理卡操作，尚未推送。
 
 ## 最新完整构建
 
@@ -43,3 +43,5 @@ Bot/OSD已有六帧像素等价、1221490实际RTL弹簧转移、720事件、alp
 SIM：明确范围通过，后台写已修复并通过真实FIFO测试。BUILD：full05 PASS，当前修改待新构建。TIMING：FAIL，针对新负路径修复中。VISUAL：旧18帧继续运行，修正字幕和engine后新四子集准备/运行中。FULL_SYSTEM_SIM：未验证。HARDWARE：NOT_TESTED_THIS_RUN。
 
 继续完成公平仲裁、等价面积优化、匹配最终SYN/PNR/BITGEN/时序、区域视觉对照、验收报告和正常分支推送。不能以第一阶段成功或仅部分静态测试结束任务。
+
+scene新版本完整6资源+PCM与startup/config边界均PASS；ROM15份HEX/BIN逐字一致。BMP时序候选和存储pipeline的独立SYN均降低面积，full06仍需真实PNR/STA/BITGEN。

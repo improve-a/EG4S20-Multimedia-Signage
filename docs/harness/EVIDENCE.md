@@ -178,3 +178,16 @@ wholebridge串行SYN探针50/51：4836→4678LUT，2048→2077REG，15×9K/4×32
 scene loader用局部header字段使能、对齐饱和timeout的expired寄存、body expected word寄存以及header/range判定寄存缩短SD100MHz路径。去除state范围数值比较后，TD确认自动one_hot编码。原/新接口每周期比较，六页8831字、266错误/传输/超时及普通BMP fallback，原间隔输入与每周期连续字节输入均PASS。候选ed60638a3f847fef1c624958090d9a3118a8b8bfec0363b8bc8e018cdbfd4b3e已推广；完整实际六资源+PCM复测正在进行。SYN探针52为987LUT/437REG、零BRAM/DSP，7.454秒；比此前compact scene probe增加122LUT/37REG，换取流水及one_hot，仍待整机资源/时序验证。证据verification/header_timing_v1。
 
 累计52次TD尝试、5次完整流程、4118.690秒。没有同时运行两个重型TD。初始化caption ROM的新3492deff覆盖率由source dark-ink/paper重生，仅改变FPGA内字形ROM；正式HFXL/HFXC/WAV及SET_ID003adc1b不变，旧alpha/layout保留为生成输入。
+
+
+## BMP parser时序修复集成（2026-10-15 21:14 PDT）
+
+候选12e584e2afde569cbfd3a9461998ad9723c4e84e8afd19140c593e82ce87e954已推广：header字段使用局部使能，饱和timeout的expired位严格逐周期对齐；active显式枚举合法状态，使TD自动one_hot；已验证header边界预先寄存，PARSE仅在接受offset−1/end−1字节时开/关pixel_window，保留每字节节奏及所有头部检查。
+
+3543完整头部与原f0a91ee逐周期等价PASS，799接受/2744拒绝，218.468秒。CASE7完整307200 golden像素、4917015拍接口等价PASS，含1字节padding、offset54、2445542 parser stalls；373.187秒。T0/1/2/7/31的timeout边界、progress同拍、SDerror/abort优先级及不reset中止后恢复PASS。7个其它scale及真实HFXL完整payload逐周期测试仍在运行，不能提前标记全回归通过；早期测试台T0晚注入/无效fixture问题保留为FAIL或INVALID_INPUT，并以修正后的独立测试为证。
+
+SYN探针53为1321LUT/569REG，较同参数compact probe1436/605减少115LUT/36REG；3×9K/1×32K/1DSP不变，11.625秒。仅SYN，不是器件引脚可用性或postroute证明。full06将冻结此版本，与剩余仿真并行；没有修改pins、时钟、IP或全局reset。
+
+scene实际六资源+PCM复测20261016T040044437357Z PASS，533.516秒、7215104字节/1803776字、14098场景扇区、96音频扇区、3500真实PCM帧、36紧急仲裁。EOF重启11次仍为testbench显式动作。当前startup/config边界run_20261016_120708 PASS，保留unsafe默认反例。所有15份HEX/BIN已再次逐字roundtrip，导出前后BIN完全相同（audit/rom_init_caption_darkpaper_v1.json）。
+
+累计53次TD尝试、5次full、4130.315秒。公开历史15个commit无token/key/session内容命中；两个路径规则提示的参数字形ROM经逐版本精确再生确认是自研24字符+数值颜色表，已记录reviewed PASS而保留初筛记录；NotoSansSC仍随SIL OFL。GitHub只读ls-remote预检exit128连接重置，尚未push。

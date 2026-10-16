@@ -117,7 +117,8 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg source_valid,scale_start;
  wire source_ready,scale_valid,scale_done;
  wire [23:0] scale_pixel;
- reg [31:0] timeout_count;
+ reg [31:0] timeout_count;reg timeout_expired;
+ reg pixel_window;reg[20:0]pixel_begin_previous,pixel_last;
  // Header bytes are stable hundreds of clocks before HCHECK. Stage the
  // arithmetic to keep the wide validation out of a single 100MHz path.
  reg [11:0] rgb_row_narrow,row_stride_narrow;
@@ -139,13 +140,14 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  always @(posedge clk) begin
   if(rst) begin
    rgb_row_narrow<=0;row_stride_narrow<=0;image_bytes<=0;
-   pixel_end_wide<=0;file_sectors<=0;next_sector<=0;last_sector<=0;max_file_len<=0;
+   pixel_end_wide<=0;file_sectors<=0;next_sector<=0;last_sector<=0;max_file_len<=0;pixel_begin_previous<=0;pixel_last<=0;
   end else begin
    rgb_row_narrow<=({2'd0,width[9:0]}<<1)+{2'd0,width[9:0]};
    row_stride_narrow<=(rgb_row_narrow+12'd3)&12'hffc;
    image_bytes<=row_stride_narrow*height[8:0];
    pixel_end_wide<={1'b0,pixel_offset}+{12'd0,image_bytes};
    max_file_len<=pixel_end+32'd65536;
+   pixel_begin_previous<=pixel_offset-21'd1;pixel_last<=pixel_end[20:0]-21'd1;
    file_sectors<=(file_len+32'd511)>>9;
    next_sector<={1'b0,sd_sec_read_addr}+{1'b0,file_sectors};
    last_sector<={1'b0,start_sector}+{1'b0,file_sectors}-1'b1;
@@ -182,10 +184,35 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    header_ok<=dimensions_ok&&format_ok&&offset_ok&&extent_ok;
   end
  end
+ // Header payload has independent enables; abort/timeout only cancel the
+ // transaction state. Every fixed-format/high-bit byte check is unchanged.
+ always@(posedge clk)begin
+  if(rst)begin
+   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;header_fields_ok<=0;signature<=0;
+  end else if(state==HREQ)begin
+   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;header_fields_ok<=1;signature<=0;
+  end else if(state==HRECV&&sd_sec_read_data_valid)begin
+      case(receive_count)
+       0:signature[7:0]<=sd_sec_read_data;1:signature[15:8]<=sd_sec_read_data;
+       2:file_len[7:0]<=sd_sec_read_data;3:file_len[15:8]<=sd_sec_read_data;
+       4:file_len[23:16]<=sd_sec_read_data;5:file_len[31:24]<=sd_sec_read_data;
+       10:pixel_offset[7:0]<=sd_sec_read_data;11:pixel_offset[15:8]<=sd_sec_read_data;
+       12:begin pixel_offset[20:16]<=sd_sec_read_data[4:0];if(sd_sec_read_data[7:5]!=0)header_fields_ok<=0;end
+       14:begin dib_size<=sd_sec_read_data[6:0];if(sd_sec_read_data[7])header_fields_ok<=0;end
+       18:width[7:0]<=sd_sec_read_data;
+       19:begin width[9:8]<=sd_sec_read_data[1:0];if(sd_sec_read_data[7:2]!=0)header_fields_ok<=0;end
+       22:height[7:0]<=sd_sec_read_data;
+       23:begin height[8]<=sd_sec_read_data[0];if(sd_sec_read_data[7:1]!=0)header_fields_ok<=0;end
+       26:if(sd_sec_read_data!=1)header_fields_ok<=0;
+       28:if(sd_sec_read_data!=24)header_fields_ok<=0;
+       13,15,16,17,20,21,24,25,27,29,30,31,32,33:if(sd_sec_read_data!=0)header_fields_ok<=0;
+      endcase
+  end
+ end
  wire [7:0] parsed_byte;
- wire is_rgb=(file_position>=pixel_offset)&&(file_position<pixel_end)&&(row_position<rgb_row);
+ wire is_rgb=pixel_window&&(row_position<rgb_row);
  wire parser_can_step=!is_rgb || (source_ready&&!source_valid);
- wire active=(state>=WAIT_ACK);
+ wire active=(state==WAIT_ACK)||(state==DREQ)||(state==DRECV)||(state==PARSE)||(state==DRAIN);
  assign ready=(state==IDLE);
  assign bmp_data_wr_en=scale_valid&&active&&!load_abort&&!sd_sec_read_error;
  assign bmp_data=scale_pixel;
@@ -208,18 +235,19 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    state<=IDLE;scanning<=0;mode_l<=0;start_sector<=0;
    scan_done<=0;scan_found_valid<=0;scan_found_sector<=0;scan_found_total<=0;
    write_req<=0;sd_sec_read<=0;sd_sec_read_addr<=0;load_done<=0;error_code<=0;state_code<=0;
-   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;header_fields_ok<=0;
-   signature<=0;receive_count<=0;parse_index<=0;
+
+   receive_count<=0;parse_index<=0;
    file_position<=0;row_position<=0;component<=0;source_pixel<=0;source_valid<=0;
-   scale_start<=0;timeout_count<=0;
+   scale_start<=0;timeout_count<=0;timeout_expired<=(TIMEOUT_CYCLES==0);pixel_window<=0;
   end else begin
    scan_found_valid<=0;load_done<=0;source_valid<=0;scale_start<=0;
    if(state==IDLE||sd_sec_read_data_valid||sd_sec_read_end||write_req_ack||
-      scale_valid||(state==PARSE && parser_can_step)) timeout_count<=0;
-   else if(timeout_count<TIMEOUT_CYCLES) timeout_count<=timeout_count+1'b1;
+      scale_valid||(state==PARSE && parser_can_step))begin timeout_count<=0;timeout_expired<=(TIMEOUT_CYCLES==0);end
+   else if(timeout_count<TIMEOUT_CYCLES)begin timeout_count<=timeout_count+1'b1;timeout_expired<=(timeout_count==TIMEOUT_CYCLES-1);end
+   else timeout_expired<=1;
    if(load_abort||!sd_init_done) begin
     state<=IDLE;sd_sec_read<=0;write_req<=0;scan_done<=0;state_code<=0;
-   end else if(state!=IDLE && (sd_sec_read_error||timeout_count>=TIMEOUT_CYCLES)) begin
+   end else if(state!=IDLE && (sd_sec_read_error||timeout_expired)) begin
     state<=IDLE;sd_sec_read<=0;write_req<=0;scan_done<=1;state_code<=14;
     error_code<=sd_sec_read_error?3:4;
    end else case(state)
@@ -236,28 +264,13 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
      end
     end
     HREQ: begin
-     receive_count<=0;signature<=0;file_len<=0;pixel_offset<=0;dib_size<=0;
-     width<=0;height<=0;header_fields_ok<=1;
+     receive_count<=0;
      sd_sec_read<=1;state<=HRECV;state_code<=2;
     end
     HRECV: begin
      if(sd_sec_read_data_valid) begin
       if(receive_count<513) receive_count<=receive_count+1'b1;
-      case(receive_count)
-       0:signature[7:0]<=sd_sec_read_data;1:signature[15:8]<=sd_sec_read_data;
-       2:file_len[7:0]<=sd_sec_read_data;3:file_len[15:8]<=sd_sec_read_data;
-       4:file_len[23:16]<=sd_sec_read_data;5:file_len[31:24]<=sd_sec_read_data;
-       10:pixel_offset[7:0]<=sd_sec_read_data;11:pixel_offset[15:8]<=sd_sec_read_data;
-       12:begin pixel_offset[20:16]<=sd_sec_read_data[4:0];if(sd_sec_read_data[7:5]!=0)header_fields_ok<=0;end
-       14:begin dib_size<=sd_sec_read_data[6:0];if(sd_sec_read_data[7])header_fields_ok<=0;end
-       18:width[7:0]<=sd_sec_read_data;
-       19:begin width[9:8]<=sd_sec_read_data[1:0];if(sd_sec_read_data[7:2]!=0)header_fields_ok<=0;end
-       22:height[7:0]<=sd_sec_read_data;
-       23:begin height[8]<=sd_sec_read_data[0];if(sd_sec_read_data[7:1]!=0)header_fields_ok<=0;end
-       26:if(sd_sec_read_data!=1)header_fields_ok<=0;
-       28:if(sd_sec_read_data!=24)header_fields_ok<=0;
-       13,15,16,17,20,21,24,25,27,29,30,31,32,33:if(sd_sec_read_data!=0)header_fields_ok<=0;
-      endcase
+
      end
      if(sd_sec_read_end) begin
       sd_sec_read<=0;
@@ -281,7 +294,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
     WAIT_ACK: begin
      state_code<=3;
      if(write_req_ack) begin
-      write_req<=0;scale_start<=1;file_position<=0;row_position<=0;component<=0;
+      write_req<=0;scale_start<=1;file_position<=0;row_position<=0;component<=0;pixel_window<=0;
       sd_sec_read_addr<=start_sector;state<=DREQ;
      end
     end
@@ -297,7 +310,9 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
     end
     PARSE: if(parser_can_step) begin
      file_position<=file_position+1'b1;parse_index<=parse_index+1'b1;
-     if(file_position>=pixel_offset && file_position<pixel_end) begin
+     if(file_position==pixel_begin_previous)pixel_window<=1;
+     if(file_position==pixel_last)pixel_window<=0;
+     if(pixel_window) begin
       if(row_position==row_stride_narrow[10:0]-11'd1) row_position<=0;
       else row_position<=row_position+1'b1;
       if(is_rgb) begin
@@ -309,7 +324,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
        component<=(component==2)?0:component+1'b1;
       end
      end
-     if(file_position+1>=pixel_end) state<=DRAIN;
+     if(file_position==pixel_last) state<=DRAIN;
      else if(parse_index==511) begin sd_sec_read_addr<=sd_sec_read_addr+1'b1;state<=DREQ;end
     end
     DRAIN: if(scale_done) begin load_done<=1;state<=IDLE;end
