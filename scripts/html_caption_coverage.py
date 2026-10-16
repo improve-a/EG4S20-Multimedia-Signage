@@ -1,6 +1,8 @@
 """Regenerate caption coverage from source ink on paper, retaining glyph layout.
 
-The original white-on-transparent canvas mask is preserved as a separate ROM.
+In normal mode, the input white-on-transparent mask is preserved separately.
+In wording-correction mode, the accepted dark-paper atlas is required and every
+existing glyph word is retained; the appended glyph also retains its white mask.
 Chrome text rasterization depends on ink/background colors; its white mask is
 not the linear-RGB coverage of dark text on the prototype's paper background.
 """
@@ -69,6 +71,8 @@ def main():
     data = json.loads(args.layout.read_text(encoding="utf-8"))
     if args.correct_current and args.map is None:
         parser.error("--correct-current requires --map to preserve exact existing layout")
+    if args.correct_current and hashlib.sha256(rom_bytes(data["glyphs"])).hexdigest() != "3492deff81aae8cb50ee93e33411dda2e01471bf10593e5211c67fd2ff9065be":
+        raise ValueError("--correct-current requires the accepted228-glyph dark-paper layout; existing coverage must not change")
     new_glyph_id = correct_current(data) if args.correct_current else None
     original = rom_bytes(data["glyphs"])
     selected = [dict(id=index, ch=glyph["ch"], font=glyph["font"])

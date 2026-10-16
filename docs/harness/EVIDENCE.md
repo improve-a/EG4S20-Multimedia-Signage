@@ -213,3 +213,18 @@ Root独立核对前9120个word的字模数值与3492deff版本逐字相同，追
 natural原子集的VVP36448及supervisor/runner在04:48UTC已不存在；原RUNNING元数据与半帧action02保留，退出原因未知，没有RTL FATAL或delta-loop证据。bounded系统事件查询无相关重启/服务记录。独立只读检查未发现engine/cache ready-valid组合回环。natural_interruption_observed.json与audit/natural_renderer_readonly_review.json记录INTERRUPTED_UNKNOWN；新候选冻结后通过既有CIM机制脱离SSH重跑natural及normal012。其它三静态子集的既有终态PASS不撤销，但源码差异必须说明。
 
 旧8a0358f18帧RTL PASS5529600像素、4909428成对physical requests/returns、8015383同步检查、28124刷新；原PNG NameError保留exit1，postprocess_resume_20261016_123642只读取原PPM恢复后处理PASS。e26字幕版局部关键帧run_20261016_123731也PASS，均保留原源码身份，不冒充当前单位修正版本。
+
+## 最终full07（2026-10-15 22:11 PDT）
+
+生产commit96cd7bd90f143a0d74f4b447bfd358409dd3302f，full07于21:57:38–22:08:17 PDT fresh SYN/PNR/BITGEN PASS，exit0，638.640秒。supervisor29052、TD46820，工具SHA与full06相同。sourceZIP d576762a80ec5b082015d76e135866484deda2ccc355faccb0651541eae1134c，snapshot70ec6939b153114322ff316e6cbe554abd3589b5b9be045aa2be2e6fa137b460。Root逐项复现全部132输入，9处路径改写（8ROM+1工程位置）符合原prepare脚本；59保护依赖仍匹配，audit/full07_freeze.json SHA d3fe583463832e63d7e4df009fa2bc0a0612ffb23b1d4a795e0d00c42385f638。所有15BIN已核对，正式媒体未变。
+
+最终17382LUT/9318REG、64×9K/16×32K/20DSP、4727MSlices；setup WNS/TNS−1.587ns/1端点，最小延迟−2.495/TNS−15.821ns/19端点，与full06数值一致但保留fresh原报告。位流729728字节，SHA f6e308a3cfbe844ffb993cc7eef6e50efc66d1c874414d07187e1517315c24ab，位于builds/html_full_20261015_07/work/design/td_project/hx4s20_basic_Runs/phy_1/hx4s20_basic.bit。audit/full07_result.json与原始run日志对应。累计55次TD尝试、7次full、5427.814秒。
+
+当前caption12布局控制逐周期PASS307244拍；公开native verifier是6个场景，不是6页全字幕捕获，Eagle在其中只揭示到33字符。另补实际OSD强制完整字幕307200RGB像素、507两字cell palette检查，只有183像素改变，区域外完全相同；pixels_verification.json记录这一单元范围。旧darkpaper六页验证确实使用独立custom TB逐页等待400帧并断言typed_count==total_chars，已核对不可变TB/输入SHA，无需撤销旧六页证明。
+
+生成器新增两行校验拒绝把旧white-mask输入用于追加字形；正确darkpaper输入精确再生同e66/c8cd/mapab3c，错误输入在启动Chrome前退出1。该生成器改进不改变full07任何RTL/ROM输入，guarded_replay/guarded_promotion.json保存证明。
+
+
+## full07独立最终时序复核（2026-10-15 22:15 PDT）
+
+`audit/full07_independent_page_control_review.json`，SHA256 `09b68bbf8f06d0a7725203451808119748a548ab4c660bc621d1e1aac7534d1d`。与full06完整timing报告仅生成时间和约束路径两行不同，其他字符一致；负路径、cell延时及全部组统计可延续既有分类。full07报告SHA256为`a37471915781d64d344572bde1b8d7b1fba41f09643b52958f85e93cfc37cc08`，报告和新位流mtime均在本次fresh运行窗口，未复用旧报告。132快照文件归一化比较仅6项字幕内容/深度变化，pipeline、renderer、握手、约束和reset不变。59保护依赖为53项原基线相同与6项已核对自研replay，不能全部称厂商原件。仍为STA_FAIL，1 setup、12 hold、7 reset removal，HW_NOT_VERIFIED。

@@ -2,7 +2,7 @@
 
 目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
 
-**e26ce11已通过full06综合、布局布线和位流生成；后续mA字幕单位修正正在做匹配full07。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+**最终生产源码96cd7bd已通过full07综合、布局布线和位流生成，包含mA对应静态电流的字幕修正。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
 
 ## 当前工作区与目录
 
@@ -31,7 +31,7 @@
 
 公开仓库仅包含可确认的自研源码、测试、生成器、配置和最小集成补丁。官方/派生顶层、存储链路、生成及加密 IP、厂商模型、位流、未获再分发许可的完整素材不随仓库公开。首次克隆不能直接整机综合；先按 [依赖说明](docs/DEPENDENCIES.md) 补齐 [精确本地依赖](docs/local_dependencies.json)。原件与公开历史不修改。
 
-`scripts/apply_html_integration.py`、`apply_html_sd_controller.py`、`apply_html_memory_controller.py` 对校验通过的本地原件应用最小集成修改，拒绝未知内容并支持重复运行。自研模块不替代官方 IP。生成的本地资产及其许可/来源记录也必须补齐；Git 源码包不等于已完整封装的可综合工程。
+`scripts/apply_html_integration.py`、`apply_html_sd_controller.py`、`apply_html_memory_controller.py` 对校验通过的本地原件应用最小集成修改，拒绝未知内容并支持重复运行。自研模块不替代官方 IP。生成的本地资产及其许可/来源记录也必须补齐；Git 源码包不等于已完整封装的可综合工程。 `local_dependencies.json`和`local_dependencies.py --check`核对的是冻结基线；当前59项中有6项经明确集成回放修改，直接用基线检查器检查最终工程会报告这6项差异，不能据此覆盖回原版。最终身份以`output/html_fidelity/audit/full07_freeze.json`及对应回放证据为准。当前Windows构建使用下节`build.py`入口；依赖说明中的旧Mac快照默认路径不作为本轮构建位置。
 
 ## 构建和验证
 
