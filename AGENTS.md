@@ -23,3 +23,9 @@
 - Root owns Git/shared integration/builds; max3 explicit non-Astra children gpt-6.1-sol medium/high; no recursive delegation.
 - Normal branch push authorized; no force push/main merge. Public redistribution exclusions remain.
 - Six-page exhibit and eight-slot baseline verified separately. Actual RTL pixels and new timing evidence required.
+
+## Current timing closure authorization — 2026-10-16
+
+- User authorizes local RTL/reset/CDC/constraint repairs, relevant offline regression, serial fresh TD builds and normal branch push on codex/timing-fix. Preserve current functionality/assets/interface rates; no hardware or system/network changes.
+- New scope supersedes earlier reset-preservation restrictions only for justified local timing fixes. Root owns Git/top/SDC/builds; up to two necessary explicit gpt-6.1-sol/high children currently assigned, no recursive delegation.
+- Separate BUILD, TIMING, REGRESSION and HARDWARE_NOT_TESTED; no blanket timing exceptions or relaxed clock periods. Keep prior deliveries and source/report provenance.

@@ -40,23 +40,36 @@ if {[catch {
  wait_run phy_1
  ::codex_hx4s20::assert_run phy_1 opt_route
  ::codex_hx4s20::event PNR PASS
+ # Native automatic hold fixing skips this dense design. The documented
+ # standalone fix_hold actually repairs routed paths on EG4S20/TD168116.
+ # Save its before/after evidence; do not use the phys_opt command that crashed
+ # in the isolated baseline experiment. Generate the final bit only afterward.
+ open_run phy_1
+ update_timing -mode final
+ report_timing_summary -file {@RUN_DIR@/before_hold_fix.rpt} -ep_num 128 -path_num 2
+ set ::codex_hx4s20::currentStage HOLD_FIX
+ ::codex_hx4s20::event HOLD_FIX RUNNING
+ fix_hold
+ update_timing -mode final
+ report_timing_summary -file {@RUN_DIR@/after_hold_fix.rpt} -ep_num 128 -path_num 2
+ export_db [file join $::codex_hx4s20::runsDir phy_1 hx4s20_basic_pr.db]
+ ::codex_hx4s20::event HOLD_FIX PASS
  set ::codex_hx4s20::currentStage BITGEN
+ bitgen -bit [file join $::codex_hx4s20::runsDir phy_1 hx4s20_basic.bit]
  ::codex_hx4s20::assert_run phy_1 bitgen
  set ::codex_hx4s20::bits [glob -nocomplain -directory [file join $::codex_hx4s20::runsDir phy_1] *.bit]
  if {![llength $::codex_hx4s20::bits]} {error "No new bitstream in phy_1"}
  ::codex_hx4s20::event BITGEN PASS
  set ::codex_hx4s20::currentStage STA_REPORT
  ::codex_hx4s20::event STA_REPORT RUNNING
- open_run phy_1
  update_timing -mode final
- report_timing_summary -file {@RUN_DIR@/final_timing.rpt}
- report_timing_ignored -file {@RUN_DIR@/ignored_timing.rpt}
- # This report includes every SPI MCP endpoint with full setup/hold paths.
- # Top-level get_ports queries in this installed CLI return empty post-open_run;
- # do not rely on separate report_timing_path filters for coverage.
- report_timing_exception -file {@RUN_DIR@/exceptions.rpt} -ep_num 32 -path_num 2
+ report_timing_summary -file {@RUN_DIR@/final_timing.rpt} -ep_num 128 -path_num 2
+ report_timing_ignored -file {@RUN_DIR@/ignored_timing.rpt} -ep_num 128 -path_num 2
+ # Include matched SPI endpoints and reset exceptions. MISO coverage must be
+ # independently audited; a zero-match exception is not a passing input path.
+ report_timing_exception -file {@RUN_DIR@/exceptions.rpt} -ep_num 128 -path_num 2
  report_clock_summary -file {@RUN_DIR@/clocks.rpt}
- check_timing -file {@RUN_DIR@/check_timing.rpt}
+ check_timing -verbose -file {@RUN_DIR@/check_timing.rpt}
  report_area -io_info -file {@RUN_DIR@/final_area.rpt}
 
 

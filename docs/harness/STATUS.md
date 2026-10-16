@@ -33,3 +33,13 @@
 Root负责Git/top/TD，B/C实际gpt-6.1-sol/high，无Astra或递归编排。完整vendor/派生源、IP、位流和未授权完整素材保留本地；公开范围经历史与增量审查。2026-10-15 23:06 PDT已正常推送7c6fc49，无法连接github.com:443，21.156秒后退出128；本轮未成功推送，后续文档提交同样仅在本地。日志见audit/git_push_final.json，未改网络/SSH/认证配置。
 
 当前结论：组件RTL_SIM在以上范围PASS；BUILD full07 PASS；STA FAIL；FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE NOT_TESTED_THIS_RUN。全部预定离线功能、显示测试和交付已完成；正常推送失败已保存，本地最终HEAD/哈希见delivery_manifest.json。没有新的生产RTL修改或再次TD构建计划。
+
+## 当前时序修复轮次 — 2026-10-16
+
+本节更新此前已结束的 HTML 轮次状态。本轮 ACTIVE，尚无新的 BUILD/TIMING_PASS。Windows 已从干净的 7325202 切换到 codex/timing-fix；132 个 full07 冻结输入全部重新匹配。Mac main/fb97d76及之前传输文件保留，无需回退 Windows。
+
+已核实 setup 1/-1.587ns、hold 12/-0.033ns、recovery 0/+1.197ns、removal 7/-2.495ns。实际 Slice 9455/9800=96.48%，自动路由 hold 修复因超过90%被跳过。所有 PLL 时钟相关，不能设整体 asynchronous。
+
+已实施待测试的局部修改：frame_read_write 暴露三项原始注册故障；top 将六项故障分别用两级50MHz寄存器采样后 OR，仅影响七段显示状态汇总，不改变原安全消费者；reset_sync及三个帧缓存域复位链增加 preserve。公开 replay 脚本从同一冻结依赖重建上述私有派生文件并已验证。正在独立旧 DB 副本上验证工具查询/物理修复选项，该实验不是新正式构建证据。MISO 输入覆盖与外部时序依据仍未闭合。
+
+FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE_NOT_TESTED。

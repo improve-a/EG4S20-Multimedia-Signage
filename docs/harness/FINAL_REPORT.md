@@ -96,3 +96,7 @@ Windows主仓库为`D:\FPGA\EG4S20-Multimedia-Signage`，生产构建commit为96
 2026-10-15 23:06 PDT已执行正常`git push -u origin codex/html-fidelity`，目标`https://github.com/improve-a/EG4S20-Multimedia-Signage.git`，尝试提交为7c6fc49d235bbdbff70e83dfa3e577476140256e。21.156秒后退出128：无法连接github.com:443，未确认远端更新。没有强推、合并main或修改网络/SSH/认证配置。日志为`output/html_fidelity/audit/git_push_final.json`及同名前缀stdout/stderr日志。
 
 **本地提交已保留，GitHub未推送成功。** 记录本次失败结果的后续文档提交也仅保留本地；最终本地HEAD及全部交付哈希见`delivery_manifest.json`。全部预定离线验证与交付清单已完成，时序签核、加密IP全系统仿真与实板验证仍未完成，不能称为签核版本或实板通过。
+
+## 后续时序收敛任务已启动 — 2026-10-16
+
+以上为上一轮HTML交付的冻结结论。本轮基于7325202、分支codex/timing-fix修复真实时序与覆盖，尚在执行；旧full07 BUILD_PASS不能为新的修改背书。本轮最终结果将在本节更新。当前基线setup1/-1.587ns、hold12/-0.033ns、recovery0/+1.197ns、removal7/-2.495ns。硬件始终未测试。

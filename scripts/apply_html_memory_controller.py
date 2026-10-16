@@ -58,7 +58,7 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                                  '!source_busy)state <= S_ACK;\n']}]},
  'rtl/SD/frame_read_write.v': {'baseline_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
                                'baseline_text_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
-                               'result_text_sha256': 'f0c90491b5fd75c34c55e9f44d63a05f3451e0d9a68a3de27d88dab00711b3e3',
+                               'result_text_sha256': '09c987fad2b3abdd30d8a78413366c2115354266d7f7e2a45ad1b72d677f909c',
                                'edits': [{'start': 0,
                                           'end': 0,
                                           'old': [],
@@ -82,6 +82,11 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                                   '\tinput write_linear,\n',
                                                   '    input read_source_ready,read_source_busy,\n',
                                                   '    output write_busy_mem,\n']},
+                                         {'start': 17,
+                                          'end': 17,
+                                          'old': [],
+                                          'new': ['    output [2:0] fault_sources, // registered '
+                                                  'independent faults for status CDC\n']},
                                          {'start': 85,
                                           'end': 86,
                                           'old': ['wire O_wr_busy;\n'],
@@ -92,6 +97,18 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                           'end': 87,
                                           'old': [],
                                           'new': ['assign read_accept_mem=rd_ack_mem;\n']},
+                                         {'start': 88,
+                                          'end': 89,
+                                          'old': ['(* async_reg="true" *) reg [1:0] '
+                                                  'mem_reset_sync,write_reset_sync,read_reset_sync;\n'],
+                                          'new': ['(* async_reg="true", preserve="true" *) reg '
+                                                  '[1:0] '
+                                                  'mem_reset_sync,write_reset_sync,read_reset_sync;\n']},
+                                         {'start': 103,
+                                          'end': 103,
+                                          'old': [],
+                                          'new': ['assign '
+                                                  'fault_sources={mem_fifo_fault,rd_underflow,wr_overflow};\n']},
                                          {'start': 115,
                                           'end': 117,
                                           'old': ['assign App_wr_busy = O_wr_busy;//下个时钟写指令拉高\n',

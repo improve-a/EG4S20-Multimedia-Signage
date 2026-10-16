@@ -258,3 +258,19 @@ action00首像素35016181000ps，action07首像素152616181000ps、末像素1679
 ## 正常Git推送实际结果（2026-10-15 23:06 PDT）
 
 在已核实origin和codex/html-fidelity上执行`git push -u origin codex/html-fidelity`，尝试HEAD `7c6fc49d235bbdbff70e83dfa3e577476140256e`，PID45752，2026-10-16T06:06:14.759363Z至06:06:35.916104Z，21.156秒、退出128。实际错误为无法连接github.com:443（约21057ms），未到成功推送状态。`audit/git_push_final.json`保留命令/源/时间/退出码，stderr SHA256 `f30d905c79b173cf9f905359445109ee61e550fa1567d292d513100aa050dfa2`。无强推/main合并/网络、SSH或认证配置改动。按用户网络失败不阻塞离线交付的要求保留本地提交；此后仅记录结果的文档提交不冒充已推送。
+
+## 时序轮次 M0/M1 — 2026-10-16
+
+Windows唯一执行根 D:/FPGA/EG4S20-Multimedia-Signage。基线HEAD7325202c2a1849049d6829c2fb72a66d6d6b17bc，生产输入对应96cd7bd/full07，132输入重新逐项无差异；TD6.2.168116 SHA256 e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a（完整身份见旧freeze/status和本轮query日志）。Root分支codex/timing-fix。
+
+完整负路径含corner/data/skew/endpoint见 output/html_fidelity/timing_fix/clock_reset_findings.json；hold独立分类见同目录hold_physical_analysis_full07.json。setup为40MHz mem_fifo_fault到50MHz故障同步器第一级，预算5ns、数据3.433ns、偏斜2.938ns；12hold含3同域RAM地址及9跨域路径，真正hold TNS -0.240ns；7removal落在异步复位同步链，不能与hold混记。原报告双方corner/max/min，10端点/组截断界限已明确。
+
+tool_query_01记录实际注册route/place选项：fix_hold=on、hold_fix_iteration=5，未暴露90%阈值。db_probe_01记录在独立副本加载旧pr.db、对象查询和SDC导出；旧DB SHA256 91f5429258c12eebbc28cd5e8871e9e0788ca80d8a19639d0befcad156f02e35。hold_probe_01仅检验官方fix_hold/phys_opt能力，不生成交付位流。所有历史原始DB/报告保留。
+
+rtl_change_01.json与同目录*.diff记录本轮首次局部源改动。顶层与帧控制器仍作为被排除的本地派生依赖保留，Git仅收作者增量replay；从原始baseline重放字节等价验证成功。
+
+首次定向回归：timing_fix/reset_fault_20261016T070402031852Z/verification.json，dispatchPID47472、exit0、5.984s。15复位/重断言、129逐拍故障合并比较、4延迟与3实际粘滞故障源；既有config_bridge和audio_fifo重放PASS。实际reset/frame RTL与顶层精确提取块；非完整顶层/加密IP仿真。连续8帧当前源显示回归已启动，独立快照layered_natural_20261016_150913。
+
+工具实验：standalone fix_hold在旧DB副本修复11/12hold，余config_bridge payload->shadow -0.024ns；后续phys_opt在abnormal timing检查发生原生access violation（exit3221225477），不用此命令进入正式流程。最终flow新增fix_hold前后报告、修复后DB导出及重新bitgen；全部STA报告增加到128端点/组、2路径/端点。新reset -hold例外仅从rst_all_reg到指定12同步器位，待新综合/ignored报告核对，全部下游及recovery检查保留。
+
+已读取原赛题摘录§1.3–1.5：基础至少4幅640×48024bit、FPGA缓存/HDMI、2按键/可配置轮播、同时HDMI音频；扩展显示/音视频联动/参数交互与优化。1.5的1280×720@60是自备显示器推荐能力，不是本设计降频或改变分辨率的授权。当前六页/八槽/Bot字幕/双图/缩放和WAV等功能按现有范围保持；终端枚举、声音和外部信号质量尚无硬件验证。

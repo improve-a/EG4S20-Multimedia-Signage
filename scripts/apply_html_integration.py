@@ -6,7 +6,7 @@
 import argparse,hashlib,json,pathlib
 FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
                              'baseline_text_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
-                             'result_text_sha256': '43e74baf569cbdfca4b75f6a84ddd44b26aaa1706564b90bb99cbf03f0201785',
+                             'result_text_sha256': 'e9964f3e8ceacdd2885949479150aab7f8e0811c61b5c542029a3814bc1958b7',
                              'edits': [{'start': 0,
                                         'end': 0,
                                         'old': [],
@@ -26,6 +26,14 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '{cfg_state,cfg_mute,cfg_paused,cfg_auto,cfg_progress,cfg_volume,cfg_scale,cfg_transition,\n'],
                                         'new': ['assign '
                                                 '{cfg_interval_fraction,cfg_state,cfg_mute,cfg_paused,cfg_auto,cfg_progress,cfg_volume,cfg_scale,cfg_transition,\n']},
+                                       {'start': 82,
+                                        'end': 83,
+                                        'old': ['reg [1:0] fifo_fault_sync;\n'],
+                                        'new': ['// Independent registered sticky faults cross '
+                                                'before aggregation. All paths remain timed.\n',
+                                                '(* async_reg="true", preserve="true" *) reg [5:0] '
+                                                'fault50_meta,fault50_sync;\n',
+                                                'wire [2:0] frame_fault_sources;\n']},
                                        {'start': 158,
                                         'end': 158,
                                         'old': [],
@@ -190,10 +198,25 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 ' '
                                                 '.config_data(video_config),.page_event(page_event),.page_index(active_view[2:0]),.dual_enable(active_view[3]),.page_reverse(active_view[4]),.focus(video_focus),\n']},
                                        {'start': 179, 'end': 181, 'old': ['\n', '\n'], 'new': []},
-                                       {'start': 236,
+                                       {'start': 228,
+                                        'end': 229,
+                                        'old': [' if(rst_all)fifo_fault_sync<=0;else '
+                                                'fifo_fault_sync<={fifo_fault_sync[0],fifo_fault};\n'],
+                                        'new': [' if(rst_all)begin '
+                                                'fault50_meta<=0;fault50_sync<=0;end\n',
+                                                ' else begin\n',
+                                                '  '
+                                                'fault50_meta<={scene_error,panel_error,tag_fault,frame_fault_sources};\n',
+                                                '  fault50_sync<=fault50_meta;\n',
+                                                ' end\n']},
+                                       {'start': 235,
                                         'end': 237,
-                                        'old': ['display_commit frame_commit(\n'],
-                                        'new': ['display_commit '
+                                        'old': ["assign display_state = fifo_fault_sync[1] ? 4'ha "
+                                                ': state_code50;\n',
+                                                'display_commit frame_commit(\n'],
+                                        'new': ["assign display_state = (|fault50_sync) ? 4'ha : "
+                                                'state_code50;\n',
+                                                'display_commit '
                                                 '#(.BUFFER_BITS(5),.REQUIRE_INITIAL_COMMIT(1)) '
                                                 'frame_commit(\n']},
                                        {'start': 239,
@@ -259,7 +282,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'old': ['    '
                                                 '.display_valid_video(display_valid_sync[1]),.fifo_fault(fifo_fault),\n'],
                                         'new': ['    '
-                                                '.display_valid_video(display_valid_sync[1]),.fifo_fault(frame_fifo_fault),\n']},
+                                                '.display_valid_video(display_valid_sync[1]),.fifo_fault(frame_fifo_fault),.fault_sources(frame_fault_sources),\n']},
                                        {'start': 375,
                                         'end': 379,
                                         'old': ['    .App_rd_en         (App_rd_en),\n',

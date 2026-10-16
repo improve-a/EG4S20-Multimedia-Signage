@@ -29,3 +29,10 @@ set_multicycle_path 7 -hold -start -to [get_ports {sd_mosi sd_ncs}]
 
 # NOCOMP PLLs use dedicated internal VCO feedback. Output BUFGs retained.
 # No external feedback routing directives needed; frequencies and phase relationships unchanged.
+
+# Reset assertion enters only these six intentional async-assert/two-edge-release
+# synchronizers. Their second-stage output releases reset in each receiving domain.
+# No functional downstream reset pin or data CDC is excepted. preserve attributes
+# prevent merging with unrelated registers; final ignored-path report audits this.
+# TD -hold covers hold/removal only; recovery and all downstream checks remain.
+set_false_path -hold -from [get_regs {rst_all_reg}] -to [get_regs {rs_sd/pipe[*] rs_mem/pipe[*] rs_video/pipe[*] frame_read_write_m0/mem_reset_sync[*] frame_read_write_m0/write_reset_sync[*] frame_read_write_m0/read_reset_sync[*]}]
