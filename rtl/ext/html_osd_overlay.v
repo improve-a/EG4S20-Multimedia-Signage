@@ -3,7 +3,7 @@
 // All config and text progress commit only on VS rising edges.
 module html_osd_overlay #(
  parameter GLYPH_FILE="rtl/ext/html_assets/html_glyph_coverage.hex",
- parameter GLYPH_WORDS=9120
+ parameter GLYPH_WORDS=9160
 )(
  input wire clk,rst,i_hs,i_vs,i_de,
  input wire [23:0] i_rgb,

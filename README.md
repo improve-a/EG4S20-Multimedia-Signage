@@ -2,7 +2,7 @@
 
 目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
 
-**最终源码e26ce11已通过full06综合、布局布线和位流生成。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+**e26ce11已通过full06综合、布局布线和位流生成；后续mA字幕单位修正正在做匹配full07。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
 
 ## 当前工作区与目录
 
@@ -57,7 +57,7 @@ D:\python3.12.3\python.exe scripts/html_bot_eye_radius.py --output-dir output/ht
 D:\python3.12.3\python.exe scripts/html_osd_utility_rom.py --output-dir output/html_fidelity/numeric_replay
 ```
 
-完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_caption_darkpaper_v1.json`。
+完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_current_wording_v1.json`。
 
 后台读写压力使用真实511容量FIFO与Gray CDC，复现命令如下。该测试采用40MHz存储/25MHz视频/100MHz源时钟、四字物理组及有界刷新/返回延时；不替代加密SDRAM PHY或实板验证。默认旧参数保留用于历史反例，不能把它当当前顶层配置。
 
@@ -78,3 +78,5 @@ D:\python3.12.3\python.exe -X utf8 scripts/html_layer_render_verify.py --whole-b
 所有修改在 `codex/html-fidelity` 分支，正常提交并在收尾尝试正常推送，不强推或合并 main。当前推送尚未执行；历史认证失败不能当作本次结果。保留历史 [统一版报告](output/venue_unified_offline/FINAL_REPORT.md)，其中历史 LUT、时序和实板观察不适用于当前分层版本。
 
 已有 Noto Sans SC 的 SIL OFL 1.1 和合成音频 CC0 声明继续随原包保留。不擅自为其他来源代码或图片补写许可证，公开可读不等于获得再分发许可。
+
+正式字幕还包含一处局部事实措辞修正：mA对应静态电流，不是静态功耗。`html_caption_coverage.py --correct-current --layout <原darkpaper布局> --map <原228字形map> --css <原CSS路径> --out <独立输出目录>` 保留既有字形ID并追加“流”228，仅修改Eagle两个字符；之后生成caption columns和15份BIN。原输入和修正输出均保留本地，系统字体不发布。当前字模229字形/9160word，仍使用5个32K块。

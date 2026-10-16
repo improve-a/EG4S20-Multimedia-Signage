@@ -1,6 +1,6 @@
 # HTML 分层移植状态
 
-更新2026-10-15 21:44 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`，最终生产源码e26ce11c00f3b42c220cda2826a5fd8ce525b0b2；目标HX4S20C / EG4S20BG256，top，TD6.2.1 Engineer168116。本轮是赛题一，不是同目录的PH1P35摄像头工程。没有硬件、物理卡、JTAG或串口操作。
+更新2026-10-15 21:44 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`，此前构建源码e26ce11c00f3b42c220cda2826a5fd8ce525b0b2，现已推广mA字幕单位修正待full07；目标HX4S20C / EG4S20BG256，top，TD6.2.1 Engineer168116。本轮是赛题一，不是同目录的PH1P35摄像头工程。没有硬件、物理卡、JTAG或串口操作。
 
 ## 最终完整构建
 
@@ -32,3 +32,9 @@ TIMING仍FAIL。routed setup WNS/TNS均−1.587ns，仅1个失败端点。独立
 Root负责Git/top/TD；B、C实际使用gpt-6.1-sol/high，未用Astra或递归编排。公开仓库排除vendor/派生整源、IP、位流和未授权完整素材；本地依赖完整保留并支持精确replay。公开历史审查PASS；两个自研参数字形ROM逐版本再生核验。GitHub预检连接重置，尚未push，收尾正常尝试并记录实际结果。
 
 RTL_SIM：上述明确范围PASS，最终连续动作仍运行。BUILD：full06 PASS。TIMING：FAIL，保留未签核范围。VISUAL：最终静态帧PASS且差异待汇总。FULL_SYSTEM_SIM：NOT_VERIFIED。HARDWARE：NOT_TESTED_THIS_RUN。剩余独立视觉收尾、动作验证、最终报告和正常Git推送，不再无依据循环完整构建。
+
+## 收尾发现（2026-10-15 21:53 PDT）
+
+Root实际查看e26显示链PNG发现猎鹰字幕仍把5 mA称为静态功耗，按用户原要求必须局部改为静态电流；B在隔离候选追加“流”字形，保持既有ID/布局，最终仍需一次匹配构建，full06降为此前已验证候选。正式媒体不受该字幕ROM修正影响。natural子集的VVP/runner/supervisor已不存在，原RUNNING记录陈旧；无终止原因或delta-loop证据，现场保留并标记INTERRUPTED_UNKNOWN，等待新字模冻结后重跑。三个静态子集的既有PASS不受影响。独立只读诊断为audit/natural_renderer_readonly_review.json；原型对照人工查看记录为audit/root_visual_review_full06.json。
+
+2026-10-15 21:57 PDT：单位修正已按精确差异推广；字模9160word、15BIN核对一致，native/control compile PASS，完整验证和新快照正在进行。

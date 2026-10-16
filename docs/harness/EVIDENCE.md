@@ -203,3 +203,13 @@ routed setup WNS/TNS−1.587ns，仅1端点。独立审查audit/full06_independe
 最小延迟汇总−2.495ns/TNS−15.821ns、19端点，逐项为12hold+7reset removal；memory self hold+0.032ns，本次compositor负hold消失。mem→video−0.017ns真实launch为read_accept_mem=rd_ack_mem，落在rd_ack_sync[0]，read_session_active为别名。配置mailbox稳定载荷至ACK并延迟capture、音频Gray/meta/sync与状态同步结构已核对，但不替代CDC/hold签核。coverage99.96%，clock definition4、dummy5、no input delay5、no output20、partial input1、abnormal input32；no_clock/invalid/loops/no-path均0。保留本地路由时钟、SDRAM位置未honor等警告；未添加例外或修改reset/clock/IP，整体STA仍FAIL。独立审查未发现剩余新的geometry/cache/BMP/scene负数据路径需再改。
 
 verification/bmp_parser_timing_v1/final_valid_suite.json记录当前12e584共17有效case全部PASS。八scale逐周期接口等价51733779拍、2457600像素；正式UI02 HFXL完整文件optin1_v3再通过10249544拍/307200像素/2290请求（1056.984秒），optin0_v3明确拒绝。共2764800 golden像素。3543头部799接受/2744拒绝、T0/1/2/7/31边界、deadline progress、SDerror/abort优先级、中止后不reset重启、0/511/513头长度及511短payload均PASS。CASE5为319×179、offset513、537padding字节、4283409parser stalls。原T0测试注入过晚和formalv2损坏fixture保留为FAIL/INVALID_INPUT，后者即使显示optin0 PASS也明确排除；只有有效v3进入结论。
+
+## mA字幕单位修正与中断重跑
+
+Root原生尺寸查看最终三联图发现Eagle字幕仍写“静态功耗低至5 mA”，源HTML也如此；按用户明确要求仅改为“静态电流”，数值5 mA不变，不代表另行验证该数值。原型、旧字模、原显示结果保留。caption_current_candidate生成器追加“流”ID228，“电”复用122；仅page1 caption ordinal32/33替换，42字符、坐标、换行和揭示时序不变，其余11布局不变。
+
+Root独立核对前9120个word的字模数值与3492deff版本逐字相同，追加40word到9160（229字形），仍5×BRAM32K/14地址位。新HEX SHA e66dab4f24e304e3ab46d8ad4095d3f9bdbadabc85d899d64f1c569bca20a533，BIN c8cd33051e36e6de5c6a30b7e6b6dfd918e206459eab3fbe6d89f5d6ea01dae4。map只有两行glyph ID差异，columns仅26地址变化且低10位/ordinals不变；536568map-column一致检查PASS。OSD RTL仅GLYPH_WORDS默认9120→9160，配套html_rom_init计数同步。native/control均编译PASS，六页实际RTL和12布局控制等价继续在固定候选上运行。promotion_manifest/promotion_applied与audit/rom_init_current_wording_v1.json保存证明，全部15BIN逐字往返一致。最终需匹配full07，不沿用full06作修正版位流。
+
+natural原子集的VVP36448及supervisor/runner在04:48UTC已不存在；原RUNNING元数据与半帧action02保留，退出原因未知，没有RTL FATAL或delta-loop证据。bounded系统事件查询无相关重启/服务记录。独立只读检查未发现engine/cache ready-valid组合回环。natural_interruption_observed.json与audit/natural_renderer_readonly_review.json记录INTERRUPTED_UNKNOWN；新候选冻结后通过既有CIM机制脱离SSH重跑natural及normal012。其它三静态子集的既有终态PASS不撤销，但源码差异必须说明。
+
+旧8a0358f18帧RTL PASS5529600像素、4909428成对physical requests/returns、8015383同步检查、28124刷新；原PNG NameError保留exit1，postprocess_resume_20261016_123642只读取原PPM恢复后处理PASS。e26字幕版局部关键帧run_20261016_123731也PASS，均保留原源码身份，不冒充当前单位修正版本。

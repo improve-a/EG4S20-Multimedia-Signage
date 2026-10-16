@@ -1,6 +1,6 @@
 # 分层 HTML 展陈版本验收报告
 
-最终生产源码e26ce11c00f3b42c220cda2826a5fd8ce525b0b2已通过full06的综合、布局布线和位流生成。新增渲染、BMP/scene数据路径的setup已转正，但整体TIMING仍FAIL：剩余状态CDC setup、hold和异步reset removal未签核。这个版本具备离线功能和构建证据，不能称实板通过或时序签核完成。
+生产候选e26ce11c00f3b42c220cda2826a5fd8ce525b0b2已通过full06的综合、布局布线和位流生成。Root视觉审查发现mA字幕术语遗漏，现已局部修正为静态电流，最终full07和对应动作重跑仍进行中；下述full06位流仅属修正前候选。新增渲染、BMP/scene数据路径的setup已转正，但整体TIMING仍FAIL：剩余状态CDC setup、hold和异步reset removal未签核。这个版本具备离线功能和构建证据，不能称实板通过或时序签核完成。
 
 六页常态、两组双图与两种放大帧已通过实际显示链验证；连续动作片段和最终图像汇总仍在收尾。最终位流包括存储请求流水、scene/BMP解析时序调整与字幕覆盖率修正，不能换用full05。没有访问开发板、JTAG、物理TF卡或串口。
 

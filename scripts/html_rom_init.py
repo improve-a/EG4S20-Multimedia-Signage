@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def generate(root=ROOT):
     results=[]
-    specs=[("bot_body_argb4444.hex",10400,16),("html_glyph_coverage.hex",9120,16)]
+    specs=[("bot_body_argb4444.hex",10400,16),("html_glyph_coverage.hex",9160,16)]
     if (Path(root)/"rtl/ext/html_assets/html_caption_columns.hex").exists():
         specs.append(("html_caption_columns.hex",8114,18))
     # Every optional layer/animation resource keeps simulation hex and TD binary
