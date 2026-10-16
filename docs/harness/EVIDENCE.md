@@ -116,3 +116,14 @@ Top usesREAD_BURST_SIZE128/READ_DRAIN_CYCLES13; writerBURST_SIZE256 and legacyde
 - scene_verification/20261015T202112951932Z/result.json SHA530ac86c74c59cdc9d292e6d2c14fcffc79a55ffb3f7d8e6a72ef00eb328315a：压缩前冻结loader真实全6资源和PCM客户端PASS，491.437秒；不混作压缩后证据。压缩后的新run20261016T023956349464Z已启动。
 - lateage25凤凰+持续写反例表明静态六页PASS不足。pending全队列排空/always-drain/read64隔离失败保留在page_control；没有放宽FIFO断言。真实vendor FIFO使用512物理字但full阈值511，新行为压力模型按511可用字校核。
 - display_chain/layered_20261016_102316：8a0358f不可变18帧运行快照。public PNG函数一行误入APNG专用检查，修复后独立7×5/105RGB字节双解码往返PASS（png_roundtrip_20261016_102700）；当前VVP不受后处理修复影响，保留原异常与恢复元数据，不重新绘制DUT图像。
+
+
+## 2026-10-15 19:59 PDT：等价资源压缩与新增边界复测
+
+- 紧凑locator/scene版本真实六资源+PCM通过：scene_verification/20261016T023956349464Z，7215104字节/1803776字、14098场景扇区/96音频扇区、3500 PCM帧、36次紧急仲裁，473.093秒。11次EOF重启为测试台动作。真实HFXL接受/拒绝两项也通过：regression/20261016T024044238632Z，474.313秒；启动/config保护重测integration_review/run_20261016_104315通过。
+- OSD直接5位数字字形码保留全部参数值及像素流水：589824字形索引、921837 RGB/control周期与原实现相同，native307200像素逐字节相同。direct_font_code_candidate/native_equivalence.json记录来源。SYN probe html_directfont_overlay_probe_20261015_01从3729降3690 LUT，其余898REG、18×9K、11×32K、12DSP不变，19.531秒。生产OSD SHA256 7f2e0bb01d65d805e879dc54510ac2f8c7f9ba063d97e42357203eeb7fde3361。
+- BMP仅存合法尺寸/偏移的有效位，所有省略高位及planes/bitcount/compression固定字节在到达时检查。3543个完整512字节头，新旧扫描接口逐周期等价：799接受、2744拒绝，201.954秒。包含六实际HFXL头、逐位破坏、512随机合法普通BMP和49边界/符号组合；不是像素加载仿真。verification/bmp_header_compact_v1/verification.json。
+- BMP独立SYN probe old1571LUT/808REG，new1436LUT/605REG；3×9K、1×32K、1DSP不变。两个probe只是综合，外部接口引脚数超封装不作布局或时序证据。分别13.656/11.391秒，TD工具SHA和源码快照见synthesis_comparison.json。生产bmp_scale.v已更新为f0a91ee9382dd048213dd38e0f2e5a4935b0cd260903a663247cab4228198c7a；实际HFXL像素/拒绝、8种自适应缩放及8目录边界的新版本回归已启动，未提前宣称通过。
+- 累计48次TD尝试、4次full、3213.346秒；没有同时重型构建。
+- 实际Bot/OSD六时刻样本通过：bot_action_samples/run_20261016_103251。0/5/25/65/92/100帧对应0/84/420/1092/1545.6/1680ms；加速空白期、固定背景和peak24576，仅overlay范围，不能称连续全链路动画。六帧APNG经Pillow逐帧RGB/延时往返验证，SHA c37b14be431bbe3ce830df8f453b4b62848d21bf86ea85d294ca3f01853b7385。
+- 后台写物理排空候选尚未推广。真实511容量FIFO/Gray CDC已得完整RGB与有序写通过，但密集phi25有写时余量仅1；同源无writer最低266，确认需要改善准入。早期writerWait指标仅从fair_offer测量，不能当原始pending总等待；新测试分别测两项并保留旧记录。

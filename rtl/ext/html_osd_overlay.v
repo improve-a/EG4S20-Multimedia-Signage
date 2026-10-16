@@ -93,7 +93,7 @@ module html_osd_overlay #(
  reg [9:0] palette_base;
  reg [4:0] palette_issue;
  reg palette_loading,palette_valid0,swap_palette_ready;
- wire [9:0] font_address=10'd576+font_index(font_character)*10'd7+{7'd0,live_y[2:0]};
+ wire [9:0] font_address=10'd576+font_code*10'd7+{7'd0,live_y[2:0]};
  wire [9:0] palette_address=palette_loading ? palette_base+{5'd0,palette_issue} : (font_active ? font_address : 10'd0);
  wire [7:0] palette_byte;
  html_osd_swap_rom swap_rom(.clk(clk),.address(palette_address),.data(palette_byte));
@@ -348,12 +348,39 @@ module html_osd_overlay #(
   "X":font_index=5'd22;
   ".":font_index=5'd23;
   default:font_index=5'd24;endcase end endfunction
+ function [4:0] live_font_index;
+ input [5:0] n;reg[8:0]mag;reg[5:0]position;
+ begin
+  mag=bright[8] ? -bright : bright;
+  position=(seconds_fraction!=0&&n>=28) ? n-6'd3 : n;
+  live_font_index=5'd24;
+  case(position)
+   0:live_font_index=10;1:live_font_index=18;2:live_font_index=bright[8] ? 20 : 19;
+   3:live_font_index=mag/100;4:live_font_index=(mag/10)%10;5:live_font_index=mag%10;
+   7:live_font_index=11;8:live_font_index=18;
+   9:case(ccontrast)0,1:live_font_index=0;6:live_font_index=2;default:live_font_index=1;endcase
+   10:live_font_index=23;
+   11:case(ccontrast)0,4:live_font_index=5;1,5:live_font_index=7;3:live_font_index=2;default:live_font_index=0;endcase
+   12:case(ccontrast)1,3,5:live_font_index=5;default:live_font_index=0;endcase
+   14:live_font_index=12;15:live_font_index=18;16:live_font_index=vol/10;17:live_font_index=vol%10;
+   19:live_font_index=13;20:live_font_index=18;
+   21:live_font_index=seconds_fraction!=0&&seconds<100 ? 5'd24 : seconds/100;
+   22:live_font_index=seconds_fraction!=0&&seconds<10 ? 5'd24 : (seconds/10)%10;
+   23:live_font_index=seconds%10;
+   25:live_font_index=14;26:live_font_index=18;27:live_font_index=zoom_mode==0 ? 1 : zoom_mode==1 ? 2 : 3;
+   29:live_font_index=auto_flag ? 16 : 17;31:live_font_index=stopped ? 15 : 24;33:live_font_index=muted ? 17 : 24;
+  endcase
+  if(seconds_fraction!=0)case(n)
+   24:live_font_index=23;25:live_font_index={1'b0,seconds_fraction};26:live_font_index=21;27:live_font_index=24;
+   default:begin end
+  endcase
+ end endfunction
  reg [23:0] plate_rgb,text_rgb;
  reg [2:0] plate_code;
  reg [3:0] plate_alpha;
  reg [34:0] live_bits;
  reg live_ink,font_active;
- reg [7:0] font_character;
+ reg [4:0] font_code;
  reg [2:0] tick;
  reg [9:0] tx,ty;
  reg [7:0] live_x;
@@ -367,7 +394,7 @@ module html_osd_overlay #(
  reg [15:0] live_word;
  always @*begin
   plate_rgb=0;plate_code=0;plate_alpha=0;text_rgb=24'h1a1916;
-  font_active=0;font_character=" ";tick=0;tx=0;ty=0;live_x=0;live_y=0;live_bits=0;live_ink=0;live_word=0;bar_index=0;bar_col=0;bar_height=0;bar_top=0;bar_bottom=0;mini_x0=0;mini_y0=0;mini_x1=0;mini_y1=0;zoom_char=" ";tick_col=0;bar_x=0;font_bit=0;live_col=0;
+  font_active=0;font_code=5'd24;tick=0;tx=0;ty=0;live_x=0;live_y=0;live_bits=0;live_ink=0;live_word=0;bar_index=0;bar_col=0;bar_height=0;bar_top=0;bar_bottom=0;mini_x0=0;mini_y0=0;mini_x1=0;mini_y1=0;zoom_char=" ";tick_col=0;bar_x=0;font_bit=0;live_col=0;
   if(enabled&&i_de)begin
    // Rounded paper plate and directional tail.
    if(px>=24&&px<510&&y>=386&&y<458)begin
@@ -417,16 +444,16 @@ module html_osd_overlay #(
    if(zoom&&px>=582&&px<606&&y>=76&&y<83)begin
     live_x=px-582;live_y=y-76;
     case(live_x/8'd6)
-     0:zoom_char=zoom_mode==1 ? "2" : "3";1:zoom_char=".";2:zoom_char="0";default:zoom_char="X";
+     0:font_code=zoom_mode==1 ? 5'd2 : 5'd3;1:font_code=5'd23;2:font_code=5'd0;default:font_code=5'd22;
     endcase
-    font_active=1;font_character=zoom_char;
+    font_active=1;
    end
    // Live adjustment strip appears while a parameter mode is selected.
    if(cmode!=0&&px>=24&&px<(seconds_fraction!=0 ? 10'd256 : 10'd238)&&y>=467&&y<478)begin
     plate_code=3'd5;plate_alpha=13;
     live_x=px-10'd28;live_y=y-10'd469;
     if(px>=28&&px<(seconds_fraction!=0 ? 10'd250 : 10'd232)&&y>=469&&y<476)begin
-     font_active=1;font_character=live_char(live_x/8'd6);
+     font_active=1;font_code=live_font_index(live_x/8'd6);
     end
    end
   end

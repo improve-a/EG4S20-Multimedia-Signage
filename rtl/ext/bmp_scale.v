@@ -97,8 +97,14 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg [3:0] state;
  reg scanning;
  reg [1:0] mode_l;
- reg [31:0] start_sector, file_len,pixel_offset,dib_size,width,height,compression;
- reg [15:0] planes,bit_count;
+ reg [31:0] start_sector,file_len;
+ reg [20:0] pixel_offset;
+ reg [6:0] dib_size;
+ reg [9:0] width;
+ reg [8:0] height;
+ // Legal BMP bounds fit these fields. Every discarded header bit and fixed
+ // format byte is checked on arrival, before the full512byte header decision.
+ reg header_fields_ok;
  reg [15:0] signature;
  reg [9:0] receive_count,parse_index;
  // Accepted BMPs have width<=640, height<=480 and pixel_offset<=1048576.
@@ -124,8 +130,8 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  generate if(ENABLE_HFXL)begin: layer_locator
   html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
    .byte_valid(state==HRECV && sd_sec_read_data_valid),.byte_index(receive_count),
-   .byte_data(sd_sec_read_data),.file_len(file_len),.pixel_offset(pixel_offset),
-   .pixel_end(pixel_end),.dib_size(dib_size),.width(width),.height(height),
+   .byte_data(sd_sec_read_data),.file_len(file_len),.pixel_offset({11'd0,pixel_offset}),
+   .pixel_end(pixel_end),.dib_size({25'd0,dib_size}),.width({22'd0,width}),.height({23'd0,height}),
    .valid(hfxl_extent_ok),.scene_offset(),.payload_bytes(),.word_base(),.set_id(),.page_index());
  end else begin: ordinary_bmp
   assign hfxl_extent_ok=1'b0;
@@ -149,14 +155,13 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  // In the fastest legal transport, byte33 precedes the decision by478 clocks;
  // this pipeline has ample settle time without altering any header bound.
  reg [32:0] dib_end;
- reg signature_ok,width_ok,height_ok,planes_ok,bits_ok,compression_ok,dib_ok;
+ reg signature_ok,width_ok,height_ok,dib_ok;
  reg offset_lower_ok,offset_upper_ok,extent_lower_ok,extent_upper_ok,end_ok,lba_ok;
  reg dimensions_ok,format_ok,offset_ok,extent_ok;
  reg header_ok;
  always @(posedge clk) begin
   if(rst) begin
-   dib_end<=0;signature_ok<=0;width_ok<=0;height_ok<=0;planes_ok<=0;
-   bits_ok<=0;compression_ok<=0;dib_ok<=0;offset_lower_ok<=0;offset_upper_ok<=0;
+   dib_end<=0;signature_ok<=0;width_ok<=0;height_ok<=0;dib_ok<=0;offset_lower_ok<=0;offset_upper_ok<=0;
    extent_lower_ok<=0;extent_upper_ok<=0;end_ok<=0;lba_ok<=0;
    dimensions_ok<=0;format_ok<=0;offset_ok<=0;extent_ok<=0;header_ok<=0;
   end else begin
@@ -164,8 +169,6 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    signature_ok<=signature==16'h4d42;
    width_ok<=(width!=0)&&(width<=32'd640);
    height_ok<=(height!=0)&&(height<=32'd480);
-   planes_ok<=planes==16'd1;bits_ok<=bit_count==16'd24;
-   compression_ok<=compression==0;
    dib_ok<=(dib_size==32'd40)||(dib_size==32'd108)||(dib_size==32'd124);
    offset_lower_ok<=!dib_end[32]&&({1'b0,pixel_offset}>=dib_end);
    offset_upper_ok<=pixel_offset<=32'd1048576;
@@ -173,7 +176,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    extent_upper_ok<=(file_len<=max_file_len)||hfxl_extent_ok;
    end_ok<=!pixel_end_wide[32];lba_ok<=!last_sector[32];
    dimensions_ok<=signature_ok&&width_ok&&height_ok;
-   format_ok<=planes_ok&&bits_ok&&compression_ok&&dib_ok;
+   format_ok<=header_fields_ok&&dib_ok;
    offset_ok<=offset_lower_ok&&offset_upper_ok;
    extent_ok<=extent_lower_ok&&extent_upper_ok&&end_ok&&lba_ok;
    header_ok<=dimensions_ok&&format_ok&&offset_ok&&extent_ok;
@@ -187,7 +190,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  assign bmp_data_wr_en=scale_valid&&active&&!load_abort&&!sd_sec_read_error;
  assign bmp_data=scale_pixel;
  bmp_scale scaler(.clk(clk),.rst(rst||load_abort||!sd_init_done||state==IDLE),
- .start(scale_start),.source_width(width[9:0]),.source_height(height[9:0]),
+ .start(scale_start),.source_width(width[9:0]),.source_height({1'b0,height}),
  .scale_mode(mode_l),.source_valid(source_valid),.source_pixel(source_pixel),
  .source_ready(source_ready),.pixel_valid(scale_valid),.pixel(scale_pixel),.done(scale_done));
  // Prefetch byte zero on the receive-to-parse edge. Each accepted byte
@@ -205,8 +208,8 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
    state<=IDLE;scanning<=0;mode_l<=0;start_sector<=0;
    scan_done<=0;scan_found_valid<=0;scan_found_sector<=0;scan_found_total<=0;
    write_req<=0;sd_sec_read<=0;sd_sec_read_addr<=0;load_done<=0;error_code<=0;state_code<=0;
-   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;compression<=0;
-   planes<=0;bit_count<=0;signature<=0;receive_count<=0;parse_index<=0;
+   file_len<=0;pixel_offset<=0;dib_size<=0;width<=0;height<=0;header_fields_ok<=0;
+   signature<=0;receive_count<=0;parse_index<=0;
    file_position<=0;row_position<=0;component<=0;source_pixel<=0;source_valid<=0;
    scale_start<=0;timeout_count<=0;
   end else begin
@@ -234,7 +237,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
     end
     HREQ: begin
      receive_count<=0;signature<=0;file_len<=0;pixel_offset<=0;dib_size<=0;
-     width<=0;height<=0;planes<=0;bit_count<=0;compression<=0;
+     width<=0;height<=0;header_fields_ok<=1;
      sd_sec_read<=1;state<=HRECV;state_code<=2;
     end
     HRECV: begin
@@ -245,17 +248,15 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
        2:file_len[7:0]<=sd_sec_read_data;3:file_len[15:8]<=sd_sec_read_data;
        4:file_len[23:16]<=sd_sec_read_data;5:file_len[31:24]<=sd_sec_read_data;
        10:pixel_offset[7:0]<=sd_sec_read_data;11:pixel_offset[15:8]<=sd_sec_read_data;
-       12:pixel_offset[23:16]<=sd_sec_read_data;13:pixel_offset[31:24]<=sd_sec_read_data;
-       14:dib_size[7:0]<=sd_sec_read_data;15:dib_size[15:8]<=sd_sec_read_data;
-       16:dib_size[23:16]<=sd_sec_read_data;17:dib_size[31:24]<=sd_sec_read_data;
-       18:width[7:0]<=sd_sec_read_data;19:width[15:8]<=sd_sec_read_data;
-       20:width[23:16]<=sd_sec_read_data;21:width[31:24]<=sd_sec_read_data;
-       22:height[7:0]<=sd_sec_read_data;23:height[15:8]<=sd_sec_read_data;
-       24:height[23:16]<=sd_sec_read_data;25:height[31:24]<=sd_sec_read_data;
-       26:planes[7:0]<=sd_sec_read_data;27:planes[15:8]<=sd_sec_read_data;
-       28:bit_count[7:0]<=sd_sec_read_data;29:bit_count[15:8]<=sd_sec_read_data;
-       30:compression[7:0]<=sd_sec_read_data;31:compression[15:8]<=sd_sec_read_data;
-       32:compression[23:16]<=sd_sec_read_data;33:compression[31:24]<=sd_sec_read_data;
+       12:begin pixel_offset[20:16]<=sd_sec_read_data[4:0];if(sd_sec_read_data[7:5]!=0)header_fields_ok<=0;end
+       14:begin dib_size<=sd_sec_read_data[6:0];if(sd_sec_read_data[7])header_fields_ok<=0;end
+       18:width[7:0]<=sd_sec_read_data;
+       19:begin width[9:8]<=sd_sec_read_data[1:0];if(sd_sec_read_data[7:2]!=0)header_fields_ok<=0;end
+       22:height[7:0]<=sd_sec_read_data;
+       23:begin height[8]<=sd_sec_read_data[0];if(sd_sec_read_data[7:1]!=0)header_fields_ok<=0;end
+       26:if(sd_sec_read_data!=1)header_fields_ok<=0;
+       28:if(sd_sec_read_data!=24)header_fields_ok<=0;
+       13,15,16,17,20,21,24,25,27,29,30,31,32,33:if(sd_sec_read_data!=0)header_fields_ok<=0;
       endcase
      end
      if(sd_sec_read_end) begin
