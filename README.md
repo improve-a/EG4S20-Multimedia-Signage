@@ -75,7 +75,7 @@ D:\python3.12.3\python.exe -X utf8 scripts/html_layer_render_verify.py --whole-b
 
 ## Git 和历史证据
 
-所有修改在 `codex/html-fidelity` 分支，正常提交并在收尾尝试正常推送，不强推或合并 main。当前推送尚未执行；历史认证失败不能当作本次结果。保留历史 [统一版报告](output/venue_unified_offline/FINAL_REPORT.md)，其中历史 LUT、时序和实板观察不适用于当前分层版本。
+所有修改已在 `codex/html-fidelity` 分支正常提交。2026-10-15 23:06 PDT正常推送7c6fc49时无法连接github.com:443，21.156秒后退出128；本轮未推送成功，后续记录推送结果的文档提交也保留本地。不强推或合并main，未改网络/SSH/认证配置。最终本地HEAD和日志见本地交付清单及`output/html_fidelity/audit/git_push_final.json`。保留历史 [统一版报告](output/venue_unified_offline/FINAL_REPORT.md)，其中历史 LUT、时序和实板观察不适用于当前分层版本。
 
 已有 Noto Sans SC 的 SIL OFL 1.1 和合成音频 CC0 声明继续随原包保留。不擅自为其他来源代码或图片补写许可证，公开可读不等于获得再分发许可。
 

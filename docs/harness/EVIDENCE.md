@@ -253,3 +253,8 @@ action00首像素35016181000ps，action07首像素152616181000ps、末像素1679
 `display_chain/final_current_20261016_125646/final_verification.json` SHA256 `fad96d250e941563a2944069db32e0ea2a635257609fe99aef670d3947490e0c`；`bot_osd/final_source_proofs_v6.json` SHA256 `6b5c013070acf2873dc03be6668aea0057dd59e25c8f2c256e261407ee06d6be`。18张实际导出代表帧，含warmup共19检查帧/5836800像素计数/9801532同步；是有来源边界的多个子集汇总，normal345沿用原捕获及精确不变布局证明，不是一次完整整机仿真。
 
 连续8帧APNG SHA256 `27e476556c7eb80dbd615cdef5f3a818504e54b43cea60a644b58675d4e1ef8a`，逐帧解码RGB与原DUT PPM一致。Root查看起末帧：早期转场仍可见大部分旧Eagle底图，新Phoenix页头/OSD已随页提交更新，眼睛/身体开始反应及字幕开始揭示；不能把0..117.6ms片段当成完成整段入场的证明。稀疏0..1680ms overlay样本仍单独说明。最终132项硬件输入再次逐项匹配full07冻结源，无差异。
+
+
+## 正常Git推送实际结果（2026-10-15 23:06 PDT）
+
+在已核实origin和codex/html-fidelity上执行`git push -u origin codex/html-fidelity`，尝试HEAD `7c6fc49d235bbdbff70e83dfa3e577476140256e`，PID45752，2026-10-16T06:06:14.759363Z至06:06:35.916104Z，21.156秒、退出128。实际错误为无法连接github.com:443（约21057ms），未到成功推送状态。`audit/git_push_final.json`保留命令/源/时间/退出码，stderr SHA256 `f30d905c79b173cf9f905359445109ee61e550fa1567d292d513100aa050dfa2`。无强推/main合并/网络、SSH或认证配置改动。按用户网络失败不阻塞离线交付的要求保留本地提交；此后仅记录结果的文档提交不冒充已推送。

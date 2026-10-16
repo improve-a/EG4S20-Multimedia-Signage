@@ -1,6 +1,6 @@
 # HTML 分层移植状态
 
-更新2026-10-15 23:03 PDT。Windows主仓库 `D:/FPGA/EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`。最终生产构建源码为96cd7bd90f143a0d74f4b447bfd358409dd3302f，目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮为赛题一，不是同目录的PH1P35摄像头工程。没有操作硬件、物理卡、JTAG或串口。
+更新2026-10-15 23:07 PDT。Windows主仓库 `D:/FPGA/EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`。最终生产构建源码为96cd7bd90f143a0d74f4b447bfd358409dd3302f，目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮为赛题一，不是同目录的PH1P35摄像头工程。没有操作硬件、物理卡、JTAG或串口。
 
 ## 构建与时序
 
@@ -30,6 +30,6 @@
 
 正式SET_ID003adc1b，六HFXL BMP和07_MUSIC.WAV位于`output/html_fidelity/media`；数据8214528字节，8MiB剩174080字节。统一普通FAT32镜像`card_images/unified_003adc1b_v2.img`只读检查PASS；模拟LBA不是物理卡证据。媒体未随字幕修改而改变。
 
-Root负责Git/top/TD，B/C实际gpt-6.1-sol/high，无Astra或递归编排。完整vendor/派生源、IP、位流和未授权完整素材保留本地；公开范围经历史与增量审查。GitHub预检连接重置，尚未push；结束时正常尝试并记录结果。
+Root负责Git/top/TD，B/C实际gpt-6.1-sol/high，无Astra或递归编排。完整vendor/派生源、IP、位流和未授权完整素材保留本地；公开范围经历史与增量审查。2026-10-15 23:06 PDT已正常推送7c6fc49，无法连接github.com:443，21.156秒后退出128；本轮未成功推送，后续文档提交同样仅在本地。日志见audit/git_push_final.json，未改网络/SSH/认证配置。
 
-当前结论：组件RTL_SIM在以上范围PASS；BUILD full07 PASS；STA FAIL；FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE NOT_TESTED_THIS_RUN。全部预定离线功能与显示测试已完成，正在冻结最终清单及Git交付。没有新的生产RTL修改或再次TD构建计划。
+当前结论：组件RTL_SIM在以上范围PASS；BUILD full07 PASS；STA FAIL；FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE NOT_TESTED_THIS_RUN。全部预定离线功能、显示测试和交付已完成；正常推送失败已保存，本地最终HEAD/哈希见delivery_manifest.json。没有新的生产RTL修改或再次TD构建计划。
