@@ -1,13 +1,13 @@
 // Experimental complete six-scene layer read adapter. One shared physical
 // APUG011 four-word cache serves runtime plainRGB, packed compare and HFXL.
 // Existing pins, SDRAM IP, frame reader and video/read clocks are unchanged.
-module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_SLOT_BITS=4)(
+module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_SLOT_BITS=4,ENABLE_PHYSICAL_FAIRNESS=0)(
  input mem_clk,rst,video_read_req,read_accept_mem,
  input[4:0]active_view,input[1:0]zoom,transition_mode,input[2:0]focus,
  input panels_ready,layer_resources_enabled,write_busy_mem,mem_ready,refresh_active,
  input raw_read_en,output read_en,output[20:0]read_addr,
  input response,input[31:0]memory_data,
- output[31:0]pixel_data,output logical_ready,logical_response,busy,output fault
+ output[31:0]pixel_data,output logical_ready,logical_response,busy,output fault,input pause_new_groups,output physical_busy
 );
  (* async_reg="true" *)reg[13:0]config_meta,config_sync;
  reg[13:0]frame_config;reg accept_previous,frame_active;
@@ -46,7 +46,7 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
  wire palette_enable;wire[11:0]palette_address;wire[23:0]palette_data;
  html_layer_palette palette(mem_clk,palette_enable,palette_address,palette_data);
  wire engine_busy,engine_fault;
- html_layer_pixel_engine #(.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.CONTEXT_BITS(CONTEXT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS)) engine(
+ html_layer_pixel_engine #(.ENABLE_PHYSICAL_FAIRNESS(ENABLE_PHYSICAL_FAIRNESS),.CACHE_SLOT_BITS(CACHE_SLOT_BITS),.CONTEXT_BITS(CONTEXT_BITS),.BG_SLOT_BITS(BG_SLOT_BITS)) engine(
  .clk(mem_clk),.rst(rst),.flush(frame_latch),.i_valid(frontend_valid),.i_ready(engine_ready),.i_page(engine_page),
  .i_bg_addr(engine_bg),.i_bg_lane(engine_lane),.i_repeat(engine_repeat),.i_rgba_count(engine_count),
  .i_rgba0_addr(engine_rgba0),.i_rgba1_addr(engine_rgba1),.i_opacity0(engine_op0),.i_opacity1(engine_op1),
@@ -54,7 +54,7 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
  .palette_read(palette_enable),.palette_addr(palette_address),.palette_data(palette_data),
  .raw_read_en(raw_read_en),.logical_ready(logical_ready),.logical_response(logical_response),.pixel_data(pixel_data),
  .mem_ready(mem_ready),.refresh_active(refresh_active),.write_busy_mem(write_busy_mem),.read_en(read_en),.read_addr(read_addr),
- .response(response),.memory_data(memory_data),.busy(engine_busy),.fault(engine_fault));
+ .response(response),.memory_data(memory_data),.busy(engine_busy),.fault(engine_fault),.pause_new_groups(pause_new_groups),.physical_busy(physical_busy));
  wire front_accept=queued!=0&&frontend_ready;
  wire map_emit=speculate&&run_start;
  assign busy=engine_busy||mapper_inflight!=0;

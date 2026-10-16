@@ -5,7 +5,7 @@ reg clk=0;always#12.5 clk=~clk;reg rst=1,flush=0,valid=0,ready=0,refresh=0,writi
 reg[20:0]addr=0;reg[11:0]tag=0;
 wire accept,ov,re,busy,fault;wire[31:0]data;wire[11:0]ot;wire[20:0]ra;
 reg[9:0]rv=0;reg[31:0]pipe[0:9];
-html_layer_cache #(.CACHE_SLOT_BITS(CACHE_SLOT_BITS)) dut(clk,rst,flush,valid,addr,tag,accept,ov,ready,data,ot,1'b1,refresh,writing,re,ra,rv[9],pipe[9],busy,fault);
+html_layer_cache #(.CACHE_SLOT_BITS(CACHE_SLOT_BITS)) dut(clk,rst,flush,valid,addr,tag,accept,ov,ready,data,ot,1'b1,refresh,writing,re,ra,rv[9],pipe[9],busy,fault,1'b0,);
 reg[31:0]expected[0:8191];reg[11:0]tags[0:8191];integer sent=0,received=0,phase=0,base=0,i,groups=0,held=0,writecount=0;
 reg[31:0]rng=32'h27a94df1;reg injected=0;
 function[31:0]word;input integer a;begin word=32'hb39a2701^(a*32'd257);end endfunction

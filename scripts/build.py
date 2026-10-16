@@ -25,9 +25,11 @@ if os.name=='nt':
         import base64
         command=subprocess.list2cmdline(cmd)
         script="$r=Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine='"+command.replace("'","''")+"';CurrentDirectory='"+str(dest).replace("'","''")+"'}; $r | Select-Object ReturnValue,ProcessId | ConvertTo-Json; if($r.ReturnValue -ne 0){exit 1}"
-        launch=subprocess.run(['powershell','-NoProfile','-NonInteractive','-EncodedCommand',base64.b64encode(script.encode('utf-16le')).decode()],capture_output=True,text=True,check=True)
-        (dest/'audit/dispatch.log').write_text(launch.stdout+launch.stderr)
-        print(launch.stdout)
+        launch=subprocess.run(['powershell','-NoProfile','-NonInteractive','-EncodedCommand',base64.b64encode(script.encode('utf-16le')).decode()],capture_output=True,check=True)
+        # PowerShell may emit localized CLIXML in the host codepage. Preserve
+        # the exact bytes; decoding must not turn a successful spawn into failure.
+        (dest/'audit/dispatch.log').write_bytes(launch.stdout+launch.stderr)
+        print(launch.stdout.decode('utf-8',errors='replace'))
     else:
         status=dest/'runs'/x.run_id/'status.json'
         print(status.read_text() if status.exists() else 'STATUS_NOT_CREATED')

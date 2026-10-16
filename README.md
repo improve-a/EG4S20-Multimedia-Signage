@@ -59,7 +59,13 @@ D:\python3.12.3\python.exe scripts/html_osd_utility_rom.py --output-dir output/h
 
 完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_font8_v1.json`。
 
-后台读写压力复现需使用 `scripts/html_layer_render_verify.py` 的 `--writer-stress --read-burst 128`；默认256读突发保留用于历史反例，不能把它作为当前顶层配置。
+后台读写压力使用真实511容量FIFO与Gray CDC，复现命令如下。该测试采用40MHz存储/25MHz视频/100MHz源时钟、四字物理组及有界刷新/返回延时；不替代加密SDRAM PHY或实板验证。默认旧参数保留用于历史反例，不能把它当当前顶层配置。
+
+```powershell
+D:\python3.12.3\python.exe -X utf8 scripts/html_layer_render_verify.py --whole-bridge --writer-stress --real-fifo --read-burst 128 --transition-age 25 --write-reserve 384 --case phoenix --run-id layer_final_real_fifo_phi25_v1
+```
+
+当前顶层明确启用物理读排空/写入准入，读burst128、写burst256，显示FIFO达到384字后才锁定后台写入。完整busy继续用于帧握手与flush，新增physical_busy只表示已经发送且尚未完成的读取。每次复现使用新的run-id。
 
 ## 素材与后续实板验收
 

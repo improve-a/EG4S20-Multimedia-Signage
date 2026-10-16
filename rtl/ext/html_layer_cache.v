@@ -1,7 +1,7 @@
 // Generic ordered word-task cache for the experimental lossless layer renderer.
 // The production html_memory_bridge remains separate and unchanged.
 module html_layer_cache #(
- parameter TAG_BITS=12, parameter CACHE_SLOT_BITS=5
+ parameter TAG_BITS=12, parameter CACHE_SLOT_BITS=5,ENABLE_PHYSICAL_FAIRNESS=0
 )(
  input clk,rst,flush,
  input request_valid,input [20:0] request_addr,input [TAG_BITS-1:0] request_tag,
@@ -11,7 +11,8 @@ module html_layer_cache #(
  input mem_ready,refresh_active,write_busy_mem,
  output read_en,output [20:0] read_addr,
  input response,input [31:0] memory_data,
- output busy,output reg fault
+ output busy,output reg fault,
+ input pause_new_groups,output physical_busy
 );
  localparam SLOTS=1<<CACHE_SLOT_BITS;
  localparam WORD_BITS=CACHE_SLOT_BITS+2;
@@ -66,7 +67,7 @@ module html_layer_cache #(
  reg [18:0] issue_base;
  assign read_en=issue_active && mem_ready && (issue_phase!=0 || !refresh_active);
  assign read_addr={issue_base,issue_phase};
- wire take_job=!flush && jobs_count!=0 && mem_ready && !refresh_active && !write_busy_mem &&
+ wire take_job=!flush && (!ENABLE_PHYSICAL_FAIRNESS || !pause_new_groups) && jobs_count!=0 && mem_ready && !refresh_active && !write_busy_mem &&
                (!issue_active || (read_en && issue_phase==3));
  // APUG011 responses preserve the order of issued four-word groups.
  // A slot cannot be reused while filling; hence at most SLOTS distinct
@@ -81,6 +82,7 @@ module html_layer_cache #(
  wire[WORD_BITS-1:0]returning={return_groups[trp],return_phase};
  wire return_head_valid=return_groups_count!=0;
  always@(posedge clk)if(group_push)return_groups[twp]<=issue_slot;
+ assign physical_busy=issue_active||return_count!=0;
  assign busy=issue_active || jobs_count!=0 || return_count!=0;
  integer i;
  // The RAM read and payload write both remain outside reset/flush logic.

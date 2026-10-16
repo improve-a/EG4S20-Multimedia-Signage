@@ -127,3 +127,12 @@ Top usesREAD_BURST_SIZE128/READ_DRAIN_CYCLES13; writerBURST_SIZE256 and legacyde
 - 累计48次TD尝试、4次full、3213.346秒；没有同时重型构建。
 - 实际Bot/OSD六时刻样本通过：bot_action_samples/run_20261016_103251。0/5/25/65/92/100帧对应0/84/420/1092/1545.6/1680ms；加速空白期、固定背景和peak24576，仅overlay范围，不能称连续全链路动画。六帧APNG经Pillow逐帧RGB/延时往返验证，SHA c37b14be431bbe3ce830df8f453b4b62848d21bf86ea85d294ca3f01853b7385。
 - 后台写物理排空候选尚未推广。真实511容量FIFO/Gray CDC已得完整RGB与有序写通过，但密集phi25有写时余量仅1；同源无writer最低266，确认需要改善准入。早期writerWait指标仅从fair_offer测量，不能当原始pending总等待；新测试分别测两项并保留旧记录。
+
+
+## 2026-10-15 20:11 PDT：后台写准入修复集成
+
+最终默认关闭兼容版本在layer_late25_actual_fifo_reserve384_compat_phoenix_v1通过：真实vendor FIFO/Gray CDC，307200 logical和307200 video像素一致，6400实际WFIFO有序字，最低90（x550/y121），最大写FIFO511，原始pending最长6664memclks，physical drain26，准入384/释放224；335.672秒。该台架40MHz memory、25MHz video、100MHz source，物理四字组、返回10周期、每312周期刷新20周期；不代表加密PHY/布局后或实板验证。兼容cache8/32各8192任务，参数0且新输入悬空对旧实现、参数1且随机pause对已测候选均逐周期相同。
+
+Root采用最终两个SD候选和top接线，新增写准入默认关闭，生产top显式启用和384字储备。verification/physical_fairness_root_v1保存集成diff、原始基线重建、重复运行不改动和拒绝未知修改的证明；53个原样保护依赖仍逐字相同，六项授权派生差异继续由精确最小补丁重放。top SHA43e74baf569cbdfca4b75f6a84ddd44b26aaa1706564b90bb99cbf03f0201785。公开html_layer_render_verify入口已包含真实FIFO/转场时刻/储备参数，正式入口复测进行中。
+
+Windows build.py仅修复WMI返回输出解码：原始CLIXML字节保留，避免本地中文代码页stderr在TD已经启动后触发UTF8解码异常；不修改启动命令、工具、构建步骤或系统编码。下一次完整构建将使用该真实入口验证。

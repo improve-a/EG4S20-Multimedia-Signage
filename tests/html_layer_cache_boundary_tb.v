@@ -10,7 +10,7 @@ wire accept,ov,re,busy,fault;wire[31:0]data;wire[7:0]ot;wire[20:0]ra;
 reg[9:0]rv=0;reg[31:0]pipe[0:9];integer i,phase=0,base=0,received=0,sent=0,groups=0;
 reg[31:0]expected[0:255];reg[7:0]tags[0:255];reg check_data=1;
 function[31:0]word;input integer a;begin word=32'h8739ab21^(a*32'd479);end endfunction
-html_layer_cache #(.TAG_BITS(8),.CACHE_SLOT_BITS(3))dut(clk,rst,flush,valid,addr,tag,accept,ov,ready,data,ot,1'b1,refresh,writing,re,ra,rv[9]|inject,pipe[9],busy,fault);
+html_layer_cache #(.TAG_BITS(8),.CACHE_SLOT_BITS(3))dut(clk,rst,flush,valid,addr,tag,accept,ov,ready,data,ot,1'b1,refresh,writing,re,ra,rv[9]|inject,pipe[9],busy,fault,1'b0,);
 always@(posedge clk)begin
  if(rst)begin rv<=0;phase=0;end else begin
   for(i=9;i>0;i=i-1)pipe[i]<=pipe[i-1];rv<={rv[8:0],re};

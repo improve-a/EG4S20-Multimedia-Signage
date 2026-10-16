@@ -1,7 +1,7 @@
 // Finite two-source renderer:32 lightweight ordered fetch records are kept
 // separate from8 ready-data compute records. Physical groups and outstanding
 // texture ownership never depend on compositor feedback latency.
-module html_layer_pixel_engine #(parameter CONTEXT_BITS=3,CACHE_SLOT_BITS=4,BG_SLOT_BITS=4)(
+module html_layer_pixel_engine #(parameter CONTEXT_BITS=3,CACHE_SLOT_BITS=4,BG_SLOT_BITS=4,ENABLE_PHYSICAL_FAIRNESS=0)(
  input clk,rst,flush,
  input i_valid,output i_ready,
  input[2:0]i_page,input[20:0]i_bg_addr,input[1:0]i_bg_lane,i_repeat,i_rgba_count,
@@ -11,7 +11,7 @@ module html_layer_pixel_engine #(parameter CONTEXT_BITS=3,CACHE_SLOT_BITS=4,BG_S
  input raw_read_en,output logical_ready,logical_response,output[31:0]pixel_data,
  input mem_ready,refresh_active,write_busy_mem,
  output read_en,output[20:0]read_addr,input response,input[31:0]memory_data,
- output busy,output fault
+ output busy,output fault,input pause_new_groups,output physical_busy
 );
  localparam CONTEXTS=1<<CONTEXT_BITS,BG_SLOTS=1<<BG_SLOT_BITS;
  localparam LOADING=0,FIRST_READY=1,FIRST_FLIGHT=2,SECOND_READY=3,SECOND_FLIGHT=4,DONE=5;
@@ -45,11 +45,11 @@ module html_layer_pixel_engine #(parameter CONTEXT_BITS=3,CACHE_SLOT_BITS=4,BG_S
  wire task_ready,task_result;wire[31:0]task_data;wire[7:0]returned_tag;wire cache_fault;
  wire task_accept=task_valid&&task_ready;
  wire[3:0]remaining_mask=mask&~(4'b0001<<task_kind);
- html_layer_cache #(.TAG_BITS(8),.CACHE_SLOT_BITS(CACHE_SLOT_BITS))cache(
+ html_layer_cache #(.ENABLE_PHYSICAL_FAIRNESS(ENABLE_PHYSICAL_FAIRNESS),.TAG_BITS(8),.CACHE_SLOT_BITS(CACHE_SLOT_BITS))cache(
  .clk(clk),.rst(rst),.flush(flush),.request_valid(task_valid),.request_addr(task_address),.request_tag(task_tag),.request_ready(task_ready),
  .result_valid(task_result),.result_ready(1'b1),.result_data(task_data),.result_tag(returned_tag),
  .mem_ready(mem_ready),.refresh_active(refresh_active),.write_busy_mem(write_busy_mem),.read_en(read_en),.read_addr(read_addr),
- .response(response),.memory_data(memory_data),.busy(busy),.fault(cache_fault));
+ .response(response),.memory_data(memory_data),.busy(busy),.fault(cache_fault),.pause_new_groups(pause_new_groups),.physical_busy(physical_busy));
  wire[1:0]return_kind=returned_tag[7:6];wire[4:0]return_context=returned_tag[4:0];
  wire join_write=task_result&&return_kind!=0;
  wire[5:0]join_write_addr={return_kind==2,return_context};

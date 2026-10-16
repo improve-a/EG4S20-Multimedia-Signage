@@ -24,25 +24,28 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                          'new': ['\tinput source_ready,source_busy,\n']},
                                         {'start': 79,
                                          'end': 80,
-                                         'old': ["assign rd_burst_finish = (rd_vld && rd_delay == 4'd10);\n"],
+                                         'old': ['assign rd_burst_finish = (rd_vld && rd_delay == '
+                                                 "4'd10);\n"],
                                          'new': ['assign rd_burst_finish = (rd_vld && rd_delay == '
                                                  'READ_DRAIN_CYCLES);\n']},
                                         {'start': 83,
                                          'end': 84,
-                                         'old': ['assign App_rd_en = App_rd_en_d0 && ((burst_cnt != 0) || '
-                                                 '!Sdr_init_ref_vld);\n'],
-                                         'new': ['assign App_rd_en = App_rd_en_d0 && (!ENABLE_SOURCE_READY '
-                                                 '|| source_ready) && ((burst_cnt != 0) || '
-                                                 '!Sdr_init_ref_vld);\n']},
+                                         'old': ['assign App_rd_en = App_rd_en_d0 && ((burst_cnt '
+                                                 '!= 0) || !Sdr_init_ref_vld);\n'],
+                                         'new': ['assign App_rd_en = App_rd_en_d0 && '
+                                                 '(!ENABLE_SOURCE_READY || source_ready) && '
+                                                 '((burst_cnt != 0) || !Sdr_init_ref_vld);\n']},
                                         {'start': 114,
                                          'end': 115,
                                          'old': ["    else if(rd_delay < 4'd10)begin\n"],
-                                         'new': ['    else if(rd_delay < READ_DRAIN_CYCLES)begin\n']},
+                                         'new': ['    else if(rd_delay < '
+                                                 'READ_DRAIN_CYCLES)begin\n']},
                                         {'start': 179,
                                          'end': 180,
-                                         'old': ["\t\t\t\tif(read_req_d2 == 1'b1 && Sdr_init_done)\n"],
-                                         'new': ["\t\t\t\tif(read_req_d2 == 1'b1 && Sdr_init_done && "
-                                                 '(!ENABLE_SOURCE_READY || !source_busy))\n']},
+                                         'old': ["\t\t\t\tif(read_req_d2 == 1'b1 && "
+                                                 'Sdr_init_done)\n'],
+                                         'new': ["\t\t\t\tif(read_req_d2 == 1'b1 && Sdr_init_done "
+                                                 '&& (!ENABLE_SOURCE_READY || !source_busy))\n']},
                                         {'start': 222,
                                          'end': 223,
                                          'old': ['\t\t\t\t\tstate <= S_ACK;\n'],
@@ -55,7 +58,7 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                                  '!source_busy)state <= S_ACK;\n']}]},
  'rtl/SD/frame_read_write.v': {'baseline_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
                                'baseline_text_sha256': '733257c43b1f2ecac52c659c8d02e6e894d3abe18d35e71baf5a8ca65fd75eb1',
-                               'result_text_sha256': '7c9eceabec73f990904ea3e08fa0eaf1caca394cc3ba269364597baafb8201da',
+                               'result_text_sha256': 'f0c90491b5fd75c34c55e9f44d63a05f3451e0d9a68a3de27d88dab00711b3e3',
                                'edits': [{'start': 0,
                                           'end': 0,
                                           'old': [],
@@ -63,36 +66,73 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                          {'start': 10,
                                           'end': 10,
                                           'old': [],
-                                          'new': ['\tparameter READ_BURST_SIZE        = BURST_SIZE, // '
-                                                  'display reserve independent of write burst\n',
-                                                  '\tparameter READ_DRAIN_CYCLES=10, ENABLE_LINEAR_CONFIG=0, '
-                                                  'ENABLE_READ_SOURCE=0,\n']},
+                                          'new': ['\tparameter READ_BURST_SIZE        = '
+                                                  'BURST_SIZE, // display reserve independent of '
+                                                  'write burst\n',
+                                                  '\tparameter READ_DRAIN_CYCLES=10, '
+                                                  'ENABLE_LINEAR_CONFIG=0, ENABLE_READ_SOURCE=0, '
+                                                  'ENABLE_PHYSICAL_FAIRNESS=0, '
+                                                  'WRITE_RESERVE_WORDS=256,\n']},
                                          {'start': 15,
                                           'end': 15,
                                           'old': [],
                                           'new': ['\toutput read_accept_mem,\n',
+                                                  ' input read_source_physical_busy,output '
+                                                  'read_burst_busy_mem,write_pending_mem,\n',
                                                   '\tinput write_linear,\n',
                                                   '    input read_source_ready,read_source_busy,\n',
                                                   '    output write_busy_mem,\n']},
+                                         {'start': 85,
+                                          'end': 86,
+                                          'old': ['wire O_wr_busy;\n'],
+                                          'new': ['wire O_wr_busy;wire '
+                                                  'writer_pending,offer_now,fair_offer;reg '
+                                                  'grant_latched,read_session_active;\n']},
                                          {'start': 87,
                                           'end': 87,
                                           'old': [],
                                           'new': ['assign read_accept_mem=rd_ack_mem;\n']},
-                                         {'start': 116,
+                                         {'start': 115,
                                           'end': 117,
-                                          'old': ['assign App_rd_busy = '
+                                          'old': ['assign App_wr_busy = O_wr_busy;//下个时钟写指令拉高\n',
+                                                  'assign App_rd_busy = '
                                                   'O_rd_busy;//读指令还没有过去十个时钟;因为写指令优先，不需要在意下个时钟是否是读指令\n'],
-                                          'new': ['assign write_busy_mem=O_wr_busy;\n',
-                                                  'assign App_rd_busy = O_rd_busy | (ENABLE_READ_SOURCE && '
-                                                  'read_source_busy);//读指令还没有过去十个时钟;因为写指令优先，不需要在意下个时钟是否是读指令\n']},
+                                          'new': ['assign read_burst_busy_mem=O_rd_busy;\n',
+                                                  'assign '
+                                                  'offer_now=writer_pending&&!O_rd_busy&&(!read_session_active||wrusedw>=WRITE_RESERVE_WORDS);\n',
+                                                  'assign fair_offer=grant_latched||offer_now;\n',
+                                                  'always@(posedge mem_clk or posedge mem_reset)\n',
+                                                  ' if(mem_reset)begin '
+                                                  'grant_latched<=0;read_session_active<=0;end\n',
+                                                  ' else begin\n',
+                                                  '  if(rd_ack_mem)read_session_active<=1;else '
+                                                  'if(read_finish)read_session_active<=0;\n',
+                                                  '  '
+                                                  'if(!writer_pending||O_wr_busy)grant_latched<=0;else '
+                                                  'if(offer_now)grant_latched<=1;\n',
+                                                  ' end\n',
+                                                  'assign write_pending_mem=ENABLE_READ_SOURCE && '
+                                                  'ENABLE_PHYSICAL_FAIRNESS && fair_offer;\n',
+                                                  'assign App_wr_busy = O_wr_busy | '
+                                                  '(ENABLE_READ_SOURCE && ENABLE_PHYSICAL_FAIRNESS '
+                                                  '&& fair_offer);//下个时钟写指令拉高\n',
+                                                  'assign write_busy_mem=O_wr_busy;\n',
+                                                  'assign App_rd_busy = O_rd_busy | '
+                                                  '(ENABLE_READ_SOURCE && '
+                                                  '(ENABLE_PHYSICAL_FAIRNESS ? '
+                                                  '(read_source_physical_busy|(read_session_active&&writer_pending&&!fair_offer)) '
+                                                  ': '
+                                                  'read_source_busy));//读指令还没有过去十个时钟;因为写指令优先，不需要在意下个时钟是否是读指令\n']},
                                          {'start': 142,
                                           'end': 142,
                                           'old': [],
-                                          'new': ['\t.ENABLE_LINEAR_CONFIG(ENABLE_LINEAR_CONFIG),\n']},
+                                          'new': ['\t'
+                                                  '.ENABLE_LINEAR_CONFIG(ENABLE_LINEAR_CONFIG),\n']},
                                          {'start': 148,
                                           'end': 148,
                                           'old': [],
-                                          'new': ['\t.write_linear(write_linear),\n']},
+                                          'new': ['\t'
+                                                  '.write_pending(writer_pending),.write_linear(write_linear),\n']},
                                          {'start': 190,
                                           'end': 190,
                                           'old': [],
@@ -100,10 +140,10 @@ FILES={'rtl/SD/frame_fifo_read.v': {'baseline_sha256': '0f186d8460d613ba010cefaa
                                                   '.READ_DRAIN_CYCLES(READ_DRAIN_CYCLES),.ENABLE_SOURCE_READY(ENABLE_READ_SOURCE),\n']},
                                          {'start': 193,
                                           'end': 194,
-                                          'old': ['\t.BURST_SIZE                 (BURST_SIZE               '
-                                                  ')\n'],
-                                          'new': ['\t.BURST_SIZE                 (READ_BURST_SIZE          '
-                                                  ')\n']},
+                                          'old': ['\t.BURST_SIZE                 '
+                                                  '(BURST_SIZE               )\n'],
+                                          'new': ['\t.BURST_SIZE                 '
+                                                  '(READ_BURST_SIZE          )\n']},
                                          {'start': 197,
                                           'end': 197,
                                           'old': [],

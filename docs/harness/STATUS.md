@@ -1,6 +1,6 @@
 # HTML 分层移植状态
 
-更新2026-10-15 20:08 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`；full04冻结8a0358fc7ceb4457ea1ab90086538ca3cb01e74e；资源头和PNG修复已提交e024987，随后BMP头和OSD数字寻址压缩正在增量提交。目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮赛题一工程，不是同目录的PH1P35摄像头项目。没有硬件/物理卡操作，尚未推送。
+更新2026-10-15 20:08 PDT。Windows主仓库 `D:\FPGA\EG4S20-Multimedia-Signage`，分支 `codex/html-fidelity`；full04冻结8a0358fc7ceb4457ea1ab90086538ca3cb01e74e；资源头和PNG修复已提交e024987，BMP头和OSD数字寻址压缩已提交6c80f82；后台写修复已集成，正在冻结full05。目标HX4S20C / EG4S20BG256、top、TD6.2.1 Engineer168116。本轮赛题一工程，不是同目录的PH1P35摄像头项目。没有硬件/物理卡操作，尚未推送。
 
 ## 最新完整构建
 
@@ -16,7 +16,7 @@ full02只证明第一阶段BUILD_PASS，不含当前有限图层。其setup/reco
 
 后台写：16BG/8cache/8计算上下文的静态六页read128/write256测试均PASS，但新增phoenix入场age25在持续合法SD写入时发生writer饥饿。该状态在目标页已ready而其它页/对比资源仍加载时真实可达。每burst等待全部prefetch清空、pending才清空、缩读burst64三个隔离候选分别出现视频欠流，均未推广。
 
-物理排空候选区分已发送physical reads与尚未发送jobs；保留原fullbusy用于frame ACK/flush。只在writer pending、logical burst结束且显示FIFO至少384字时锁定写入准入，暂停新4word组、排空已开始组及returns。真实511容量FIFO/Gray CDC的phi25已通过307200像素、6400有序写、最低90显示余量；最长原始pending等待6664memclks。旧256/320候选最低1，均不推广。当前再测默认参数关闭兼容的最终源码；生产尚未切换。Root准备最小replay/top接线，不能将旧候选hash冒充最终版本。
+物理排空候选区分已发送physical reads与尚未发送jobs；保留原fullbusy用于frame ACK/flush。只在writer pending、logical burst结束且显示FIFO至少384字时锁定写入准入，暂停新4word组、排空已开始组及returns。真实511容量FIFO/Gray CDC的phi25已通过307200像素、6400有序写、最低90显示余量；最长原始pending等待6664memclks。旧256/320候选最低1，均不推广。最终默认参数关闭兼容源码已通过相同真实FIFO测试（335.672秒），生产已集成。Root完成最小replay/top接线及基线重建/重复运行/未知修改拒绝检查；正式公开入口复测进行中。
 
 额外等价资源优化：OSD直接数字字形码589824索引、921837周期及307200原生像素等价，独立SYN省39LUT；BMP头压缩3543完整头部逐周期等价，独立SYN省135LUT/203REG，BRAM/DSP不变。生产已采用两项，BMP实际payload/8种缩放/目录边界11项回归正在进行。
 

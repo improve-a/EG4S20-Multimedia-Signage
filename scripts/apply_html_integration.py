@@ -6,7 +6,7 @@
 import argparse,hashlib,json,pathlib
 FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
                              'baseline_text_sha256': 'f892f0c7d1cc9e267a3263bb4163aa12b1c6291f95727c721cb400022aa8cc2b',
-                             'result_text_sha256': 'b01132128041c7917946e854f1f3826358e79428769a9f2738de8ac88f07079f',
+                             'result_text_sha256': '43e74baf569cbdfca4b75f6a84ddd44b26aaa1706564b90bb99cbf03f0201785',
                              'edits': [{'start': 0,
                                         'end': 0,
                                         'old': [],
@@ -14,7 +14,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                        {'start': 55,
                                         'end': 55,
                                         'old': [],
-                                        'new': ['wire [3:0] interval_fraction,cfg_interval_fraction;\n']},
+                                        'new': ['wire [3:0] '
+                                                'interval_fraction,cfg_interval_fraction;\n']},
                                        {'start': 58,
                                         'end': 59,
                                         'old': ['wire [46:0] video_config;\n'],
@@ -53,7 +54,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'wire [31:0] scene_addr,scene_write_data;\n',
                                                 'wire [20:0] scene_write_base,scene_write_len;\n',
                                                 'wire resource_active=scene_active|panel_active;\n',
-                                                'wire resource_req=scene_active?scene_req:panel_req;\n',
+                                                'wire '
+                                                'resource_req=scene_active?scene_req:panel_req;\n',
                                                 'wire [31:0] '
                                                 'resource_addr=scene_active?scene_addr:panel_addr;\n',
                                                 'wire '
@@ -64,7 +66,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'resource_write_data=scene_active?scene_write_data:panel_write_data;\n',
                                                 'wire [20:0] '
                                                 'resource_write_len=scene_active?scene_write_len:panel_write_len;\n',
-                                                '(* async_reg="true" *) reg [1:0] layer_mode_mem;\n',
+                                                '(* async_reg="true" *) reg [1:0] '
+                                                'layer_mode_mem;\n',
                                                 'always @(posedge ext_mem_clk)begin\n',
                                                 ' if(mem_rst)layer_mode_mem<=0;else '
                                                 'layer_mode_mem<={layer_mode_mem[0],scene_layer_mode};\n',
@@ -73,19 +76,24 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 'raw_App_rd_en,frame_fifo_fault,tag_fault,read_accept_mem;\n',
                                                 'wire '
                                                 'logical_ready,logical_response,view_reader_busy,write_busy_mem;\n',
+                                                'wire '
+                                                'read_physical_busy,read_burst_busy_mem,write_offer_mem;\n',
                                                 'wire [20:0] raw_App_rd_addr;\n',
                                                 'wire [31:0] mapped_read_data;\n',
-                                                "wire [20:0] page_write_base=write_page*21'd307200;\n",
+                                                'wire [20:0] '
+                                                "page_write_base=write_page*21'd307200;\n",
                                                 'wire [20:0] '
                                                 'current_write_base=scene_active?scene_write_base:panel_active?panel_write_base:page_write_base;\n',
                                                 'reg commit_previous;\n',
-                                                'wire page_event=commit_ack_toggle^commit_previous;\n',
+                                                'wire '
+                                                'page_event=commit_ack_toggle^commit_previous;\n',
                                                 'always @(posedge '
                                                 'video_clk)if(video_rst)commit_previous<=0;else '
                                                 'commit_previous<=commit_ack_toggle;\n',
                                                 'assign '
                                                 'fifo_fault=frame_fifo_fault|tag_fault|panel_error|scene_error;\n',
-                                                'assign sd_card_write_req_ack=write_ack&&!resource_active;\n',
+                                                'assign '
+                                                'sd_card_write_req_ack=write_ack&&!resource_active;\n',
                                                 'frame_config_bridge #(.WIDTH(3),.RESET_VALUE(0)) '
                                                 'focus_bridge(\n',
                                                 ' '
@@ -121,6 +129,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 ' '
                                                 '.write_data(panel_write_data),.write_base(panel_write_base),.write_len(panel_write_len),.write_finish_toggle(frame_write_toggle_mem));\n',
                                                 'html_layer_memory_bridge '
+                                                '#(.ENABLE_PHYSICAL_FAIRNESS(1)) '
                                                 'view_reader(.mem_clk(ext_mem_clk),.rst(mem_rst),.video_read_req(video_read_req),.read_accept_mem(read_accept_mem),\n',
                                                 ' '
                                                 '.layer_resources_enabled(layer_mode_mem[1]),.active_view(active_view),.zoom(cfg_scale),.transition_mode(cfg_transition),.focus(video_focus),.panels_ready(panel_ready),\n',
@@ -128,6 +137,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '.write_busy_mem(write_busy_mem),.mem_ready(Sdr_init_done),.refresh_active(Sdr_init_ref_vld),\n',
                                                 ' '
                                                 '.logical_ready(logical_ready),.logical_response(logical_response),.busy(view_reader_busy),\n',
+                                                ' '
+                                                '.pause_new_groups(write_offer_mem&&!read_burst_busy_mem),.physical_busy(read_physical_busy),\n',
                                                 ' '
                                                 '.raw_read_en(raw_App_rd_en),.read_en(App_rd_en),.read_addr(App_rd_addr),\n',
                                                 ' '
@@ -146,8 +157,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 ' .transition_busy(transition_busy));\n',
                                                 'reg config_prev_vs;\n'],
                                         'new': ['assign forwarded_commit_toggle=commit_toggle;\n',
-                                                'assign tr_hs=hs;assign tr_vs=vs;assign tr_de=de;assign '
-                                                'tr_rgb=vout_data;\n',
+                                                'assign tr_hs=hs;assign tr_vs=vs;assign '
+                                                'tr_de=de;assign tr_rgb=vout_data;\n',
                                                 "assign transition_busy=1'b0;\n"]},
                                        {'start': 171,
                                         'end': 172,
@@ -165,8 +176,9 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '.src_config({interval_fraction,state_code,audio_muted,paused,auto_mode,progress,volume,scale_mode,transition_mode,\n']},
                                        {'start': 175,
                                         'end': 178,
-                                        'old': [' .dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(vs && '
-                                                '!config_prev_vs),.dst_config(video_config));\n',
+                                        'old': [' '
+                                                '.dst_clk(video_clk),.dst_rst(video_rst),.dst_frame(vs '
+                                                '&& !config_prev_vs),.dst_config(video_config));\n',
                                                 'video_extensions #(.ENABLE_AUDIO_VIS(1)) '
                                                 'extensions(.clk(video_clk),.rst(video_rst),.i_hs(tr_hs),.i_vs(tr_vs),.i_de(tr_de),.i_rgb(tr_rgb),\n',
                                                 ' '
@@ -232,12 +244,14 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                         'end': 365,
                                         'old': ['    .WRITE_V_FLIP     (1),\n'],
                                         'new': ['    .WRITE_V_FLIP     '
-                                                '(1),.READ_DRAIN_CYCLES(13),.READ_BURST_SIZE(128),.ENABLE_LINEAR_CONFIG(1),.ENABLE_READ_SOURCE(1),\n']},
+                                                '(1),.READ_DRAIN_CYCLES(13),.READ_BURST_SIZE(128),.ENABLE_LINEAR_CONFIG(1),.ENABLE_READ_SOURCE(1),.ENABLE_PHYSICAL_FAIRNESS(1),.WRITE_RESERVE_WORDS(384),\n']},
                                        {'start': 368,
                                         'end': 368,
                                         'old': [],
                                         'new': ['    '
                                                 '.read_source_ready(logical_ready),.read_source_busy(view_reader_busy),.write_busy_mem(write_busy_mem),\n',
+                                                '    '
+                                                '.read_source_physical_busy(read_physical_busy),.read_burst_busy_mem(read_burst_busy_mem),.write_pending_mem(write_offer_mem),\n',
                                                 '    '
                                                 '.read_accept_mem(read_accept_mem),.write_linear(resource_active),\n']},
                                        {'start': 369,
@@ -269,7 +283,8 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                        {'start': 399,
                                         'end': 401,
                                         'old': ['    .write_req         (sd_card_write_req),\n',
-                                                '    .write_req_ack     (sd_card_write_req_ack),\n'],
+                                                '    .write_req_ack     '
+                                                '(sd_card_write_req_ack),\n'],
                                         'new': ['    .write_req         '
                                                 '(resource_active?resource_write_req:sd_card_write_req),\n',
                                                 '    .write_req_ack     (write_ack),\n']},
@@ -296,7 +311,7 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                 '(resource_active?resource_write_data:sd_card_write_data)\n']}]},
  'rtl/SD/frame_fifo_write.v': {'baseline_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
                                'baseline_text_sha256': '13c687ddc6e0e446c1029986223cab38df48e8a3bdfcbcfa190717e990753cf2',
-                               'result_text_sha256': 'f226456b201e5f0d34919d8767686dfacf65842c80f43357ebf87cc1fd863edb',
+                               'result_text_sha256': '2cb07ac572de28493026f4d3f9913abff5fb8644871679cc2d26b970484e6cd7',
                                'edits': [{'start': 0,
                                           'end': 0,
                                           'old': [],
@@ -308,22 +323,24 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                          {'start': 13,
                                           'end': 13,
                                           'old': [],
-                                          'new': ['\tinput write_linear,\n']},
+                                          'new': ['\toutput write_pending,\n',
+                                                  '\tinput write_linear,\n']},
                                          {'start': 42,
                                           'end': 42,
                                           'old': [],
-                                          'new': ['// Bundled write metadata stays stable until completion '
-                                                  'in the source domain.\n',
-                                                  '// Two capture stages precede the existing three-stage '
-                                                  'request/ACK handshake;\n',
-                                                  '// perform vertical-flip arithmetic only on the captured '
-                                                  'memory-domain base.\n',
+                                          'new': ['// Bundled write metadata stays stable until '
+                                                  'completion in the source domain.\n',
+                                                  '// Two capture stages precede the existing '
+                                                  'three-stage request/ACK handshake;\n',
+                                                  '// perform vertical-flip arithmetic only on the '
+                                                  'captured memory-domain base.\n',
                                                   '(* async_reg="true" *) reg [ADDR_BITS-1:0] '
                                                   'base_sync0,base_sync1;\n',
-                                                  'wire [ADDR_BITS-1:0] selected_base = write_addr_index==0 '
-                                                  '? write_addr_0 :\n',
-                                                  ' write_addr_index==1 ? write_addr_1 : write_addr_index==2 '
-                                                  '? write_addr_2 : write_addr_3;\n',
+                                                  'wire [ADDR_BITS-1:0] selected_base = '
+                                                  'write_addr_index==0 ? write_addr_0 :\n',
+                                                  ' write_addr_index==1 ? write_addr_1 : '
+                                                  'write_addr_index==2 ? write_addr_2 : '
+                                                  'write_addr_3;\n',
                                                   'always @(posedge mem_clk or posedge rst)\n',
                                                   ' if(rst)begin base_sync0<=0;base_sync1<=0;end\n',
                                                   ' else begin '
@@ -331,45 +348,66 @@ FILES={'rtl/top_tf_hdmi_audio.v': {'baseline_sha256': 'f892f0c7d1cc9e267a3263bb4
                                                   '(* async_reg="true" *) reg [1:0] linear_sync;\n',
                                                   'reg linear_latched;\n',
                                                   'always @(posedge mem_clk or posedge rst)\n',
-                                                  ' if(rst)begin linear_sync<=0;linear_latched<=0;end\n',
+                                                  ' if(rst)begin '
+                                                  'linear_sync<=0;linear_latched<=0;end\n',
                                                   ' else begin '
-                                                  'linear_sync<={linear_sync[0],(ENABLE_LINEAR_CONFIG ? '
-                                                  "write_linear : 1'b0)};\n",
-                                                  ' if(state==S_ACK)linear_latched<=linear_sync[1];end\n']},
+                                                  'linear_sync<={linear_sync[0],(ENABLE_LINEAR_CONFIG '
+                                                  "? write_linear : 1'b0)};\n",
+                                                  ' '
+                                                  'if(state==S_ACK)linear_latched<=linear_sync[1];end\n']},
+                                         {'start': 81,
+                                          'end': 81,
+                                          'old': [],
+                                          'new': ['// Pending data is entirely in the memory '
+                                                  'domain. It deliberately excludes\n',
+                                                  '// App_rd_busy: reader must stop admitting the '
+                                                  'NEXT burst so existing physical\n',
+                                                  '// prefetch can drain and the original writer '
+                                                  'lookahead can acquire the bus.\n',
+                                                  'assign write_pending = state == S_CHECK_FIFO && '
+                                                  '!write_req_d2 && Sdr_init_done &&\n',
+                                                  ' ((write_len_latch <= (rdusedw + write_cnt)) || '
+                                                  'rdusedw > BURST_SIZE);\n']},
                                          {'start': 137,
                                           'end': 145,
                                           'old': ["\t\t\t\tif(write_addr_index_d1 == 2'd0)\n",
-                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_0 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_0;\n',
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
+                                                  '(write_addr_0 + VFLIP_FIRST_ADDR_OFFSET) : '
+                                                  'write_addr_0;\n',
                                                   "\t\t\t\telse if(write_addr_index_d1 == 2'd1)\n",
-                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_1 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_1;\n',
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
+                                                  '(write_addr_1 + VFLIP_FIRST_ADDR_OFFSET) : '
+                                                  'write_addr_1;\n',
                                                   "\t\t\t\telse if(write_addr_index_d1 == 2'd2)\n",
-                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_2 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_2;\n',
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
+                                                  '(write_addr_2 + VFLIP_FIRST_ADDR_OFFSET) : '
+                                                  'write_addr_2;\n',
                                                   "\t\t\t\telse if(write_addr_index_d1 == 2'd3)\n",
-                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? (write_addr_3 + '
-                                                  'VFLIP_FIRST_ADDR_OFFSET) : write_addr_3;\n'],
-                                          'new': ['                App_wr_addr_r <= (WRITE_V_FLIP && '
-                                                  '!linear_sync[1]) ?\n',
+                                                  '\t\t\t\t\tApp_wr_addr_r <= WRITE_V_FLIP ? '
+                                                  '(write_addr_3 + VFLIP_FIRST_ADDR_OFFSET) : '
+                                                  'write_addr_3;\n'],
+                                          'new': ['                App_wr_addr_r <= (WRITE_V_FLIP '
+                                                  '&& !linear_sync[1]) ?\n',
                                                   '                    (base_sync1 + '
                                                   'VFLIP_FIRST_ADDR_OFFSET) : base_sync1;\n']},
                                          {'start': 148,
                                           'end': 149,
                                           'old': ['\t\t\t\tif(WRITE_V_FLIP)\n'],
-                                          'new': ['\t\t\t\tif(WRITE_V_FLIP && !linear_latched)\n']}]},
+                                          'new': ['\t\t\t\tif(WRITE_V_FLIP && '
+                                                  '!linear_latched)\n']}]},
  'rtl/SD/bmp_read.v': {'baseline_sha256': '28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882',
                        'baseline_text_sha256': '28091521d53b690eb00cd20ee8ad52ea2e47742094c7510b7b789f76e7b7a882',
                        'result_text_sha256': '317b451bb56d1094861ddbdc983b2abfc4cf9b69e4f89314e9938b6dd026fc4d',
                        'edits': [{'start': 1,
                                   'end': 2,
-                                  'old': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter '
-                                          'ENABLE_SCALE=0)(\n'],
-                                  'new': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter '
-                                          'ENABLE_SCALE=0, parameter ENABLE_HFXL=0)(\n']},
+                                  'old': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, '
+                                          'parameter ENABLE_SCALE=0)(\n'],
+                                  'new': ['module bmp_read #(parameter TIMEOUT_CYCLES=200_000_000, '
+                                          'parameter ENABLE_SCALE=0, parameter ENABLE_HFXL=0)(\n']},
                                  {'start': 19,
                                   'end': 20,
-                                  'old': [' bmp_scale_read #(.TIMEOUT_CYCLES(TIMEOUT_CYCLES)) impl(\n'],
+                                  'old': [' bmp_scale_read #(.TIMEOUT_CYCLES(TIMEOUT_CYCLES)) '
+                                          'impl(\n'],
                                   'new': [' bmp_scale_read '
                                           '#(.TIMEOUT_CYCLES(TIMEOUT_CYCLES),.ENABLE_HFXL(ENABLE_HFXL)) '
                                           'impl(\n']}]}}
