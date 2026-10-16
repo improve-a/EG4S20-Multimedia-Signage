@@ -283,3 +283,23 @@ timing_fix_20261016_01/source d3716457c5438cd2c2e27ae6e61e3d8701f0bc21，snapsho
 SD MISO详细路径已核实：setup实际80ns采样沿减40ns发送沿，含16ns外部max，slack+14.049ns；hold发送40ns对前次0ns采样，含0nsmin，slack+46.312ns。原汇总0路径是工具统计/查询表现，不能据此宣称缺失；full07详细段也存在该检查。未应用反相/虚拟替代时钟或ignore_async开关。8物理reset SR端点映射12逻辑同步器位的独立网表证明见miso_fresh01_probe04_resetmap；其余LUT逻辑仅与FF共享cell名字，不属于被切断功能寄存器。
 
 第二轮audio_media仅将低水位判定注册到100MHz域，优先级最多延迟10ns，原full/容量/扇区请求保护不变。实际共享仲裁测试2304PCM帧完全一致，连续BMP，最长grant等待34888系统拍，无UF/OF。显示bridge的60位头预取含首次入队和最后一项同时pop/push转发，原队列计数/吞吐/顺序不变；head_prefetch_20261016T073256233454Z覆盖20122拍、14816入队、14327出队、2863sole replacement、1730回绕、4875停顿、79flush/65reset。公开复现脚本从Git冻结原实现提取对照，不依赖未提交历史文件。
+
+
+## 最终路由与接口独立复核
+
+full02/source aba266b：2026-10-16T07:38:23.252950Z至07:49:54.038710Z，supervisor26212/TD39300，exit0，690.797s。source ZIP2923dfe9667f1cb1472c87ae52e47fae743dda64054cb1978578decc2a4d84c3；snapshot5ca43173c2dcdfa27af0934d04fe9d8f5be33d5ea67c8c396a00612d19c3f4f3。final bit a1492ed343765d27b3984701c29e7251cd279fbcfc7519a1525f68b26faf6f81，729728B；routeDB47f7bba20dc8c0e7970ed8ec265e9d7473e21622e36f010b7dd7ae65884b5825。不要交付best_result中修复前位流。
+
+full02_independent_review.json SHA38c446d5fa0f07092a907f7f3a521ab63eb2767ac73b1127a81696c5a1e2c261：132ZIP输入与75产物哈希全部核实。工具修改work .al仅UCode/CompileOrder/文件顺序，81源码条目及功能属性不变。44组统计无负值；setup959/hold810/recovery35/removal141为报告展示路径数，非总路径数；最差+0.100/+0.030/+1.653/+0.027ns。队头真实路径head[20]→request地址+.350ns，data24.370ns，maxfanout64（原214）。12同步FF对应7物理SR引脚，均为预期同步链。
+
+spi_init_full02：独立TD PID7940，exit0，22.859s，原DB/生产SDC哈希未变。正常MISO14.530/45.967ns、初始化2438.530/2505.967ns；init内部全局SWNS/HWNS仍+.100/+.027。SPI实际CE/CS当前源测试spi_io_current运行2.453s通过：双分频16字节128位、真实控制器4命令、CS最小90/70ns。
+
+SDRAM使用TD原生封装内hard-IP timing模型，32read与48write实际端点均检查，read1.725/16.753ns、write4.728/12.164ns。PHY5079局部clock和PAD延迟存在于详细路径；不是漏约束clock。4clock分类告警、SDA未使用接收路径、异步按键/复位及TMDS/DDC/数码管外部边界逐项记录于final_timing_acceptance.json。原厂模型/SD卡文档包络与具体实卡/板路资格认证分开，保持HARDWARE_NOT_TESTED。
+
+actual六场景+PCM测试scene_verification/20261016T073556224317Z：exit0，511.938s，7215104B/1803776字，14098scene扇区、96audio扇区、3500PCM帧、36urgentgrants。audio_regression_final.json列出12原PASS+1更正mono参数后PASS，保留初始失败日志，所有当前输入SHA完全匹配。
+
+
+## 时序最终连续显示与输入封存 — 2026-10-16T08:41:19.835319+00:00
+
+natural_20261016_153258实际运行3972.811秒，supervisor27800、compile47180、vvp45992，两个子步骤均exit0。DISPLAY_CHAIN_SIM_PASS：1预热+8连续动作帧、2764800逻辑像素、4235383同步检查、2622476请求/返回、14630刷新。8帧均与旧正式RTL的实际PPM逐字节相同，当前导出与本次捕获一致；APNG已解码验证8帧RGB及16.8ms帧间隔，SHA256 27e476556c7eb80dbd615cdef5f3a818504e54b43cea60a644b58675d4e1ef8a。Root查看首末实际帧；不将117.6ms窗口外推为完整转场或整机仿真。
+
+证据timing_fix/final_render_identity.json SHA256 665b261808d696a86e74263e5d50c3bb9bb07a377337d87e71d2d7011bc0cbdf；当前verification.json SHA256 3c345f9ae7e119027891e27e97e373ed15c7b96cba10b71a815590a430d08a6f。final_input_identity.json核对132综合输入和54显示输入全部匹配构建/仿真源。BUILD_PASS / TIMING_PASS（已记录模型和接口边界）/ REGRESSION_PASS；FULL_SYSTEM_SIM_NOT_VERIFIED / HARDWARE_NOT_TESTED。
