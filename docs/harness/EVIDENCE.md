@@ -191,3 +191,15 @@ SYN探针53为1321LUT/569REG，较同参数compact probe1436/605减少115LUT/36R
 scene实际六资源+PCM复测20261016T040044437357Z PASS，533.516秒、7215104字节/1803776字、14098场景扇区、96音频扇区、3500真实PCM帧、36紧急仲裁。EOF重启11次仍为testbench显式动作。当前startup/config边界run_20261016_120708 PASS，保留unsafe默认反例。所有15份HEX/BIN已再次逐字roundtrip，导出前后BIN完全相同（audit/rom_init_caption_darkpaper_v1.json）。
 
 累计53次TD尝试、5次full、4130.315秒。公开历史15个commit无token/key/session内容命中；两个路径规则提示的参数字形ROM经逐版本精确再生确认是自研24字符+数值颜色表，已记录reviewed PASS而保留初筛记录；NotoSansSC仍随SIL OFL。GitHub只读ls-remote预检exit128连接重置，尚未push。
+
+## full06与最终BMP测试（2026-10-15 21:44 PDT）
+
+最终生产commit e26ce11c00f3b42c220cda2826a5fd8ce525b0b2，full06于21:13:39至21:24:38 PDT完成，SYN/PNR/BITGEN PASS、exit0、658.859秒。supervisor12532、TD13448。工具G:\anlu\bin\td_commands_prompt.exe，TD6.2.1 Engineer168116，SHA e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a。source.zip SHA2a55f86d6d299e063f6b2d976ca71f3ac24fc463cacb101660e76ff0d871b748，snapshot SHA45464655545a9ff88d761e6c1e9c01dab90cf69d31d40eec1d32d5b93f7a215c。audit/full06_freeze.json核对132输入、128HDL/约束、59保护依赖（53原样+6授权replay）和15BIN；8处ROM绝对路径改写逐一记录。第一次未经路径归一的断言因这些预期改写失败，核对实际diff后按prepare_snapshot原规则重新验证；没有额外HDL变更。
+
+最终area17382LUT/9318REG/18416LE、64×9K/16×32K/20DSP；stdout末次PHY统计4727MSlices/4728LSlices，器件各4900。位流729728字节，SHA06c7154ea79f85917652e8f3d79beb6bb4ae27168b3e7d805a8c9d540d56991f。原始报告在builds/html_full_20261015_06/runs/html_full_20261015_06，机器解析audit/full06_result.json。累计54次尝试、6次full、4789.174秒，没有自动循环TD。
+
+routed setup WNS/TNS−1.587ns，仅1端点。独立审查audit/full06_independent_page_control_review.json（SHA4b48400a387469e18bdf9e82ed073aca4e449914962c7e91c59268acbead9144）核对10项相关生产源与快照相同；同域SD+0.132ns（minperiod9.868）、mem+0.209ns（24.791）、video+2.636ns。视频clock-summary +1.869ns包含跨域，不能称同域。唯一setup实际为mem_fifo_fault→两级故障OR→fifo_fault_sync[0]，第二级才驱动display_state，state_code50是综合别名。full05已存在同状态CDC端点家族，但本次tag/panel/scene输入为集成扩展，不能一概称厂商继承或豁免。
+
+最小延迟汇总−2.495ns/TNS−15.821ns、19端点，逐项为12hold+7reset removal；memory self hold+0.032ns，本次compositor负hold消失。mem→video−0.017ns真实launch为read_accept_mem=rd_ack_mem，落在rd_ack_sync[0]，read_session_active为别名。配置mailbox稳定载荷至ACK并延迟capture、音频Gray/meta/sync与状态同步结构已核对，但不替代CDC/hold签核。coverage99.96%，clock definition4、dummy5、no input delay5、no output20、partial input1、abnormal input32；no_clock/invalid/loops/no-path均0。保留本地路由时钟、SDRAM位置未honor等警告；未添加例外或修改reset/clock/IP，整体STA仍FAIL。独立审查未发现剩余新的geometry/cache/BMP/scene负数据路径需再改。
+
+verification/bmp_parser_timing_v1/final_valid_suite.json记录当前12e584共17有效case全部PASS。八scale逐周期接口等价51733779拍、2457600像素；正式UI02 HFXL完整文件optin1_v3再通过10249544拍/307200像素/2290请求（1056.984秒），optin0_v3明确拒绝。共2764800 golden像素。3543头部799接受/2744拒绝、T0/1/2/7/31边界、deadline progress、SDerror/abort优先级、中止后不reset重启、0/511/513头长度及511短payload均PASS。CASE5为319×179、offset513、537padding字节、4283409parser stalls。原T0测试注入过晚和formalv2损坏fixture保留为FAIL/INVALID_INPUT，后者即使显示optin0 PASS也明确排除；只有有效v3进入结论。

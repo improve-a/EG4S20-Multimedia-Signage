@@ -1,6 +1,8 @@
-# 分层 HTML 展陈版本验收报告（进行中）
+# 分层 HTML 展陈版本验收报告
 
-最终集成仍在验证。当前已有第一阶段位流，但它不包含最新分层渲染器，不应作为本报告正式素材包的匹配验收位流。最终位流、完整显示链图像和推送结果将在验证结束后填入。今晚仅离线开发，没有访问开发板、JTAG、物理 TF 卡或串口。
+最终生产源码e26ce11c00f3b42c220cda2826a5fd8ce525b0b2已通过full06的综合、布局布线和位流生成。新增渲染、BMP/scene数据路径的setup已转正，但整体TIMING仍FAIL：剩余状态CDC setup、hold和异步reset removal未签核。这个版本具备离线功能和构建证据，不能称实板通过或时序签核完成。
+
+六页常态、两组双图与两种放大帧已通过实际显示链验证；连续动作片段和最终图像汇总仍在收尾。最终位流包括存储请求流水、scene/BMP解析时序调整与字幕覆盖率修正，不能换用full05。没有访问开发板、JTAG、物理TF卡或串口。
 
 ## 当前完成范围
 
@@ -10,20 +12,33 @@
 
 ## 视觉差异和边界
 
-Bot 使用真实渐变身体纹理和仿射形变；与原型逐点变形的28点SVG轮廓仍有差异。固定点弹簧、浮动相位、远侧眼距及眨眼/说话压缩有量化差异；圆眼的名义几何和 alpha 混合已用像素测试修正。字幕采用实际用字覆盖率图集与固定排版，支持逐字揭示和实时参数，不宣称通用字体排版引擎。
+Bot 使用真实渐变身体纹理和仿射形变；与原型逐点变形的28点SVG轮廓仍有差异。固定点弹簧、浮动相位、远侧眼距及眨眼/说话压缩有量化差异；圆眼的名义几何和 alpha 混合已用像素测试修正。字幕采用实际用字覆盖率图集与固定排版，支持逐字揭示和实时参数，不宣称通用字体排版引擎。 正文产品文字与图层保持原型栅格；独立字幕使用2位覆盖率及整数glyph原点。原白字透明底alpha直接用于深色字纸底导致字幕偏粗，现已按原型实际墨色/纸色重新导出，并保持ROM大小、glyph ID与排版不变。实际RTL六页overlay测试的字幕墨迹RGB平均绝对差由50.79–52.48降至37.41–41.07/255；字幕矩形由8.36–10.95降至6.72–8.32。最终整链六页结果复现相同字幕区域差异，源产品与场景文字的RGB平均绝对差分别约0.048–0.752与0.277–0.432/255；Bot104×100区域约0.716–0.725，眼睛区域2.454。固定姿态与完整字幕刺激已记录，不能由静态分数推断全部动作还原度。残差主要包括逐字符原点±0.5px舍入、浏览器DOM/canvas栅格差异与2位量化；指标不是视觉质量百分比或通过门槛。
+
+独立后台写压力测试使用与生产相同的40MHz存储、25MHz视频、100MHz源时钟比例，包含真实FIFO/Gray CDC，物理四字返回与刷新仍为有界模型。新写入准入在显示FIFO至少384字后锁定，密集转场最低余量90；它不能代替加密SDRAM PHY或硬件验证。
 
 音柱来自真实 PCM 的峰值/包络历史，不是 FFT 频谱。没有语音讲解音轨、TTS 或口型同步。现有80秒WAV结束后保持静音；测试中的EOF重启由测试台显式触发，不代表产品自动循环音轨。
 
 ## 验证状态
 
-| 范围 | 当前结论 |
+| 范围 | 结论 |
 | --- | --- |
-| RTL_SIM | 已完成资源、控制、Bot/OSD、真实音频及存储契约的明确范围测试；最终统一显示链进行中 |
-| BUILD | 第一阶段full02通过；最新分层版本最终完整构建待完成 |
-| TIMING | 第一阶段setup/recovery仍有负裕量；未宣称STA_PASS，最终报告待补 |
-| VISUAL | 已有真实DUT像素与定向对照；最终六页、对比、放大和动作序列待补 |
-| FULL_SYSTEM_SIM | 未验证加密SDRAM/HDMI IP全系统功能 |
+| RTL_SIM | BMP八尺寸/正式HFXL、资源+PCM、控制与Bot/OSD、真实FIFO后台读写及最终10静态显示帧PASS；自然动作片段仍运行 |
+| SYN / PNR / BITGEN | full06全部PASS，exit0，658.859秒 |
+| TIMING | STA_FAIL；setup WNS/TNS−1.587ns、1端点；最小延迟WNS−2.495ns/TNS−15.821ns、19端点 |
+| VISUAL | 最终六页、双图、放大实际DUT PNG与差分已生成；局部残差如上，动画仍收尾 |
+| FULL_SYSTEM_SIM | NOT_VERIFIED：未验证加密SDRAM/HDMI IP全系统功能 |
 | HARDWARE | NOT_TESTED_THIS_RUN |
+
+full06最终使用17382/19600 LUT、9318/19600 REG、64/64 BRAM9K、16/16 BRAM32K、20/29 DSP、4727/4900 MSlices。两种BRAM均已满。累计54次TD尝试（含隔离SYN探针）、6次完整构建、4789.174秒，没有并行重型构建或自动循环。
+
+真正同域setup为SD100MHz +0.132ns、存储40MHz +0.209ns、视频25MHz +2.636ns；memory self hold +0.032ns。唯一setup违规为粘滞故障经OR送往fifo_fault_sync[0]首级，第二级才驱动状态显示。该CDC家族此前已存在，但本次扩展了故障输入，不能全称厂商继承或自动豁免。19个最小延迟违规分为12 hold和7异步reset removal，不能全部称data hold。配置mailbox、音频Gray同步和读ACK同步结构已核对，仍不能替代STA/CDC物理签核。coverage99.96%尚有clock/IO覆盖问题及本地时钟路由、SDRAM位置未honor等警告。没有改动时钟、引脚、继承PLL/reset/IP或添加时序例外。
+
+最终位流：`D:FPGAEG4S20-Multimedia-Signageoutputhtml_fidelityuildshtml_full_20261015_06workdesign	d_projecthx4s20_basic_Runsphy_1hx4s20_basic.bit`，729728字节，SHA256 `06c7154ea79f85917652e8f3d79beb6bb4ae27168b3e7d805a8c9d540d56991f`。
+
+原始area/timing/check_timing、阶段、PID、工具身份和退出记录：`D:FPGAEG4S20-Multimedia-Signageoutputhtml_fidelityuildshtml_full_20261015_06
+unshtml_full_20261015_06`。输入关联见`output/html_fidelity/audit/full06_freeze.json`，132项输入与15份BIN已核对；8处ROM路径改写仅指向不可变构建快照。独立时序审查为`audit/full06_independent_page_control_review.json`。
+
+BMP最终17个有效测试全部PASS，八尺寸51733779拍逐周期等价，加上正式HFXL共2764800 golden像素；实际scene+PCM传输1803776字、3500PCM帧，36次紧急音频仲裁PASS。完整显示测试使用真实FIFO和有界SDRAM返回模型；后台writer竞争和WAV播放器行为由独立套件覆盖，不把这些组件证据包装成一次完整系统仿真。
 
 ## 正式素材和存储要求
 
@@ -52,13 +67,19 @@ Bot 使用真实渐变身体纹理和仿射形变；与原型逐点变形的28�
 
 ## 明天验收顺序（尚未执行）
 
-1. 使用最终匹配位流和上述一套素材；最终位流路径将在构建通过后写入本报告。
+1. 确认目标HX4S20C/EG4S20BG256，记录上述未签核时序项；后续另行授权的实板验收使用full06位流和上述一套素材，不混用历史版本。
 2. 备份卡后部署六BMP和WAV，使用 scripts\html_inspect_card.py 对明确选定的卡做只读布局核验；未确认连续簇、顺序和哈希时不要把异常归咎于渲染器。
 3. 待首次扫描和场景加载完成，确认六页完整轮播、文字与产品图、Bot透明边缘和圆眼、字幕逐字显示。记录首次出图时间，不套用仿真秒数。
 4. 检查上一页/下一页、快速连续操作、自动/暂停、字幕关闭、两组双图和1×–3×及观察位置。检查参数数字与图像效果在同一帧生效。
 5. 听取真实WAV，检查音量、静音、暂停与PCM条响应；同时换页、放大，观察闪屏、欠流、音频断续。EOF后静音属于当前行为。
 6. 进行持续显示测试并记录现象和时间。数码管A为FIFO/资源错误诊断；保留失败现象，对照本报告最终构建及output\html_fidelity中的对应日志，不用旧位流替代新版本结论。
 
-## 待完成
+## 交付位置与Git
 
-最终资源收敛、完整显示链/自然动作验证、匹配的SYN/PNR/BITGEN和时序记录、最终图像路径与Git正常推送结果。未解决项将如实列出，不宣称实板通过或无依据的还原百分比。
+Windows主仓库为`D:\FPGA\EG4S20-Multimedia-Signage`，生产构建commit为e26ce11c00f3b42c220cda2826a5fd8ce525b0b2，后续仅报告提交不改变该位流身份。公开仓库包含自研源码、测试、生成器与最小集成replay；完整vendor/派生整源、加密IP、位流和未授权素材保留本地，不能声称公开克隆即可直接整机综合。公开范围与依赖见README和docs/DEPENDENCIES.md。
+
+正式媒体绝对目录：`D:\FPGA\EG4S20-Multimedia-Signage\output\html_fidelity\media`；manifest SHA256 `80e07f0267c136e1c6fb344f534f2c1621d08a935053929a67e7ac273190abc0`。离线测试镜像为`D:\FPGA\EG4S20-Multimedia-Signage\output\html_fidelity\card_images\unified_003adc1b_v2.img`，SHA256 `be88671cd1e5732c5a94892fb4427b02db2ce82e03924b3f82346b474a73b1e4`。
+
+实际最终显示证据位于`D:\FPGA\EG4S20-Multimedia-Signage\output\html_fidelity\display_chain`：normal012和normal345子集含六页PNG、HTML/DUT/4倍差分并排图及regional_metrics；compare_zoom子集含双图和2×/3×实际输出。子集目录均后缀`_20261016_120043`，完整前缀`layered_`，汇总为`final_parallel_20261016_120043`。自然动作和当前字幕版本的局部关键帧预览仍在运行，将在终态后补全路径。
+
+GitHub只读预检本次返回连接重置（exit128），尚未执行push；收尾将正常推送codex/html-fidelity，不强推、不合并main，并记录实际结果。剩余未完成仅动作/视觉汇总与Git交付记录。时序签核和实板验证不写成已完成。

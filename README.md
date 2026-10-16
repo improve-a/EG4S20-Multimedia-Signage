@@ -2,7 +2,7 @@
 
 目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
 
-**最终集成仍在验证。** 分层full05完整构建已通过，但时序仍有负裕量；当前流水线和字幕修正待匹配的新构建，不能用旧位流宣称当前源码验收通过。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+**最终源码e26ce11已通过full06综合、布局布线和位流生成。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。最终六页/双图/放大显示链已通过，连续动作和交付记录正在收尾。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
 
 ## 当前工作区与目录
 
@@ -57,7 +57,7 @@ D:\python3.12.3\python.exe scripts/html_bot_eye_radius.py --output-dir output/ht
 D:\python3.12.3\python.exe scripts/html_osd_utility_rom.py --output-dir output/html_fidelity/numeric_replay
 ```
 
-完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_font8_v1.json`。
+完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_caption_darkpaper_v1.json`。
 
 后台读写压力使用真实511容量FIFO与Gray CDC，复现命令如下。该测试采用40MHz存储/25MHz视频/100MHz源时钟、四字物理组及有界刷新/返回延时；不替代加密SDRAM PHY或实板验证。默认旧参数保留用于历史反例，不能把它当当前顶层配置。
 
