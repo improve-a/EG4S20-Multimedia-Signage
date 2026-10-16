@@ -274,3 +274,12 @@ rtl_change_01.json与同目录*.diff记录本轮首次局部源改动。顶层�
 工具实验：standalone fix_hold在旧DB副本修复11/12hold，余config_bridge payload->shadow -0.024ns；后续phys_opt在abnormal timing检查发生原生access violation（exit3221225477），不用此命令进入正式流程。最终flow新增fix_hold前后报告、修复后DB导出及重新bitgen；全部STA报告增加到128端点/组、2路径/端点。新reset -hold例外仅从rst_all_reg到指定12同步器位，待新综合/ignored报告核对，全部下游及recovery检查保留。
 
 已读取原赛题摘录§1.3–1.5：基础至少4幅640×48024bit、FPGA缓存/HDMI、2按键/可配置轮播、同时HDMI音频；扩展显示/音视频联动/参数交互与优化。1.5的1280×720@60是自备显示器推荐能力，不是本设计降频或改变分辨率的授权。当前六页/八槽/Bot字幕/双图/缩放和WAV等功能按现有范围保持；终端枚举、声音和外部信号质量尚无硬件验证。
+
+
+## 时序首轮结果与第二轮最小修复
+
+timing_fix_20261016_01/source d3716457c5438cd2c2e27ae6e61e3d8701f0bc21，snapshot SHA256 0fa816e7b9f2127a8122e1db7fff9273c75d669143aa05feaa2fc46f22f3b8ce，TD PID47064/supervisor16284，07:13:06.810527Z至07:24:05.933769Z，exit0/659.125s。原故障汇总setup和reset removal已消除；standalone fix_hold用13.506s将hold从-0.033ns修到+0.021ns，无新增例外。最终STA为128端点/组、2路径/端点、slow/fast max/min、CRPR；full01_timing_analysis.json按详细路径区分52setup、0hold、0recovery、0removal，最差依次-0.528/+0.021/+1.899/+0.027ns。
+
+SD MISO详细路径已核实：setup实际80ns采样沿减40ns发送沿，含16ns外部max，slack+14.049ns；hold发送40ns对前次0ns采样，含0nsmin，slack+46.312ns。原汇总0路径是工具统计/查询表现，不能据此宣称缺失；full07详细段也存在该检查。未应用反相/虚拟替代时钟或ignore_async开关。8物理reset SR端点映射12逻辑同步器位的独立网表证明见miso_fresh01_probe04_resetmap；其余LUT逻辑仅与FF共享cell名字，不属于被切断功能寄存器。
+
+第二轮audio_media仅将低水位判定注册到100MHz域，优先级最多延迟10ns，原full/容量/扇区请求保护不变。实际共享仲裁测试2304PCM帧完全一致，连续BMP，最长grant等待34888系统拍，无UF/OF。显示bridge的60位头预取含首次入队和最后一项同时pop/push转发，原队列计数/吞吐/顺序不变；head_prefetch_20261016T073256233454Z覆盖20122拍、14816入队、14327出队、2863sole replacement、1730回绕、4875停顿、79flush/65reset。公开复现脚本从Git冻结原实现提取对照，不依赖未提交历史文件。

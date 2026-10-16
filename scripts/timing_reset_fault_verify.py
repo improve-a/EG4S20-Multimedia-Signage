@@ -19,6 +19,9 @@ def main():
  names=['tests/timing_reset_fault_tb.v','rtl/reset_sync.v','rtl/SD/frame_read_write.v','rtl/SD/frame_fifo_write.v','rtl/SD/frame_fifo_read.v']
  payloads={n:(ROOT/n).read_bytes() for n in names};payloads['generated/fault50_extract.v']=wrapper.encode()
  cases=[dict(id='timing_reset_fault',recipe_reference='Actual reset/frame RTL; exact current-top fault50 block; FIFO boundary stubs only',top='timing_reset_fault_tb',sources=names+['generated/fault50_extract.v'],inputs=names+['generated/fault50_extract.v'],parameters=[],timeout=30)]
+ mailbox=['tests/timing_mailbox_hold_tb.v','rtl/ext/frame_config_bridge.v']
+ for n in mailbox:payloads[n]=(ROOT/n).read_bytes()
+ cases.append(dict(id='timing_mailbox_hold',recipe_reference='ActualWIDTH51/3 mailbox:5phase trials, beforecapture/ackroundtrip bounds, rapidupdates/frame stalls/resetaborts',top='timing_mailbox_hold_tb',sources=mailbox,inputs=mailbox,parameters=[],timeout=30))
  recipes=json.loads((ROOT/'output/venue_emergency_ui/evidence/regression_recipes.json').read_text(encoding='utf-8'))['recipes']
  for key in ['config_002','audio_fifo_bram_001']:
   q=recipes[key]
@@ -33,6 +36,14 @@ def main():
   p=subprocess.Popen(cmd,cwd=out,stdout=log,stderr=subprocess.STDOUT);code=p.wait(timeout=300)
  summary=json.loads((out/'results/regression_summary.json').read_text()) if(out/'results/regression_summary.json').exists()else{}
  summary.update(dispatch_pid=p.pid,dispatch_exit=code,dispatch_wall_seconds=time.monotonic()-start,dispatch_command=cmd,driver_pid=os.getpid(),scope=plan['scope'],top_source_unchanged=sha((ROOT/'rtl/top_tf_hdmi_audio.v').read_bytes())==plan['top_source_sha256'],extraction=plan['extraction'])
+ contract_log=out/'results/timing_mailbox_hold/simulation.log'
+ if contract_log.exists():
+  records=[]
+  for line in contract_log.read_text().splitlines():
+   if line.startswith('MAILBOX_CONTRACT '):
+    values=dict(re.findall(r'(\w+)=([0-9.]+)',line));records.append({k:float(v) if '.' in v else int(v) for k,v in values.items()})
+  summary['mailbox_contract_trials']=records
+  summary['mailbox_scope']='IdealRTLclock simulation of actualframe_config_bridge WIDTH51/3; coordinatedresetaborts excluded fromtimingminima; notmetastability/physicaldelay proof.'
  (out/'verification.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')
  print((out/'dispatch.log').read_text(encoding='utf-8'));print('TIMING_RESET_FAULT_EVIDENCE='+str(out));print('RESULT='+summary.get('status','FAIL'))
  return 0 if code==0 and summary.get('status')=='PASS' and summary['top_source_unchanged'] else 1

@@ -28,7 +28,24 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
  .source_scene_page(source_page),.source_old(source_old),.source_dual(source_dual),.source_repeat(source_repeat),.run_start(run_start),
  .current_page(current_page),.previous_page(previous_page),.previous_active(previous_active),.canvas_start_x(canvas_start_x),.canvas_start_y(canvas_start_y));
  reg[59:0]entries[0:7];reg[2:0]wp,rp;
- wire[59:0]head=entries[rp];
+ reg[59:0]head;reg head_valid;
+ wire[2:0]next_rp=rp+3'd1;
+ wire[59:0]incoming={mapped_addr,mapped_packed,mapped_half,mapped_black,source_x,source_y,logical_x,source_page,source_old,source_dual,source_repeat};
+ // Mirror the FIFO head in registers. Forward a new sole entry instead of
+ // depending on distributed-RAM read-during-write behavior; stalls hold it.
+ // Only validity resets, and all geometry/control fields move atomically.
+ always @(posedge mem_clk)begin
+  if(rst||frame_latch)head_valid<=0;
+  else if(front_accept)begin
+   if(queued>1)head<=entries[next_rp];
+   else if(mapped_valid)head<=incoming;
+   head_valid<=queued>1||mapped_valid;
+  end else if(!head_valid)begin
+   if(queued!=0)head<=entries[rp];
+   else if(mapped_valid)head<=incoming;
+   head_valid<=queued!=0||mapped_valid;
+  end
+ end
  wire[20:0]head_addr;wire hp,hh,hb,ho,hd;wire[9:0]hx,hlx;wire[8:0]hy;wire[2:0]hpage;wire[1:0]hr;
  assign {head_addr,hp,hh,hb,hx,hy,hlx,hpage,ho,hd,hr}=head;
  wire frontend_ready,frontend_valid,engine_ready,geometry_fault;
@@ -38,7 +55,7 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
  html_layer_span_frontend geometry(
  .clk(mem_clk),.rst(rst),.flush(frame_latch),.layer_resources_enabled(frame_config[13]),.page_event(page_event),.page_reverse(config_sync[4]),
  .current_page(current_page),.previous_page(previous_page),.previous_active(previous_active),.canvas_start_x(canvas_start_x),.canvas_start_y(canvas_start_y),
- .i_valid(queued!=0),.i_ready(frontend_ready),.i_page(hpage),.i_old(ho),.i_dual(hd),.i_x(hx),.i_logical_x(hlx),.i_y(hy),.i_repeat(hr),
+ .i_valid(queued!=0&&head_valid),.i_ready(frontend_ready),.i_page(hpage),.i_old(ho),.i_dual(hd),.i_x(hx),.i_logical_x(hlx),.i_y(hy),.i_repeat(hr),
  .i_mapped_addr(head_addr),.i_packed(hp),.i_half(hh),.i_black(hb),.o_valid(frontend_valid),.o_ready(engine_ready),
  .o_page(engine_page),.o_bg_addr(engine_bg),.o_bg_lane(engine_lane),.o_repeat(engine_repeat),.o_rgba_count(engine_count),
  .o_rgba0_addr(engine_rgba0),.o_rgba1_addr(engine_rgba1),.o_opacity0(engine_op0),.o_opacity1(engine_op1),
@@ -55,7 +72,7 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
  .raw_read_en(raw_read_en),.logical_ready(logical_ready),.logical_response(logical_response),.pixel_data(pixel_data),
  .mem_ready(mem_ready),.refresh_active(refresh_active),.write_busy_mem(write_busy_mem),.read_en(read_en),.read_addr(read_addr),
  .response(response),.memory_data(memory_data),.busy(engine_busy),.fault(engine_fault),.pause_new_groups(pause_new_groups),.physical_busy(physical_busy));
- wire front_accept=queued!=0&&frontend_ready;
+ wire front_accept=queued!=0&&head_valid&&frontend_ready;
  wire map_emit=speculate&&run_start;
  assign busy=engine_busy||mapper_inflight!=0;
  reg local_fault;assign fault=local_fault|engine_fault|geometry_fault;
@@ -69,7 +86,7 @@ module html_layer_memory_bridge #(parameter CACHE_SLOT_BITS=3,CONTEXT_BITS=3,BG_
     frame_config<=config_sync;frame_active<=1;issued<=0;outstanding<=0;queued<=0;mapper_inflight<=0;wp<=0;rp<=0;
    end else begin
     if(speculate)issued<=issued+1'b1;
-    if(mapped_valid)begin entries[wp]<={mapped_addr,mapped_packed,mapped_half,mapped_black,source_x,source_y,logical_x,source_page,source_old,source_dual,source_repeat};wp<=wp+1'b1;end
+    if(mapped_valid)begin entries[wp]<=incoming;wp<=wp+1'b1;end
     if(front_accept)rp<=rp+1'b1;
     case({map_emit,front_accept})2'b10:outstanding<=outstanding+1'b1;2'b01:outstanding<=outstanding-1'b1;endcase
     case({mapped_valid,front_accept})2'b10:queued<=queued+1'b1;2'b01:queued<=queued-1'b1;endcase

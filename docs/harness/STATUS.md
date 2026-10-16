@@ -43,3 +43,12 @@ Root负责Git/top/TD，B/C实际gpt-6.1-sol/high，无Astra或递归编排。完
 已实施待测试的局部修改：frame_read_write 暴露三项原始注册故障；top 将六项故障分别用两级50MHz寄存器采样后 OR，仅影响七段显示状态汇总，不改变原安全消费者；reset_sync及三个帧缓存域复位链增加 preserve。公开 replay 脚本从同一冻结依赖重建上述私有派生文件并已验证。正在独立旧 DB 副本上验证工具查询/物理修复选项，该实验不是新正式构建证据。MISO 输入覆盖与外部时序依据仍未闭合。
 
 FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE_NOT_TESTED。
+
+
+## 时序轮次实时状态 — 2026-10-16 00:39 PDT
+
+首轮 timing_fix_20261016_01 完成：源d371645，SYN/PNR/BITGEN通过，exit0，659.125秒。最终setup52端点/-0.528ns；hold0/+0.021ns；recovery0/+1.899ns；removal0/+0.027ns。尚未TIMING_PASS。新增setup来自audio FIFO Gray解码/水位比较到SD地址仲裁（51端点）及显示队列异步读到请求地址（1端点）。现已分别注册低水位和预取队头；显示逐周期等价20,122拍通过，实际音频仲裁2304PCM帧及持续BMP传输通过。
+
+正在执行当前源连续8帧、真实511容量FIFO后台写压力、13项音频回归和六场景/PCM传输；旧natural_150913因源变更已明确SUPERSEDED，保留日志。新natural_153258使用最终队头实现。
+
+MISO之前的未覆盖判断已纠正：详细exceptions报告包含真实PAD/route/LUT路径，fresh01 setup+14.049ns、hold+46.312ns；TD汇总0路径不代表详细检查为空。reset例外8个物理共享SR引脚承载恰好12个同步器FF，scenes/panels物理cell名来自共享组合LUT，并未豁免这些功能寄存器。尚需最终构建复核。FULL_SYSTEM_SIM NOT_VERIFIED；HARDWARE_NOT_TESTED。

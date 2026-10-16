@@ -36,7 +36,14 @@ wire [31:0] fifo_data;
 wire playing=(state==PLAY_REQ||state==PLAY_WAIT||state==PLAY_EVAL||state==PLAY_HOLD||state==PLAY_DRAIN);
 assign sector_req=(state==SCAN_REQ)||(state==PLAY_REQ);
 assign sector_addr=current_sector;
-assign sector_urgent=playing&&(fifo_level<PREFILL_FRAMES);
+// Register the Gray-decode/subtract/watermark chain before SD arbitration.
+// Urgency may trail the level by one sys_clk cycle. At the production 100 MHz,
+// the 512-frame threshold provides 10.67 ms of 48 kHz audio buffering.
+reg fifo_below_prefill;
+always @(posedge sys_clk)
+ if(fifo_clear)fifo_below_prefill<=1'b1;
+ else fifo_below_prefill<=fifo_level<PREFILL_FRAMES;
+assign sector_urgent=playing&&fifo_below_prefill;
 wire fifo_push=playing&&pcm_valid;
 wav_stream_parser parser(.clk(sys_clk),.rst(fifo_clear),.start(parser_start),
  .byte_data(parser_byte_data),.byte_valid(parser_byte_valid),

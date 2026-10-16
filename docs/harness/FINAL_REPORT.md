@@ -100,3 +100,8 @@ Windows主仓库为`D:\FPGA\EG4S20-Multimedia-Signage`，生产构建commit为96
 ## 后续时序收敛任务已启动 — 2026-10-16
 
 以上为上一轮HTML交付的冻结结论。本轮基于7325202、分支codex/timing-fix修复真实时序与覆盖，尚在执行；旧full07 BUILD_PASS不能为新的修改背书。本轮最终结果将在本节更新。当前基线setup1/-1.587ns、hold12/-0.033ns、recovery0/+1.197ns、removal7/-2.495ns。硬件始终未测试。
+
+
+### 时序修复进行中（首轮结果）
+
+新的正式首轮源d371645已经BUILD_PASS，但52个setup端点仍负（最差-0.528ns）；hold/recovery/removal均0违规。第二轮局部流水化和对应回归正在执行，尚未签发最终TIMING或REGRESSION结论。此前MISO未覆盖判断已由真实详细路径纠正。旧HTML交付保持冻结，不能将其位流与当前修改混用。
