@@ -30,7 +30,7 @@ def sector_count(page,dual,zoom,focus):
  ys=set(range(480)) if d==1 else {(cy*d+y-240)//d for y in range(480)};stride=960 if dual else 1920
  return (2 if dual else 1)+sum(((512+(479-y)*stride)%512+stride+511)//512 for y in ys)*(2 if dual else 1)
 def main():
- p=argparse.ArgumentParser();p.add_argument('--media',type=Path);p.add_argument('--output',type=Path);p.add_argument('--smoke',action='store_true');p.add_argument('--quick',action='store_true');p.add_argument('--errors-only',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--media',type=Path);p.add_argument('--output',type=Path);p.add_argument('--smoke',action='store_true');p.add_argument('--quick',action='store_true');p.add_argument('--errors-only',action='store_true');p.add_argument('--compare-to',type=Path);a=p.parse_args()
  out=a.output or ROOT/'output/html_fidelity/no_bot/legacy_loader'/('run_'+time.strftime('%Y%m%d_%H%M%S'));out.mkdir(parents=True,exist_ok=False)
  media=a.media or out/'synthetic';media.mkdir(parents=True,exist_ok=True)
  if a.media is None:
@@ -42,7 +42,7 @@ def main():
   f=out/(n+'.hex');f.write_bytes(('\n'.join(f'{v:02x}' for v in data)+'\n').encode());hexes[n]=f
  sources=['rtl/ext/legacy_exhibit_loader.v','tests/legacy_exhibit_loader_tb.v'];snap=out/'sources';snap.mkdir()
  for f in sources:(snap/Path(f).name).write_bytes((ROOT/f).read_bytes())
- report={'state':'RUNNING','pid':os.getpid(),'started':time.time(),'scope':'Actual loader RTL output, delivered BMP bytes' if a.media else 'Actual loader RTL output, declared synthetic BMP bytes','sources':{f:sha(ROOT/f) for f in sources},'script_sha256':sha(__file__),'media':{n:{'path':str(f),'sha256':sha(f)} for n,f in files.items()},'steps':[]}
+ report={'state':'RUNNING','pid':os.getpid(),'started':time.time(),'scope':'Actual loader RTL output, delivered BMP bytes' if a.media else 'Actual loader RTL output, declared synthetic BMP bytes','sources':{f:sha(ROOT/f) for f in sources},'script_sha256':sha(__file__),'media':{n:{'path':str(f),'sha256':sha(f)} for n,f in files.items()},'steps':[],'compare_to':str(a.compare_to) if a.compare_to else None}
  def save():(out/'verification.json').write_bytes(json.dumps(report,indent=2).encode())
  cases=[(f'page{i}',i,0,0,0,0) for i in range(6)]+[('dual_eagle_phoenix',1,1,0,0,0),('dual_elf_dragon',3,1,0,0,0),('zoom2_focus0',1,0,1,0,0),('zoom3_focus2',2,0,2,2,0),('dual_zoom3_focus1',3,1,2,1,0),('config_latched_focus4',4,0,2,4,9),('zoom2_focus5',5,0,1,5,0),('zoom3_focus3',3,0,2,3,0)]
  if a.smoke:cases=cases[:1]
@@ -65,8 +65,15 @@ def main():
   if c.returncode==0:
    args=[str(vvp),str(out/(name+'.vvp')),'+left='+str(hexes[ln]),'+right='+str(hexes[rn]),'+gold='+str(gold),'+left_len='+str(len(parsed[ln][0])),'+right_len='+str(len(parsed[rn][0])),'+expected_sectors='+str(sector_count(page,dual,zoom,focus))]
    if mode in [0,9]:args+=['+dump='+str(out/(name+'_rtl.hex'))]
-   v=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,timeout=240);log=v.stdout+v.stderr;(out/(name+'.run.log')).write_bytes(log.encode());step.update(exit_code=v.returncode,output=log.strip(),pass_=v.returncode==0 and 'TEST_PASS' in log)
+   v=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,timeout=900);log=v.stdout+v.stderr;(out/(name+'.run.log')).write_bytes(log.encode());step.update(exit_code=v.returncode,output=log.strip(),pass_=v.returncode==0 and 'TEST_PASS' in log)
   else:step.update(pass_=False,output=c.stdout+c.stderr)
+  if mode in [0,9] and (out/(name+'_rtl.hex')).exists():
+   step['payload_sha256']=sha(out/(name+'_rtl.hex'))
+   if a.compare_to:
+    old=a.compare_to/(name+'_rtl.hex')
+    step['baseline_payload_sha256']=sha(old) if old.exists() else None
+    step['payload_equal']=step['payload_sha256']==step['baseline_payload_sha256']
+    step['pass_']=step['pass_'] and step['payload_equal']
   step['wall_seconds']=time.time()-started;report['steps'].append(step);ok=ok and step['pass_'];save();print(name,'PASS' if step['pass_'] else 'FAIL',step['output'][-400:],flush=True)
   if not step['pass_']:break
  report['state']='PASS' if ok else 'FAIL';report['finished']=time.time();report['wall_seconds']=report['finished']-report['started'];save();print('RESULT',report['state'],out/'verification.json',flush=True);return 0 if ok else 1

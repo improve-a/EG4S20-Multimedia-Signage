@@ -15,7 +15,8 @@ module legacy_exhibit_loader #(
 );
  localparam IDLE=0,HREQ=1,HWAIT=2,HCHECK=3,WREQ=4,WRELEASE=5,
  ROW=6,POSITION=7,RREQ=8,RWAIT=9,RCHECK=10,BYTE_GET=11,BYTE_USE=12,
- OUTPUT_SETUP=13,OUTPUT_GET=14,OUTPUT_WAIT=15,DRAIN=16,FAILED=17;
+ OUTPUT_SETUP=13,OUTPUT_GET=14,OUTPUT_WAIT=15,DRAIN=16,FAILED=17,
+ ROW_STRIDE=18,ROW_ADDRESS=19;
  reg[4:0]state;
  assign ready=state==IDLE&&sd_init_done;
  assign busy=state!=IDLE&&state!=FAILED;
@@ -23,7 +24,8 @@ module legacy_exhibit_loader #(
  reg dual_l,header_right,right_segment,header_bad,line_valid;
  reg[1:0]divisor,rx,ry,x_remainder,byte_phase;
  reg[9:0]ox,sample_x,out_x,line_write;
- reg[8:0]oy,source_y,line_y,out_row;
+ reg[8:0]oy,source_y,line_y,out_row,native_row_l;
+ reg[12:0]row_fifteen;
  reg[20:0]byte_position;
  reg[11:0]bytes_left;
  reg[9:0]sector_bytes;
@@ -37,8 +39,9 @@ module legacy_exhibit_loader #(
  wire[23:0]new_origin=origin(page==0,focus,zoom);
  wire[9:0]row_numerator=10'd479-{1'b0,out_row}+{8'd0,ry};
  wire[9:0]row_quotient=divisor==1?row_numerator:divisor==2?(row_numerator>>1):row_numerator/10'd3;
- wire[8:0]native_row=9'd479-source_y;
- wire[20:0]row_offset=dual_l?native_row*21'd960:native_row*21'd1920;
+ // Registered15*n, then wiring selects15*64/15*128. This removes the
+ // source_y subtraction -> MULT18 -> mux -> address-adder timing chain.
+ wire[20:0]row_offset=dual_l?{2'b0,row_fifteen,6'b0}:{1'b0,row_fifteen,7'b0};
  wire[31:0]file_size=dual_l?32'd461312:32'd922112;
  wire[31:0]expected_width=dual_l?32'd320:32'd640;
  reg checked;reg[7:0]expected_byte;
@@ -111,7 +114,7 @@ module legacy_exhibit_loader #(
    state<=IDLE;done<=0;error<=0;write_req<=0;pixel_valid<=0;pixel<=0;sector_req<=0;sector_addr<=0;
    left_base<=0;right_base<=0;timeout_count<=0;sector_watch<=0;dual_l<=0;header_right<=0;right_segment<=0;
    header_bad<=0;line_valid<=0;divisor<=1;rx<=0;ry<=0;x_remainder<=0;byte_phase<=0;
-   ox<=0;oy<=0;sample_x<=0;out_x<=0;line_write<=0;source_y<=0;line_y<=0;out_row<=0;
+   ox<=0;oy<=0;sample_x<=0;out_x<=0;line_write<=0;source_y<=0;line_y<=0;out_row<=0;native_row_l<=0;row_fifteen<=0;
    byte_position<=0;bytes_left<=0;sector_bytes<=0;buffer_index<=0;assembled<=0;pixel_wait<=0;
   end else begin
    done<=0;pixel_valid<=0;
@@ -149,10 +152,14 @@ module legacy_exhibit_loader #(
     WRELEASE:if(!write_req_ack)state<=ROW;
     ROW:begin source_y<=oy+row_quotient;state<=POSITION;end
     POSITION:if(line_valid&&line_y==source_y)state<=OUTPUT_SETUP;
-     else begin
-      right_segment<=0;byte_position<=21'd512+row_offset;bytes_left<=dual_l?12'd960:12'd1920;
-      line_write<=0;byte_phase<=0;state<=RREQ;
-     end
+     else begin native_row_l<=9'd479-source_y;state<=ROW_STRIDE;end
+    ROW_STRIDE:begin
+     row_fifteen<={native_row_l,4'b0}-{4'b0,native_row_l};state<=ROW_ADDRESS;
+    end
+    ROW_ADDRESS:begin
+     right_segment<=0;byte_position<=21'd512+row_offset;bytes_left<=dual_l?12'd960:12'd1920;
+     line_write<=0;byte_phase<=0;state<=RREQ;
+    end
     RREQ:begin sector_req<=1;sector_addr<=(right_segment?right_base:left_base)+{20'd0,byte_position[20:9]};sector_bytes<=0;state<=RWAIT;end
     RWAIT:begin
      if(sector_valid)begin
