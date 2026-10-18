@@ -12,6 +12,14 @@ audio_media #(.FIFO_ADDRESS_BITS(9),.PREFILL_FRAMES(128),.SCAN_MAX_SECTOR(5)) du
  sys_clk,rst,audio_clk,audio_rst,enable,paused,muted,restart,volume,sd_ready,sector_grant,
  sector_data,sector_valid,sector_end,sector_error,sector_req,sector_addr,sector_urgent,
  audio_valid,audio_left,audio_right,status,wave_peak,underflow,overflow,eof,error,fifo_level);
+// At the exact decision edge, the timing pipeline must match the stable LBA.
+// Includes full scan-limit exhaustion and cross-sector RIFF header cases.
+integer scan_compare_checks=0;
+always @(posedge sys_clk)if(!rst&&dut.state==3)begin
+ if(dut.scan_current_below_limit !== (dut.current_sector<dut.SCAN_MAX_SECTOR))
+  $fatal(1,"stale scan limit comparison LBA%0d",dut.current_sector);
+ scan_compare_checks=scan_compare_checks+1;
+end
 // Sector transport model supplies actual bytes with gaps, 512B per transaction.
 always @(negedge sys_clk)begin
  sector_grant=0;sector_valid=0;sector_end=0;sector_error=0;

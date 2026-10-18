@@ -20,6 +20,14 @@ localparam IDLE=0,SCAN_REQ=1,SCAN_WAIT=2,SCAN_EVAL=3,PLAY_RESET=4,
  PLAY_REQ=5,PLAY_WAIT=6,PLAY_EVAL=7,FINISHED=8,FAILED=9,PLAY_HOLD=10,SCAN_DRAIN=11,PLAY_DRAIN=12;
 reg [3:0] state;
 reg [31:0] candidate,current_sector,wait_count;
+// SCAN_EVAL follows a complete sector and SCAN_DRAIN, during which the address
+// is stable. Register the 32-bit bound comparison before its state/CE fanout.
+// This preserves the address decisions and keeps every path timed at 100MHz.
+reg scan_current_below_limit;
+always @(posedge sys_clk)
+ if(rst)scan_current_below_limit<=SCAN_START_SECTOR<SCAN_MAX_SECTOR;
+ else scan_current_below_limit<=current_sector<SCAN_MAX_SECTOR;
+
 reg [9:0] sector_bytes;
 reg parser_start,play_ready,source_eof,overflow_sys,file_found;
 reg parser_byte_valid;
@@ -128,7 +136,7 @@ always @(posedge sys_clk)begin
     SCAN_EVAL:begin
      if(sector_bytes!=512)begin fault_sys<=4'd15;state<=FAILED;end
      else if(header_valid&&parser_error==0)begin current_sector<=candidate;file_found<=1;state<=PLAY_RESET;end
-     else if(recognized&&parser_error==0&&current_sector<SCAN_MAX_SECTOR)begin current_sector<=current_sector+1'b1;state<=SCAN_REQ;end
+     else if(recognized&&parser_error==0&&scan_current_below_limit)begin current_sector<=current_sector+1'b1;state<=SCAN_REQ;end
      else if(candidate==SCAN_MAX_SECTOR)begin fault_sys<=4'd11;state<=FAILED;end
      else begin candidate<=candidate+1'b1;current_sector<=candidate+1'b1;parser_start<=1;state<=SCAN_REQ;end
     end
