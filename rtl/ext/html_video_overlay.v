@@ -1,4 +1,4 @@
-// A-frame is addressed/zoomed in SDRAM; independent B/C layers remain in screen coordinates.
+// Current pixels come from the legacy composed frame; OSD stays in screen coordinates.
 // No character layer: one pixel-adjust stage plus five OSD stages (six clocks).
 // RGB and all three video qualifiers use this same registered path.
 module html_video_overlay(

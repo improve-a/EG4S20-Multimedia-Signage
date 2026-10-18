@@ -36,3 +36,10 @@
 - Offline 8–10h scope: retain all non-Bot features, remove Bot hardware and visual resources, exact reference hash in output/html_fidelity/no_bot/STATUS.json.
 - Root owns Git/top/storage bridge/builds; children own disjoint files. Serial fresh builds only. Preserve existing clocks/reset/PLL/pins/encrypted IP and original worktree.
 - No JTAG, hardware, physical cards, software installation, authentication or system changes.
+
+## Legacy backbone override — 2026-10-18
+
+- Preserve codex/no-bot-exhibit at bcbc083; integrate selectively on codex/no-bot-legacy-integration. No reset/clean of the original workspace.
+- ext_full_005 / ad5f6525 sequential dual-frame data path is the basis. Stop new html_layer_cache/four-word/random-read candidate work; its evidence stays on the preserved branch.
+- Six ordinary pages and independent dual panels load through the old back-buffer/write-finish/commit ownership model. Preserve the existing integer zoom/focus mapping.
+- Output-only mask: cover, wait for completed load, frame-boundary reveal. No second page scanout. Preserve audio, OSD, manual/auto, true dual and zoom.

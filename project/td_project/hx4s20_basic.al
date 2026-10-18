@@ -69,14 +69,6 @@
                     <Attr Name="CompileOrder" Val="12"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/SD/bmp_read.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="13"/>
-                </FileInfo>
-            </File>
             <File Path="../user_source/hdl_source/SD/color_bar.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
@@ -107,14 +99,6 @@
                     <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
                     <Attr Name="CompileOrder" Val="17"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/SD/sd_card_bmp.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="18"/>
                 </FileInfo>
             </File>
             <File Path="../user_source/hdl_source/SD/video_define.v">
@@ -311,22 +295,6 @@
                     <Attr Name="CompileOrder" Val="50"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/video_extensions.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="51"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/osd_overlay.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="52"/>
-                </FileInfo>
-            </File>
             <File Path="../user_source/hdl_source/ext/pixel_adjust.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
@@ -407,30 +375,6 @@
                     <Attr Name="CompileOrder" Val="62"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/html_panel_loader.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="70"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_read_tags.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="71"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_memory_bridge.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="72"/>
-                </FileInfo>
-            </File>
             <File Path="../user_source/hdl_source/ext/html_video_overlay.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
@@ -445,14 +389,6 @@
                     <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
                     <Attr Name="CompileOrder" Val="75"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/exhibit_viewport.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="76"/>
                 </FileInfo>
             </File>
             <File Path="../user_source/hdl_source/ext/html_assets/html_caption_map.v">
@@ -479,22 +415,6 @@
                     <Attr Name="CompileOrder" Val="80"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/html_resource_locator.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="81"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_scene_loader.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="82"/>
-                </FileInfo>
-            </File>
             <File Path="../user_source/hdl_source/ext/html_osd_swap_rom.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
@@ -503,92 +423,20 @@
                     <Attr Name="CompileOrder" Val="83"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/html_scene_motion.v">
+            <File Path="../user_source/hdl_source/ext/legacy_exhibit_media.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
                     <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="84"/>
+                    <Attr Name="CompileOrder" Val="95"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_cache.v">
+            <File Path="../user_source/hdl_source/ext/legacy_exhibit_loader.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
                     <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="85"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_blend.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="86"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_join_ram.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="87"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_pixel_engine.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="88"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_line_setup.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="89"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_palette.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="90"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_descriptor_rom.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="91"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_span_frontend.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="92"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_viewport.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="93"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_layer_memory_bridge.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="94"/>
+                    <Attr Name="CompileOrder" Val="96"/>
                 </FileInfo>
             </File>
         </Verilog>

@@ -1,9 +1,14 @@
-// One registered pixel/sync cycle. The commit request is forwarded only after
-// the old image is fully black. The real display_commit acknowledgement gates
-// opening, so buffer selection and SD ownership remain with display_commit.
+// One registered pixel/sync cycle, using only the current scanout pixel and a
+// constant mask (plus the original one-line slide RAM). In pre-load mode the
+// source first requests cover, waits for cover_ack_toggle, loads the back
+// buffer, and then publishes candidate_toggle_async. Actual reader acceptance
+// still gates reveal. Neither video timing nor the audio stream is stopped.
 module video_transition #(
  parameter WIDTH=640,
- parameter STEP=32
+ parameter STEP=32,
+ parameter COVER_BEFORE_LOAD=0,
+ parameter CLOSE_STEP=STEP, OPEN_STEP=STEP,
+ parameter [23:0] MASK_COLOR=24'd0
 )(
  input wire clk,rst,i_hs,i_vs,i_de,
  input wire [23:0] i_rgb,
@@ -12,16 +17,20 @@ module video_transition #(
  input wire frame_start,
  input wire candidate_toggle_async,
  input wire commit_ack_toggle,
+ input wire cover_request_toggle_async,
+ output reg cover_ack_toggle,
  output reg forwarded_commit_toggle,
  output reg o_hs,o_vs,o_de,
  output wire [23:0] o_rgb,
  output wire transition_busy
 );
- localparam IDLE=2'd0,CLOSE=2'd1,WAIT_ACK=2'd2,OPEN=2'd3;
- reg [1:0] phase,locked_mode;
+ localparam IDLE=3'd0,CLOSE=3'd1,WAIT_ACK=3'd2,OPEN=3'd3,WAIT_LOAD=3'd4;
+ reg [2:0] phase;
+ reg [1:0] locked_mode;
+ reg accepted_cover;
  reg [10:0] offset,x;
  reg prev_de,accepted_toggle;
- (* async_reg="true" *) reg [1:0] candidate_sync;
+ (* async_reg="true" *) reg [1:0] candidate_sync,cover_sync;
  wire [23:0] line_q;
  reg [23:0] base_rgb_q;
  reg sel_ram_q;
@@ -42,39 +51,53 @@ module video_transition #(
   if(rst)begin
    phase<=IDLE;locked_mode<=0;offset<=0;x<=0;prev_de<=0;
    accepted_toggle<=0;candidate_sync<=0;forwarded_commit_toggle<=0;
+   accepted_cover<=0;cover_sync<=0;cover_ack_toggle<=0;
    o_hs<=0;o_vs<=0;o_de<=0;base_rgb_q<=0;sel_ram_q<=0;
   end else begin
    candidate_sync<={candidate_sync[0],candidate_toggle_async};
+   cover_sync<={cover_sync[0],cover_request_toggle_async};
    prev_de<=i_de;
    if(frame_start)x<=0;
    else if(i_de)x<=prev_de?x+1'b1:11'd1;
    else x<=0;
    case(phase)
-    IDLE: if(candidate_sync[1]!=accepted_toggle &&
-              forwarded_commit_toggle==commit_ack_toggle)begin
-     accepted_toggle<=candidate_sync[1];
-     if(!enable || mode==0 || mode==3)begin
-      forwarded_commit_toggle<=candidate_sync[1];
-     end else begin
-      locked_mode<=mode;offset<=0;phase<=CLOSE;
+    IDLE: if(COVER_BEFORE_LOAD)begin
+     if(cover_sync[1]!=accepted_cover &&
+        forwarded_commit_toggle==commit_ack_toggle)begin
+      accepted_cover<=cover_sync[1];
+      locked_mode<=enable?mode:2'd0;offset<=0;phase<=CLOSE;
      end
+    end else if(candidate_sync[1]!=accepted_toggle &&
+                forwarded_commit_toggle==commit_ack_toggle)begin
+     accepted_toggle<=candidate_sync[1];
+     if(!enable || mode==0 || mode==3)
+      forwarded_commit_toggle<=candidate_sync[1];
+     else begin locked_mode<=mode;offset<=0;phase<=CLOSE;end
     end
     CLOSE: if(frame_start)begin
-     if(offset+STEP>=WIDTH)begin
-      offset<=WIDTH;forwarded_commit_toggle<=accepted_toggle;phase<=WAIT_ACK;
-     end else offset<=offset+STEP;
+     if(offset+CLOSE_STEP>=WIDTH || locked_mode==0 || locked_mode==3)begin
+      offset<=WIDTH;
+      if(COVER_BEFORE_LOAD)begin cover_ack_toggle<=accepted_cover;phase<=WAIT_LOAD;end
+      else begin forwarded_commit_toggle<=accepted_toggle;phase<=WAIT_ACK;end
+     end else offset<=offset+CLOSE_STEP;
+    end
+    WAIT_LOAD: if(candidate_sync[1]!=accepted_toggle)begin
+     accepted_toggle<=candidate_sync[1];
+     forwarded_commit_toggle<=candidate_sync[1];phase<=WAIT_ACK;
     end
     WAIT_ACK: if(frame_start && commit_ack_toggle==forwarded_commit_toggle)begin
-     offset<=WIDTH>STEP?WIDTH-STEP:0;phase<=OPEN;
+     if(locked_mode==0 || locked_mode==3)begin offset<=0;phase<=IDLE;end
+     else begin offset<=WIDTH>OPEN_STEP?WIDTH-OPEN_STEP:0;phase<=OPEN;end
     end
     OPEN: if(frame_start)begin
-     if(offset<=STEP)begin offset<=0;phase<=IDLE;end
-     else offset<=offset-STEP;
+     if(offset<=OPEN_STEP)begin offset<=0;phase<=IDLE;end
+     else offset<=offset-OPEN_STEP;
     end
+    default:begin phase<=IDLE;offset<=0;end
    endcase
    o_hs<=i_hs;o_vs<=i_vs;o_de<=i_de;
    sel_ram_q<=use_line_ram;
-   if(i_de && animated && (offset>=WIDTH || px<offset))base_rgb_q<=0;
+   if(i_de && animated && (offset>=WIDTH || px<offset))base_rgb_q<=MASK_COLOR;
    else base_rgb_q<=i_rgb;
   end
  end
