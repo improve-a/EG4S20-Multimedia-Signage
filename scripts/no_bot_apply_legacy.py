@@ -89,6 +89,6 @@ for order,name in enumerate(['legacy_exhibit_media.v','legacy_exhibit_loader.v']
             </File>
 '''.replace('P&amp;R','P&R')
  s=s.replace('        </Verilog>',entry+'        </Verilog>')
-record('project/td_project/hx4s20_basic.al',s.encode(),'current project whitelist','removed all new cache/panel/scene entries; preserved IO/IP/constraints')
+record('project/td_project/hx4s20_basic.al',s.replace('\n','\r\n').encode(),'current project whitelist','removed all new cache/panel/scene entries; preserved IO/IP/constraints')
 (out/'legacy_integration_sources.json').write_text(json.dumps(dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),baseline=str(b),changes=rows),indent=2),encoding='utf-8')
 print(json.dumps({'status':'APPLIED','files':len(rows),'manifest':str(out/'legacy_integration_sources.json')}))
