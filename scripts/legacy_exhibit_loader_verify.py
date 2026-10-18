@@ -30,7 +30,7 @@ def sector_count(page,dual,zoom,focus):
  ys=set(range(480)) if d==1 else {(cy*d+y-240)//d for y in range(480)};stride=960 if dual else 1920
  return (2 if dual else 1)+sum(((512+(479-y)*stride)%512+stride+511)//512 for y in ys)*(2 if dual else 1)
 def main():
- p=argparse.ArgumentParser();p.add_argument('--media',type=Path);p.add_argument('--output',type=Path);p.add_argument('--smoke',action='store_true');p.add_argument('--quick',action='store_true');p.add_argument('--errors-only',action='store_true');p.add_argument('--compare-to',type=Path);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--media',type=Path);p.add_argument('--output',type=Path);p.add_argument('--smoke',action='store_true');p.add_argument('--quick',action='store_true');p.add_argument('--errors-only',action='store_true');p.add_argument('--compare-to',type=Path);p.add_argument('--only',action='append',default=[],help='run only each named case; repeat for a serial selected batch');a=p.parse_args()
  out=a.output or ROOT/'output/html_fidelity/no_bot/legacy_loader'/('run_'+time.strftime('%Y%m%d_%H%M%S'));out.mkdir(parents=True,exist_ok=False)
  media=a.media or out/'synthetic';media.mkdir(parents=True,exist_ok=True)
  if a.media is None:
@@ -51,6 +51,10 @@ def main():
  rejection += [('bad_right_header',1,1,0,0,11,28),('abort_with_sector_end',0,0,0,0,12,28),('short_data_sector',0,0,0,0,13,28)]
  if a.errors_only:cases=rejection
  elif not a.smoke:cases+=rejection
+ if a.only:
+  assert set(a.only)<=set(c[0] for c in cases),'Unknown or filtered --only case'
+  cases=[c for c in cases if c[0] in set(a.only)]
+ report['selected_cases']=[c[0] for c in cases]
  ok=True;iv=Path(r'C:\iverilog\bin\iverilog.exe');vvp=Path(r'C:\iverilog\bin\vvp.exe');report['tools']={str(x):sha(x) for x in [iv,vvp]};save()
  for case in cases:
   name,page,dual,zoom,focus,mode=case[:6];header_byte=case[6] if len(case)>6 else 28
@@ -65,7 +69,10 @@ def main():
   if c.returncode==0:
    args=[str(vvp),str(out/(name+'.vvp')),'+left='+str(hexes[ln]),'+right='+str(hexes[rn]),'+gold='+str(gold),'+left_len='+str(len(parsed[ln][0])),'+right_len='+str(len(parsed[rn][0])),'+expected_sectors='+str(sector_count(page,dual,zoom,focus))]
    if mode in [0,9]:args+=['+dump='+str(out/(name+'_rtl.hex'))]
-   v=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,timeout=900);log=v.stdout+v.stderr;(out/(name+'.run.log')).write_bytes(log.encode());step.update(exit_code=v.returncode,output=log.strip(),pass_=v.returncode==0 and 'TEST_PASS' in log)
+   v=subprocess.Popen(args,cwd=ROOT,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True);step.update(simulation_pid=v.pid,simulation_command=args);report['active_case']={'name':name,'pid':v.pid,'started':time.time()};save()
+   try:stdout,stderr=v.communicate(timeout=900)
+   except subprocess.TimeoutExpired:v.kill();stdout,stderr=v.communicate();step['timeout']=True
+   log=stdout+stderr;(out/(name+'.run.log')).write_bytes(log.encode());step.update(exit_code=v.returncode,output=log.strip(),pass_=v.returncode==0 and 'TEST_PASS' in log)
   else:step.update(pass_=False,output=c.stdout+c.stderr)
   if mode in [0,9] and (out/(name+'_rtl.hex')).exists():
    step['payload_sha256']=sha(out/(name+'_rtl.hex'))
@@ -74,7 +81,7 @@ def main():
     step['baseline_payload_sha256']=sha(old) if old.exists() else None
     step['payload_equal']=step['payload_sha256']==step['baseline_payload_sha256']
     step['pass_']=step['pass_'] and step['payload_equal']
-  step['wall_seconds']=time.time()-started;report['steps'].append(step);ok=ok and step['pass_'];save();print(name,'PASS' if step['pass_'] else 'FAIL',step['output'][-400:],flush=True)
+  step['wall_seconds']=time.time()-started;report.pop('active_case',None);report['steps'].append(step);ok=ok and step['pass_'];save();print(name,'PASS' if step['pass_'] else 'FAIL',step['output'][-400:],flush=True)
   if not step['pass_']:break
  report['state']='PASS' if ok else 'FAIL';report['finished']=time.time();report['wall_seconds']=report['finished']-report['started'];save();print('RESULT',report['state'],out/'verification.json',flush=True);return 0 if ok else 1
 if __name__=='__main__':raise SystemExit(main())

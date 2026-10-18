@@ -13,8 +13,8 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
-def summarize(run_id):
-    base = ROOT / 'evidence/builds' / run_id
+def summarize(run_id, base=None):
+    base = pathlib.Path(base) if base else ROOT / 'evidence/builds' / run_id
     run = base / 'runs' / run_id
     status = json.loads((run / 'status.json').read_text())
     stages = {}
@@ -27,16 +27,24 @@ def summarize(run_id):
     for key in ('SWNS', 'STNS', 'HWNS', 'HTNS'):
         match = re.search(r'\b' + key + r':\s*([-+\d.]+)ns', timing)
         timing_numbers[key] = float(match[1]) if match else None
+    check_minima = {}
+    for block in re.split(r'\nSlack\s*:', timing)[1:]:
+        slack = re.match(r'\s*([-+\d.]+)ns', block)
+        check = re.search(r'Check Type\s*:\s*(setup|hold|recovery|removal)', block, re.I)
+        if slack and check:
+            kind = check[1].lower()
+            check_minima[kind] = min(check_minima.get(kind, float('inf')), float(slack[1]))
     coverage = re.search(r'STA coverage\s*:\s*([\d.]+)%', timing)
     corners = all(re.search(r'^' + corner + r'\s*\|\s*yes\s+yes', timing, re.M)
                   for corner in ('Slow', 'Fast'))
     routed = bool(re.search(r'Confidence\s*:\s*Routed', timing))
     numerical_pass = (all(v is not None and v >= 0 for v in timing_numbers.values())
-                      and corners and routed)
+                      and corners and routed and len(check_minima) == 4
+                      and all(v >= 0 for v in check_minima.values()))
     area_path = run / 'final_area.rpt'
     area = area_path.read_text() if area_path.exists() else ''
     resources = {}
-    for key in ('lut', 'reg', 'bram', 'dsp', 'pll'):
+    for key in ('lut', 'reg', 'bram', 'bram32k', 'dsp', 'pll'):
         match = re.search(r'^#' + key + r'\s+(\d+)\s+out of\s+(\d+)\s+([\d.]+)%', area, re.M)
         if match:
             resources[key] = dict(used=int(match[1]), available=int(match[2]), percent=float(match[3]))
@@ -61,10 +69,14 @@ def summarize(run_id):
                  and bool(bits) and all(b['matches_supervisor'] for b in bits) and not errors)
     result = dict(run_id=run_id, stages=stages, flow_pass=flow_pass,
                   sta_numerical='PASS' if numerical_pass else 'FAIL_OR_MISSING',
-                  build='PENDING_COVERAGE_REVIEW' if flow_pass and numerical_pass else 'FAIL_OR_INCOMPLETE',
+                  build='BUILD_PASS' if flow_pass else 'FAIL_OR_INCOMPLETE',
+                  timing='PENDING_COVERAGE_REVIEW' if numerical_pass else 'TIMING_FAIL_OR_MISSING',
+                  check_minima_ns=check_minima,
                   timing_ns=timing_numbers, coverage_percent=float(coverage[1]) if coverage else None,
                   routed=routed, both_corners_setup_hold=corners, resources=resources,
-                  bits=bits, error_lines=errors, provenance=status,
+                  bits=bits, selected_bit=next((b for b in bits if '/phy_1/' in b['path']), None),
+                  bit_selection_note='phy_1 is regenerated after fix_hold; best_result may still be the earlier automatic bit and is not the delivery candidate.',
+                  error_lines=errors, provenance=status,
                   scope='Offline implementation only. Review check_timing/constraints separately; hardware unverified.')
     out = ROOT / 'evidence/build_summaries' / (run_id + '.json')
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -76,7 +88,8 @@ def summarize(run_id):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('run_id')
+    parser.add_argument('--base', type=pathlib.Path, help='Existing isolated run root, without copying artifacts')
     args = parser.parse_args()
     if not re.fullmatch(r'[A-Za-z0-9_-]+', args.run_id):
         parser.error('Invalid run id')
-    summarize(args.run_id)
+    summarize(args.run_id, args.base)

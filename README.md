@@ -1,82 +1,43 @@
-# 安路赛题一：HTML 分层展陈 FPGA 版本
+# 安路赛题一：无 Bot 商业展陈
 
-目标为 HX4S20C / EG4S20BG256，顶层 `top`，使用 TD 6.2.1 Engineer build 168116。当前开发分支 `codex/html-fidelity` 将认可的六页 HTML 原型移植为离线 FPGA 展示，包括真实图层运动与透明混合、纹理 Bot、字幕/OSD、双图比较、局部放大及 PCM 音柱。
+目标为 HX4S20C / EG4S20BG256，顶层 `top`，工具 TD 6.2.1 Engineer build 168116。当前分支 `codex/no-bot-legacy-integration` 采用已核对源码、位流和正常实板记录的 `ext_full_005` 顺序取图链路，选择性集成六页无 Bot 素材、字幕和控制。
 
-**最终生产源码96cd7bd已通过full07综合、布局布线和位流生成，包含mA对应静态电流的字幕修正。** 同域SD/内存/视频setup已转正，但跨域首级同步、hold/removal和约束覆盖仍未签核，TIMING为FAIL。六页/两组双图/两种放大共10静态代表帧及连续8动作帧已通过限定范围的显示链验证；3个未变静态页沿用既有捕获并附精确数据证明。位流、素材和实际输出的对应关系见本地`output/html_fidelity/delivery_manifest.json`。实时进度见 [STATUS](docs/harness/STATUS.md)，证据见 [EVIDENCE](docs/harness/EVIDENCE.md)，按键、素材要求和明日验收见 [FINAL_REPORT](docs/harness/FINAL_REPORT.md)。本次没有操作开发板、JTAG、物理 TF 卡或串口。
+构建源码冻结为 `6ee7c70bbf36c33f90a687f010c876de48f03ba6`。最终结果、四类时序、验证范围及交付清单见 [本轮交付报告](docs/no_bot_legacy_delivery.md)；素材格式、所有按键、HTML差异和明日实测步骤见 [媒体与验收说明](docs/no_bot_legacy_media.md)。**HARDWARE_NOT_TESTED**，完整加密IP系统仿真未验证。
 
-## 当前工作区与目录
+## 当前结构
 
-源码主工作区为 Windows `D:\FPGA\EG4S20-Multimedia-Signage`，Mac 目录用于本次传输和结果查看。历史 `hx4s20_extensions` / c16d3da 保持冻结。既有 `ssh thinkpad` 连接、工具路径和系统配置不变。
+- 六张640×480普通BMP和四张320×480独立面板按需加载到两个完整帧缓存；单路256字顺序显示读取，原读写FIFO与HDMI/SDRAM IP保持。
+- 六页、前后切页、自动轮播、暂停、真实双图、1×/2×/3×取图及六焦点，默认2×。
+- 输出端遮罩覆盖旧页后加载，完成实际写入、读端提交及完整资格帧后揭示；名义覆盖201.6ms、揭示302.4ms，加载等待另计。
+- OSD字幕卡、打字、页码、进度和真实PCM峰值条继续实时合成；Bot专用实例与ROM已移除。
+- WAV读取、音量/静音、HDMI音频连接及EOF重启保留。当前镜像首次启动/每次循环仅重新扫描的理论下界已约6.04秒，另加卡等待和预填；不属于无缝循环。
+
+当前生产工程不使用 `html_layer_cache`、四字随机取图或HFXL/HFXC资源。精细CSS分层动画已按授权近似为静态BMP与输出转场。专用加载器仅接受本套640/320×480媒体约定，不声明支持任意BMP尺寸。旧分层结果保留在 `codex/no-bot-exhibit`；`docs/harness/` 及旧渲染脚本是历史证据，不是本轮交付入口。
+
+## 目录与复现
+
+Windows事实源为 `D:\FPGA\EG4S20-NoBot`，Mac负责SSH调度和少量预览。原Windows工程及用户改动不覆盖；不在Google Drive构建。
 
 | 路径 | 用途 |
-| --- | --- |
-| `rtl/ext/`, `rtl/media_controls.v`, `rtl/display_commit.v` | 自研渲染、字幕、音频、参数控制与显示提交 |
-| `project/` | TD 工程清单及继承的引脚/时序约束 |
-| `scripts/`, `harness/`, `tests/` | 素材生成、集成回放、仿真及隔离构建 |
-| `output/html_fidelity/media/` | 正式六张 HFXL BMP、07_MUSIC.WAV 和哈希清单；本地交付文件 |
-| `output/html_fidelity/builds/` | 每次构建独立的 NTFS 源快照、日志和报告 |
-| `output/html_fidelity/display_chain/` | 实际 DUT 帧、原型对照、差分及来源记录 |
-| `docs/harness/` | 本次四份计划、状态、证据和验收报告 |
-| `output/venue_unified_offline/` | 前一版公共场馆系统的历史成果，不能替代本分支结果 |
+|---|---|
+| `rtl/ext/legacy_exhibit_media.v`、`legacy_exhibit_loader.v` | 旧式双缓存管理及真实加载时双图/缩放 |
+| `rtl/ext/video_transition.v`、`html_video_overlay.v` | 单路输出遮罩、既有OSD与峰值条 |
+| `scripts/no_bot_apply_legacy.py` | 从精确校验的本地旧版原件生成最小集成顶层/工程 |
+| `docs/no_bot_legacy_inputs.json` | 受忽略的厂商派生输入和ROM身份 |
+| `output/html_fidelity/no_bot/` | 本轮唯一状态入口、媒体、真实RTL验证及交付清单 |
+| `artifacts/no_bot_legacy_004_source.zip` | 包含本地厂商依赖的冻结构建输入快照 |
+| `output/html_fidelity/builds/no_bot_legacy_004/` | TD日志、阶段状态、最终路由及位流 |
 
-## 功能与限制
+公开Git不包含完整官方/加密IP、派生骨架、位流和大素材。需保留原件及本地依赖；Git bundle不等于完整可综合项目。补齐步骤见 [依赖说明](docs/DEPENDENCIES.md)，最终输入哈希以本轮清单为准，不能用旧基线检查器覆盖当前集成结果。
 
-六页使用有限场景资源，背景采用精确 RGB 调色板，主图/文字图层读取实际 RGBA 纹理。Bot、字幕与参数叠加独立于底图局部 1×/2×/3×放大。双图比较使用两份独立产品资源。普通 BMP 路径保留输入自适应缩放；扫描容量八图，正式展示包是六页。
-
-视频为 640×480，像素时钟 25 MHz，总时序 800×525，约 59.524 Hz。默认轮播间隔 5.4 秒，按 0.1 秒调节。实际按键及范围以 [验收报告](docs/harness/FINAL_REPORT.md) 为准。
-
-音频为真实 WAV/PCM，音柱取自峰值/包络历史；没有 FFT、TTS 或页面语音。80 秒 PCM16/48 kHz 单声道音轨结束后保持静音。Bot 的纹理量化、仿射形变和固定点运动与原型仍有明确差异，报告中逐项说明，不给未经测量的还原百分比。
-
-## 公开内容和本地依赖
-
-公开仓库仅包含可确认的自研源码、测试、生成器、配置和最小集成补丁。官方/派生顶层、存储链路、生成及加密 IP、厂商模型、位流、未获再分发许可的完整素材不随仓库公开。首次克隆不能直接整机综合；先按 [依赖说明](docs/DEPENDENCIES.md) 补齐 [精确本地依赖](docs/local_dependencies.json)。原件与公开历史不修改。
-
-`scripts/apply_html_integration.py`、`apply_html_sd_controller.py`、`apply_html_memory_controller.py` 对校验通过的本地原件应用最小集成修改，拒绝未知内容并支持重复运行。自研模块不替代官方 IP。生成的本地资产及其许可/来源记录也必须补齐；Git 源码包不等于已完整封装的可综合工程。 `local_dependencies.json`和`local_dependencies.py --check`核对的是冻结基线；当前59项中有6项经明确集成回放修改，直接用基线检查器检查最终工程会报告这6项差异，不能据此覆盖回原版。最终身份以`output/html_fidelity/audit/full07_freeze.json`及对应回放证据为准。当前Windows构建使用下节`build.py`入口；依赖说明中的旧Mac快照默认路径不作为本轮构建位置。
-
-## 构建和验证
-
-只在 Windows 主仓库启动明确的一次构建，脚本生成干净、唯一的 NTFS 快照，不在源码目录或 Google Drive 构建。示例命令会真正启动工具，按实际授权使用：
+以下命令仅在已准备的Windows工作树复现媒体检查；构建示例会启动一次真实TD流程，应按后续授权运行并使用全新run-id。
 
 ```powershell
-D:\python3.12.3\python.exe scripts/build.py launch replay_YYYYMMDD_01 --timeout 1800
-D:\python3.12.3\python.exe scripts/build.py status replay_YYYYMMDD_01
+D:\python3.12.3\python.exe -X utf8 scripts\no_bot_media_image.py --validate-only
+D:\python3.12.3\python.exe -X utf8 scripts\build.py launch new_run_id --timeout 3600
+D:\python3.12.3\python.exe -X utf8 scripts\build.py status new_run_id
 ```
 
-工具为 `G:\anlu\bin\td_commands_prompt.exe`。生成的 GUI 工程位于 `output\html_fidelity\builds\<run_id>\work\design\td_project\hx4s20_basic.al`。每次保留源码 SHA256、工具身份、PID、阶段状态、退出码、耗时与报告来源。综合诊断不能代替完整布局布线/位流，历史成功不能代替之后修改的验证。
+正式位流只取004的 `phy_1/hx4s20_basic.bit`，其在hold修复后重新生成；完整路径及SHA见交付报告。媒体采用 `output/html_fidelity/no_bot/media/` 的UI01..06、PN01..04和07_MUSIC.WAV，一套包完成六页及双图。普通拷贝不能保证连续FAT链和物理扫描顺序；今夜未操作实体卡或FPGA。
 
-模块/组件测试、完整系统仿真、SYN、PNR、STA、BITGEN 和硬件状态分别报告。加密 SDRAM/HDMI IP 全系统仿真和本版本硬件均未验证。当前资源与时序限制见 STATUS；不通过添加无依据的例外制造 STA_PASS。
-
-## 初始化资源复核
-
-当前数值ROM包括眼睛半径表和OSD参数字形表。`html_osd_utility_rom.py`保留现有576字节颜色表，再装入RTL原有24个5×7参数字符；它不替换正文中文字形。正文继续使用实际用字覆盖率图集。
-
-在已补齐本地素材的工作区，可把以下结果生成到独立输出目录并与当前HEX/BIN哈希比较；这两条命令不会修改RTL：
-
-```powershell
-D:\python3.12.3\python.exe scripts/html_bot_eye_radius.py --output-dir output/html_fidelity/numeric_replay
-D:\python3.12.3\python.exe scripts/html_osd_utility_rom.py --output-dir output/html_fidelity/numeric_replay
-```
-
-完整资源生成顺序是素材/字形与caption columns、scene/layer数值表、OSD颜色表、上述OSD共享字体表，最后运行 `scripts/html_rom_init.py` 逐字校验HEX并导出TD使用的明确位宽二进制初始化文本。不要把早期结构实验用的 `html_bot_eye_tables.py` 当作当前眼睛ROM的再生入口。构建快照必须同时保留仿真HEX和TD BIN，证据见 `output/html_fidelity/audit/rom_init_current_wording_v1.json`。
-
-后台读写压力使用真实511容量FIFO与Gray CDC，复现命令如下。该测试采用40MHz存储/25MHz视频/100MHz源时钟、四字物理组及有界刷新/返回延时；不替代加密SDRAM PHY或实板验证。默认旧参数保留用于历史反例，不能把它当当前顶层配置。
-
-```powershell
-D:\python3.12.3\python.exe -X utf8 scripts/html_layer_render_verify.py --whole-bridge --writer-stress --real-fifo --read-burst 128 --transition-age 25 --write-reserve 384 --case phoenix --run-id layer_final_real_fifo_phi25_v1
-```
-
-当前顶层明确启用物理读排空/写入准入，读burst128、写burst256，显示FIFO达到384字后才锁定后台写入。完整busy继续用于帧握手与flush，新增physical_busy只表示已经发送且尚未完成的读取。每次复现使用新的run-id。
-
-## 素材与后续实板验收
-
-只使用 `output/html_fidelity/media/` 的 UI01.BMP 至 UI06.BMP 与 07_MUSIC.WAV。BMP 含原生图像及标识明确的 HFXL/HFXC 尾部资源，不能重编码、裁剪头或删除尾部。读取器扫描前 64 MiB 的物理文件头，不按 FAT 文件名排序；要求连续存储、正确物理发现顺序和无残留旧头。普通复制顺序不能证明卡布局。
-
-离线 `.img` 是普通测试文件，不能当素材文件复制入卡；其中模拟 LBA 也不是物理卡证据。只读检查器为 `scripts/html_inspect_card.py`。任何写卡、烧录或实板测试另行授权；明日验收顺序已列入 FINAL_REPORT。
-
-## Git 和历史证据
-
-所有修改已在 `codex/html-fidelity` 分支正常提交。2026-10-15 23:06 PDT正常推送7c6fc49时无法连接github.com:443，21.156秒后退出128；本轮未推送成功，后续记录推送结果的文档提交也保留本地。不强推或合并main，未改网络/SSH/认证配置。最终本地HEAD和日志见本地交付清单及`output/html_fidelity/audit/git_push_final.json`。保留历史 [统一版报告](output/venue_unified_offline/FINAL_REPORT.md)，其中历史 LUT、时序和实板观察不适用于当前分层版本。
-
-已有 Noto Sans SC 的 SIL OFL 1.1 和合成音频 CC0 声明继续随原包保留。不擅自为其他来源代码或图片补写许可证，公开可读不等于获得再分发许可。
-
-正式字幕还包含一处局部事实措辞修正：mA对应静态电流，不是静态功耗。`html_caption_coverage.py --correct-current --layout <原darkpaper布局> --map <原228字形map> --css <原CSS路径> --out <独立输出目录>` 保留既有字形ID并追加“流”228，仅修改Eagle两个字符；之后生成caption columns和15份BIN。原输入和修正输出均保留本地，系统字体不发布。当前字模229字形/9160word，仍使用5个32K块。
+已有Noto Sans SC的SIL OFL1.1和合成音频CC0声明继续保留。不为其他来源代码/图片补写许可证。

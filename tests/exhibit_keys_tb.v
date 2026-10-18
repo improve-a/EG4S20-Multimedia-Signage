@@ -25,8 +25,8 @@ initial begin
  repeat(3)hold4;if(mode!=3)$fatal(1,"intervalmode");
  tap2;if(ms!=5500)$fatal(1,"interval+0.1s");tap4;if(ms!=5400)$fatal(1,"interval-0.1s");
  repeat(3)hold4;if(mode!=6)$fatal(1,"zoommode");
- tap2;if(scale!=1)$fatal(1,"2x");tap2;if(scale!=2)$fatal(1,"3x");tap2;if(scale!=0)$fatal(1,"1xwrap");
- tap4;if(scale!=2)$fatal(1,"zoomdecrement");
+ if(scale!=1)$fatal(1,"default2x");tap2;if(scale!=2)$fatal(1,"3x");tap2;if(scale!=0)$fatal(1,"1xwrap");tap2;if(scale!=1)$fatal(1,"2x");
+ tap4;if(scale!=0)$fatal(1,"zoomdecrement");tap4;if(scale!=2)$fatal(1,"zoomreversewrap3x");
  for(i=1;i<=6;i=i+1)begin hold2;if(focus!=i%6 || scale!=2)$fatal(1,"focuslongexclusive");end
  if(nexts!=1 || cmpchanges!=1)$fatal(1,"zoomcreatedpageevent");
  k3=0;tick(12);k3=1;tick(12);if(!paused || muted)$fatal(1,"pause");

@@ -28,7 +28,7 @@ integer pos,location,lval,rval,bar_width,ticker_pos,ref_scroll=0;
 reg ref_prev_vs=0;
 video_transition transition(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),
  .enable(1'b1),.mode(2'd0),.frame_start(vs),.candidate_toggle_async(1'b0),
- .commit_ack_toggle(1'b0),.forwarded_commit_toggle(forwarded),
+ .display_fault_async(1'b0),.commit_ack_toggle(1'b0),.forwarded_commit_toggle(forwarded),
  .o_hs(th),.o_vs(tv),.o_de(td),.o_rgb(trgb),.transition_busy(busy));
 video_extensions #(.ENABLE_AUDIO_VIS(1)) extensions(.clk(clk),.rst(rst),
  .i_hs(th),.i_vs(tv),.i_de(td),.i_rgb(trgb),.config_data(cfg),
