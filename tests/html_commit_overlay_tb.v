@@ -20,8 +20,8 @@ module html_commit_overlay_tb;
  html_video_overlay overlay(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(24'h123456),
   .config_data(config_data),.page_event(page_event),.page_index(active_view[2:0]),.dual_enable(active_view[3]),
   .page_reverse(active_view[4]),.focus(3'd0),.audio_peak(16'd0),.audio_status(4'd0),.o_hs(oh),.o_vs(ov),.o_de(od),.o_rgb(rgb));
- integer ack_delay=10,waited=0,testcase,events=0,osd_seen=0,bot_seen=0;
- integer cycle=0,event_cycle=0,osd_margin=0,bot_margin=0;
+ integer ack_delay=10,waited=0,testcase,events=0,osd_seen=0;
+ integer cycle=0,event_cycle=0,osd_margin=0;
  reg watching=0;
  always @(posedge clk)begin
   if(rst)begin waited<=0;mem_ack<=0;end
@@ -38,12 +38,7 @@ module html_commit_overlay_tb;
     $fatal(1,"OSD missed first committedframe");
    osd_seen=osd_seen+1;
   end
-  if(watching&&overlay.bot.frame_start)begin
-   bot_margin=cycle-event_cycle;
-   #1;
-   if(events!=1||overlay.bot.reaction_age!==0)$fatal(1,"Bot reaction delayed oneframe");
-   bot_seen=bot_seen+1;
-  end
+
  end
  task step;begin @(posedge clk);#3;@(negedge clk);end endtask
  initial begin
@@ -54,14 +49,14 @@ module html_commit_overlay_tb;
    timing.color_bar_m0.vs_reg=1;timing.color_bar_m0.vs_reg_d0=1;
    timing.video_vs_d0=1;timing.video_vs_d1=1;
    repeat(30)step;
-   overlay.osd.typed_count=20;overlay.bot.reaction_age=127;
+   overlay.osd.typed_count=20;
    candidate=testcase==0 ? 5'd1 : testcase==1 ? 5'd18 : 5'd5;
    ack_delay=testcase==0 ? 10 : testcase==1 ? 400 : 1400;
-   commit_toggle=1;events=0;osd_seen=0;bot_seen=0;watching=1;
-   wait(osd_seen==1&&bot_seen==1);watching=0;wait(od);step;
+   commit_toggle=1;events=0;osd_seen=0;watching=1;
+   wait(osd_seen==1);watching=0;wait(od);step;
    if(!overlay.osd.swap_palette_ready)$fatal(1,"serialswap palette missed first activepixel");
    if(overlay.osd.page!==candidate[2:0]||active_view!==candidate||overlay.osd.seconds_fraction!==4)$fatal(1,"committed config mismatch");
-   $display("COMMIT_PASS ACKdelay%0d clocks OSDmargin%0dclocks Botmargin%0dclocks page%0d reverse%0d firstframeage%0d",ack_delay,osd_margin,bot_margin,active_view[2:0],active_view[4],overlay.bot.reaction_age);
+   $display("COMMIT_PASS ACKdelay%0d clocks OSDmargin%0dclocks page%0d reverse%0d captiondelay%0d",ack_delay,osd_margin,active_view[2:0],active_view[4],overlay.osd.typing_delay);
   end
   $display("TEST_PASS actualdisplay_commit + real640x480timing + overlays: first committedframe reaction,captionreset,fraction capture,10/400/1400clockACKdelays");$finish;
  end

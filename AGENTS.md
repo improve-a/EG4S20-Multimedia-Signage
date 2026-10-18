@@ -29,3 +29,10 @@
 - User authorizes local RTL/reset/CDC/constraint repairs, relevant offline regression, serial fresh TD builds and normal branch push on codex/timing-fix. Preserve current functionality/assets/interface rates; no hardware or system/network changes.
 - New scope supersedes earlier reset-preservation restrictions only for justified local timing fixes. Root owns Git/top/SDC/builds; up to two necessary explicit gpt-6.1-sol/high children currently assigned, no recursive delegation.
 - Separate BUILD, TIMING, REGRESSION and HARDWARE_NOT_TESTED; no blanket timing exceptions or relaxed clock periods. Keep prior deliveries and source/report provenance.
+
+## Current no-Bot authorization — 2026-10-18
+
+- Latest pasted user request governs this isolated worktree. Root plus up to three non-Astra gpt-6.1-sol children, no recursive delegation.
+- Offline 8–10h scope: retain all non-Bot features, remove Bot hardware and visual resources, exact reference hash in output/html_fidelity/no_bot/STATUS.json.
+- Root owns Git/top/storage bridge/builds; children own disjoint files. Serial fresh builds only. Preserve existing clocks/reset/PLL/pins/encrypted IP and original worktree.
+- No JTAG, hardware, physical cards, software installation, authentication or system changes.

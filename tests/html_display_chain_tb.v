@@ -1,14 +1,35 @@
 `timescale 1ns/1ps
-// Real pixel timing/read FIFO/controller/address mapper/video/OSD/Bot path.
+// Real pixel timing/read FIFO/controller/address mapper/video/no-Bot OSD path.
 // Only the encrypted SDRAM physical core is replaced by an ordered bounded-
 // latency user-interface model. No HDMI PHY, SD-card, board or timing signoff.
-module html_display_chain_tb;
+module html_display_chain_tb #(parameter SDRAM_DATA_EARLY=1);
  reg mem_clk=0,video_clk=0;
  always #12.5 mem_clk=~mem_clk; // inherited40MHz user memory clock
  always #20 video_clk=~video_clk; // inherited25MHz =>59.5238095Hz
  reg rst=1,fault_reset=0;
  wire memory_rst=rst|fault_reset;
  reg refresh=0;
+ wire native_busy,native_rw,native_op;wire[1:0]native_state;
+ wire sdram_busy=refresh|native_busy;
+ `ifdef HTML_NATIVE_BUSY
+ native_rw_busy_selected_cone native(.clk(mem_clk),.rst(memory_rst),.App_rd_en(mapped_read_enable),.App_wr_en(write_cmd),.native_ref_vld(1'b0),.native_ref_over(1'b0),.Sdr_busy(native_busy),.rw_vld(native_rw),.sdr_op_over(native_op),.state_debug(native_state));
+ `else
+ assign native_busy=1'b0;assign native_rw=1'b0;assign native_op=1'b0;assign native_state=0;
+ `endif
+ integer native_starts=0,native_groups=0;reg previous_physical_read=0;
+ `ifdef HTML_NATIVE_BUSY
+ always@(posedge mem_clk)begin
+  if(memory_rst)previous_physical_read<=0;
+  else begin
+   if(mapped_read_enable&&!previous_physical_read)begin
+    if(native_busy)$fatal(1,"nativeReadRestartWhileBusy");native_starts=native_starts+1;
+   end
+   if(mapped_read_enable&&mapped_addr[1:0]==0)native_groups=native_groups+1;
+   if(native.clear_rw&&(native.rd_shift[0]||native.wr_shift[0]))$fatal(1,"nativeOldFallClearsNewStream");
+   previous_physical_read<=mapped_read_enable;
+  end
+ end
+ `endif
  `ifdef HTML_LAYERED
  reg[4:0]requested_view=0;wire[4:0]active_view;reg source_commit=1;
  wire commit_req,reader_ack,commit_ack;reg commit_previous=0;
@@ -50,7 +71,7 @@ module html_display_chain_tb;
  integer mem_cycle=0;
  wire normal_memory_response=response_count!=0&&response_due[response_rp]<=mem_cycle;
  wire memory_response=inject_response|normal_memory_response;
- wire [31:0] memory_data=inject_response?32'h12345600:response_data[response_rp];
+ wire [31:0] memory_data=inject_response?32'h12345600:response_data[response_rp + ((SDRAM_DATA_EARLY&&normal_memory_response)?9'd1:9'd0)];
  wire [23:0] delay_rgb,out_rgb;wire dh,dv,dd,oh,ov,od;
  wire [50:0] config_data={4'd4,4'd0,1'b0,1'b0,1'b1,8'd0,4'd8,zoom,transition_mode,
                           1'b1,8'd5,3'd2,9'd0,3'd0};
@@ -66,7 +87,7 @@ module html_display_chain_tb;
  assign physical_busy=1'b0;
 `endif
  frame_read_write #(.READ_BURST_SIZE(READER_BURST_SIZE),.READ_DRAIN_CYCLES(READER_DRAIN_CYCLES),.ENABLE_READ_SOURCE(1),.ENABLE_PHYSICAL_FAIRNESS(PHYSICAL_FAIRNESS),.WRITE_RESERVE_WORDS(384)) reader(.rst(memory_rst),.mem_clk(mem_clk),.Sdr_init_done(1'b1),
-  .Sdr_init_ref_vld(refresh),.Sdr_busy(refresh),
+  .Sdr_init_ref_vld(refresh),.Sdr_busy(sdram_busy),
   .App_rd_en(raw_read_enable),.App_rd_addr(raw_addr),.Sdr_rd_en(logical_response),.Sdr_rd_dout(mapped_response),
   .read_clk(video_clk),
 `ifdef HTML_LAYERED
@@ -85,12 +106,15 @@ module html_display_chain_tb;
   .read_source_physical_busy(physical_busy),.read_burst_busy_mem(read_burst_busy_mem),.write_pending_mem(write_pending_mem),
   .display_valid_video(display_valid),.fifo_fault(fifo_fault));
  `ifdef HTML_LAYERED
- html_layer_memory_bridge #(.ENABLE_PHYSICAL_FAIRNESS(1)) bridge(.layer_resources_enabled(1'b1),.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(commit_req),
+ html_layer_memory_bridge #(.ENABLE_PHYSICAL_FAIRNESS(1),.SDRAM_DATA_EARLY(SDRAM_DATA_EARLY),.ENABLE_STREAM_HANDSHAKE(1)) bridge(.layer_resources_enabled(1'b1),.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(commit_req),
 `else
  html_memory_bridge bridge(.mem_clk(mem_clk),.rst(memory_rst),.video_read_req(timing_req),
 `endif
   .read_accept_mem(read_accept),.active_view(active_view),.zoom(zoom),.transition_mode(transition_mode),.focus(focus),
   .write_busy_mem(write_busy_mem),.mem_ready(1'b1),.refresh_active(refresh),
+ `ifdef HTML_LAYERED
+   .mem_busy(sdram_busy),
+ `endif
   .logical_ready(logical_ready),.logical_response(logical_response),.busy(bridge_busy),
   .panels_ready(1'b1),.raw_read_en(raw_read_enable),.read_en(mapped_read_enable),.read_addr(mapped_addr),
   .response(memory_response),.memory_data(memory_data),.pixel_data(mapped_response),.fault(map_fault)
@@ -184,7 +208,7 @@ module html_display_chain_tb;
    mem_cycle<=mem_cycle+1;
    if(refresh)begin
     if(refresh_left<=1)refresh<=0;else refresh_left=refresh_left-1;
-   end else if(!bridge_busy&&!reader.App_rd_busy&&!reader.App_wr_busy&&mem_cycle-last_refresh>400)begin
+   end else if(!native_busy&&!bridge_busy&&!reader.App_rd_busy&&!reader.App_wr_busy&&mem_cycle-last_refresh>400)begin
     refresh<=1;refresh_left=20;last_refresh=mem_cycle;refresh_starts=refresh_starts+1;
    end
    if(refresh)refresh_high=refresh_high+1;
@@ -276,11 +300,11 @@ module html_display_chain_tb;
    end
   end
  end
- //32 registered timing stages from video_timing_data output through video_delay,
- //pixel_adjust, OSD and Bot. Exact sync comparison runs even in blanking.
- reg [2:0] expected_sync[0:31];
+ //27 registered timing stages from video_timing_data output through video_delay,
+ //pixel_adjust and no-Bot OSD. Exact sync comparison runs even in blanking.
+ reg [2:0] expected_sync[0:26];
  reg old_timing_de=0,old_timing_vs=0;
- integer timing_x=0,timing_y=0,xi[0:31],yi[0:31],q;
+ integer timing_x=0,timing_y=0,xi[0:26],yi[0:26],q;
  integer sync_checks=0,base_pixel_checks=0,frame_pixels=0,fd=0,frame_number=0;
  time capture_first_time,capture_last_time;
  integer out_vs_count=0;
@@ -291,16 +315,16 @@ module html_display_chain_tb;
  always @(posedge video_clk)begin
   if(rst)begin
    old_timing_de=0;old_timing_vs=0;timing_x=0;timing_y=0;prev_out_vs=0;
-   for(q=0;q<32;q=q+1)begin expected_sync[q]=0;xi[q]=0;yi[q]=0;end
+   for(q=0;q<27;q=q+1)begin expected_sync[q]=0;xi[q]=0;yi[q]=0;end
   end else begin
    if(vs&&!old_timing_vs)timing_y=0;
    else if(old_timing_de&&!de)timing_y=timing_y+1;
    if(!de||!old_timing_de)timing_x=0;else timing_x=timing_x+1;
    old_timing_de=de;old_timing_vs=vs;
-   for(q=31;q>0;q=q-1)begin expected_sync[q]=expected_sync[q-1];xi[q]=xi[q-1];yi[q]=yi[q-1];end
+   for(q=26;q>0;q=q-1)begin expected_sync[q]=expected_sync[q-1];xi[q]=xi[q-1];yi[q]=yi[q-1];end
    expected_sync[0]={hs,vs,de};xi[0]=timing_x;yi[0]=timing_y;
    #1;
-   if({oh,ov,od}!==expected_sync[31])$fatal(1,"full-chain timing alignment");
+   if({oh,ov,od}!==expected_sync[26])$fatal(1,"full-chain timing alignment");
    sync_checks=sync_checks+1;
    if(ov&&!prev_out_vs)begin
     out_vs_count=out_vs_count+1;
@@ -309,17 +333,17 @@ module html_display_chain_tb;
    prev_out_vs=ov;
    if(verify_pixels&&od)begin
     if(frame_pixels==0)capture_first_time=$time;capture_last_time=$time;
-    if(^out_rgb===1'bx)$fatal(1,"unknown DUT pixel x%0d y%0d",xi[31],yi[31]);
-    if(xi[31]>=640||yi[31]>=480)$fatal(1,"bad active geometry");
+    if(^out_rgb===1'bx)$fatal(1,"unknown DUT pixel x%0d y%0d",xi[26],yi[26]);
+    if(xi[26]>=640||yi[26]>=480)$fatal(1,"bad active geometry");
     // Static A-layer equality outside all B/C overlays. This is a data oracle,
     // not a software image renderer; every exported pixel comes from out_rgb.
-    if(yi[31]<380&&!(xi[31]>=500&&yi[31]<105)
+    if(((yi[26]<380&&!(xi[26]>=500&&yi[26]<105))||(xi[26]>=510&&yi[26]>=105))
 `ifdef HTML_LAYERED
        &&layer_static
 `endif
     )begin
-     wanted=expected_rgb(yi[31]*640+xi[31],capture_view,capture_zoom);
-     if(out_rgb!==wanted)$fatal(1,"source RGB mismatch frame%0d x%0d y%0d got%h expected%h",frame_number,xi[31],yi[31],out_rgb,wanted);
+     wanted=expected_rgb(yi[26]*640+xi[26],capture_view,capture_zoom);
+     if(out_rgb!==wanted)$fatal(1,"source RGB mismatch frame%0d x%0d y%0d got%h expected%h",frame_number,xi[26],yi[26],out_rgb,wanted);
      base_pixel_checks=base_pixel_checks+1;
     end
     if(capturing)$fwrite(fd,"%c%c%c",out_rgb[23:16],out_rgb[15:8],out_rgb[7:0]);
@@ -333,12 +357,7 @@ module html_display_chain_tb;
   // execute in real DUT logic. The natural choreography has separate tests.
   overlay.osd.swap_age=31;overlay.osd.swap_values=overlay.osd.SWAP_STEADY;overlay.osd.palette_loading=0;overlay.osd.palette_valid0=0;overlay.osd.swap_palette_ready=1;
   overlay.osd.typed_count=127;overlay.osd.typing_delay=0;overlay.osd.typing_phase=0;
-  overlay.osd.speaking=0;overlay.osd.event_pending=0;overlay.osd.cursor_frame=64;
-  overlay.bot.frame_count=128;overlay.bot.breath_phase=0;overlay.bot.reaction_age=255;
-  overlay.bot.blink_wait=500;overlay.bot.blink_phase=0;overlay.bot.event_pending=0;
-  overlay.bot.gaze_x=0;overlay.bot.gaze_y=0;overlay.bot.gaze_vx=0;overlay.bot.gaze_vy=0;
-  overlay.bot.tilt=0;overlay.bot.tilt_v=0;overlay.bot.shape=0;overlay.bot.shape_v=0;
-  overlay.bot.hop=0;overlay.bot.hop_v=0;
+  overlay.osd.event_pending=0;overlay.osd.cursor_frame=64;
  end endtask
  task render_view;
  input [4:0] view;
@@ -366,7 +385,6 @@ module html_display_chain_tb;
   wait(frame_pixels==307200);@(negedge video_clk);verify_pixels=0;
   if(capturing)begin capturing=0;$fclose(fd);end
   if(fifo_fault||map_fault)$fatal(1,"fault after completed visible frame");
-  $display("FRAME_PASS %0s pixels%0d accepted%0d returned%0d view%h zoom%0d age%0d first_pixel_time%0t last_pixel_time%0t",filename,frame_pixels,accepted,returned,view,magnify,overlay.bot.reaction_age,capture_first_time,capture_last_time);$fflush();
  end endtask
  integer f,subset=0;
  initial begin
@@ -411,7 +429,7 @@ module html_display_chain_tb;
   end
   if(subset==4)render_view(5'd1,2'd2,1,""); // checked static warmup, no exported image
   if(subset==0||subset==4)begin
-  // A real committed page event starts aperture, gaze and caption reset together.
+  // A real committed page event starts aperture and caption reset together.
   `ifdef HTML_LAYERED
   release bridge.geometry.motion.frame_age;layer_static=0;
 `endif
@@ -419,14 +437,12 @@ module html_display_chain_tb;
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action00.ppm");
   if(overlay.osd.typed_count!=0)$fatal(1,"caption started before550ms");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action01.ppm");
-  if(overlay.bot.gaze_x<=0)$fatal(1,"committed page event did not drive gaze");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action02.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action03.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action04.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action05.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action06.ppm");
   render_view(5'd2,2'd0,0,"output/html_fidelity/display_chain/action07.ppm");
-  if(overlay.bot.tilt<=0)$fatal(1,"body did not follow page gaze at90ms");
   end
   if(frame_number!=(subset==0?18:subset==4?9:subset==3?4:3))$fatal(1,"subset frame count");
   // Negative diagnostics: an unsolicited SDRAM response must trip tag fault.

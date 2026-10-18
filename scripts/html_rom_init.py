@@ -7,13 +7,12 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def generate(root=ROOT):
     results=[]
-    specs=[("bot_body_argb4444.hex",10400,16),("html_glyph_coverage.hex",9160,16)]
+    specs=[("html_glyph_coverage.hex",9640,16)]
     if (Path(root)/"rtl/ext/html_assets/html_caption_columns.hex").exists():
-        specs.append(("html_caption_columns.hex",8114,18))
+        specs.append(("html_caption_columns.hex",8338,18))
     # Every optional layer/animation resource keeps simulation hex and TD binary
     # initialization numerically identical in the immutable build snapshot.
-    optional=[("html_eye_radius.hex",1024,9),
-              ("html_osd_swap_palette.hex",576,8),
+    optional=[("html_osd_swap_palette.hex",576,8),
               ("html_osd_swap_font.hex",1024,8),
               ("html_motion_alpha_scale.hex",1536,16),
               ("html_motion_offset.hex",1536,16),

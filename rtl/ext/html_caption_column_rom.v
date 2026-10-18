@@ -1,6 +1,6 @@
 // Synchronous fixed-layout glyph-column metadata. One-cycle ROM read.
 module html_caption_column_rom #(
- parameter WORDS=8114,ADDR_BITS=13,
+ parameter WORDS=8338,ADDR_BITS=14,
  parameter INIT_FILE="rtl/ext/html_assets/html_caption_columns.hex"
 )(input clk,input [ADDR_BITS-1:0] address,output [17:0] data);
 `ifdef HTML_SIM

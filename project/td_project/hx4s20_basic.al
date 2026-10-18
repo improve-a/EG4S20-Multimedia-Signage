@@ -439,14 +439,6 @@
                     <Attr Name="CompileOrder" Val="73"/>
                 </FileInfo>
             </File>
-            <File Path="../user_source/hdl_source/ext/html_bot_overlay.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="74"/>
-                </FileInfo>
-            </File>
             <File Path="../user_source/hdl_source/ext/html_osd_overlay.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
@@ -597,14 +589,6 @@
                     <Attr Name="UsedInP&R" Val="true"/>
                     <Attr Name="BelongTo" Val="design_1"/>
                     <Attr Name="CompileOrder" Val="94"/>
-                </FileInfo>
-            </File>
-            <File Path="../user_source/hdl_source/ext/html_eye_radius_rom.v">
-                <FileInfo>
-                    <Attr Name="UsedInSyn" Val="true"/>
-                    <Attr Name="UsedInP&R" Val="true"/>
-                    <Attr Name="BelongTo" Val="design_1"/>
-                    <Attr Name="CompileOrder" Val="95"/>
                 </FileInfo>
             </File>
         </Verilog>

@@ -6,14 +6,12 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 BASE=['rtl/ext/html_osd_swap_rom.v','rtl/ext/html_caption_column_rom.v','rtl/ext/html_rom16.v','rtl/ext/html_osd_overlay.v','rtl/ext/html_assets/html_caption_map.v']
 TESTS={
- 'bot_event_timing':['rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','tests/html_bot_event_timing_tb.v'],
- 'bot_math':['rtl/ext/html_rom16.v','rtl/ext/html_bot_overlay.v','tests/html_bot_math_tb.v'],
+ 'no_bot_overlay':BASE+['rtl/ext/pixel_adjust.v','rtl/ext/html_video_overlay.v','tests/no_bot_overlay_tb.v'],
  'zoom_indicator':BASE+['rtl/ext/exhibit_viewport.v','tests/html_zoom_indicator_tb.v'],
  'interval_fraction':BASE+['tests/html_interval_fraction_tb.v'],
- 'commit_overlay':BASE+['rtl/SD/color_bar.v','rtl/SD/video_timing_data.v','rtl/display_commit.v','rtl/ext/pixel_adjust.v','rtl/ext/html_bot_overlay.v','rtl/ext/html_video_overlay.v','tests/html_commit_overlay_tb.v'],
+ 'commit_overlay':BASE+['rtl/SD/color_bar.v','rtl/SD/video_timing_data.v','rtl/display_commit.v','rtl/ext/pixel_adjust.v','rtl/ext/html_video_overlay.v','tests/html_commit_overlay_tb.v'],
 }
 if '--columns' in sys.argv:TESTS['osd_columns']=BASE+['tests/models/html_osd_reference.v','tests/html_osd_columns_tb.v']
-for test in TESTS:TESTS[test]=['rtl/ext/html_eye_radius_rom.v']+TESTS[test]
 
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
@@ -27,7 +25,7 @@ def main():
   data=json.dumps(report,indent=2).encode();(out/'verification.json').write_bytes(data);(out.parent/'verification.json').write_bytes(data)
  save()
  for test,sources in TESTS.items():
-  commands=[('compile',[str(tools['iverilog']),'-g2012','-DHTML_SIM','-Irtl/SD','-s','html_'+test+'_tb','-o',test+'.vvp']+sources),('simulation',[str(tools['vvp']),test+'.vvp'])]
+  commands=[('compile',[str(tools['iverilog']),'-g2012','-DHTML_SIM','-Irtl/SD','-s',('no_bot_overlay_tb' if test=='no_bot_overlay' else 'html_'+test+'_tb'),'-o',test+'.vvp']+sources),('simulation',[str(tools['vvp']),test+'.vvp'])]
   for name,cmd in commands:
    log=out/(test+'_'+name+'.log');start=time.time()
    with log.open('w') as output:

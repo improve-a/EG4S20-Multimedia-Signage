@@ -3,7 +3,7 @@
 // All config and text progress commit only on VS rising edges.
 module html_osd_overlay #(
  parameter GLYPH_FILE="rtl/ext/html_assets/html_glyph_coverage.hex",
- parameter GLYPH_WORDS=9160
+ parameter GLYPH_WORDS=9640
 )(
  input wire clk,rst,i_hs,i_vs,i_de,
  input wire [23:0] i_rgb,
@@ -21,10 +21,14 @@ module html_osd_overlay #(
  input wire [3:0] interval_fraction,
  input wire [15:0] audio_peak,
  input wire [3:0] audio_status,
- output reg speaking,syllable,
+ // Legacy debug ports retained for existing capture/test interfaces.
+ // Typewriter progression below is independent of the removed character.
+ output wire speaking,syllable,
  output reg o_hs,o_vs,o_de,
  output reg [23:0] o_rgb
 );
+ assign speaking=1'b0;
+ assign syllable=1'b0;
  reg [9:0] x,y;reg prev_de,prev_vs;
  wire [9:0] px=prev_de?x:10'd0;
  wire frame_start=i_vs&&!prev_vs;
@@ -127,7 +131,7 @@ module html_osd_overlay #(
   .is_caption(is_caption),.is_text(is_text),.total_chars(total_chars),
   .typing_index(typed_count),.punctuation_pause(punctuation_pause));
  // Constant-coordinate metadata instance retains only totals and punctuation.
- reg [12:0] body_base,header_base,index_base;
+ reg [13:0] body_base,header_base,index_base;
  wire [2:0] next_page=page_index<6 ? page_index : 3'd0;
  function [23:0] viewport_origin;
  input home;input[2:0] f;input[1:0] z;
@@ -216,18 +220,18 @@ module html_osd_overlay #(
    x<=0;y<=0;prev_de<=0;prev_vs<=0;enabled<=0;dual<=0;zoom<=0;
    muted<=0;stopped<=0;auto_flag<=0;page<=0;ccontrast<=2;cmode<=0;
    bright<=0;vol<=8;prog<=0;seconds<=5;seconds_fraction<=0;event_pending<=0;zoom_mode<=0;focus_l<=0;mini_bounds<=0;
-   body_base<=0;header_base<=13'd6720;index_base<=13'd7616;typed_count<=0;typing_delay<=6;typing_phase<=0;cursor_frame<=0;speaking<=0;syllable<=0;
+   body_base<=0;header_base<=14'd6720;index_base<=14'd7840;typed_count<=0;typing_delay<=6;typing_phase<=0;cursor_frame<=0;
    for(ah=0;ah<9;ah=ah+1)audio_history[ah]<=0;pcm_status<=0;
   end else begin
-   prev_de<=i_de;prev_vs<=i_vs;syllable<=0;
+   prev_de<=i_de;prev_vs<=i_vs;
    if(i_de)x<=prev_de?x+1'b1:10'd1;else x<=0;
    if(frame_start)y<=0;else if(prev_de&&!i_de&&y<1023)y<=y+1'b1;
    if(page_event)event_pending<=1;
    if(frame_start)begin
     enabled<=osd_enable;page<=next_page;dual<=dual_enable;
     body_base<=(dual_enable ? 13'd3360 : 13'd0)+next_page*13'd560;
-    header_base<=13'd6720+(dual_enable ? 13'd768 : {next_page,7'b0});
-    index_base<=13'd7616+next_page*13'd80;zoom<=resolved_scale!=0;zoom_mode<=resolved_scale;focus_l<=focus;
+    header_base<=14'd6720+(dual_enable ? 14'd960 : next_page*14'd160);
+    index_base<=14'd7840+next_page*14'd80;zoom<=resolved_scale!=0;zoom_mode<=resolved_scale;focus_l<=focus;
     mini_bounds<=mini_geometry(page_index,focus,resolved_scale);
     bright<=brightness;ccontrast<=contrast;cmode<=mode;vol<=volume;
     muted<=mute;stopped<=paused;auto_flag<=auto_mode;prog<=progress;seconds<=interval;seconds_fraction<=interval_fraction<10 ? interval_fraction : 4'd0;
@@ -236,19 +240,16 @@ module html_osd_overlay #(
     audio_history[0]<=(mute||paused)?5'd0:(audio_peak>=16'd32768 ?5'd29:audio_peak[14:10]);
     if(page_event||event_pending||page_index!=page||dual_enable!=dual)begin
      event_pending<=0;typed_count<=0;typing_delay<=(page_event||event_pending||page_index!=page)?6'd33:6'd6;
-     typing_phase<=0;speaking<=0;
+     typing_phase<=0;
     end else begin
-     if(typing_delay!=0)begin typing_delay<=typing_delay-1'b1;speaking<=0;end
-    else if(typed_count<total_chars)begin
-     speaking<=1;
+     if(typing_delay!=0)typing_delay<=typing_delay-1'b1;
+     else if(typed_count<total_chars)begin
      // 19 characters/second / 59.5238095frames/second =399/1250.
      if(typing_phase+11'd399>=1250)begin
       typed_count<=typed_count+1'b1;typing_phase<=typing_phase+11'd399-11'd1250;
-      syllable<=1;
       if(punctuation_pause)typing_delay<=13; // .2184 sec punctuation breath
-      if(typed_count+1'b1>=total_chars)speaking<=0;
      end else typing_phase<=typing_phase+11'd399;
-    end else speaking<=0;
+    end
     end
    end
   end
@@ -396,16 +397,12 @@ module html_osd_overlay #(
   plate_rgb=0;plate_code=0;plate_alpha=0;text_rgb=24'h1a1916;
   font_active=0;font_code=5'd24;tick=0;tx=0;ty=0;live_x=0;live_y=0;live_bits=0;live_ink=0;live_word=0;bar_index=0;bar_col=0;bar_height=0;bar_top=0;bar_bottom=0;mini_x0=0;mini_y0=0;mini_x1=0;mini_y1=0;zoom_char=" ";tick_col=0;bar_x=0;font_bit=0;live_col=0;
   if(enabled&&i_de)begin
-   // Rounded paper plate and directional tail.
+   // Rounded paper caption card; character-pointing tail is removed.
    if(px>=24&&px<510&&y>=386&&y<458)begin
     tx=px-24;ty=y-386;
     if(!((tx<2||tx>=484)&&(ty<2||ty>=70)))begin
      plate_code=(tx<3) ? 3'd1 : 3'd2;plate_alpha=15;
     end
-   end
-   if(px>=510&&px<516&&y>=416&&y<429)begin
-    ty=y>422?y-422:422-y;
-    if(ty<516-px)begin plate_code=3'd2;plate_alpha=15;end
    end
    // Soft floor shadow under the card stays alpha blended.
    if(px>=30&&px<506&&y>=458&&y<466)begin plate_code=0;plate_alpha=(466-y)>>1;end
@@ -459,18 +456,18 @@ module html_osd_overlay #(
   end
   live_col=live_x%8'd6;
   if(y<62)text_rgb=24'hede9e2;
-  else if(y<411&&px>=72)text_rgb=24'h77736b;
+  else if(y<411&&px>=94)text_rgb=24'h77736b;
  end
  // A synchronous column descriptor replaces parallel comparisons of758 runs.
  // Metadata, glyph read and alpha arithmetic retain five registered stages.
- reg [12:0] column_address;
+ reg [13:0] column_address;
  reg column_valid,column_caption,column_card;
  reg [4:0] column_row;
  reg [1:0] column_style;
  always @*begin
-  column_address=13'd0;column_valid=0;column_caption=0;column_card=0;column_row=0;
-  column_style=y<62 ? 2'd2 : ((y<411&&px>=72) ? 2'd1 : 2'd0);
-  if(px>=42&&px<170&&card_y>=397&&card_y<417)begin
+  column_address=14'd0;column_valid=0;column_caption=0;column_card=0;column_row=0;
+  column_style=y<62 ? 2'd2 : ((y<411&&px>=94) ? 2'd1 : 2'd0);
+  if(px>=42&&px<202&&card_y>=397&&card_y<417)begin
    column_address=header_base+px-10'd42;column_valid=1;column_card=1;column_row=card_y-10'd397;
   end else if(px>=42&&px<434&&card_y>=416&&card_y<435)begin
    column_address=body_base+px-10'd42;column_valid=1;column_caption=1;column_card=1;column_row=card_y-10'd416;
@@ -479,9 +476,9 @@ module html_osd_overlay #(
   end else if(px>=528&&px<608&&y>=22&&y<43)begin
    column_address=index_base+px-10'd528;column_valid=1;column_row=y-(px>=584 ? 10'd23 : 10'd22);
   end else if(px>=468&&px<486&&y>=433&&y<453)begin
-   column_address=13'd8096+px-10'd468;column_valid=1;column_row=y-10'd433;
+   column_address=14'd8320+px-10'd468;column_valid=1;column_row=y-10'd433;
   end
-  if(column_card)column_style=card_y<411&&px>=72 ? 2'd1 : 2'd0;
+  if(column_card)column_style=card_y<411&&px>=94 ? 2'd1 : 2'd0;
  end
  wire [17:0] column_word0;
  html_caption_column_rom column_rom(.clk(clk),.address(column_address),.data(column_word0));

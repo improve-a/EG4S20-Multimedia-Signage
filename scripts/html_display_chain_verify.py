@@ -9,6 +9,7 @@ OUT=ROOT/'output/html_fidelity/display_chain'
 VECTORS=ROOT/'output/html_fidelity/display_vectors'
 MEDIA=ROOT/'output/html_fidelity/media'
 ASSETS=ROOT/'output/html_fidelity/assets'
+REFERENCE=ROOT/'output/html_fidelity/no_bot/reference'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def atomic_json(p,value):
  p.parent.mkdir(parents=True,exist_ok=True);tmp=p.with_name(p.name+'.'+str(os.getpid())+'.tmp');tmp.write_text(json.dumps(value,indent=2),encoding='utf-8');os.replace(tmp,p)
@@ -133,22 +134,22 @@ def compare_frames(run):
   item={'frame':ppm.name,'sha256':sha(ppm),'source':'real RTL out_rgb fwrite;640x480307200pixels'}
   reference=None;clean=None
   if ppm.stem.startswith('page'):
-   i=int(ppm.stem[4:]);reference=ASSETS/f'reference_{names[i]}.png';clean=ASSETS/f'A_{i+1:02d}_{names[i]}.png'
-  elif ppm.stem=='compare_eagle_phoenix':reference=ASSETS/'reference_dual.png'
-  elif ppm.stem=='zoom2':reference=ASSETS/'reference_zoom.png'
+   i=int(ppm.stem[4:]);reference=REFERENCE/f'reference_{names[i]}.png';clean=ASSETS/f'A_{i+1:02d}_{names[i]}.png'
+  elif ppm.stem=='compare_eagle_phoenix':reference=REFERENCE/'reference_dual.png'
+  elif ppm.stem=='zoom2':reference=REFERENCE/'reference_zoom.png'
   if reference and reference.exists():
    w,h,ref=png_read(reference)
    if (w,h)!=(640,480):raise ValueError('reference is not stage640x480')
    diff=bytes(min(255,abs(a-b)*4) for a,b in zip(rgb,ref));triptych=b''.join(ref[y*1920:(y+1)*1920]+rgb[y*1920:(y+1)*1920]+diff[y*1920:(y+1)*1920] for y in range(480))
    png_write(destination/(ppm.stem+'_reference_dut_diff.png'),1920,480,triptych)
-   item.update(reference=str(reference),reference_sha256=sha(reference),full_rgb_mae=sum(abs(a-b) for a,b in zip(rgb,ref))/len(rgb),comparison='left sourceHTML;middle actualDUT;right4xabsoluteRGBdifference. Pose/bars differ by disclosed fixture.')
+   item.update(reference=str(reference),reference_sha256=sha(reference),full_rgb_mae=sum(abs(a-b) for a,b in zip(rgb,ref))/len(rgb),right_bottom_no_bot_rgb_mae=sum(abs(rgb[(y*640+x)*3+c]-ref[(y*640+x)*3+c]) for y in range(380,480) for x in range(510,640) for c in range(3))/(100*130*3),comparison='left sourceHTML;middle actualDUT;right4xabsoluteRGBdifference. Pose/bars differ by disclosed fixture.')
   if clean and clean.exists():
    w,h,base=png_read(clean);err=0;count=0;bad=0
    for y in range(380):
     for x in range(640):
      if x>=500 and y<105:continue
      k=(y*640+x)*3;delta=sum(abs(rgb[k+c]-base[k+c]) for c in range(3));err+=delta;count+=3;bad+=delta!=0
-   item.update(clean_A_sha256=sha(clean),clean_A_rgb_mae=err/count,clean_A_nonmatching_pixels=bad,clean_A_mask='y<380 excluding x>=500,y<105; excludes all OSD,Bot and zoomindicator')
+   item.update(clean_A_sha256=sha(clean),clean_A_rgb_mae=err/count,clean_A_nonmatching_pixels=bad,clean_A_mask='y<380 excluding x>=500,y<105; excludes all OSD and zoomindicator')
   result.append(item)
  atomic_json(run/'pixel_comparisons.json',result);return result
 def completion_counts(text,smoke,subset="all"):
@@ -201,7 +202,7 @@ def make_action_preview(run):
  for i in range(8):
   source=run/'frames'/f'action{i:02d}.ppm';age,first,last=stamps[i]
   if age!=i or first-zero!=i*16_800_000_000:raise ValueError('action capture not consecutive native16.8ms frames')
-  frames.append(ppm_read(source));sources.append({'frame':str(source.relative_to(run)),'sha256':sha(source),'reaction_age_frames':age,'first_pixel_time_ps':first,'last_pixel_time_ps':last,'relative_first_pixel_time_ms':(first-zero)/10**9})
+  frames.append(ppm_read(source));sources.append({'frame':str(source.relative_to(run)),'sha256':sha(source),'caption_swap_age_frames':age,'first_pixel_time_ps':first,'last_pixel_time_ps':last,'relative_first_pixel_time_ms':(first-zero)/10**9})
  metadata={'scope':'Eight actualDUT native640x480 frames0..7 only, sampledtransition window0..117.6ms. Loop resets after134.4ms. No interpolation, redraw, palettequantization or claimtofull1.55s transition.','time_origin':'first active pixel of capturedaction00, absolute simulator timestamps retained','native_frame_period_ps':16_800_000_000,'sources':sources}
  metadata['apng']=write_apng(run/'frames/action_samples.apng',frames,[16_800_000_000]*8,metadata)
  atomic_json(run/'frames/action_samples_provenance.json',metadata);return metadata
@@ -212,10 +213,10 @@ def source_files():
         'rtl/display_commit.v','rtl/ext/pixel_adjust.v','rtl/ext/html_assets/html_caption_map.v']
  local += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'rtl/ext').glob('html*.v')]
  local += [str(p.relative_to(ROOT)).replace('\\','/') for p in (ROOT/'rtl/ext').glob('exhibit*.v')]
- return sorted(set(local))
+ return sorted(set(n for n in local if not Path(n).name.startswith(('html_bot_', 'html_eye_'))))
 def main():
  global VECTORS
- ap=argparse.ArgumentParser();ap.add_argument('--layered',action='store_true');ap.add_argument('--subset',choices=['all','normal012','normal345','compare_zoom','natural'],default='all');ap.add_argument('--compile-only',action='store_true');ap.add_argument('--prepare-only',action='store_true');ap.add_argument('--smoke',action='store_true');ap.add_argument('--timeout',type=int,default=6000);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--layered',action='store_true');ap.add_argument('--native-busy-cone',type=Path,help='Private selected native RW busy cone; copied only into ignored simulation output and SHA recorded');ap.add_argument('--data-early',type=int,choices=[0,1],default=1,help='Raw SDRAM payload leads response by one memory clock; production phase adapter selection');ap.add_argument('--subset',choices=['all','normal012','normal345','compare_zoom','natural'],default='all');ap.add_argument('--compile-only',action='store_true');ap.add_argument('--prepare-only',action='store_true');ap.add_argument('--smoke',action='store_true');ap.add_argument('--timeout',type=int,default=6000);a=ap.parse_args()
  if a.smoke and a.subset!='all':ap.error('--smoke requires --subset all')
  expected_exports={'all':18,'normal012':3,'normal345':3,'compare_zoom':4,'natural':8}[a.subset]
  subset_code={'all':0,'normal012':1,'normal345':2,'compare_zoom':3,'natural':4}[a.subset]
@@ -232,16 +233,18 @@ def main():
  for name in dependencies:
   dst=run/name;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(ROOT/name,dst)
  (run/'output/html_fidelity/display_chain').mkdir(parents=True)
+ if a.native_busy_cone:
+  local_cone=run/'private/native_rw_busy_selected_cone.v';local_cone.parent.mkdir();shutil.copy2(a.native_busy_cone,local_cone);sources.append('private/native_rw_busy_selected_cone.v')
  evidence={'state':'RUNNING','scope':'Display-chain RTL with real FIFOs/timing; encrypted SDRAM replaced by4-beatgroup model. No SDphysical,PHY,HW orSTAclaim.',
  'fifo_implementation':{'read_module':'rfifo_32_32_512','read_source':'rtl/IP/afifo_32_16_256.v','physical_words':512,'usable_words':511,'full_threshold':'addr_diff>=511','word_bits':32,'implementation':'Actual unencrypted generatedvendorRTL including Graypointer CDC,flags and ram_infer_rfifo_32_32_512 arrayRAM. No simplified occupancyFIFO replacement.','cdc':'SourceGrayregister,two destination synchronizerstages,registeredGray-to-binary;40MHzwrite/25MHzread clocks at testphase. Digitalcycle semantics only; no analogmetastability, siliconBRAMdelay orpostroute claim.','writer_module':'wfifo_32_32_512','writer_source':'rtl/IP/afifo_16_32_256.v','writer_scope':'ActualgeneratedRTLcompiled butwrite_req/write_en tiedzero; simultaneouswriteroccupation covered by separateCunit proofs, notthisdisplaychainsuite.'},
  'read_configuration':{'burst_pixels':128 if a.layered else 256,'drain_cycles':13 if a.layered else 10,'enable_read_source':True,'physical_fairness_enabled':bool(a.layered),'write_reserve_words':384,'writer_traffic':'idle in this suite'},
  'audio_stimulus':{'input':'256entry peakROM from formal07_MUSIC.WAV, prepared by Pythonwave PCM16 decode; maxabsolute channel sample per16.8ms, sourceWAV SHA in vectors.audio','advance':'peak_index increments on eachactualvideo readACK','audio_status':'fixed4d2 teststimulus','scope':'ActualOSD history/bar RTL executes; WAVparser/player,PCMdecoder,I2S,DAC,audioarbiter andSDaudioI/O RTL are not instantiated here. Separateaudio proofs apply; thisisnot integratedA/V verification.'},
- 'layered':a.layered,'test_mode':'smoke' if a.smoke else a.subset,'subset':a.subset,'exported_frame_count':1 if a.smoke else expected_exports,'natural_subset_warmup':'One checked static640x480 Eagle3x frame, not exported; then8 consecutive native actionframes' if a.subset=='natural' else None,'oracle_scope':{'full_rgb_compared_frames':1 if a.smoke else ({'all':10,'normal012':3,'normal345':3,'compare_zoom':4,'natural':1}[a.subset] if a.layered else {'all':18,'normal012':3,'normal345':3,'compare_zoom':4,'natural':9}[a.subset]),'natural_layered_frames':'8 actualDUT frames checked for sync,knownRGB,fullpixelcounts,commit/gaze/tilt/caption semantics and stickyfaults; no staticRGBoracle comparison during changing scene transforms' if a.subset in ['all','natural'] else 'No natural action frames in this subset'},'snapshot':str(run),'supervisor_pid':os.getpid(),'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'started_epoch':time.time(),
+ 'raw_payload_early_cycles':a.data_early,'native_busy_restart_model':({'path':str(a.native_busy_cone),'sha256':sha(a.native_busy_cone),'scope':'Selected native RW busy/rw_vld/clear cone,internal REF inputs held0. New stream start and oldfall-clear assertions. Response data remains ordered bounded5..10cycle model; no full encrypted controller or physical SDRAM claim.'} if a.native_busy_cone else 'NOT_MODELED: ordered fourbeat renderer model does not emulate native command mux or busy tail. Separate native handshake qualification required.'),'layered':a.layered,'test_mode':'smoke' if a.smoke else a.subset,'subset':a.subset,'exported_frame_count':1 if a.smoke else expected_exports,'natural_subset_warmup':'One checked static640x480 Eagle3x frame, not exported; then8 consecutive native actionframes' if a.subset=='natural' else None,'oracle_scope':{'full_rgb_compared_frames':1 if a.smoke else ({'all':10,'normal012':3,'normal345':3,'compare_zoom':4,'natural':1}[a.subset] if a.layered else {'all':18,'normal012':3,'normal345':3,'compare_zoom':4,'natural':9}[a.subset]),'natural_layered_frames':'8 actualDUT frames checked for sync,knownRGB,fullpixelcounts,commit/caption semantics and stickyfaults; no staticRGBoracle comparison during changing scene transforms' if a.subset in ['all','natural'] else 'No natural action frames in this subset'},'snapshot':str(run),'supervisor_pid':os.getpid(),'started_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'started_epoch':time.time(),
  'sources':{n:sha(run/n) for n in dependencies},'vectors':vectors,'steps':[],
- 'fixtures':'Layered static scene age127 pinned before ACK queries, then released for natural action; static scene oracle skipped for natural action. Static captures seed only caption complete and known Botmotion registers atverticalblank; noRGBpixel forcing. Natural committedpageaction frames runnormally.'}
+ 'fixtures':'Layered static scene age127 pinned before ACK queries, then released for natural action; static scene oracle skipped for natural action. Static captures seed only caption complete and OSD swap registers atverticalblank; noRGBpixel forcing. Natural committedpageaction frames runnormally.'}
  def save():atomic_json(run/'verification.json',evidence);atomic_json(OUT/('verification.json' if a.subset=='all' else 'verification_'+a.subset+'.json'),evidence)
  save()
- commands=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM']+(['-DHTML_LAYERED'] if a.layered else [])+['-Irtl/SD','-s','html_display_chain_tb','-o','sim.vvp']+sources),
+ commands=[('compile',[r'C:\iverilog\bin\iverilog.exe','-g2012','-DHTML_SIM']+(['-DHTML_LAYERED'] if a.layered else [])+(['-DHTML_NATIVE_BUSY'] if a.native_busy_cone else [])+['-Irtl/SD','-s','html_display_chain_tb','-Phtml_display_chain_tb.SDRAM_DATA_EARLY='+str(a.data_early),'-o','sim.vvp']+sources),
            ('simulation',[r'C:\iverilog\bin\vvp.exe','sim.vvp']+(['+smoke'] if a.smoke else [])+(['+subset='+str(subset_code)] if subset_code else []))]
  for name,cmd in commands:
   if a.compile_only and name=='simulation':break

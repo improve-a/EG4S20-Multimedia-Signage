@@ -10,7 +10,7 @@ if (ROOT/'rtl/ext/html_caption_column_rom.v').exists() and not (ROOT/'rtl/ext/ht
     from html_caption_columns import main as generate_caption_columns
     generate_caption_columns()
 from html_rom_init import generate as generate_html_rom_init
-if (ROOT/'rtl/ext/html_assets/bot_body_argb4444.hex').exists():generate_html_rom_init(ROOT)
+if (ROOT/'rtl/ext/html_assets/html_glyph_coverage.hex').exists():generate_html_rom_init(ROOT)
 files={}
 for folder,prefix in [('rtl','user_source/hdl_source'),('project/user_source/constraints_source','user_source/constraints_source'),('project/td_project','td_project')]:
     for p in (ROOT/folder).rglob('*'):

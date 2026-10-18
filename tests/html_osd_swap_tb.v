@@ -9,14 +9,14 @@ module html_osd_swap_tb;
   .audio_peak(16'd0),.audio_status(4'd0),.speaking(),.syllable(),.o_hs(h),.o_vs(v),.o_de(d),.o_rgb(rgb));
  integer xx=0,yy=0,j,age,fd,framefd,pixels=0,checks=0;reg capture=0;
  reg[23:0] eq[0:4];reg cq[0:4];reg[2:0] sq[0:4];
- reg[15:0] atlas[0:9119];initial $readmemh("rtl/ext/html_assets/html_glyph_coverage.hex",atlas);
+ reg[15:0] atlas[0:9639];initial $readmemh("rtl/ext/html_assets/html_glyph_coverage.hex",atlas);
  wire[7:0] gid;wire[3:0] gx;wire[4:0] gy;wire[6:0] ordinal,total;wire caption,text,pause;
  wire[9:0] rx=xx;wire[9:0] ry=yy-dut.swap_y;
  html_caption_map original_map(.page_index(3'd0),.dual_enable(1'b0),.x(rx),.y(ry),.glyph_id(gid),.glyph_x(gx),.glyph_y(gy),
   .char_index(ordinal),.is_caption(caption),.is_text(text),.total_chars(total),.typing_index(7'd0),.punctuation_pause(pause));
  reg[1:0] coverage;reg[23:0] expected;reg cursor,gray;
  always @*begin
-  coverage=0;expected=24'hede9e2;gray=ry<411&&xx>=72;
+  coverage=0;expected=24'hede9e2;gray=ry<411&&xx>=94;
   if(text&&!caption&&gy<20)coverage=(atlas[gid*40+gy*2+gx[3]]>>(14-gx[2:0]*2))&3;
   cursor=text&&caption&&ordinal==0&&gx>=1&&gx<5&&gy>=11&&gy<15&&
    !((gx==1||gx==4)&&(gy==11||gy==14));
