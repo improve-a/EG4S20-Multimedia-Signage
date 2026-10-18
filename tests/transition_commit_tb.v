@@ -9,7 +9,7 @@ wire raw_ack,mem_req,ack,forwarded,busy,oh,ov,od;wire [1:0] active_buf;wire [23:
 reg raw_prev=0;
 wire frame_start=raw && !raw_prev;
 always @(posedge vc)if(rst)raw_prev<=0;else raw_prev<=raw;
-video_transition transition(vc,rst,hs,vs,de,rgb,valid_display,mode,frame_start,candidate_toggle,ack,forwarded,oh,ov,od,out,busy);
+video_transition transition(.clk(vc),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),.enable(valid_display),.mode(mode),.frame_start(frame_start),.candidate_toggle_async(candidate_toggle),.display_fault_async(1'b0),.commit_ack_toggle(ack),.cover_request_toggle_async(1'b0),.cover_ack_toggle(),.forwarded_commit_toggle(forwarded),.o_hs(oh),.o_vs(ov),.o_de(od),.o_rgb(out),.transition_busy(busy));
 display_commit commit(vc,rst,raw,raw_ack,mem_req,mem_ack,forwarded,candidate_buf,1'b0,active_buf,ack);
 // Model SDRAM read-base acceptance, with a deliberately long response delay.
 reg mem_prev=0;integer delay_count=0;reg [1:0] read_buf=0;

@@ -5,7 +5,7 @@ reg clk=0;always #5 clk=~clk;
 reg rst=1,hs=0,vs=0,de=0,enable=1,frame=0,candidate=0,ack=0;
 reg [1:0] mode=0;reg [23:0] rgb=0;
 wire forwarded,oh,ov,od,busy;wire [23:0] out;
-video_transition #(.WIDTH(W),.STEP(S))dut(clk,rst,hs,vs,de,rgb,enable,mode,frame,candidate,ack,forwarded,oh,ov,od,out,busy);
+video_transition #(.WIDTH(W),.STEP(S))dut(.clk(clk),.rst(rst),.i_hs(hs),.i_vs(vs),.i_de(de),.i_rgb(rgb),.enable(enable),.mode(mode),.frame_start(frame),.candidate_toggle_async(candidate),.display_fault_async(1'b0),.commit_ack_toggle(ack),.cover_request_toggle_async(1'b0),.cover_ack_toggle(),.forwarded_commit_toggle(forwarded),.o_hs(oh),.o_vs(ov),.o_de(od),.o_rgb(out),.transition_busy(busy));
 integer checks=0,x,k;reg [23:0] expected;reg [23:0] base=24'h010000;
 task cycle;
  input [23:0] exp;

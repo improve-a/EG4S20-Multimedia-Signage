@@ -139,8 +139,8 @@
       "bytes": 321
     },
     "rtl/top_tf_hdmi_audio.v": {
-      "sha256": "3b40ff54343619dd2888b41ee345b47ed2ee05f1a1378cbb8046f02f433317d9",
-      "bytes": 20029
+      "sha256": "d90a057f2242ebf387caa8057c85613cf43504be791644353dc35f3b63f8209d",
+      "bytes": 20099
     }
   },
   "not_a_build_result": true

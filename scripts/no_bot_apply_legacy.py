@@ -30,8 +30,15 @@ s=s.replace('wire [46:0] video_config;','wire [50:0] video_config;')
 s=s.replace('assign {cfg_state,cfg_mute', 'assign {cfg_interval_fraction,cfg_state,cfg_mute')
 s=s.replace('wire [1:0] active_buf_idx;','wire [11:0] active_view,candidate_view;\nwire [1:0] active_buf_idx=active_view[1:0];\nwire cover_request_toggle,cover_ack_toggle;')
 s=s.replace('wire [1:0]  disp_buf_idx;','')
+# Only the human-readable status path uses the existing registered memory fault.
+# Avoid the composite three-domain OR on the tight related40 ->50MHz first stage;
+# preserve two receiving registers and keep this path fully timed by STA.
+s=s.replace('reg [1:0] fifo_fault_sync;', '(* async_reg="true" *) reg [1:0] fifo_fault_sync;')
+s=s.replace('fifo_fault_sync<={fifo_fault_sync[0],fifo_fault};',
+            'fifo_fault_sync<={fifo_fault_sync[0],fifo_fault_mem_sync[1]};')
+
 s=s.replace('video_transition transition(','''video_transition #(.COVER_BEFORE_LOAD(1),.CLOSE_STEP(54),.OPEN_STEP(36),.MASK_COLOR(24'h151615)) transition(''')
-s=s.replace(' .candidate_toggle_async(commit_toggle),.commit_ack_toggle(commit_ack_toggle),',' .candidate_toggle_async(commit_toggle),.commit_ack_toggle(commit_ack_toggle),\n .cover_request_toggle_async(cover_request_toggle),.cover_ack_toggle(cover_ack_toggle),')
+s=s.replace(' .candidate_toggle_async(commit_toggle),.commit_ack_toggle(commit_ack_toggle),',' .candidate_toggle_async(commit_toggle),.commit_ack_toggle(commit_ack_toggle),\n .display_fault_async(fifo_fault),\n .cover_request_toggle_async(cover_request_toggle),.cover_ack_toggle(cover_ack_toggle),')
 s=s.replace("frame_config_bridge #(.WIDTH(47),.RESET_VALUE({4'd0,3'b000,8'd0,4'd8,2'd0,2'd0,1'b1,8'd3,3'd2,9'd0,3'd0}))", "frame_config_bridge #(.WIDTH(51),.RESET_VALUE({4'd4,4'd0,3'b000,8'd0,4'd8,2'd0,2'd0,1'b1,8'd5,3'd2,9'd0,3'd0}))")
 s=s.replace('.src_config({state_code,audio_muted', '.src_config({interval_fraction,state_code,audio_muted')
 s=s.replace('.dst_frame(vs && !config_prev_vs)', '.dst_frame(timing_read_req&&!timing_req_prev)')
