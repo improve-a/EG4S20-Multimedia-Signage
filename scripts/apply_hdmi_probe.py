@@ -51,7 +51,7 @@ seg_scan seg_scan_m0(
 t = t[:start] + replacement + t[end:]
 top.write_text(t, encoding="utf-8", newline="\n")
 project = ROOT / "project/td_project/hx4s20_basic.al"
-old_project = project.read_text()
+old_project = project.read_bytes().decode("utf-8")
 assert "ext/hdmi_probe.v" not in old_project
 order = 1 + max(map(int, re.findall(r'Name="CompileOrder" Val="(\d+)"', old_project)))
 entry = f"""            <File Path="../user_source/hdl_source/ext/hdmi_probe.v">
@@ -65,8 +65,9 @@ entry = f"""            <File Path="../user_source/hdl_source/ext/hdmi_probe.v">
 """
 # Match the native project's serialization, which uses P&R literally.
 entry = entry.replace("P&amp;R", "P&R")
-project.write_text(old_project.replace("        </Verilog>", entry + "        </Verilog>", 1),
-                   encoding="utf-8", newline="\n")
+if "\r\n" in old_project:
+    entry = entry.replace("\n", "\r\n")
+project.write_bytes(old_project.replace("        </Verilog>", entry + "        </Verilog>", 1).encode("utf-8"))
 out = ROOT / "evidence/hdmi_probe"
 out.mkdir(parents=True, exist_ok=True)
 (out / "top.diff").write_text("".join(difflib.unified_diff(
