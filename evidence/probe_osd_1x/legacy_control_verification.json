@@ -1,0 +1,414 @@
+{
+  "state": "UNIT_SIM_PASS",
+  "pid": 50580,
+  "started_epoch": 1792570879.3940609,
+  "scope": "Fresh legacy controller protocol units; explicit scanner/loader/SD stubs.\nReal media_controls/arbiter and production controller; not full system/pixels.\n",
+  "snapshot": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\html_fidelity\\no_bot\\verify\\legacy_control_20261021_162119",
+  "sources": {
+    "tests/legacy_exhibit_media_tb.v": "913f07d1738eaae7ff75aa7d06dd7e81d9b0084702551426ce9ab0178f15638a",
+    "rtl/ext/legacy_exhibit_media.v": "6efa572d746ae1e8765b8b183476065ba06d8f209fa273ff148aac24c8bef1b4",
+    "rtl/media_controls.v": "fe1c8d381912fa85f0d57826a3a606c30939a29a1e5661647edf0967e619586e",
+    "rtl/ext/media_sector_arbiter.v": "ba9de3e5ded912865d941a76586a68e52b417fa25182bc4a03c4548d169c7cf8",
+    "scripts/no_bot_legacy_control_verify.py": "096e75efafd4dd84e520938154d1152db4a52634766a75ee6c7f28016210a7ed"
+  },
+  "steps": [
+    {
+      "mode": 0,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=0",
+        "-o",
+        "mode0.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 11868,
+      "exit_code": 0,
+      "wall_seconds": 0.06102323532104492,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 0,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode0.vvp"
+      ],
+      "pid": 40380,
+      "exit_code": 0,
+      "wall_seconds": 0.026235103607177734,
+      "log_sha256": "9d459e4f488f8754c01304aa2f5bd5c9989f45da7e7189301cba13bc77f9997f"
+    },
+    {
+      "mode": 1,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=1",
+        "-o",
+        "mode1.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 4108,
+      "exit_code": 0,
+      "wall_seconds": 0.06768202781677246,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 1,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode1.vvp"
+      ],
+      "pid": 50820,
+      "exit_code": 0,
+      "wall_seconds": 0.0218050479888916,
+      "log_sha256": "2025d0539acd9ffef49f8eab34450f6c096578acabfd17ab8174dc93705b67a7"
+    },
+    {
+      "mode": 2,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=2",
+        "-o",
+        "mode2.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 31564,
+      "exit_code": 0,
+      "wall_seconds": 0.05848288536071777,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 2,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode2.vvp"
+      ],
+      "pid": 3780,
+      "exit_code": 0,
+      "wall_seconds": 0.018175125122070312,
+      "log_sha256": "cbb7fcd3d004dff77bb1b973e3939c27a1aab68ab4b99799a54ceb7b84a1dca9"
+    },
+    {
+      "mode": 3,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=3",
+        "-o",
+        "mode3.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 44736,
+      "exit_code": 0,
+      "wall_seconds": 0.05987882614135742,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 3,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode3.vvp"
+      ],
+      "pid": 49344,
+      "exit_code": 0,
+      "wall_seconds": 0.0264432430267334,
+      "log_sha256": "1da7259310f864a6658b5534d019b6b7fc9ee7ef75275632d7f0faad3f23e5bc"
+    },
+    {
+      "mode": 4,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=4",
+        "-o",
+        "mode4.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 16820,
+      "exit_code": 0,
+      "wall_seconds": 0.051740169525146484,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 4,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode4.vvp"
+      ],
+      "pid": 13744,
+      "exit_code": 0,
+      "wall_seconds": 0.6331562995910645,
+      "log_sha256": "4cdd7703c87fb39d46c62730517894d7b6c0b2cc637e0bc534b6d88f3bd4fa57"
+    },
+    {
+      "mode": 5,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=5",
+        "-o",
+        "mode5.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 47188,
+      "exit_code": 0,
+      "wall_seconds": 0.06772851943969727,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 5,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode5.vvp"
+      ],
+      "pid": 19220,
+      "exit_code": 0,
+      "wall_seconds": 0.6642615795135498,
+      "log_sha256": "07473edb4ae92032bd01d69505db170b643c3d7e06815d24f720cbab41e53c21"
+    },
+    {
+      "mode": 6,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=6",
+        "-o",
+        "mode6.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 22152,
+      "exit_code": 0,
+      "wall_seconds": 0.06522107124328613,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 6,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode6.vvp"
+      ],
+      "pid": 12208,
+      "exit_code": 0,
+      "wall_seconds": 0.022296428680419922,
+      "log_sha256": "9d459e4f488f8754c01304aa2f5bd5c9989f45da7e7189301cba13bc77f9997f"
+    },
+    {
+      "mode": 7,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=7",
+        "-o",
+        "mode7.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 3140,
+      "exit_code": 0,
+      "wall_seconds": 0.06360387802124023,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 7,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode7.vvp"
+      ],
+      "pid": 36116,
+      "exit_code": 0,
+      "wall_seconds": 0.7260501384735107,
+      "log_sha256": "23a5dcbc0694242980c274ff61f7a0f379b2b34e7c6fdb15b0b97374bf098a73"
+    },
+    {
+      "mode": 8,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=8",
+        "-o",
+        "mode8.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 30956,
+      "exit_code": 0,
+      "wall_seconds": 0.05859827995300293,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 8,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode8.vvp"
+      ],
+      "pid": 8972,
+      "exit_code": 0,
+      "wall_seconds": 0.677189826965332,
+      "log_sha256": "f2fc0f7373403027c3704ac1c1ad8ebc7c5523389a77f868146e1099e7f53e07"
+    },
+    {
+      "mode": 9,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=9",
+        "-o",
+        "mode9.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 30712,
+      "exit_code": 0,
+      "wall_seconds": 0.060918331146240234,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 9,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode9.vvp"
+      ],
+      "pid": 7984,
+      "exit_code": 0,
+      "wall_seconds": 0.02731037139892578,
+      "log_sha256": "82915b3830e31db9da3c6490b565e7eacdcd2b0424387922896545134c200720"
+    },
+    {
+      "mode": 10,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=10",
+        "-o",
+        "mode10.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 12532,
+      "exit_code": 0,
+      "wall_seconds": 0.06700873374938965,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 10,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode10.vvp"
+      ],
+      "pid": 50636,
+      "exit_code": 0,
+      "wall_seconds": 0.0315704345703125,
+      "log_sha256": "9d459e4f488f8754c01304aa2f5bd5c9989f45da7e7189301cba13bc77f9997f"
+    },
+    {
+      "mode": 11,
+      "stage": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2012",
+        "-s",
+        "legacy_exhibit_media_tb",
+        "-Plegacy_exhibit_media_tb.MODE=11",
+        "-o",
+        "mode11.vvp",
+        "tests/legacy_exhibit_media_tb.v",
+        "rtl/ext/legacy_exhibit_media.v",
+        "rtl/media_controls.v",
+        "rtl/ext/media_sector_arbiter.v"
+      ],
+      "pid": 35664,
+      "exit_code": 0,
+      "wall_seconds": 0.0723574161529541,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "mode": 11,
+      "stage": "simulation",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "mode11.vvp"
+      ],
+      "pid": 33156,
+      "exit_code": 0,
+      "wall_seconds": 0.028179645538330078,
+      "log_sha256": "5d49935b2ddceaa5b36c95709aa567b7d06997a00a5e055d2f67f1038cc68792"
+    }
+  ],
+  "wall_seconds": 3.8869025707244873,
+  "live_test_sources_unchanged": true
+}

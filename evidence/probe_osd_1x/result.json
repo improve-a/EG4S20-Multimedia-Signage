@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "run_id": "probe_osd_1x_004",
+  "states": {
+    "SIM": "NOT_RUN",
+    "SYN": "PASS",
+    "PNR": "PASS",
+    "STA": "NOT_VERIFIED",
+    "BITGEN": "PASS",
+    "HW": "NOT_VERIFIED"
+  },
+  "BUILD_PASS": true,
+  "STA_PASS": false,
+  "HARDWARE_PASS": false,
+  "job": {
+    "schema_version": 1,
+    "run_id": "probe_osd_1x_004",
+    "state": "FINISHED",
+    "started_utc": "2026-10-21T08:45:31.550642+00:00",
+    "supervisor_pid": 47996,
+    "td_pid": 10196,
+    "timeout_seconds": 1800,
+    "exit_code": 0,
+    "root": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\html_fidelity\\builds\\probe_osd_1x_004",
+    "job_object": "KILL_ON_JOB_CLOSE",
+    "prior_build_seconds": 304.25,
+    "attempt_number": 2,
+    "td_executable": "G:\\anlu\\bin\\td_commands_prompt.exe",
+    "td_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+    "tcl_sha256": "435659587ebe31f08015f459076840825c886ccca8e8cdeac0a1e0e5a95b4a47",
+    "baseline_import_sha256": "5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6",
+    "source_zip_sha256": "33abcfc66d0008e16df2d75d5b52b5d6e78e0e94b2b5d738b138873480af76bc",
+    "snapshot_sha256": "93c1f2ef10eceec61e0b26ac1bcad5113ec4a3f7a288e115ebbd405de20ee698",
+    "elapsed_seconds": 371.907,
+    "heartbeat_utc": "2026-10-21T08:51:43.457961+00:00",
+    "flow_complete": true,
+    "finished_utc": "2026-10-21T08:51:43.457961+00:00"
+  },
+  "verified_identity": {
+    "tool": true,
+    "device": true,
+    "top": true,
+    "routed": true
+  },
+  "timing": {
+    "setup": {
+      "wns_ns": 0.378,
+      "tns_ns": 0.0,
+      "failing_endpoints": 0
+    },
+    "hold": {
+      "wns_ns": 0.024,
+      "tns_ns": 0.0,
+      "failing_endpoints": null
+    }
+  },
+  "timing_coverage": {
+    "checks": {
+      "no clock": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "clock definition": {
+        "count": 4,
+        "severity": "HIGH"
+      },
+      "dummy node": {
+        "count": 3,
+        "severity": "HIGH"
+      },
+      "invalid constraint": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "pll/clock buffer clock constraints": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "combinational loops": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "soft fifo timing exception constraints": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "no path constraints": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "shadowed/ignored timing exception constraints": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "no input delay": {
+        "count": 5,
+        "severity": "MEDIUM"
+      },
+      "no output delay": {
+        "count": 20,
+        "severity": "MEDIUM"
+      },
+      "partial input delay": {
+        "count": 1,
+        "severity": "MEDIUM"
+      },
+      "partial output delay": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "abnormal input delay": {
+        "count": 32,
+        "severity": "MEDIUM"
+      }
+    },
+    "percent": 99.93,
+    "state": "NOT_VERIFIED",
+    "reason": "Requires review of check_timing, ignored paths, exceptions and IO/CDC intent"
+  },
+  "resources": {
+    "LUT": {
+      "used": 10520,
+      "available": 19600,
+      "percent": 53.67
+    },
+    "FF": {
+      "used": 6566,
+      "available": 19600,
+      "percent": 33.5
+    },
+    "BRAM": {
+      "used": 53,
+      "available": 64,
+      "percent": 82.81
+    },
+    "DSP": {
+      "used": 8,
+      "available": 29,
+      "percent": 27.59
+    },
+    "PLL": {
+      "used": 2,
+      "available": 4,
+      "percent": 50.0
+    }
+  },
+  "resource_source": "final_area.rpt",
+  "errors": {
+    "supervisor": [],
+    "SYN": [],
+    "PNR": []
+  },
+  "critical_warnings": {
+    "supervisor": [
+      "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+      "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+      "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+    ],
+    "SYN": [],
+    "PNR": [
+      "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+      "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+      "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+    ]
+  },
+  "AUTOMATION_ACCEPTED": false,
+  "warning_counts": {
+    "supervisor": {
+      "HDL-5370": 20,
+      "HDL-5007": 19,
+      "HDL-5373": 6,
+      "HDL-5317": 3,
+      "HDL-5001": 3,
+      "SYN-5013": 2,
+      "SYN-5025": 3,
+      "SYN-5011": 12,
+      "SYN-6577": 1,
+      "SYN-6562": 8,
+      "PHY-7002": 2,
+      "PHY-5014": 6,
+      "PHY-5079": 1
+    },
+    "SYN": {
+      "HDL-5370": 10,
+      "HDL-5007": 17,
+      "HDL-5373": 3,
+      "HDL-5317": 3,
+      "HDL-5001": 3,
+      "SYN-5013": 2,
+      "SYN-5025": 3,
+      "SYN-5011": 12,
+      "SYN-6577": 1,
+      "SYN-6562": 8
+    },
+    "PNR": {
+      "PHY-7002": 2,
+      "PHY-5014": 2,
+      "PHY-5079": 1
+    }
+  },
+  "fresh_bitstreams": [
+    "work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit"
+  ],
+  "provenance": "File hashes and Windows UTC mtimes checked against artifacts.json; untransferred DBs validated only by manifest metadata",
+  "reported_path_min_ns": {
+    "setup": 0.378,
+    "hold": 0.024,
+    "removal": 0.054,
+    "recovery": 1.777
+  },
+  "reported_path_count": {
+    "setup": 917,
+    "hold": 785,
+    "removal": 128,
+    "recovery": 39
+  },
+  "group_violation_counts": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "STA_CONSTRAINED_PATHS_PASS": true,
+  "FULL_INTERFACE_SIGNOFF": "NOT_VERIFIED; inherited external-I/O/CDC coverage limitations; no new exceptions",
+  "resource_comparison": {
+    "lut": {
+      "baseline": 10257,
+      "candidate": 10520,
+      "delta": 263
+    },
+    "reg": {
+      "baseline": 6572,
+      "candidate": 6566,
+      "delta": -6
+    },
+    "bram9k": {
+      "baseline": 53,
+      "candidate": 53,
+      "delta": 0
+    },
+    "bram32k": {
+      "baseline": 5,
+      "candidate": 5,
+      "delta": 0
+    },
+    "dsp": {
+      "baseline": 8,
+      "candidate": 8,
+      "delta": 0
+    },
+    "pll": {
+      "baseline": 2,
+      "candidate": 2,
+      "delta": 0
+    }
+  },
+  "baseline_warning_counts": {
+    "supervisor": {
+      "HDL-5370": 20,
+      "HDL-5007": 19,
+      "HDL-5373": 6,
+      "HDL-5317": 3,
+      "HDL-5001": 3,
+      "SYN-5013": 2,
+      "SYN-5025": 3,
+      "SYN-5011": 12,
+      "SYN-6577": 1,
+      "SYN-6562": 8,
+      "PHY-7002": 2,
+      "PHY-5014": 8,
+      "PHY-5079": 1
+    },
+    "SYN": {
+      "HDL-5370": 10,
+      "HDL-5007": 17,
+      "HDL-5373": 3,
+      "HDL-5317": 3,
+      "HDL-5001": 3,
+      "SYN-5013": 2,
+      "SYN-5025": 3,
+      "SYN-5011": 12,
+      "SYN-6577": 1,
+      "SYN-6562": 8
+    },
+    "PNR": {
+      "PHY-7002": 2,
+      "PHY-5014": 4,
+      "PHY-5079": 1
+    }
+  },
+  "timing_checks_unchanged": true,
+  "baseline_coverage": {
+    "checks": {
+      "no clock": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "clock definition": {
+        "count": 4,
+        "severity": "HIGH"
+      },
+      "dummy node": {
+        "count": 3,
+        "severity": "HIGH"
+      },
+      "invalid constraint": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "pll/clock buffer clock constraints": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "combinational loops": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "soft fifo timing exception constraints": {
+        "count": 0,
+        "severity": "HIGH"
+      },
+      "no path constraints": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "shadowed/ignored timing exception constraints": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "no input delay": {
+        "count": 5,
+        "severity": "MEDIUM"
+      },
+      "no output delay": {
+        "count": 20,
+        "severity": "MEDIUM"
+      },
+      "partial input delay": {
+        "count": 1,
+        "severity": "MEDIUM"
+      },
+      "partial output delay": {
+        "count": 0,
+        "severity": "MEDIUM"
+      },
+      "abnormal input delay": {
+        "count": 32,
+        "severity": "MEDIUM"
+      }
+    },
+    "percent": 99.92,
+    "state": "NOT_VERIFIED",
+    "reason": "Requires review of check_timing, ignored paths, exceptions and IO/CDC intent"
+  },
+  "verified_snapshot_inputs": [
+    {
+      "path": "media_controls.v",
+      "snapshot_sha256": "fe1c8d381912fa85f0d57826a3a606c30939a29a1e5661647edf0967e619586e"
+    },
+    {
+      "path": "ext/html_video_overlay.v",
+      "snapshot_sha256": "15ce6900efcd5817cb05c3ea2b5d1533bde62b1350034ca56c679bb54e3b3286"
+    },
+    {
+      "path": "ext/html_osd_overlay.v",
+      "snapshot_sha256": "1485d24c829f61566922988580402e9467a9e6791d1c0ab4737c84534d92d8cf"
+    },
+    {
+      "path": "ext/html_assets/html_osd_swap_font.hex",
+      "snapshot_sha256": "07fabaa2a400822d89b51cd521cfca07ec7c4fe6ae8e68b82b46c9a9e1db6e65"
+    },
+    {
+      "path": "ext/html_assets/html_osd_swap_font.hex.bin",
+      "snapshot_sha256": "ca3ca7c340b5199d903ea613d71dea0d1c16bc25370ae792410c9db8be3baad0"
+    },
+    {
+      "path": "top_tf_hdmi_audio.v",
+      "snapshot_sha256": "a422b55aec4dc4420479d80060956825daa08beecdb6d28b2132fa5924761cea"
+    }
+  ],
+  "build_source_commit": "991ed7a5b0d25b06eaf521244c5e421ad40452ba",
+  "candidate_classification": "NEW_CANDIDATE / HARDWARE_NOT_TESTED",
+  "candidate_bit": {
+    "path": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_1x\\delivery\\probe_osd_1x_004_NEW_CANDIDATE_HARDWARE_NOT_TESTED.bit",
+    "bytes": 677348,
+    "sha256": "674930359245616761ffff61ac93b7fadd65b153674f1b7286d8d27e0bf1b5d6"
+  },
+  "candidate_source_zip": {
+    "path": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\artifacts\\probe_osd_1x_004_source.zip",
+    "sha256": "33abcfc66d0008e16df2d75d5b52b5d6e78e0e94b2b5d738b138873480af76bc"
+  },
+  "reports_zip": {
+    "path": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_1x\\delivery\\probe_osd_1x_004_reports.zip",
+    "sha256": "be7767282ca8771fbd788badfeabdac858c35a492256d856936cb8a4331b4304"
+  }
+}

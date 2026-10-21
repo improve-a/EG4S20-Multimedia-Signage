@@ -1,0 +1,90 @@
+{
+  "state": "PROBE_OSD_DEFAULT_1X_PASS",
+  "scope": "Focused real-key/native1x/status regression; no synthesis, media or hardware.",
+  "root": "D:\\FPGA\\EG4S20-Probe-OSD-1x",
+  "steps": [
+    {
+      "name": "font_generate",
+      "command": [
+        "D:\\python3.12.3\\python.exe",
+        "-X",
+        "utf8",
+        "scripts/html_osd_utility_rom.py",
+        "--root",
+        "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_default_1x\\root_acceptance",
+        "--output-dir",
+        "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_default_1x\\root_acceptance\\rtl\\ext\\html_assets"
+      ],
+      "cwd": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_default_1x\\root_acceptance",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 0.125,
+      "log_sha256": "81288c0260aaebde0dffcd77248cd3eb8ca4d19c6ae962364a823205c8b670df"
+    },
+    {
+      "name": "compile",
+      "command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2005-sv",
+        "-DHTML_SIM",
+        "-s",
+        "probe_osd_default_1x_tb",
+        "-o",
+        "test.vvp",
+        "rtl/media_controls.v",
+        "rtl/ext/html_assets/html_caption_map.v",
+        "rtl/ext/pixel_adjust.v",
+        "rtl/ext/html_video_overlay.v",
+        "rtl/ext/html_osd_overlay.v",
+        "rtl/ext/html_osd_swap_rom.v",
+        "rtl/ext/html_caption_column_rom.v",
+        "rtl/ext/html_rom16.v",
+        "tests/probe_osd_default_1x_tb.v"
+      ],
+      "cwd": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_default_1x\\root_acceptance",
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "wall_seconds": 0.10999999998603016,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "simulate",
+      "command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "test.vvp"
+      ],
+      "cwd": "D:\\FPGA\\EG4S20-Probe-OSD-1x\\output\\probe_osd_default_1x\\root_acceptance",
+      "timeout_seconds": 90,
+      "exit_code": 0,
+      "wall_seconds": 3.202999999979511,
+      "log_sha256": "894265eb376306dd0691f30a47cfeb5c9e68e89feee1ab75c64cfba8f7030bba"
+    }
+  ],
+  "sources": {
+    "rtl/media_controls.v": "fe1c8d381912fa85f0d57826a3a606c30939a29a1e5661647edf0967e619586e",
+    "rtl/ext/html_assets/html_caption_map.v": "a73abf366052f430d343d52fc2e66a65ba6e26b825157916be0d8e14ecb12495",
+    "rtl/ext/pixel_adjust.v": "311847688753663eaba8a0066d2be1228ffef9b2c7a2eb46a866c99e861651b1",
+    "rtl/ext/html_video_overlay.v": "15ce6900efcd5817cb05c3ea2b5d1533bde62b1350034ca56c679bb54e3b3286",
+    "rtl/ext/html_osd_overlay.v": "8c0acc5a8f7ce9043fc65ce9b247d4f0e1ba90dd3b78b88ab4999d9a735d4255",
+    "rtl/ext/html_osd_swap_rom.v": "a18f25119ac50532263818472afeead32dd90814f221774375c9260cbeaae4c2",
+    "rtl/ext/html_caption_column_rom.v": "0e1e1e92e64b62eb5999e8a499201020a8a99dd8a6bac5f634722cf53abddaa6",
+    "rtl/ext/html_rom16.v": "2d942d707b4a89e9ae2e763378e32b6bab0c0ecb6ea1a89d4e6ed90969925eed",
+    "rtl/ext/html_assets/html_osd_swap_palette.hex": "e2a25dd0bf3cdb94d01817a292e31536d4dae6371d3d5488b098015785317d84",
+    "rtl/ext/html_assets/html_caption_columns.hex": "3df201ded361e99d18a191e64717650ca9d7179208ce4feec60fb1ac92afc98d",
+    "rtl/ext/html_assets/html_glyph_coverage.hex": "e4dce3fcbc56955b24c1bad226efe7e39d49e48581eca2049becef537261649f",
+    "scripts/html_osd_utility_rom.py": "7d6d490b8191ec9d4e4b82253df8c64b10170a30fab073be34adadba3a8c8519",
+    "scripts/probe_osd_default_1x_verify.py": "b9baa70c92fefcee61f009b847cef8c68f0b42de5e86b0e936288837e4c38c10",
+    "tests/probe_osd_default_1x_tb.v": "d530308fb62ed7b4a06c73b3fa2fc1a8ae667ec8c0006f94410930a509d61763"
+  },
+  "limitations": "Accelerated key timing and cropped scan coordinates; not full scanout, synthesis or hardware.",
+  "started_utc": "2026-10-21T08:33:09.523773+00:00",
+  "source_commit": "b6fca4c6dfe464e52f27820bd91592e79dafcb5a",
+  "tools": {
+    "C:\\iverilog\\bin\\iverilog.exe": "803b8844af2cc8ed70b5f08b07ffa749901280e81339617ca3e72cbbb852bd2b",
+    "C:\\iverilog\\bin\\vvp.exe": "e2f442f4d5aa76e55c85c3ff77e4446fbfdb9946b7cfe8a2dff87f275da17b62",
+    "D:\\python3.12.3\\python.exe": "fd5c46d73d29ba21b04c844bbaf9096066136526911230645a2a040d23fb612b"
+  },
+  "generated_font_sha256": "07fabaa2a400822d89b51cd521cfca07ec7c4fe6ae8e68b82b46c9a9e1db6e65",
+  "live_sources_unchanged": true,
+  "result": "TEST_PASS probe_osd_default_1x commits=41 pixels=78819 ink=5702 plates=43 all8pages real_keys config_pack VS ROM35\ntests/probe_osd_default_1x_tb.v:172: $finish called at 908630000 (1ps)"
+}

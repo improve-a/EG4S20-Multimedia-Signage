@@ -1,0 +1,2 @@
+TEST_PASS probe_osd_default_1x commits=41 pixels=78819 ink=5702 plates=43 all8pages real_keys config_pack VS ROM35
+tests/probe_osd_default_1x_tb.v:172: $finish called at 908630000 (1ps)

@@ -63,6 +63,14 @@ with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED) as z:
   for p in folder.rglob('*'):
    if p.is_file() and p.suffix in ('.log','.json'):z.write(p,'regression/'+p.relative_to(ROOT/'output').as_posix())
  z.write(BASE/'audit/baseline_manifest.json','audit/build_source_manifest.json')
+ for prior in ('probe_osd_1x_001','probe_osd_1x_002','probe_osd_1x_003'):
+  if prior==RID:continue
+  previous=ROOT/'output/html_fidelity/builds'/prior/'runs'/prior
+  for name in ('status.json','stages.tsv','stdout.log','stderr.log'):
+   p=previous/name
+   if p.exists():z.write(p,'prior_attempts/'+prior+'/'+name)
+  dispatch=ROOT/'output/html_fidelity/builds'/prior/'audit/dispatch.log'
+  if dispatch.exists():z.write(dispatch,'prior_attempts/'+prior+'/dispatch.log')
 result['reports_zip']={'path':str(archive),'sha256':sha(archive)}
 (dest/'RESULT.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result,indent=2))
