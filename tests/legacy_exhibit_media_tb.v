@@ -36,7 +36,7 @@ module legacy_exhibit_media_tb #(parameter MODE=0);
   if(MODE==4)begin wait(state==4'hf);if(load_starts||commit||valid)$fatal(1,"missingcoverACK escaped");$display("TEST_PASS legacycontroller missingcoverACK boundedtimeout beforeload");$finish;end
   if(MODE==11)prevpage;
   cover_ack=cover_toggle;transition_busy=1;wait(load_starts==1);step;
-  if(candidate[4:2]!=0||candidate[1:0]!=0||candidate[7:6]!=1||dut.left_sector!=100)$fatal(1,"firstcandidate metadata/default2x/catalogue gotview%h left%0d right%0d",candidate,dut.left_sector,dut.right_sector);
+  if(candidate[4:2]!=0||candidate[1:0]!=0||candidate[7:6]!=0||dut.left_sector!=100)$fatal(1,"firstcandidate metadata/default1x/catalogue gotview%h left%0d right%0d",candidate,dut.left_sector,dut.right_sector);
   if(MODE==2)begin dut.loader.inject_error=1;wait(state==4'hc);repeat(5)step;if(commit||valid)$fatal(1,"loaderfault committed");$display("TEST_PASS legacy controller loadererror failsclosed");$finish;end
   if(MODE==3)begin fault=1;wait(state==4'ha);repeat(5)step;if(commit||valid)$fatal(1,"storagefault committed");$display("TEST_PASS legacy controller storagefault aborts withoutcommit");$finish;end
   // Two new navigation events during load become one latest desired page;
@@ -64,7 +64,7 @@ module legacy_exhibit_media_tb #(parameter MODE=0);
   // End on an explicit storage fault: no new candidate can publish afterward.
   fault=1;wait(state==4'ha);repeat(20)step;
   if(commits!=2)$fatal(1,"expected exactlytwo actualcommit requests");
-  $display("TEST_PASS legacycontroller catalogue10,coverACKgate,sourceANDwriterfinish bothorders,delayedcommitACK,metadataatomic12bits,backbufferownership,rapidnextlatestintent,dualpair2reverse,2xdefault/3x/focus5,revealbusyexclusion,faultabort checks%0d",checks);$finish;
+  $display("TEST_PASS legacycontroller catalogue10,coverACKgate,sourceANDwriterfinish bothorders,delayedcommitACK,metadataatomic12bits,backbufferownership,rapidnextlatestintent,dualpair2reverse,1xdefault/3x/focus5,revealbusyexclusion,faultabort checks%0d",checks);$finish;
  end
  initial begin #2000000;$fatal(1,"controller watchdog state%0d loads%0d commits%0d",dut.state,load_starts,commits);end
 endmodule

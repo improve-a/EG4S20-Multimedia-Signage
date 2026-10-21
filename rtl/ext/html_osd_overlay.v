@@ -10,7 +10,7 @@ module html_osd_overlay #(
  input wire osd_enable,page_event,
  input wire [2:0] page_index,
  input wire dual_enable,zoom_enable,
- input wire [1:0] scale_mode,
+  input wire [1:0] scale_mode,transition_mode,
  input wire [2:0] focus,
  input wire [7:0] progress,
  input wire signed [8:0] brightness,
@@ -34,7 +34,7 @@ module html_osd_overlay #(
  wire frame_start=i_vs&&!prev_vs;
  reg enabled,dual,zoom,muted,stopped,auto_flag;
  reg [2:0] page,ccontrast,cmode;
- reg [1:0] zoom_mode;
+  reg [1:0] zoom_mode,trans_mode;
  reg [2:0] focus_l;
  reg [23:0] mini_bounds;
  reg [1:0] resolved_scale;
@@ -219,7 +219,7 @@ module html_osd_overlay #(
   if(rst)begin
    x<=0;y<=0;prev_de<=0;prev_vs<=0;enabled<=0;dual<=0;zoom<=0;
    muted<=0;stopped<=0;auto_flag<=0;page<=0;ccontrast<=2;cmode<=0;
-   bright<=0;vol<=8;prog<=0;seconds<=5;seconds_fraction<=0;event_pending<=0;zoom_mode<=0;focus_l<=0;mini_bounds<=0;
+    bright<=0;vol<=8;prog<=0;seconds<=5;seconds_fraction<=0;event_pending<=0;zoom_mode<=0;trans_mode<=0;focus_l<=0;mini_bounds<=0;
    body_base<=0;header_base<=14'd6720;index_base<=14'd7840;typed_count<=0;typing_delay<=6;typing_phase<=0;cursor_frame<=0;
    for(ah=0;ah<9;ah=ah+1)audio_history[ah]<=0;pcm_status<=0;
   end else begin
@@ -233,7 +233,7 @@ module html_osd_overlay #(
     header_base<=14'd6720+(dual_enable ? 14'd960 : next_page*14'd160);
     index_base<=14'd7840+next_page*14'd80;zoom<=resolved_scale!=0;zoom_mode<=resolved_scale;focus_l<=focus;
     mini_bounds<=mini_geometry(page_index,focus,resolved_scale);
-    bright<=brightness;ccontrast<=contrast;cmode<=mode;vol<=volume;
+     bright<=brightness;ccontrast<=contrast;cmode<=mode;vol<=volume;trans_mode<=transition_mode;
     muted<=mute;stopped<=paused;auto_flag<=auto_mode;prog<=progress;seconds<=interval;seconds_fraction<=interval_fraction<10 ? interval_fraction : 4'd0;
     cursor_frame<=cursor_frame+1'b1;pcm_status<=audio_status;
     for(ah=8;ah>0;ah=ah-1)audio_history[ah]<=audio_history[ah-1];
@@ -290,6 +290,17 @@ module html_osd_overlay #(
   "s":digit=35'b01111100001000001110000010000111110;
   "X":digit=35'b00000100010101000100010101000100000;
   ".":digit=35'b00000000000000000000000000010000100;
+  " ":digit=35'b00000000000000000000000000000000000;
+  "R":digit=35'b11110100011000111110101001001010001;
+  "I":digit=35'b11111001000010000100001000010011111;
+  "G":digit=35'b01110100011000010111100011000101110;
+  "H":digit=35'b10001100011000111111100011000110001;
+  "O":digit=35'b01110100011000110001100011000101110;
+  "N":digit=35'b10001110011010110011100011000110001;
+  "L":digit=35'b10000100001000010000100001000011111;
+  "S":digit=35'b01111100001000001110000010000111110;
+  "Y":digit=35'b10001100010101000100001000010000100;
+  "D":digit=35'b11110100011000110001100011000111110;
   default:digit=0;
  endcase end
  endfunction
@@ -323,7 +334,7 @@ module html_osd_overlay #(
   end
  end
  endfunction
- function [4:0] font_index;input [7:0] c;begin case(c)
+  function [5:0] font_index;input [7:0] c;begin case(c)
   "0":font_index=5'd0;
   "1":font_index=5'd1;
   "2":font_index=5'd2;
@@ -348,7 +359,11 @@ module html_osd_overlay #(
   "s":font_index=5'd21;
   "X":font_index=5'd22;
   ".":font_index=5'd23;
-  default:font_index=5'd24;endcase end endfunction
+   "R":font_index=6'd25;"I":font_index=6'd26;"G":font_index=6'd27;
+   "H":font_index=6'd28;"O":font_index=6'd29;"N":font_index=6'd30;
+   "L":font_index=6'd31;"S":font_index=6'd32;"Y":font_index=6'd33;
+   "D":font_index=6'd34;
+   default:font_index=6'd24;endcase end endfunction
  function [4:0] live_font_index;
  input [5:0] n;reg[8:0]mag;reg[5:0]position;
  begin
@@ -376,12 +391,44 @@ module html_osd_overlay #(
    default:begin end
   endcase
  end endfunction
- reg [23:0] plate_rgb,text_rgb;
+  // P is the control page, not the six-page content index. Parameters use the
+  // same VS-latched state as the existing overlay and zoom badge.
+  function [7:0] status_char;
+  input [5:0] n;
+  reg [47:0] name;
+  begin
+   case(cmode)
+    0:name="PLAY  ";1:name="BRIGHT";2:name="CONTR ";3:name="INTV  ";
+    4:name="OSD   ";5:name="TRANS ";6:name="ZOOM  ";7:name="VOL   ";
+   endcase
+   status_char=" ";
+   case(n)
+    0:status_char="P";1:status_char="0"+cmode;
+    3:status_char=name[47:40];4:status_char=name[39:32];
+    5:status_char=name[31:24];6:status_char=name[23:16];
+    7:status_char=name[15:8];8:status_char=name[7:0];
+   endcase
+   case(cmode)
+    1:if(n>=10&&n<=13)status_char=live_char(n-8);
+    2:if(n>=10&&n<=13)status_char=live_char(n-1);
+    3:case(n)
+     10:status_char="0"+seconds/10;11:status_char="0"+seconds%10;
+     12:status_char=".";13:status_char="0"+seconds_fraction;14:status_char="s";
+    endcase
+    4:case(n)10:status_char="0"+enabled;endcase
+    5:case(n)10:status_char="M";11:status_char="0"+trans_mode;endcase
+    6:case(n)
+     10:status_char="1"+zoom_mode;11:status_char=".";12:status_char="0";13:status_char="X";
+    endcase
+    7:if(n==10||n==11)status_char=live_char(n+6);
+   endcase
+  end endfunction
+  reg [23:0] plate_rgb,text_rgb;
  reg [2:0] plate_code;
  reg [3:0] plate_alpha;
  reg [34:0] live_bits;
  reg live_ink,font_active;
- reg [4:0] font_code;
+  reg [5:0] font_code;
  reg [2:0] tick;
  reg [9:0] tx,ty;
  reg [7:0] live_x;
@@ -445,16 +492,17 @@ module html_osd_overlay #(
     endcase
     font_active=1;
    end
-   // Live adjustment strip appears while a parameter mode is selected.
-   if(cmode!=0&&px>=24&&px<(seconds_fraction!=0 ? 10'd256 : 10'd238)&&y>=467&&y<478)begin
+   end
+    // Small persistent PLAY label also confirms return from P7. Controls remain
+    // readable when P4 disables captions; no new timer or pixel stage is needed.
+    if(i_de&&px>=24&&px<(cmode==0 ? 10'd76 : 10'd136)&&y>=467&&y<478)begin
     plate_code=3'd5;plate_alpha=13;
     live_x=px-10'd28;live_y=y-10'd469;
-    if(px>=28&&px<(seconds_fraction!=0 ? 10'd250 : 10'd232)&&y>=469&&y<476)begin
-     font_active=1;font_code=live_font_index(live_x/8'd6);
+     if(px>=28&&px<(cmode==0 ? 10'd70 : 10'd130)&&y>=469&&y<476)begin
+      font_active=1;font_code=font_index(status_char(live_x/8'd6));
     end
    end
-  end
-  live_col=live_x%8'd6;
+   live_col=live_x%8'd6;
   if(y<62)text_rgb=24'hede9e2;
   else if(y<411&&px>=94)text_rgb=24'h77736b;
  end

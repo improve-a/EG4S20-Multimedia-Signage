@@ -23,7 +23,7 @@ module html_video_overlay(
  html_osd_overlay osd(.clk(clk),.rst(rst),.i_hs(ah),.i_vs(av),.i_de(ad),.i_rgb(argb),
   .osd_enable(osd_enable),.page_event(page_event),.page_index(page_index),.dual_enable(dual_enable),
   .zoom_enable(scale_mode!=0),.scale_mode(scale_mode),.focus(focus),.progress(progress),.brightness(brightness),.contrast(contrast),
-  .mode(mode),.volume(volume),.mute(mute),.paused(paused),.auto_mode(auto_mode),.interval(interval_seconds),.interval_fraction(interval_fraction),
+  .mode(mode),.transition_mode(transition_mode),.volume(volume),.mute(mute),.paused(paused),.auto_mode(auto_mode),.interval(interval_seconds),.interval_fraction(interval_fraction),
   .audio_peak(audio_peak),.audio_status(audio_status),.speaking(),.syllable(),
   .o_hs(o_hs),.o_vs(o_vs),.o_de(o_de),.o_rgb(o_rgb));
 endmodule
