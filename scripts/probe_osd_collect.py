@@ -1,8 +1,9 @@
 """Collect one candidate build without modifying any frozen artifact."""
 from pathlib import Path
-import collections,hashlib,importlib.util,json,re,shutil,zipfile
+import argparse,collections,hashlib,importlib.util,json,re,shutil,zipfile
 ROOT=Path(__file__).resolve().parents[1]
-RID='probe_osd_1x_001'
+ap=argparse.ArgumentParser();ap.add_argument('--run-id',default='probe_osd_1x_001');args=ap.parse_args()
+RID=args.run_id
 BASE=ROOT/'output/html_fidelity/builds'/RID
 OLD=Path('D:/FPGA/EG4S20-NoBot-HDMIProbe/output/html_fidelity/builds/hdmi_probe_001')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -42,7 +43,7 @@ result['candidate_classification']='NEW_CANDIDATE / HARDWARE_NOT_TESTED'
 dest=ROOT/'output/probe_osd_1x/delivery';dest.mkdir(parents=True,exist_ok=False)
 bit=BASE/'work/design/td_project/hx4s20_basic_Runs/phy_1/hx4s20_basic.bit'
 assert result['BUILD_PASS'],result['states']
-target=dest/'probe_osd_1x_001_NEW_CANDIDATE_HARDWARE_NOT_TESTED.bit'
+target=dest/f'{RID}_NEW_CANDIDATE_HARDWARE_NOT_TESTED.bit'
 shutil.copy2(bit,target)
 result['candidate_bit']={'path':str(target),'bytes':target.stat().st_size,'sha256':sha(target)}
 source=ROOT/'artifacts'/f'{RID}_source.zip'
