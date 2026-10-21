@@ -1,0 +1,59 @@
+/* ---------- scene transition: aperture wipe + layered entrance ---------- */
+.scene.leave{z-index:1}
+.scene.enter{z-index:2;animation:aperture 1.05s var(--e-io) both}
+@keyframes aperture{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+.scene.enter.rev{animation-name:aperture-r}
+@keyframes aperture-r{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.scene.leave .hero,.scene.leave .family{animation:drift-out 1.05s var(--e-io) both}
+.scene.leave .copy,.scene.leave .specs,.scene.leave .series-row,.scene.leave .apps,.scene.leave .device{animation:fade-out .45s var(--e-in) both}
+.scene.leave .giant{animation:drift-out 1.05s var(--e-io) both}
+@keyframes drift-out{to{transform:translateX(-46px);opacity:.25}}
+@keyframes fade-out{to{opacity:0;transform:translateX(-10px)}}
+.scene.enter .hero,.scene.enter .family{animation:hero-in 1.5s var(--e-out) both}
+@keyframes hero-in{from{transform:translateX(70px) scale(.965);opacity:0}to{transform:none;opacity:1}}
+.scene.enter .giant{animation:giant-in 1.7s var(--e-out) both}
+@keyframes giant-in{from{transform:translateX(120px)}to{transform:none}}
+.scene.enter [data-in]{animation:rise .9s var(--e-out) both;animation-delay:calc(var(--i)*70ms + .38s)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.scene.enter.rev .hero,.scene.enter.rev .family{animation-name:hero-in-r}
+@keyframes hero-in-r{from{transform:translateX(-70px) scale(.965);opacity:0}to{transform:none;opacity:1}}
+
+/* OSD card swaps content with a short shutter */
+.card .txt.swap{animation:swap .5s var(--e-out)}
+@keyframes swap{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+
+/* ---------- C · bot sprite layer ---------- */
+#bot{position:absolute;left:520px;top:368px;width:104px;height:100px;pointer-events:auto;cursor:pointer;z-index:20}
+#bot svg{width:100%;height:100%;overflow:visible;display:block}
+#bot .shadow{transform-box:fill-box;transform-origin:center}
+
+/* ---------- controls (browser prototype only) ---------- */
+.panel{background:#151513;border-left:1px solid #22211e;padding:26px 22px 20px;overflow:auto;display:flex;flex-direction:column;gap:22px;font-size:12.5px}
+.panel h1{font-size:15px;font-weight:600;margin:0;line-height:1.45;letter-spacing:.02em}
+.panel h1 small{display:block;font-weight:400;font-size:11.5px;color:#8f8a81;margin-top:4px}
+.grp{display:flex;flex-direction:column;gap:9px}
+.grp>span{font-size:11.5px;color:#8f8a81}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.btn{background:#22211e;border:1px solid #2e2d29;border-radius:6px;padding:7px 11px;cursor:pointer;transition:background .2s,border-color .2s;line-height:1.2}
+.btn:hover{background:#2b2a26}
+.btn[aria-pressed=true]{background:var(--paper);color:#151513;border-color:var(--paper)}
+.btn.wide{flex:1}
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.pages .btn{padding:8px 8px;text-align:left;font-size:11.5px;display:flex;flex-direction:column;gap:3px}
+.pages .btn em{font-style:normal;font-size:10px;opacity:.6}
+.slider{display:flex;align-items:center;gap:10px}
+.slider input{flex:1;accent-color:var(--paper)}
+.slider output{font-variant-numeric:tabular-nums;width:40px;text-align:right}
+.hint{font-size:11px;color:#77736b;line-height:1.6;margin:0}
+.layers label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.layers input{accent-color:var(--paper)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+#log{font-size:10.5px;color:#77736b;font-family:ui-monospace,Menlo,monospace;line-height:1.6;min-height:50px;white-space:pre-wrap}
+
+/* layer x-ray: shows which layer each pixel belongs to (A static / B OSD / C sprite) */
+.xray #scenes,.xray #compare{outline:2px dashed #D1A85E;outline-offset:-6px}
+.xray #osd{outline:2px dashed #7FC3A2;outline-offset:-12px}
+.xray #bot{outline:2px dashed #E0603F}
+
+@media (max-width:900px){body{grid-template-columns:1fr;grid-template-rows:auto 1fr;overflow:auto}.viewport{min-height:60vh}.panel{border-left:0;border-top:1px solid #22211e}}
+@media (prefers-reduced-motion:reduce){.scene.enter,.scene.leave *,.scene.enter *{animation-duration:.01s!important;animation-delay:0s!important}}

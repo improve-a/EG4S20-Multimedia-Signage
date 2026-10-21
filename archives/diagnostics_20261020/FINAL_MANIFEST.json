@@ -1,0 +1,91 @@
+{
+  "created_utc": "2026-10-20T14:42:47.241026+00:00",
+  "conclusion": "ROOT_CAUSE_UNRESOLVED",
+  "offline_build": "OFFLINE_BUILD_PASS",
+  "hardware": "HARDWARE_NOT_TESTED",
+  "classification": "Two diagnostic bitstreams; no production root-cause fix",
+  "delivery_commit": "95de104c0d9c2c953c21cb5068ccffafe76b7c14",
+  "branch": "codex/nobot-rca-20261020",
+  "worker_model": "deepseek/deepseek-flash (DeepSeek V4.1 Flash 1017)",
+  "baseline_freeze": "D:\\FPGA\\EG4S20-NoBot-Frozen\\probe_hw_pass_20261020",
+  "private_full_build_archive": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\baseline_copies",
+  "new_builds": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds",
+  "new_netlists_and_init_STA": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\netcheck",
+  "files": [
+    {
+      "name": "BUILD_RESULTS.json",
+      "bytes": 48003,
+      "sha256": "3fe4c4e196da9178ab94d9eddbe41fc5098c264e16cbb206e5d8e65aa563c8ef"
+    },
+    {
+      "name": "nobot_rca_20261020.bundle",
+      "bytes": 28100702,
+      "sha256": "2f4e1076149d8d0f170107fce08270f038dd9b6665bda97f98bbf40f4146590e"
+    },
+    {
+      "name": "rca_locked_only_001.bit",
+      "bytes": 677348,
+      "sha256": "41848d2090bc22695be98f096167005c4aceaecffbd6d20ecb0dc5b7440dba4a"
+    },
+    {
+      "name": "rca_locked_only_001_manifest.json",
+      "bytes": 23179,
+      "sha256": "bdafd625e14c9ef8c931b4f3d146def693b09505a182deba3d715a0b5de39504"
+    },
+    {
+      "name": "rca_locked_only_001_reports.zip",
+      "bytes": 973544,
+      "sha256": "795293f38b28ad1fe0b308112336aaf62184bd410be50c86049cf189210008e2"
+    },
+    {
+      "name": "rca_locked_only_001_source.zip",
+      "bytes": 566038,
+      "sha256": "1f49649fe00f003983ecdd80188dc86b168a81c2a09199958d75c752e16d14f3"
+    },
+    {
+      "name": "rca_no_locked_001_source.zip",
+      "bytes": 565996,
+      "sha256": "c1c5520b9e43cf773cfe654e50702b98f4995907e04f65891c70365a7ef9e899"
+    },
+    {
+      "name": "rca_no_locked_002_source.zip",
+      "bytes": 566279,
+      "sha256": "ee08f1bb22a6c7fe24df52ffd271e771544a5e7aab797e9b5ad7f6a438c7bbab"
+    },
+    {
+      "name": "rca_no_locked_003.bit",
+      "bytes": 677348,
+      "sha256": "cce449034505c4d5c61a856b94b48c4c3d7e20a3eb86627972763a1981ca46a5"
+    },
+    {
+      "name": "rca_no_locked_003_manifest.json",
+      "bytes": 23273,
+      "sha256": "f72537341c6f014bda322c1fd753d4a32ae4a8af4511603cb371bc1039a06501"
+    },
+    {
+      "name": "rca_no_locked_003_reports.zip",
+      "bytes": 996998,
+      "sha256": "97132cba40cb364401f96af68e8c587420bd2c45b547ede269bf4dbea8415e17"
+    },
+    {
+      "name": "rca_no_locked_003_source.zip",
+      "bytes": 566307,
+      "sha256": "6972abf47493250655e40ada146d4fa00fb0f0dde9cae3f5d913017ff7d42357"
+    },
+    {
+      "name": "RCA_REPORT.md",
+      "bytes": 21540,
+      "sha256": "8d8695a37ef9176ef7c8134c95925d2670ffacced699ec2c9774337e41e91b43"
+    },
+    {
+      "name": "rca_verification.zip",
+      "bytes": 825560,
+      "sha256": "23b8318137860c85f1c87de9250ea90189d63db5266367da590d89c951afad71"
+    },
+    {
+      "name": "ROOT_ACCEPTANCE.json",
+      "bytes": 8724,
+      "sha256": "7de94816c8d03227e4fe100d7ea03ff3060e4d80dfcc0da02b515e4cde07c2d9"
+    }
+  ]
+}

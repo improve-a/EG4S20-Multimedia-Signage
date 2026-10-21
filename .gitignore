@@ -26,6 +26,11 @@ __pycache__/
 !/output/venue_unified_offline/validation/sim/**/simulation.log
 
 # Explicit local official/vendor/derived dependencies; self-authored files stay tracked
+# Raw local investigations contain browser profiles, private dependencies and media.
+# Selected authored sources are preserved under archives/ with a SHA256 inventory.
+/local_temp/
+/output/html_fidelity/
+/D:*/
 /project/td_project/al_ip/PLL.ipc
 /project/td_project/al_ip/PLL.v
 /project/td_project/al_ip/PLL.vhd

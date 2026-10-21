@@ -1,0 +1,55 @@
+{
+  "updated_utc": "2026-10-19T16:01:16.818854+00:00",
+  "state": "OFFLINE_ANALYSIS_COMPLETE_ROOT_CAUSE_UNRESOLVED",
+  "branch": "codex/no-bot-hw-fix-20261019",
+  "working_root": "D:\\FPGA\\EG4S20-NoBot-HWFix",
+  "base_DELIVERY_SHA": "17ac5f26acb120b4ed0055010d913bf4bcd9b50e",
+  "base_SOURCE_SHA": "6ee7c70bbf36c33f90a687f010c876de48f03ba6",
+  "production_changed": false,
+  "new_builds": [],
+  "strict_policy": "Pure offline only. No Programmer/JTAG/physical-card/device operations.",
+  "historical_AB_evidence_root": "D:\\FPGA\\EG4S20-NoBot\\output\\hardware\\no_bot_20261019T140608Z",
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "New OSD truncates rows or corrupts VS/SOF/TLAST markers before HDMI",
+      "status": "REFUTED_BY_TARGETED_RTL_PROTOCOL_CASE",
+      "scope": "2 native frames/960rows with actual tail, not fulltop."
+    },
+    {
+      "id": "H2",
+      "claim": "AXIS data/valid/user disconnected or tiedzero in synthesis",
+      "status": "NO_SUPPORT_IN_MAPPED_DRIVER_CONE",
+      "scope": "All24data/valid/user realFF drivers into HDMI FIFO; not full netlist functional simulation."
+    },
+    {
+      "id": "H3",
+      "claim": "Two extra pixel clocks alone prevent HDMI lock",
+      "status": "REFUTED_IN_MAPPED_CONTROL_MODEL",
+      "scope": "17 start phases incl old/new, 3frame lock model plus 40000clock mapped FIFO control: no lockloss/full blockedwrites; negative full test at1024. Not full encrypted HDMI/TMDS/PHY.",
+      "evidence": "output/offline_debug/astra_hdmi_phase/review.md"
+    },
+    {
+      "id": "H4",
+      "claim": "Actual top load/commit/FIFO/gating integration sends wrong or black pixels, or loses audio enable",
+      "status": "NOT_REPRODUCED_IN_SCOPED_ACTUAL_TOP",
+      "scope": "Actual top1 fullframe/307200writes exact;247 originalPCM samples exact and nonzero WAV at HDMI input. Leaves modeled; no hardware/packet/PHY/endloop qualification.",
+      "evidence": "output/hardware/no_bot_20261019T140608Z/debug/actual_top_boot_05/video_input_receipt.json"
+    },
+    {
+      "id": "H5",
+      "claim": "Default loader depends on accelerated SD byte spacing",
+      "status": "REFUTED_FOR_DEFAULT_HOME_2X",
+      "scope": "Actual production loader,70sysclk/byte,307200pixels exact,1081sectors; short data negative error2. Not complete SPI protocol/SDRAM/HDMI.",
+      "evidence": "output/html_fidelity/no_bot/verify/loader_spi_gap_20261019_231742/verification.json"
+    }
+  ],
+  "OFFLINE_BUILD": "NOT_RUN_FOR_FIX",
+  "TIMING": "NOT_RUN_FOR_FIX",
+  "RTL_REGRESSION": "SCOPED_PASS",
+  "VIDEO_PATH_SIMULATION": "PASS_TO_HDMI_INPUT_WITH_MODELED_LEAVES",
+  "AUDIO_PATH_SIMULATION": "PASS_FIRST_REAL_WAV_PCM_AND_HDMI_INPUT_NO_EOF_PACKET_PHY_COVERAGE",
+  "HARDWARE": "HARDWARE_NOT_TESTED_FOR_FIX",
+  "HARDWARE_NOT_TESTED": true,
+  "diagnostic_branch": "codex/no-bot-hdmi-colorbar-20261019"
+}

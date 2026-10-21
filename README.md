@@ -7,6 +7,11 @@
 六页“场序 / VENUE FLOW”界面提供日常信息和模拟应急疏散展示；地图为虚构示意，
 页面切换由按键控制，没有接入真实告警传感器。音乐与页面模式独立播放。
 
+已补充 Mac 上分散的后续自研源码、HTML 原型模板、测试、生成器和诊断工具，
+见 [源码归档导航](archives/README.md) 与 [逐文件来源和 SHA256](docs/mac_source_inventory.json)。
+这些归档保留不同阶段的成功、失败及未验证状态；未将它们合并为根目录的新生产实现。
+根目录原有 FPGA RTL 和板级配置保持不变，本次没有重新构建或操作硬件。
+
 ## 公开内容与工程来源
 
 本仓库从完整工程 `c16d3da56c8ae175f675c112cfdd4bdc5f2c0fb6` 整理为独立 `main` 历史。
@@ -67,6 +72,7 @@ KEY1 为逻辑复位；CONFIG1 / PROGRAM_B 会清除易失配置，两者不要�
 | `output/venue_unified_offline/media/` | 当前六页统一素材与 SHA256 清单 |
 | `output/venue_unified_offline/validation/` | 已有统一版构建报告、测试结果、时序覆盖说明 |
 | `docs/` | 来源、依赖和本次发布 PLAN / STATUS / EVIDENCE |
+| `archives/` | Mac 后续 HTML/NoBot/HDMI 版本、自研脚本、测试及历史诊断，按来源分别归档 |
 
 `output/` 中上述内容是保留的工程成果，不是可以整体忽略的缓存目录。
 旧单独 A/B/C 包描述其历史部署方式，当前六页统一版以本 README 和
@@ -145,11 +151,9 @@ python3 scripts/package_unified_offline.py
 
 本 Mac 仓库是后续源码主目录，旧 `hx4s20_extensions` 留作冻结来源；不要在两边并行开发。
 Windows 的裸仓库只中转提交，没有第二份工作分支或工作区。
-本次首次推送尚被认证权限阻塞：Windows 的 GitHub CLI 旧令牌已失效，Git HTTPS
-凭据亦不可用；已连接 GitHub 插件的实际写入返回 403（Resource not accessible by
-integration）。没有重置认证或复制凭据。需先恢复既有 Windows 推送认证，或给现有
-GitHub 连接授予目标仓库 Contents 写权限。下面的脚本供 Windows 认证有效时使用；
-远端 `main` 创建前，暂不执行 `git pull`。
+Mac 的 GitHub 浏览器授权与 HTTPS 认证已恢复，原提交 `fb97d76` 已正常推送并核对
+远端提交及全部文件树。日常直接从此 Mac 仓库提交、推送；Windows 裸仓库和
+`scripts/push_via_thinkpad.py` 保留为 Windows 认证有效时的备用中转方式。
 
 ```sh
 git pull --ff-only origin main
@@ -157,7 +161,7 @@ git pull --ff-only origin main
 git status --short
 git add <明确要提交的路径>
 git commit -m "描述具体改动"
-python3 scripts/push_via_thinkpad.py
+git push origin main
 ```
 
 Windows 认证有效时，推送脚本用 Git bundle 经已有 SSH 传输到 Windows，复用 Git Credential Manager

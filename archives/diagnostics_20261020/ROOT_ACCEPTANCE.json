@@ -1,0 +1,219 @@
+[
+  {
+    "run_id": "rca_no_locked_003",
+    "OFFLINE_BUILD": "PASS",
+    "RTL_CHECKS": "SCOPED_PASS",
+    "STA": "PASS_WITH_INHERITED_MODEL_AND_INTERFACE_LIMITATIONS",
+    "HARDWARE": "NOT_TESTED",
+    "normal_group_statistics": 40,
+    "init_group_statistics": 40,
+    "violating_endpoints_in_group_summaries": 0,
+    "IO_report_rows_identical_to_probe": 88,
+    "normalized_source_changes": [
+      "work/design/user_source/hdl_source/top_tf_hdmi_audio.v"
+    ],
+    "critical_warning_codes": [
+      "PHY-5079",
+      "PHY-7002"
+    ],
+    "baseline_critical_warning_codes": [
+      "PHY-5079",
+      "PHY-7002"
+    ],
+    "new_critical_warning_codes": [],
+    "netcheck": {
+      "run_id": "rca_no_locked_003",
+      "state": "SCOPED_PASS",
+      "steps": [
+        {
+          "name": "gate",
+          "exit_code": 0,
+          "seconds": 0.9529999999795109
+        },
+        {
+          "name": "init",
+          "exit_code": 0,
+          "seconds": 13.062000000034459
+        }
+      ],
+      "source_hashes": {
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\td_project\\hx4s20_basic_Runs\\syn_1\\hx4s20_basic_gate.db": "5d865b44d6c54d6812c062afa0b8dd84194597e6eb6d9cd5f303f600984e1dab",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic_pr.db": "b4d69bfdf3b1345f9dff2de46281ea0e60e68c750671b949a470b4d1ab6f16e3",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\constraints_source\\timing.sdc": "93d101bdc89fa6ddb75ba17edb7c42bc04dd3eeecade0a649bfafa0a966e4051"
+      },
+      "gate_v_sha256": "7d3c349e25bfa66a5fcd4d6699a747ad418a3d2185a1da3a0d3eeff8f6004012",
+      "mapped_route_sha256": "d4b08f73ed8d59efe5487483846b17e281b843702456706ca76aea3e06f96bab",
+      "total_al_map_seq": 6457,
+      "observer_counts": {
+        "core_locked": 1,
+        "core_ready": 1,
+        "axis_last": 1,
+        "axis_x_count": 11,
+        "probe_frame_count": 20,
+        "probe_line_count": 11,
+        "probe_lock_ever": 0
+      },
+      "observer_nodes": {
+        "core_locked": [
+          "u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/O_video_locked_reg"
+        ],
+        "core_ready": [
+          "u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/S_video_in_ready_reg"
+        ],
+        "axis_last": [
+          "u_video_rgb_to_axis_640x480/O_video_last_reg"
+        ],
+        "axis_x_count": [
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[0]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[10]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[1]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[2]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[3]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[4]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[5]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[6]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[7]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[8]",
+          "u_video_rgb_to_axis_640x480/S_x_cnt_reg[9]"
+        ],
+        "probe_frame_count": [
+          "probe/frame_pixels_reg[0]",
+          "probe/frame_pixels_reg[10]",
+          "probe/frame_pixels_reg[11]",
+          "probe/frame_pixels_reg[12]",
+          "probe/frame_pixels_reg[13]",
+          "probe/frame_pixels_reg[14]",
+          "probe/frame_pixels_reg[15]",
+          "probe/frame_pixels_reg[16]",
+          "probe/frame_pixels_reg[17]",
+          "probe/frame_pixels_reg[18]",
+          "probe/frame_pixels_reg[19]",
+          "probe/frame_pixels_reg[1]",
+          "probe/frame_pixels_reg[2]",
+          "probe/frame_pixels_reg[3]",
+          "probe/frame_pixels_reg[4]",
+          "probe/frame_pixels_reg[5]",
+          "probe/frame_pixels_reg[6]",
+          "probe/frame_pixels_reg[7]",
+          "probe/frame_pixels_reg[8]",
+          "probe/frame_pixels_reg[9]"
+        ],
+        "probe_line_count": [
+          "probe/line_pixels_reg[0]",
+          "probe/line_pixels_reg[10]",
+          "probe/line_pixels_reg[1]",
+          "probe/line_pixels_reg[2]",
+          "probe/line_pixels_reg[3]",
+          "probe/line_pixels_reg[4]",
+          "probe/line_pixels_reg[5]",
+          "probe/line_pixels_reg[6]",
+          "probe/line_pixels_reg[7]",
+          "probe/line_pixels_reg[8]",
+          "probe/line_pixels_reg[9]"
+        ],
+        "probe_lock_ever": []
+      },
+      "init_timing": {
+        "setup": {
+          "wns_ns": 0.423,
+          "tns_ns": 0.0,
+          "failing_endpoints": null
+        },
+        "hold": {
+          "wns_ns": 0.024,
+          "tns_ns": 0.0,
+          "failing_endpoints": null
+        }
+      },
+      "input_DB_and_SDC_unchanged": true,
+      "scope": "Observer retention/removal assertions and inherited SPI-init STA only. Not full netlist formal equivalence or board-level timing signoff."
+    },
+    "BRAM32K": 5,
+    "scope": "No new production exceptions; normal/init slow+fast Max/Min reports have zero violating endpoints. TMDS/external I/O/CDC/startup remain outside full signoff. Generic parser STA=NOT_VERIFIED is retained, not rewritten."
+  },
+  {
+    "run_id": "rca_locked_only_001",
+    "OFFLINE_BUILD": "PASS",
+    "RTL_CHECKS": "SCOPED_PASS",
+    "STA": "PASS_WITH_INHERITED_MODEL_AND_INTERFACE_LIMITATIONS",
+    "HARDWARE": "NOT_TESTED",
+    "normal_group_statistics": 40,
+    "init_group_statistics": 40,
+    "violating_endpoints_in_group_summaries": 0,
+    "IO_report_rows_identical_to_probe": 88,
+    "normalized_source_changes": [
+      "work/design/user_source/hdl_source/top_tf_hdmi_audio.v"
+    ],
+    "critical_warning_codes": [
+      "PHY-5079",
+      "PHY-7002"
+    ],
+    "baseline_critical_warning_codes": [
+      "PHY-5079",
+      "PHY-7002"
+    ],
+    "new_critical_warning_codes": [],
+    "netcheck": {
+      "run_id": "rca_locked_only_001",
+      "state": "SCOPED_PASS",
+      "steps": [
+        {
+          "name": "gate",
+          "exit_code": 0,
+          "seconds": 0.9690000000409782
+        },
+        {
+          "name": "init",
+          "exit_code": 0,
+          "seconds": 12.625
+        }
+      ],
+      "source_hashes": {
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\td_project\\hx4s20_basic_Runs\\syn_1\\hx4s20_basic_gate.db": "ad9662d8644bcba139104ab66a26d5167a476335ec21772274f9ca04026812e1",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic_pr.db": "279b0ee6354871390a71156b85bf98601a4d4e1b61ada7c24027c0295271f467",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\constraints_source\\timing.sdc": "93d101bdc89fa6ddb75ba17edb7c42bc04dd3eeecade0a649bfafa0a966e4051"
+      },
+      "gate_v_sha256": "e134095c91135bf9cf407098ca6d6354cabb8cbe52c7c295b5cdbca72f18cf26",
+      "mapped_route_sha256": "e28bc25b823677109eba3c2c98d30babdad8aa964c2b4a55f4c6918e29dd57b8",
+      "total_al_map_seq": 6348,
+      "observer_counts": {
+        "core_locked": 1,
+        "core_ready": 0,
+        "axis_last": 0,
+        "axis_x_count": 0,
+        "probe_frame_count": 0,
+        "probe_line_count": 0,
+        "probe_lock_ever": 1
+      },
+      "observer_nodes": {
+        "core_locked": [
+          "u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/O_video_locked_reg"
+        ],
+        "core_ready": [],
+        "axis_last": [],
+        "axis_x_count": [],
+        "probe_frame_count": [],
+        "probe_line_count": [],
+        "probe_lock_ever": [
+          "probe/lock_ever_reg"
+        ]
+      },
+      "init_timing": {
+        "setup": {
+          "wns_ns": 0.106,
+          "tns_ns": 0.0,
+          "failing_endpoints": null
+        },
+        "hold": {
+          "wns_ns": 0.027,
+          "tns_ns": 0.0,
+          "failing_endpoints": null
+        }
+      },
+      "input_DB_and_SDC_unchanged": true,
+      "scope": "Observer retention/removal assertions and inherited SPI-init STA only. Not full netlist formal equivalence or board-level timing signoff."
+    },
+    "BRAM32K": 5,
+    "scope": "No new production exceptions; normal/init slow+fast Max/Min reports have zero violating endpoints. TMDS/external I/O/CDC/startup remain outside full signoff. Generic parser STA=NOT_VERIFIED is retained, not rewritten."
+  }
+]

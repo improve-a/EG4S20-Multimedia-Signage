@@ -1,0 +1,134 @@
+{
+  "state": "UNIT_SIM_PASS",
+  "pid": 19116,
+  "started": 1792423062.6852105,
+  "source_commit": "6ee7c70bbf36c33f90a687f010c876de48f03ba6",
+  "working_head": "17ac5f2",
+  "scope": "Actual loader, page0 single 2x focus0; source-byte cadence only. Not fullSD protocol, SDRAM, HDMI or hardware.",
+  "sources": {
+    "rtl\\ext\\legacy_exhibit_loader.v": "1218120394e5ddf2c462df72946c2b3cc6a244360e5a612bd9909b90f02b4cfe",
+    "tests\\legacy_exhibit_loader_tb.v": "792a7c7b4820ea8c8f74c03dc43e13d148044b0d1bfc5fb5a3f3e0f4f0d4c581",
+    "rtl\\SD\\sd_card_top.v": "75b6e19b148da0fe28bd8e8e33ba83f419cdd74b74c0285c5d62ec3379750d0c",
+    "rtl\\SD\\spi_master.v": "37f7a21144fa5cca3cc5c3b5f68a5ad40b3108336b600e45a1367734ac61403c",
+    "rtl\\SD\\sd_card_cmd.v": "7d108a1efb9c5f6f756c1fd7bf88eea84715fbbd921f9a78241393ff4d70604d",
+    "rtl\\SD\\sd_card_sec_read_write.v": "da4409408c9547d24702eb4d8d64e667b1ef0681b8d2cd9349e3ded50c61a4d4"
+  },
+  "script_sha256": "412216e9d788364f4d47fb6763a733c6eaab36c8a427d1f7b3080dc8eba19605",
+  "media": {
+    "D:\\FPGA\\EG4S20-NoBot\\output\\html_fidelity\\no_bot\\media\\UI01.BMP": "c457a18ed65b2fff42c0a5885e2d4f32850bd09005d29c8a2f5c5868ceb6ca72",
+    "D:\\FPGA\\EG4S20-NoBot\\output\\html_fidelity\\no_bot\\media\\PN01.BMP": "50613630907a7b712dbf8973a52dd68f837a5495a5167d3b8d48b20a7ccb8722"
+  },
+  "spi_byte_period": 70,
+  "spi_derivation": "sd_card_top HIGH_SPEED_DIV2. spi_master 16*(2+2) edge clocks +3 last-half +1 ACK +1 ACK_WAIT +1 IDLE =70 sysclks/byte. sd_card_cmd S_READ holds request; block_read_valid registers wr_ack; sec wrapper only gates it.",
+  "model_limits": "No command/token latency added: this falsifies spacing dependency, not card protocol/latency. Production TIMEOUT200000000 retained.",
+  "steps": [
+    {
+      "name": "short_data_sector",
+      "parameters": {
+        "PAGE": 0,
+        "DUAL": 0,
+        "ZOOM": 1,
+        "FOCUS": 0,
+        "MODE": 13,
+        "BYTE_PERIOD": 70,
+        "TIMEOUT": 200000000,
+        "WATCHDOG_NS": 1500000000
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2005-sv",
+        "-s",
+        "legacy_exhibit_loader_tb",
+        "-o",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\short_data_sector.vvp",
+        "-Plegacy_exhibit_loader_tb.PAGE=0",
+        "-Plegacy_exhibit_loader_tb.DUAL=0",
+        "-Plegacy_exhibit_loader_tb.ZOOM=1",
+        "-Plegacy_exhibit_loader_tb.FOCUS=0",
+        "-Plegacy_exhibit_loader_tb.MODE=13",
+        "-Plegacy_exhibit_loader_tb.BYTE_PERIOD=70",
+        "-Plegacy_exhibit_loader_tb.TIMEOUT=200000000",
+        "-Plegacy_exhibit_loader_tb.WATCHDOG_NS=1500000000",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader.v",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader_tb.v"
+      ],
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\short_data_sector.vvp",
+        "+left=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\UI01.hex",
+        "+right=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\PN01.hex",
+        "+gold=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\gold.hex",
+        "+left_len=922112",
+        "+right_len=461312",
+        "+expected_sectors=1081"
+      ],
+      "pid": 5228,
+      "exit_code": 0,
+      "output": "TEST_PASS legacy_loader_rejection mode13 error2 pixels0 sectors2\nD:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader_tb.v:75: $finish called at 717575000 (1ps)",
+      "wall_seconds": 0.6028800010681152,
+      "pass_": true
+    },
+    {
+      "name": "home_default2x",
+      "parameters": {
+        "PAGE": 0,
+        "DUAL": 0,
+        "ZOOM": 1,
+        "FOCUS": 0,
+        "MODE": 0,
+        "BYTE_PERIOD": 70,
+        "TIMEOUT": 200000000,
+        "WATCHDOG_NS": 1500000000
+      },
+      "compile_command": [
+        "C:\\iverilog\\bin\\iverilog.exe",
+        "-g2005-sv",
+        "-s",
+        "legacy_exhibit_loader_tb",
+        "-o",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\home_default2x.vvp",
+        "-Plegacy_exhibit_loader_tb.PAGE=0",
+        "-Plegacy_exhibit_loader_tb.DUAL=0",
+        "-Plegacy_exhibit_loader_tb.ZOOM=1",
+        "-Plegacy_exhibit_loader_tb.FOCUS=0",
+        "-Plegacy_exhibit_loader_tb.MODE=0",
+        "-Plegacy_exhibit_loader_tb.BYTE_PERIOD=70",
+        "-Plegacy_exhibit_loader_tb.TIMEOUT=200000000",
+        "-Plegacy_exhibit_loader_tb.WATCHDOG_NS=1500000000",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader.v",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader_tb.v"
+      ],
+      "compile_exit": 0,
+      "simulation_command": [
+        "C:\\iverilog\\bin\\vvp.exe",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\home_default2x.vvp",
+        "+left=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\UI01.hex",
+        "+right=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\PN01.hex",
+        "+gold=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\gold.hex",
+        "+left_len=922112",
+        "+right_len=461312",
+        "+expected_sectors=1081",
+        "+dump=D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\home_default2x_rtl.hex"
+      ],
+      "pid": 3896,
+      "exit_code": 0,
+      "output": "TEST_PASS legacy_loader page0 dual0 zoom1 focus0 pixels307200 sectors1081 cycles44576914\nD:\\FPGA\\EG4S20-NoBot-HWFix\\output\\html_fidelity\\no_bot\\verify\\loader_spi_gap_20261019_231742\\sources\\legacy_exhibit_loader_tb.v:63: $finish called at 445769185000 (1ps)",
+      "wall_seconds": 823.4417469501495,
+      "pass_": true,
+      "pixels": 307200,
+      "payload_sha256": "cc17f8bea054ce02dc71ad43828cab904cbb79384f9faf9790c8937cf3943dcb",
+      "independent_coordinate_gold_equal": true,
+      "historical_fast_payload_sha256": "cc17f8bea054ce02dc71ad43828cab904cbb79384f9faf9790c8937cf3943dcb",
+      "historical_fast_payload_equal": true
+    }
+  ],
+  "historical_fast_receipt": "D:\\FPGA\\EG4S20-NoBot\\output\\html_fidelity\\no_bot\\verify\\default_home2x_final592_r2_20261019\\verification.json",
+  "tools": {
+    "C:\\iverilog\\bin\\iverilog.exe": "803b8844af2cc8ed70b5f08b07ffa749901280e81339617ca3e72cbbb852bd2b",
+    "C:\\iverilog\\bin\\vvp.exe": "e2f442f4d5aa76e55c85c3ff77e4446fbfdb9946b7cfe8a2dff87f275da17b62"
+  },
+  "finished": 1792423886.8953345,
+  "wall_seconds": 824.2101240158081,
+  "conclusion": "REFUTED for tested loader config: 70-clock byte spacing retains every pixel; short data sector still rejected as error2."
+}

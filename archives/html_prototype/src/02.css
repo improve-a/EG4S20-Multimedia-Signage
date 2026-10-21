@@ -1,0 +1,85 @@
+/* per-room palettes: every series gets its own room light, never the usual blue */
+.s-home   {--acc:#D8D4CC;--room:#141311;--room-hi:#24221e;--room-lo:#080807;--pool:rgba(216,212,204,.10)}
+.s-eagle  {--acc:var(--eagle);--room:#16120c;--room-hi:#2b2215;--room-lo:#070605;--pool:rgba(209,168,94,.13)}
+.s-phoenix{--acc:var(--phoenix);--room:#170d0a;--room-hi:#2e1610;--room-lo:#070403;--pool:rgba(224,96,63,.13)}
+.s-elf    {--acc:var(--elf);--room:#0c1410;--room-hi:#16261e;--room-lo:#040706;--pool:rgba(127,195,162,.12)}
+.s-dragon {--acc:var(--dragon);--room:#100f17;--room-hi:#1d1b2b;--room-lo:#050508;--pool:rgba(169,162,230,.13)}
+.s-eco    {--acc:#C9C3B6;--room:#121211;--room-hi:#20201d;--room-lo:#060606;--pool:rgba(201,195,182,.10)}
+
+/* home: a still-life of the four flagships */
+.family{position:absolute;left:262px;top:44px;width:370px;height:300px;margin:0}
+.family .pc{position:absolute;width:var(--w);height:auto;left:var(--x);top:var(--y);filter:drop-shadow(0 16px 14px rgba(0,0,0,.6))}
+.family .tag{position:absolute;left:var(--x);top:var(--y);font-size:10px;color:var(--mute);white-space:nowrap}
+.family .tag b{font-family:var(--serif);font-size:12px;color:var(--paper);font-weight:600;margin-right:5px;letter-spacing:.06em}
+.family .tag i{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.s-home .copy{top:96px;width:236px}
+.s-home .cn{font-size:52px;letter-spacing:.04em;white-space:nowrap}
+.s-home .lede{width:214px}
+.s-home .specs{top:290px}
+.s-home .credit{display:none}
+.series-row{position:absolute;left:32px;top:276px;display:grid;grid-template-columns:repeat(4,auto);gap:26px;margin:0;padding:0;list-style:none}
+.series-row li{font-size:10.5px;color:var(--mute);line-height:1.5}
+.series-row b{display:block;font-family:var(--serif);font-weight:600;font-size:17px;color:var(--paper);letter-spacing:.08em}
+.series-row i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+/* ecosystem: dev-board photograph bleeds off the right edge */
+.s-eco .hero{left:330px;top:0;width:310px;height:342px}
+.s-eco .hero img{width:342px;height:342px;left:0;object-fit:cover;filter:saturate(.55) contrast(1.05) brightness(.82);
+  -webkit-mask-image:radial-gradient(120% 95% at 100% 30%,#000 45%,transparent 78%);mask-image:radial-gradient(120% 95% at 100% 30%,#000 45%,transparent 78%)}
+.s-eco .copy{top:74px}
+.s-eco .device{top:358px}
+.s-eco .cn{font-size:46px}
+.apps{position:absolute;left:32px;top:168px;width:318px;margin:0;padding:0;list-style:none}
+.apps li{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center;padding:5px 0;border-top:1px solid var(--faint);font-size:10px;line-height:1.45;color:var(--mute)}
+.apps li img{width:62px;height:30px;object-fit:cover;display:block;border-radius:1px}
+.apps li b{display:block;color:var(--paper);font-weight:500;font-size:11.5px}
+
+/* ---------- dual-image compare (lives in the static layer: FPGA dual-image mode) ---------- */
+#compare{position:absolute;inset:0;display:none;background:#0b0b0a}
+#compare.on{display:block}
+.half{position:absolute;top:0;bottom:0;width:320px;overflow:hidden}
+.half.l{left:0}.half.r{left:320px}
+.half .bg{background:radial-gradient(90% 70% at 50% 40%,var(--room-hi),var(--room) 60%,var(--room-lo))}
+.half .hero{left:0;right:0;top:48px;width:auto;height:170px}
+.half .hero img{width:170px;height:172px;left:75px}
+.half .hero .floor{left:100px;right:100px;top:124px}
+.half .hero .glow{left:70px;right:70px;top:6px;height:150px}
+.half .meta{position:absolute;left:28px;right:28px;top:226px}
+.half .meta .kicker{margin:0 0 6px}
+.half .meta h3{font-family:var(--serif);font-size:30px;font-weight:600;margin:0;letter-spacing:.08em}
+.half .meta h3 span{font-family:var(--latin);font-size:13px;font-weight:400;letter-spacing:.02em;margin-left:10px;color:var(--mute)}
+.half .meta dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:14px 0 0;font-size:10.5px}
+.half .meta dt{color:var(--mute)}
+.half .meta dd{margin:0}
+.seam{position:absolute;left:319.5px;top:56px;bottom:110px;width:1px;background:linear-gradient(transparent,rgba(237,233,226,.28),transparent)}
+.cmp-title{position:absolute;left:0;right:0;top:24px;text-align:center;font-size:10.5px;color:var(--mute);letter-spacing:.16em;z-index:2}
+
+/* ---------- B · OSD layer ---------- */
+#osd{position:absolute;inset:0;pointer-events:none;transition:opacity .5s var(--e-out)}
+#osd.off{opacity:0}
+.idx{position:absolute;right:32px;top:22px;display:flex;align-items:baseline;gap:10px;font-family:var(--latin)}
+.idx .n{font-size:12.5px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.idx .t{font-size:10.5px;color:var(--mute);font-family:var(--sans);letter-spacing:.1em}
+.ticks{position:absolute;right:32px;top:42px;display:flex;gap:4px}
+.ticks i{width:14px;height:2px;background:rgba(237,233,226,.18);position:relative;overflow:hidden}
+.ticks i.on{background:rgba(237,233,226,.32)}
+.ticks i.on::after{content:"";position:absolute;inset:0;background:var(--acc-osd);transform-origin:0 50%;transform:scaleX(var(--p,1))}
+.card{position:absolute;left:24px;top:386px;width:486px;height:72px;background:var(--paper);color:#1a1916;border-radius:3px 3px 3px 3px;display:grid;grid-template-columns:1fr 66px;overflow:visible;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8)}
+.card .tail{position:absolute;right:-6px;top:30px;width:0;height:0;border:6px solid transparent;border-right:0;border-left-color:var(--paper)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--acc-osd);transition:background .6s}
+.card .txt{padding:11px 10px 0 18px;min-width:0}
+.card .who{display:flex;gap:8px;align-items:baseline;font-size:10px;color:#77736b;margin-bottom:4px;white-space:nowrap}
+.card .who b{color:#1a1916;font-weight:600;font-size:10.5px;letter-spacing:.04em}
+.card .say{font-size:12.5px;line-height:1.5;height:38px;overflow:hidden;letter-spacing:.01em}
+.card .say .caret{display:inline-block;width:5px;height:5px;border-radius:50%;background:#1a1916;margin-left:3px;vertical-align:1px;animation:pulse 1s steps(2) infinite}
+@keyframes pulse{50%{opacity:0}}
+.viz{position:relative;border-left:1px solid rgba(26,25,22,.1);display:grid;align-content:center;justify-items:center}
+.viz canvas{width:46px;height:30px;display:block}
+.viz span{font-size:8.5px;color:#8b867d;margin-top:4px;letter-spacing:.04em}
+.card.noviz{grid-template-columns:1fr 0}
+.card.noviz .viz{display:none}
+.zoom-badge{position:absolute;right:32px;top:62px;display:none;align-items:center;gap:8px;font-size:10.5px;color:var(--paper)}
+.zoom-badge.on{display:flex}
+.mini{width:52px;height:39px;border:1px solid rgba(237,233,226,.4);position:relative}
+.mini i{position:absolute;border:1px solid var(--paper);background:rgba(237,233,226,.12)}

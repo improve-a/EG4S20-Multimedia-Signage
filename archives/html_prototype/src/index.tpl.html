@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>基于国产 FPGA 的安路科技多媒体产品展陈系统 · 交互原型</title>
+<style>/*CSS*/</style>
+</head>
+<body>
+<main class="viewport" id="viewport">
+  <div class="frame" id="frame">
+    <!-- ===== 640×480 exhibit screen: identical composition at any preview size ===== -->
+    <div id="stage" role="region" aria-label="展陈屏 640×480">
+      <!-- A · static layer → pre-rendered BMP per page -->
+      <div id="bmp"><div id="scenes"></div><div id="compare" aria-hidden="true"></div></div>
+      <!-- B · OSD layer → FPGA character/OSD overlay -->
+      <div id="osd" aria-live="polite">
+        <div class="idx"><span class="n" id="osdN">01 / 06</span><span class="t" id="osdT">品牌</span></div>
+        <div class="ticks" id="ticks"></div>
+        <div class="zoom-badge" id="zoomBadge"><div class="mini"><i id="miniBox"></i></div><span id="zoomTxt">2.0×</span></div>
+        <div class="card" id="card">
+          <div class="txt" id="cardTxt"><div class="who"><b>小安</b><span id="cardWho">安路科技</span></div><div class="say" id="say"></div></div>
+          <div class="viz"><canvas id="viz" width="92" height="60"></canvas><span id="vizTag">模拟</span></div>
+          <i class="tail"></i>
+        </div>
+      </div>
+      <!-- C · sprite layer → bot (RTL sprite engine) -->
+      <div id="bot" title="点一下小安"><svg viewBox="0 0 104 100" aria-label="导览角色小安"></svg></div>
+    </div>
+  </div>
+  <p class="viewport-meta" id="meta">640 × 480 · 4:3</p>
+</main>
+
+<!-- ===== browser-prototype controls (not part of the exhibit screen) ===== -->
+<aside class="panel" aria-label="原型控制台">
+  <h1>安路科技多媒体产品展陈系统<small>交互原型 · 对应 HX4S20C / EG4S20BG256 上板画面</small></h1>
+  <div class="grp"><span>页面</span><div class="pages" id="pageBtns"></div>
+    <div class="row"><button class="btn wide" id="prev">上一页</button><button class="btn wide" id="next">下一页</button></div></div>
+  <div class="grp"><span>自动轮播</span>
+    <div class="row"><button class="btn" id="play" aria-pressed="true">暂停</button>
+      <div class="slider" style="flex:1"><input type="range" id="interval" min="3" max="12" step="0.2" value="5.4" aria-label="轮播间隔"><output id="intervalOut">5.4 s</output></div></div></div>
+  <div class="grp"><span>展陈功能</span>
+    <div class="row"><button class="btn" id="osdBtn" aria-pressed="true">OSD 字幕</button><button class="btn" id="cmpBtn" aria-pressed="false">双图对比</button><button class="btn" id="zoomBtn" aria-pressed="false">局部放大</button></div>
+    <div class="slider"><input type="range" id="zoom" min="1" max="3" step="0.1" value="2" aria-label="放大倍率" disabled><output id="zoomOut">2.0×</output></div>
+    <p class="hint">放大时在画面上拖动可移动观察区域，滚轮可调倍率。键盘：← → 翻页，空格 播放/暂停，O 字幕，C 对比，Z 放大。</p></div>
+  <div class="grp"><span>音频可视化</span>
+    <div class="row"><button class="btn" id="vizBtn" aria-pressed="true">显示</button><label class="btn" for="wav">载入 WAV…</label><input type="file" id="wav" accept="audio/wav,audio/*" hidden></div>
+    <p class="hint" id="vizHint">当前为视觉模拟，并非真实频谱。载入本地 WAV 后改为浏览器实时 FFT 分析。</p></div>
+  <div class="grp layers"><span>图层（对应 FPGA 实现）</span>
+    <label><input type="checkbox" id="xray"> 显示图层边界</label>
+    <p class="hint legend"><i style="background:#D1A85E"></i>A 静态层：预渲染 BMP<br><i style="background:#7FC3A2"></i>B OSD 层：字幕、页码、参数<br><i style="background:#E0603F"></i>C Sprite 层：小安身体与眼睛</p></div>
+  <div class="grp"><span>事件日志</span><div id="log"></div></div>
+</aside>
+<script>/*JS*/</script>
+</body>
+</html>

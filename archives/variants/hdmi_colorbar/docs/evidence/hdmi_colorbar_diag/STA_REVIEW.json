@@ -1,0 +1,159 @@
+{
+  "SOURCE_SHA": "944b03bf14e54ea7bd8cca267c5dc2d892b70f9e",
+  "normal": {
+    "report": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\final_timing.rpt",
+      "bytes": 9696379,
+      "sha256": "eb9675f37a516f997e9241fa8d81fa16ecc500335b99f32f904abeb33ddf6f93"
+    },
+    "coverage_percent": 99.91,
+    "global_max_check_wns_ns": 0.203,
+    "global_min_check_wns_ns": 0.022,
+    "reported_classes": {
+      "setup": {
+        "minimum_reported_path": {
+          "slack_ns": 0.203,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/scanner/lt11_syn_70.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : sd_card_bmp_m0/loader/sector_addr_b9[16]_syn_4.ce (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 849,
+        "negative_reported_paths": 0
+      },
+      "hold": {
+        "minimum_reported_path": {
+          "slack_ns": 0.024,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/loader/pixel_reg[7]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/ram_inst/ramread0_syn_6.dib[7] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 740,
+        "negative_reported_paths": 0
+      },
+      "removal": {
+        "minimum_reported_path": {
+          "slack_ns": 0.022,
+          "endpoints": [
+            "Begin Point         : u_hdmi_1_4b_transmitter_core_wrapper/u0_reset_sync/O_sync_reset_reg_syn_68.clk (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })",
+            "End Point           : u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_CH2_D0_shift_reg[10]_syn_4.sr (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })"
+          ]
+        },
+        "reported_paths": 101,
+        "negative_reported_paths": 0
+      },
+      "recovery": {
+        "minimum_reported_path": {
+          "slack_ns": 2.439,
+          "endpoints": [
+            "Begin Point         : frame_read_write_m0/write_reset_sync_reg[1]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/asy_r_rst1_reg_syn_4.sr (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@12.500000ns  period=25.000000 })"
+          ]
+        },
+        "reported_paths": 36,
+        "negative_reported_paths": 0
+      }
+    },
+    "nonzero_violation_group_counts": []
+  },
+  "initialization": {
+    "report": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_timing.rpt",
+      "bytes": 6316270,
+      "sha256": "2cba4f3cbfa43c87cb29e295e7206eb8410fc0d5a0d8e265dee866b1c271311e"
+    },
+    "coverage_percent": 99.91,
+    "global_max_check_wns_ns": 0.203,
+    "global_min_check_wns_ns": 0.022,
+    "reported_classes": {
+      "setup": {
+        "minimum_reported_path": {
+          "slack_ns": 0.203,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/scanner/lt11_syn_70.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : sd_card_bmp_m0/loader/sector_addr_b9[16]_syn_4.ce (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 561,
+        "negative_reported_paths": 0
+      },
+      "hold": {
+        "minimum_reported_path": {
+          "slack_ns": 0.024,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/loader/pixel_reg[7]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/ram_inst/ramread0_syn_6.dib[7] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 474,
+        "negative_reported_paths": 0
+      },
+      "removal": {
+        "minimum_reported_path": {
+          "slack_ns": 0.022,
+          "endpoints": [
+            "Begin Point         : u_hdmi_1_4b_transmitter_core_wrapper/u0_reset_sync/O_sync_reset_reg_syn_68.clk (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })",
+            "End Point           : u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_CH2_D0_shift_reg[10]_syn_4.sr (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })"
+          ]
+        },
+        "reported_paths": 79,
+        "negative_reported_paths": 0
+      },
+      "recovery": {
+        "minimum_reported_path": {
+          "slack_ns": 2.439,
+          "endpoints": [
+            "Begin Point         : frame_read_write_m0/write_reset_sync_reg[1]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/asy_r_rst1_reg_syn_4.sr (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@12.500000ns  period=25.000000 })"
+          ]
+        },
+        "reported_paths": 36,
+        "negative_reported_paths": 0
+      }
+    },
+    "nonzero_violation_group_counts": []
+  },
+  "coverage_notes": [
+    "Routed slow/fast max/min; 99.91% model coverage, not 100% external/hardware qualification.",
+    "No-clock0,invalid-constraint0,combinational-loop0,no-path-constraint0. Existing local/master clock4, dummy3 warnings retained.",
+    "No input delay: DDC SDA and asynchronous key1/key2/key3/rst_n; no output delay:4TMDS,DDC SCL/SDA,14segment outputs. External receiver/DDC/board analog timing not signed off.",
+    "MISO falling-edge timing uses existing SPI multicycle model; normal divide8 and initialization divide500 analyzed separately.",
+    "32 inherited embedded-SDRAM reference-pin input-delay warnings; inherited reset synchronizer/Gray FIFO exceptions unchanged. No new exceptions were added for this diagnostic.",
+    "Four-class minima below are minima among listed paths; global max/min summary and all group violation counts also checked."
+  ],
+  "states": {
+    "OFFLINE_BUILD": "BUILD_PASS",
+    "TIMING": "STA_PASS_IN_DOCUMENTED_MODEL_COVERAGE",
+    "RTL_REGRESSION": "SCOPED_PASS",
+    "VIDEO_PATH_SIMULATION": "DIAGNOSTIC_ACTUAL_TOP_TO_HDMI_INPUT_2FRAME_PASS",
+    "AUDIO_PATH_SIMULATION": "ORIGINAL_TOP_FIRST_REAL_WAV_INPUT_PASS_DIAGNOSTIC_AUDIO_PAYLOAD_NOT_REQUALIFIED",
+    "HARDWARE_NOT_TESTED": true
+  },
+  "resource_usage": {
+    "lut": {
+      "used": 7399,
+      "available": 19600
+    },
+    "reg": {
+      "used": 5494,
+      "available": 19600
+    },
+    "bram": {
+      "used": 30,
+      "available": 64
+    },
+    "bram32k": {
+      "used": 0,
+      "available": 16
+    },
+    "dsp": {
+      "used": 4,
+      "available": 29
+    },
+    "pll": {
+      "used": 2,
+      "available": 4
+    }
+  }
+}

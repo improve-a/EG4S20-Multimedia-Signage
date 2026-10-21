@@ -1,0 +1,82 @@
+{
+  "created_utc": "2026-10-19T16:02:45.422293+00:00",
+  "scope": "Offline documentation consolidation; no production RTL edits, TD build, dynamic test or hardware operations; no commit",
+  "files": [
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\docs\\HDMI_IMPLEMENTATION_COMPARISON.md",
+      "bytes": 6554,
+      "sha256": "e39e768cc506609c2ab3ef7cc8da8d8b837a7d1e896588056e31b99519006c94"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\review.md",
+      "bytes": 4937,
+      "sha256": "f3030ee7a91ee7a7d5f6b85f2e51da5736ca5a579be65306492dca0627c866ab"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\fanin_followup.md",
+      "bytes": 2057,
+      "sha256": "4b0bc0b192f3f46f5cdb3481257a87709bba546f31b9bb0054e620a400525745"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\output_chain_review.md",
+      "bytes": 3445,
+      "sha256": "cba885a7678974a34cf236bdf75d335e8b8738e8a71f553c582eae447412b455"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\output_chain_receipt.json",
+      "bytes": 1239,
+      "sha256": "6d8eef7e264bcac26eff0b5e0d7315ec9ea0e8da51482d9952cf49831179feb8"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\five_lut_truth_tables.json",
+      "bytes": 5501,
+      "sha256": "37c7a911f039012eb2ba99fb3cadfb1f25497e6f52c248b96d91ed830651a5ef"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\three_bram_review.md",
+      "bytes": 1704,
+      "sha256": "41187727e4c4ba2e7d3ce88ae9f50ec2600da9255296e09e0e502769ad9d1863"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\three_bram_receipt.json",
+      "bytes": 424,
+      "sha256": "8bbe2d556ecee7177a947af0a4a420b8a487d11d76d65d450ce94cfcf01d1162"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\astra_hdmi_phase\\hdmi_audio_ip_config_comparison.json",
+      "bytes": 7070,
+      "sha256": "1aa72bdde1a0e9edc4db00c5914c09ffd04056575edf59ed3fe77431d767103b"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot\\output\\hardware\\no_bot_20261019T140608Z\\debug\\project_options_text.diff",
+      "bytes": 307,
+      "sha256": "b38af37d58a2ba0c672390e613057a3e082d16c90b54a4c9138d728db9f85927"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot\\output\\hardware\\no_bot_20261019T140608Z\\debug\\baseline_constraints_comparison.json",
+      "bytes": 635,
+      "sha256": "d6a8d74eeea05e757ab837f89a953e691d5c6471ef65c9bfd9efea7be2031e62"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot\\output\\hardware\\no_bot_20261019T140608Z\\debug\\baseline_shared_file_differences.json",
+      "bytes": 14448,
+      "sha256": "160bebb828ece5dd9a0ee8e6c0db966cef6b8baf82c8314aed9e0028e7ee9e8b"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot\\output\\hardware\\no_bot_20261019T140608Z\\top_baseline_to_final.diff",
+      "bytes": 9638,
+      "sha256": "01c3c6763197990eeea727c2097833b00d6738310c30d50c47c91b4280e0b1ea"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\actual_top_input_verification.json",
+      "bytes": 14100,
+      "sha256": "f1846e776c861f74fa98ca3650cd1914f0ee9503941583cff750f38bebd387b1"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\actual_hdmi_image_metrics.json",
+      "bytes": 454,
+      "sha256": "eb17f3e62a3f07ef1cce6e8e3f07aae65021a42093cb20f11e70a03239564eb4"
+    }
+  ],
+  "updated_utc": "2026-10-19T16:14:43.746733+00:00"
+}

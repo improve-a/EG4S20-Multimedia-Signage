@@ -1,0 +1,773 @@
+[
+  {
+    "schema_version": 1,
+    "run_id": "rca_no_locked_003",
+    "states": {
+      "SIM": "NOT_RUN",
+      "SYN": "PASS",
+      "PNR": "PASS",
+      "STA": "NOT_VERIFIED",
+      "BITGEN": "PASS",
+      "HW": "NOT_VERIFIED"
+    },
+    "BUILD_PASS": true,
+    "STA_PASS": false,
+    "HARDWARE_PASS": false,
+    "job": {
+      "schema_version": 1,
+      "run_id": "rca_no_locked_003",
+      "state": "FINISHED",
+      "started_utc": "2026-10-20T14:13:54.083398+00:00",
+      "supervisor_pid": 24144,
+      "td_pid": 50116,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "root": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003",
+      "job_object": "KILL_ON_JOB_CLOSE",
+      "prior_build_seconds": 246.11,
+      "attempt_number": 2,
+      "td_executable": "G:\\anlu\\bin\\td_commands_prompt.exe",
+      "td_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+      "tcl_sha256": "435659587ebe31f08015f459076840825c886ccca8e8cdeac0a1e0e5a95b4a47",
+      "baseline_import_sha256": "5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6",
+      "source_zip_sha256": "6972abf47493250655e40ada146d4fa00fb0f0dde9cae3f5d913017ff7d42357",
+      "snapshot_sha256": "67f662935c716d2ba5a5f952578b2b6fe69c2baeb86ca6f99459dd481b74ab82",
+      "elapsed_seconds": 373.828,
+      "heartbeat_utc": "2026-10-20T14:20:07.906136+00:00",
+      "flow_complete": true,
+      "finished_utc": "2026-10-20T14:20:07.906136+00:00"
+    },
+    "verified_identity": {
+      "tool": true,
+      "device": true,
+      "top": true,
+      "routed": true
+    },
+    "timing": {
+      "setup": {
+        "wns_ns": 0.423,
+        "tns_ns": 0.0,
+        "failing_endpoints": 0
+      },
+      "hold": {
+        "wns_ns": 0.024,
+        "tns_ns": 0.0,
+        "failing_endpoints": null
+      }
+    },
+    "timing_coverage": {
+      "checks": {
+        "no clock": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "clock definition": {
+          "count": 4,
+          "severity": "HIGH"
+        },
+        "dummy node": {
+          "count": 3,
+          "severity": "HIGH"
+        },
+        "invalid constraint": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "pll/clock buffer clock constraints": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "combinational loops": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "soft fifo timing exception constraints": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "no path constraints": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "shadowed/ignored timing exception constraints": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "no input delay": {
+          "count": 5,
+          "severity": "MEDIUM"
+        },
+        "no output delay": {
+          "count": 20,
+          "severity": "MEDIUM"
+        },
+        "partial input delay": {
+          "count": 1,
+          "severity": "MEDIUM"
+        },
+        "partial output delay": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "abnormal input delay": {
+          "count": 32,
+          "severity": "MEDIUM"
+        }
+      },
+      "percent": 99.93,
+      "state": "NOT_VERIFIED",
+      "reason": "Requires review of check_timing, ignored paths, exceptions and IO/CDC intent"
+    },
+    "resources": {
+      "LUT": {
+        "used": 10246,
+        "available": 19600,
+        "percent": 52.28
+      },
+      "FF": {
+        "used": 6557,
+        "available": 19600,
+        "percent": 33.45
+      },
+      "BRAM": {
+        "used": 53,
+        "available": 64,
+        "percent": 82.81
+      },
+      "DSP": {
+        "used": 8,
+        "available": 29,
+        "percent": 27.59
+      },
+      "PLL": {
+        "used": 2,
+        "available": 4,
+        "percent": 50.0
+      }
+    },
+    "resource_source": "final_area.rpt",
+    "errors": {
+      "supervisor": [],
+      "SYN": [],
+      "PNR": []
+    },
+    "critical_warnings": {
+      "supervisor": [
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+      ],
+      "SYN": [],
+      "PNR": [
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+      ]
+    },
+    "AUTOMATION_ACCEPTED": false,
+    "warning_counts": {
+      "supervisor": {
+        "HDL-5370": 20,
+        "HDL-5007": 19,
+        "HDL-5373": 6,
+        "HDL-5317": 3,
+        "HDL-5001": 3,
+        "SYN-5013": 2,
+        "SYN-5025": 3,
+        "SYN-5011": 12,
+        "SYN-6577": 1,
+        "SYN-6562": 8,
+        "PHY-7002": 2,
+        "PHY-5014": 6,
+        "PHY-5079": 1
+      },
+      "SYN": {
+        "HDL-5370": 10,
+        "HDL-5007": 17,
+        "HDL-5373": 3,
+        "HDL-5317": 3,
+        "HDL-5001": 3,
+        "SYN-5013": 2,
+        "SYN-5025": 3,
+        "SYN-5011": 12,
+        "SYN-6577": 1,
+        "SYN-6562": 8
+      },
+      "PNR": {
+        "PHY-7002": 2,
+        "PHY-5014": 2,
+        "PHY-5079": 1
+      }
+    },
+    "fresh_bitstreams": [
+      "work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit"
+    ],
+    "provenance": "File hashes and Windows UTC mtimes checked against artifacts.json; untransferred DBs validated only by manifest metadata",
+    "source_commit": "5162f235103c1d55af346706141ed0c6d4aad5ec",
+    "experiment": {
+      "run_id": "rca_no_locked_003",
+      "classification": "DIAGNOSTIC_ONLY_HARDWARE_NOT_TESTED",
+      "baseline_zip_sha256": "5b204edb0b30a16c2256b0e08075b07aba99c4d228059892d52205e5bdb9c29f",
+      "baseline_build_root": "D:/FPGA/EG4S20-NoBot-HDMIProbe/output/html_fidelity/builds/hdmi_probe_001",
+      "primary_change": "Disconnect only the real HDMI locked input from the successful Probe observer. Keep raster/AXIS/audio activity and reset/PLL observers.",
+      "hypothesis": "External observation of O_video_locked is necessary for the successful implementation. A hardware PASS falsifies necessity, but a FAIL does not prove it because placement changes.",
+      "display_caveat": "Page 1 is intentionally synthetic: locked/ever/stable/drop=0, timeout becomes 1. Do not interpret page 1 as real HDMI lock. Other pages retain their original meaning.",
+      "retry_reason": "A001 aborted on supervisor status-file sharing; A002 stopped before TD because the inherited ledger reader used GBK for a UTF-8 localized error. A003 uses process wait and Python UTF-8 mode, with the same HDL change and no seed/timing changes.",
+      "replacements": [
+        {
+          "path": "user_source/hdl_source/top_tf_hdmi_audio.v",
+          "old": ".locked(probe_video_locked),.audio_valid(audio_valid),.flags(probe_flags));",
+          "new": ".locked(1'b0),.audio_valid(audio_valid),.flags(probe_flags));"
+        }
+      ]
+    },
+    "rtl_checks": {
+      "functional_instances_unchanged": {
+        "top": true,
+        "rs_button": true,
+        "transition": true,
+        "config_bridge": true,
+        "extensions": true,
+        "audio_output": true,
+        "wav": true,
+        "rs_sd": true,
+        "rs_mem": true,
+        "rs_video": true,
+        "frame_commit": true,
+        "pcm": true,
+        "acr": true,
+        "sys_pll_m0": true,
+        "video_pll_m0": true,
+        "sd_card_bmp_m0": true,
+        "for": true,
+        "seg_scan_m0": true,
+        "video_timing_data_m0": true,
+        "video_delay_m0": true,
+        "frame_read_write_m0": true,
+        "U3": true,
+        "u_video_rgb_to_axis_640x480": true,
+        "u_startup_pulse": true,
+        "u_hdmi_1_4b_transmitter_core_wrapper": true,
+        "u_hdmi2phy_wrapper": true
+      },
+      "steps": [
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-DHTML_SIM",
+            "-ID:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD",
+            "-s",
+            "top",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\rca_checks\\top.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\reset_sync.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\display_commit.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\startup_pulse.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\media_controls.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\hdmi_audio_tone_pcm_scale.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\audio_arc_calculate.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\color_bar.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\video_timing_data.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\video_delay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_fifo_read.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_fifo_write.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\seg_decoder.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\seg_scan.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\IP\\afifo_32_16_256.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\IP\\afifo_16_32_256.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\legacy_exhibit_media.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\legacy_exhibit_loader.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\bmp_scale.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\media_sector_arbiter.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\frame_config_bridge.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\video_transition.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\video_extensions.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\pixel_adjust.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_video_overlay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_osd_overlay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_osd_swap_rom.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_caption_column_rom.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_rom16.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\html_assets\\html_caption_map.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\audio_async_fifo.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\audio_media.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\audio_pcm_player.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\audio_output_mux.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\audio_visualizer.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\wav_stream_parser.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\tests\\no_bot_actual_top_leaves.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.2809999999590218,
+          "stdout": "",
+          "stderr": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:147: warning: Port 20 (rdusedw) of frame_fifo_write expects 10 bits, got 9.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:147:        : Padding 1 high bits of the port.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:196: warning: Port 21 (wrusedw) of frame_fifo_read expects 10 bits, got 9.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:196:        : Padding 1 high bits of the port.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 16 (read_addr_0) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 17 (read_addr_1) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 18 (read_addr_2) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 19 (read_addr_3) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 21 (read_len) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 32 (write_addr_0) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 33 (write_addr_1) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 34 (write_addr_2) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 35 (write_addr_3) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 37 (write_len) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\n"
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-s",
+            "tb",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\rca_checks\\tb.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06299999996554106,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/vvp.exe",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\rca_checks\\tb.vvp"
+          ],
+          "exit_code": 0,
+          "seconds": 0.375,
+          "stdout": "PROBE_UNIT_PASS checks=17\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v:47: $finish called at 2761822000 (1ps)\r\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-s",
+            "display_tb",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\rca_checks\\display_tb.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.062000000034458935,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/vvp.exe",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\rca_checks\\display_tb.vvp"
+          ],
+          "exit_code": 0,
+          "seconds": 0.01600000006146729,
+          "stdout": "PROBE_DISPLAY_PASS all5pages CDC stable flags\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v:78: $finish called at 3280000 (1ps)\r\n",
+          "stderr": ""
+        }
+      ],
+      "scope": "Actual top elaboration with inherited encrypted/physical leaf stubs; observer unit tests. Not a full HDMI or media simulation.",
+      "source_hashes": {
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v": "4c1ac58194756b36f105cca84ac636ddee43cddaa786aa13fd2a2acbbbac4fab",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_no_locked_003\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v": "f9e820e62d2abb204e2467e4c4f6791817d0adfb042e40b0399a660be9bbcf25",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\tests\\no_bot_actual_top_leaves.v": "ee91d1ecf0385888ad436f96e9df9013561e658783cde7f3ec2cac35b633614c",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v": "f3353cf915439c84b7766b431ae5d5b5359b1136c92009992ef94764d6230961"
+      },
+      "state": "SCOPED_PASS"
+    },
+    "bit": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_no_locked_003.bit",
+      "bytes": 677348,
+      "sha256": "cce449034505c4d5c61a856b94b48c4c3d7e20a3eb86627972763a1981ca46a5"
+    },
+    "source_zip": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_no_locked_003_source.zip",
+      "sha256": "6972abf47493250655e40ada146d4fa00fb0f0dde9cae3f5d913017ff7d42357"
+    },
+    "report_zip": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_no_locked_003_reports.zip",
+      "sha256": "97132cba40cb364401f96af68e8c587420bd2c45b547ede269bf4dbea8415e17"
+    }
+  },
+  {
+    "schema_version": 1,
+    "run_id": "rca_locked_only_001",
+    "states": {
+      "SIM": "NOT_RUN",
+      "SYN": "PASS",
+      "PNR": "PASS",
+      "STA": "NOT_VERIFIED",
+      "BITGEN": "PASS",
+      "HW": "NOT_VERIFIED"
+    },
+    "BUILD_PASS": true,
+    "STA_PASS": false,
+    "HARDWARE_PASS": false,
+    "job": {
+      "schema_version": 1,
+      "run_id": "rca_locked_only_001",
+      "state": "FINISHED",
+      "started_utc": "2026-10-20T14:21:44.324854+00:00",
+      "supervisor_pid": 40068,
+      "td_pid": 46876,
+      "timeout_seconds": 1800,
+      "exit_code": 0,
+      "root": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001",
+      "job_object": "KILL_ON_JOB_CLOSE",
+      "prior_build_seconds": 619.938,
+      "attempt_number": 3,
+      "td_executable": "G:\\anlu\\bin\\td_commands_prompt.exe",
+      "td_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+      "tcl_sha256": "435659587ebe31f08015f459076840825c886ccca8e8cdeac0a1e0e5a95b4a47",
+      "baseline_import_sha256": "5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6",
+      "source_zip_sha256": "1f49649fe00f003983ecdd80188dc86b168a81c2a09199958d75c752e16d14f3",
+      "snapshot_sha256": "b9d454af2704edc9a9a3d1a65be9116de8a62981b31acb7f37281c78876c1dea",
+      "elapsed_seconds": 373.765,
+      "heartbeat_utc": "2026-10-20T14:27:58.101090+00:00",
+      "flow_complete": true,
+      "finished_utc": "2026-10-20T14:27:58.101090+00:00"
+    },
+    "verified_identity": {
+      "tool": true,
+      "device": true,
+      "top": true,
+      "routed": true
+    },
+    "timing": {
+      "setup": {
+        "wns_ns": 0.106,
+        "tns_ns": 0.0,
+        "failing_endpoints": 0
+      },
+      "hold": {
+        "wns_ns": 0.027,
+        "tns_ns": 0.0,
+        "failing_endpoints": null
+      }
+    },
+    "timing_coverage": {
+      "checks": {
+        "no clock": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "clock definition": {
+          "count": 4,
+          "severity": "HIGH"
+        },
+        "dummy node": {
+          "count": 3,
+          "severity": "HIGH"
+        },
+        "invalid constraint": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "pll/clock buffer clock constraints": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "combinational loops": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "soft fifo timing exception constraints": {
+          "count": 0,
+          "severity": "HIGH"
+        },
+        "no path constraints": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "shadowed/ignored timing exception constraints": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "no input delay": {
+          "count": 5,
+          "severity": "MEDIUM"
+        },
+        "no output delay": {
+          "count": 20,
+          "severity": "MEDIUM"
+        },
+        "partial input delay": {
+          "count": 1,
+          "severity": "MEDIUM"
+        },
+        "partial output delay": {
+          "count": 0,
+          "severity": "MEDIUM"
+        },
+        "abnormal input delay": {
+          "count": 32,
+          "severity": "MEDIUM"
+        }
+      },
+      "percent": 99.92,
+      "state": "NOT_VERIFIED",
+      "reason": "Requires review of check_timing, ignored paths, exceptions and IO/CDC intent"
+    },
+    "resources": {
+      "LUT": {
+        "used": 10148,
+        "available": 19600,
+        "percent": 51.78
+      },
+      "FF": {
+        "used": 6440,
+        "available": 19600,
+        "percent": 32.86
+      },
+      "BRAM": {
+        "used": 53,
+        "available": 64,
+        "percent": 82.81
+      },
+      "DSP": {
+        "used": 8,
+        "available": 29,
+        "percent": 27.59
+      },
+      "PLL": {
+        "used": 2,
+        "available": 4,
+        "percent": 50.0
+      }
+    },
+    "resource_source": "final_area.rpt",
+    "errors": {
+      "supervisor": [],
+      "SYN": [],
+      "PNR": []
+    },
+    "critical_warnings": {
+      "supervisor": [
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+      ],
+      "SYN": [],
+      "PNR": [
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (12, 12) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-7002 CRITICAL-WARNING: Instance U3/sdram location (164, 288) is not honored. Cell's initial location is not legal at the beginning of ECO placement, and will be moved during placement. Please verify user location constraints through the adc file.",
+        "PHY-5079 CRITICAL-WARNING: Marked 1 clock net(s) utilize the local routing resources. Please check log message and the sinks of clock nets."
+      ]
+    },
+    "AUTOMATION_ACCEPTED": false,
+    "warning_counts": {
+      "supervisor": {
+        "HDL-5370": 20,
+        "HDL-5007": 19,
+        "HDL-5373": 6,
+        "HDL-5317": 3,
+        "HDL-5001": 3,
+        "SYN-5013": 2,
+        "SYN-5025": 3,
+        "SYN-5011": 12,
+        "SYN-6577": 1,
+        "SYN-6562": 8,
+        "PHY-7002": 2,
+        "PHY-5014": 8,
+        "PHY-5079": 1
+      },
+      "SYN": {
+        "HDL-5370": 10,
+        "HDL-5007": 17,
+        "HDL-5373": 3,
+        "HDL-5317": 3,
+        "HDL-5001": 3,
+        "SYN-5013": 2,
+        "SYN-5025": 3,
+        "SYN-5011": 12,
+        "SYN-6577": 1,
+        "SYN-6562": 8
+      },
+      "PNR": {
+        "PHY-7002": 2,
+        "PHY-5014": 4,
+        "PHY-5079": 1
+      }
+    },
+    "fresh_bitstreams": [
+      "work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit"
+    ],
+    "provenance": "File hashes and Windows UTC mtimes checked against artifacts.json; untransferred DBs validated only by manifest metadata",
+    "source_commit": "90263aa08c7c9625178b92b3eaccbe3a368b9c5b",
+    "experiment": {
+      "run_id": "rca_locked_only_001",
+      "classification": "DIAGNOSTIC_ONLY_HARDWARE_NOT_TESTED",
+      "baseline_zip_sha256": "5b204edb0b30a16c2256b0e08075b07aba99c4d228059892d52205e5bdb9c29f",
+      "baseline_build_root": "D:/FPGA/EG4S20-NoBot-HDMIProbe/output/html_fidelity/builds/hdmi_probe_001",
+      "primary_change": "Retain only the lock-related flags at the Probe display sink; synthesis can remove all raster/AXIS/audio-activity observers. Preserve the common display's reset/PLL levels.",
+      "hypothesis": "The full raster/AXIS observation cones are necessary for success. A hardware PASS falsifies necessity, but a FAIL does not prove it because placement changes.",
+      "display_caveat": "Only page 1 lock flags and page 5 reset/PLL levels are meaningful. Pages 2-4 and page 5 audio/heartbeat fields are intentionally zero; zero does not indicate failure.",
+      "replacements": [
+        {
+          "path": "user_source/hdl_source/top_tf_hdmi_audio.v",
+          "old": ".clk(clk),.rst(button_reset50),.flags_async(probe_flags),",
+          "new": ".clk(clk),.rst(button_reset50),.flags_async({23'd0,probe_flags[4:0]}),"
+        }
+      ]
+    },
+    "rtl_checks": {
+      "functional_instances_unchanged": {
+        "top": true,
+        "rs_button": true,
+        "transition": true,
+        "config_bridge": true,
+        "extensions": true,
+        "audio_output": true,
+        "wav": true,
+        "rs_sd": true,
+        "rs_mem": true,
+        "rs_video": true,
+        "frame_commit": true,
+        "pcm": true,
+        "acr": true,
+        "sys_pll_m0": true,
+        "video_pll_m0": true,
+        "sd_card_bmp_m0": true,
+        "for": true,
+        "seg_scan_m0": true,
+        "video_timing_data_m0": true,
+        "video_delay_m0": true,
+        "frame_read_write_m0": true,
+        "U3": true,
+        "u_video_rgb_to_axis_640x480": true,
+        "u_startup_pulse": true,
+        "u_hdmi_1_4b_transmitter_core_wrapper": true,
+        "u_hdmi2phy_wrapper": true
+      },
+      "steps": [
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-DHTML_SIM",
+            "-ID:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD",
+            "-s",
+            "top",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\rca_checks\\top.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\reset_sync.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\display_commit.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\startup_pulse.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\media_controls.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\hdmi_audio_tone_pcm_scale.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\audio_arc_calculate.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\color_bar.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\video_timing_data.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\video_delay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_fifo_read.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_fifo_write.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\seg_decoder.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\seg_scan.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\IP\\afifo_32_16_256.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\IP\\afifo_16_32_256.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\legacy_exhibit_media.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\legacy_exhibit_loader.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\bmp_scale.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\media_sector_arbiter.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\frame_config_bridge.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\video_transition.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\video_extensions.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\pixel_adjust.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_video_overlay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_osd_overlay.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_osd_swap_rom.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_caption_column_rom.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_rom16.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\html_assets\\html_caption_map.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\audio_async_fifo.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\audio_media.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\audio_pcm_player.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\audio_output_mux.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\audio_visualizer.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\wav_stream_parser.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\tests\\no_bot_actual_top_leaves.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.31299999996554106,
+          "stdout": "",
+          "stderr": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:147: warning: Port 20 (rdusedw) of frame_fifo_write expects 10 bits, got 9.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:147:        : Padding 1 high bits of the port.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:196: warning: Port 21 (wrusedw) of frame_fifo_read expects 10 bits, got 9.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\SD\\frame_read_write.v:196:        : Padding 1 high bits of the port.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 16 (read_addr_0) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 17 (read_addr_1) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 18 (read_addr_2) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 19 (read_addr_3) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 21 (read_len) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 32 (write_addr_0) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 33 (write_addr_1) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 34 (write_addr_2) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 35 (write_addr_3) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394: warning: Port 37 (write_len) of frame_read_write expects 21 bits, got 24.\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v:394:        : Pruning 3 high bits of the expression.\r\n"
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-s",
+            "tb",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\rca_checks\\tb.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.062000000034458935,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/vvp.exe",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\rca_checks\\tb.vvp"
+          ],
+          "exit_code": 0,
+          "seconds": 0.375,
+          "stdout": "PROBE_UNIT_PASS checks=17\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v:47: $finish called at 2761822000 (1ps)\r\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/iverilog.exe",
+            "-g2012",
+            "-s",
+            "display_tb",
+            "-o",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\rca_checks\\display_tb.vvp",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\video_rgb_to_axis_640x480.v"
+          ],
+          "exit_code": 0,
+          "seconds": 0.06299999996554106,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "C:/iverilog/bin/vvp.exe",
+            "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\rca_checks\\display_tb.vvp"
+          ],
+          "exit_code": 0,
+          "seconds": 0.015000000013969839,
+          "stdout": "PROBE_DISPLAY_PASS all5pages CDC stable flags\r\nD:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v:78: $finish called at 3280000 (1ps)\r\n",
+          "stderr": ""
+        }
+      ],
+      "scope": "Actual top elaboration with inherited encrypted/physical leaf stubs; observer unit tests. Not a full HDMI or media simulation.",
+      "source_hashes": {
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\top_tf_hdmi_audio.v": "603b6245b1353b09599d68ac12d9f329219879392c7babf9c1f0bb041252fad2",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\builds\\rca_locked_only_001\\work\\design\\user_source\\hdl_source\\ext\\hdmi_probe.v": "f9e820e62d2abb204e2467e4c4f6791817d0adfb042e40b0399a660be9bbcf25",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\tests\\no_bot_actual_top_leaves.v": "ee91d1ecf0385888ad436f96e9df9013561e658783cde7f3ec2cac35b633614c",
+        "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\repo\\tests\\hdmi_probe_tb.v": "f3353cf915439c84b7766b431ae5d5b5359b1136c92009992ef94764d6230961"
+      },
+      "state": "SCOPED_PASS"
+    },
+    "bit": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_locked_only_001.bit",
+      "bytes": 677348,
+      "sha256": "41848d2090bc22695be98f096167005c4aceaecffbd6d20ecb0dc5b7440dba4a"
+    },
+    "source_zip": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_locked_only_001_source.zip",
+      "sha256": "1f49649fe00f003983ecdd80188dc86b168a81c2a09199958d75c752e16d14f3"
+    },
+    "report_zip": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-RCA-20261020\\delivery\\rca_locked_only_001_reports.zip",
+      "sha256": "795293f38b28ad1fe0b308112336aaf62184bd410be50c86049cf189210008e2"
+    }
+  }
+]

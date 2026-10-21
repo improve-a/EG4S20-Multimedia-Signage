@@ -1,0 +1,364 @@
+{
+  "created_utc": "2026-10-19T16:30:01.451570+00:00",
+  "purpose": "OFFLINE_HDMI_COLORBAR_DIAGNOSTIC_NOT_PRODUCTION_FIX",
+  "root_cause": "UNRESOLVED",
+  "SOURCE_SHA": "944b03bf14e54ea7bd8cca267c5dc2d892b70f9e",
+  "analysis_commit": "3eb95ab52b81adfb615dd31dd2ad8e4ea1c1c7f1",
+  "base_SOURCE_SHA": "6ee7c70bbf36c33f90a687f010c876de48f03ba6",
+  "base_DELIVERY_SHA": "17ac5f26acb120b4ed0055010d913bf4bcd9b50e",
+  "snapshot_sha256": "6d5cecc658895d95020ce91c99816973d872a78cf95de61585f3ea8f091b9baf",
+  "bit": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\delivery\\hdmi_colorbar_diag_001.bit",
+    "bytes": 633116,
+    "sha256": "f5408a7273169cc40e57e78351b2ea181d71b90cb0b644831f33ddf67eb65e83"
+  },
+  "raw_build_bit": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit",
+    "bytes": 633116,
+    "sha256": "f5408a7273169cc40e57e78351b2ea181d71b90cb0b644831f33ddf67eb65e83"
+  },
+  "source_zip": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\delivery\\hdmi_colorbar_diag_001_source.zip",
+    "bytes": 563189,
+    "sha256": "627847904ed6dcc8c648cd13f968a0b85804ad4f140f507450e62684946478ca"
+  },
+  "reports_zip": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\delivery\\td_reports.zip",
+    "bytes": 1059772,
+    "sha256": "415080a3a0c6c331ce12c6bc332480d462a2b84c6915b8a80163dc1b639705b4"
+  },
+  "build": {
+    "schema_version": 1,
+    "run_id": "hdmi_colorbar_diag_001",
+    "state": "FINISHED",
+    "started_utc": "2026-10-19T16:16:28.614806+00:00",
+    "supervisor_pid": 20156,
+    "td_pid": 48060,
+    "timeout_seconds": 3600,
+    "exit_code": 0,
+    "root": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001",
+    "job_object": "KILL_ON_JOB_CLOSE",
+    "prior_build_seconds": 0,
+    "attempt_number": 1,
+    "td_executable": "G:\\anlu\\bin\\td_commands_prompt.exe",
+    "td_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+    "tcl_sha256": "435659587ebe31f08015f459076840825c886ccca8e8cdeac0a1e0e5a95b4a47",
+    "baseline_import_sha256": "5da6d4e9202fa401bc5bd89d8362f4ecd666c97777449cda6832049d3ba0fff6",
+    "source_zip_sha256": "627847904ed6dcc8c648cd13f968a0b85804ad4f140f507450e62684946478ca",
+    "snapshot_sha256": "6d5cecc658895d95020ce91c99816973d872a78cf95de61585f3ea8f091b9baf",
+    "elapsed_seconds": 296.062,
+    "heartbeat_utc": "2026-10-19T16:21:24.682378+00:00",
+    "flow_complete": true,
+    "finished_utc": "2026-10-19T16:21:24.682378+00:00"
+  },
+  "normal_sta": {
+    "report": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\final_timing.rpt",
+      "bytes": 9696379,
+      "sha256": "eb9675f37a516f997e9241fa8d81fa16ecc500335b99f32f904abeb33ddf6f93"
+    },
+    "coverage_percent": 99.91,
+    "global_max_check_wns_ns": 0.203,
+    "global_min_check_wns_ns": 0.022,
+    "reported_classes": {
+      "setup": {
+        "minimum_reported_path": {
+          "slack_ns": 0.203,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/scanner/lt11_syn_70.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : sd_card_bmp_m0/loader/sector_addr_b9[16]_syn_4.ce (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 849,
+        "negative_reported_paths": 0
+      },
+      "hold": {
+        "minimum_reported_path": {
+          "slack_ns": 0.024,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/loader/pixel_reg[7]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/ram_inst/ramread0_syn_6.dib[7] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 740,
+        "negative_reported_paths": 0
+      },
+      "removal": {
+        "minimum_reported_path": {
+          "slack_ns": 0.022,
+          "endpoints": [
+            "Begin Point         : u_hdmi_1_4b_transmitter_core_wrapper/u0_reset_sync/O_sync_reset_reg_syn_68.clk (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })",
+            "End Point           : u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_CH2_D0_shift_reg[10]_syn_4.sr (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })"
+          ]
+        },
+        "reported_paths": 101,
+        "negative_reported_paths": 0
+      },
+      "recovery": {
+        "minimum_reported_path": {
+          "slack_ns": 2.439,
+          "endpoints": [
+            "Begin Point         : frame_read_write_m0/write_reset_sync_reg[1]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/asy_r_rst1_reg_syn_4.sr (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@12.500000ns  period=25.000000 })"
+          ]
+        },
+        "reported_paths": 36,
+        "negative_reported_paths": 0
+      }
+    },
+    "nonzero_violation_group_counts": []
+  },
+  "init_sta": {
+    "report": {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_timing.rpt",
+      "bytes": 6316270,
+      "sha256": "2cba4f3cbfa43c87cb29e295e7206eb8410fc0d5a0d8e265dee866b1c271311e"
+    },
+    "coverage_percent": 99.91,
+    "global_max_check_wns_ns": 0.203,
+    "global_min_check_wns_ns": 0.022,
+    "reported_classes": {
+      "setup": {
+        "minimum_reported_path": {
+          "slack_ns": 0.203,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/scanner/lt11_syn_70.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : sd_card_bmp_m0/loader/sector_addr_b9[16]_syn_4.ce (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 561,
+        "negative_reported_paths": 0
+      },
+      "hold": {
+        "minimum_reported_path": {
+          "slack_ns": 0.024,
+          "endpoints": [
+            "Begin Point         : sd_card_bmp_m0/loader/pixel_reg[7]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/ram_inst/ramread0_syn_6.dib[7] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+          ]
+        },
+        "reported_paths": 474,
+        "negative_reported_paths": 0
+      },
+      "removal": {
+        "minimum_reported_path": {
+          "slack_ns": 0.022,
+          "endpoints": [
+            "Begin Point         : u_hdmi_1_4b_transmitter_core_wrapper/u0_reset_sync/O_sync_reset_reg_syn_68.clk (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })",
+            "End Point           : u_hdmi_1_4b_transmitter_core_wrapper/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_CH2_D0_shift_reg[10]_syn_4.sr (rising edge triggered by clock video_clk  { rise@0.000000ns  fall@20.000000ns  period=40.000000 })"
+          ]
+        },
+        "reported_paths": 79,
+        "negative_reported_paths": 0
+      },
+      "recovery": {
+        "minimum_reported_path": {
+          "slack_ns": 2.439,
+          "endpoints": [
+            "Begin Point         : frame_read_write_m0/write_reset_sync_reg[1]_syn_4.clk (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })",
+            "End Point           : frame_read_write_m0/write_buf/asy_r_rst1_reg_syn_4.sr (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@12.500000ns  period=25.000000 })"
+          ]
+        },
+        "reported_paths": 36,
+        "negative_reported_paths": 0
+      }
+    },
+    "nonzero_violation_group_counts": []
+  },
+  "coverage_notes": [
+    "Routed slow/fast max/min; 99.91% model coverage, not 100% external/hardware qualification.",
+    "No-clock0,invalid-constraint0,combinational-loop0,no-path-constraint0. Existing local/master clock4, dummy3 warnings retained.",
+    "No input delay: DDC SDA and asynchronous key1/key2/key3/rst_n; no output delay:4TMDS,DDC SCL/SDA,14segment outputs. External receiver/DDC/board analog timing not signed off.",
+    "MISO falling-edge timing uses existing SPI multicycle model; normal divide8 and initialization divide500 analyzed separately.",
+    "32 inherited embedded-SDRAM reference-pin input-delay warnings; inherited reset synchronizer/Gray FIFO exceptions unchanged. No new exceptions were added for this diagnostic.",
+    "Four-class minima below are minima among listed paths; global max/min summary and all group violation counts also checked."
+  ],
+  "resources": {
+    "lut": {
+      "used": 7399,
+      "available": 19600
+    },
+    "reg": {
+      "used": 5494,
+      "available": 19600
+    },
+    "bram": {
+      "used": 30,
+      "available": 64
+    },
+    "bram32k": {
+      "used": 0,
+      "available": 16
+    },
+    "dsp": {
+      "used": 4,
+      "available": 29
+    },
+    "pll": {
+      "used": 2,
+      "available": 4
+    }
+  },
+  "diagnostic_protocol": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\offline_debug\\hdmi_colorbar_20261019T160454Z\\verification.json",
+    "bytes": 11419,
+    "sha256": "b35b3e22ee9174015cd9130a05c2315e0e13a447ffb9d3fc39c49719809c7d14"
+  },
+  "diagnostic_source_association": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\offline_debug\\hdmi_colorbar_20261019T160454Z\\source_944b03b_association.json",
+    "bytes": 20808,
+    "sha256": "06866d044e4989bcb7cce4bca5c39de5ed0ba1209b55be06ab873c4295f557c6"
+  },
+  "original_media_input_case": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\hardware\\no_bot_20261019T140608Z\\debug\\actual_top_boot_05\\actual_top_input_verification.json",
+    "bytes": 14100,
+    "sha256": "f1846e776c861f74fa98ca3650cd1914f0ee9503941583cff750f38bebd387b1"
+  },
+  "source_delta_audit": {
+    "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\source_delta_audit.json",
+    "bytes": 34664,
+    "sha256": "a4455d8d158c36ceeeb093ae70dd3c92c0700afb92a1202ffa658bebfd22c5d5"
+  },
+  "preserved_original_bitstreams": [
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot\\output\\html_fidelity\\builds\\no_bot_legacy_004\\work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit",
+      "bytes": 677348,
+      "sha256": "61874e4fcbbd83f1eea3010f54bd4804a411c46cf9f2d9203230d53cc38a2fc7"
+    },
+    {
+      "path": "D:\\FPGA\\hx4s20_extensions_20261013\\builds\\ext_full_005\\work\\design\\td_project\\hx4s20_basic_Runs\\phy_1\\hx4s20_basic.bit",
+      "bytes": 633116,
+      "sha256": "def3d2b116f2b48b5f23dde7d3ace283322750647408ef1b68e64dad3c70cd32"
+    }
+  ],
+  "report_files": [
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\status.json",
+      "bytes": 1108,
+      "sha256": "e1222a2ffe9c07bfb7c6ead4d719edd4098fd0f600e102b5512c940e3acb5410"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\stages.tsv",
+      "bytes": 275,
+      "sha256": "f13a05dcda701afc613f4c2910f8c46166c29bd26ec8c6c6d669706507e2c532"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\stdout.log",
+      "bytes": 202977,
+      "sha256": "03468112ca93c008711c010f710c7a35db16d1b0646b1ac2a50884eede0aed14"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\final_timing.rpt",
+      "bytes": 9696379,
+      "sha256": "eb9675f37a516f997e9241fa8d81fa16ecc500335b99f32f904abeb33ddf6f93"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\before_hold_fix.rpt",
+      "bytes": 9683350,
+      "sha256": "0820dc918742a84419cb4f314c2ead99a91d867c6fd45232548d8af2d7aea12f"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\after_hold_fix.rpt",
+      "bytes": 9696379,
+      "sha256": "10a150dd0081df9db22f9c5b28b59dc59f0739b70fce6f04dc6cd767b86236f0"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\ignored_timing.rpt",
+      "bytes": 53898,
+      "sha256": "653e56c602518a056dd32d112607482cdbd71fa7fc42926eb5d40e19a41e4361"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\exceptions.rpt",
+      "bytes": 37708,
+      "sha256": "4ad0c5cfcdc979c8c5d4f56a293bf4c3fcfa6e6909238c207a364b9a2a70909c"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\clocks.rpt",
+      "bytes": 194,
+      "sha256": "f9401d9f3647b27427bf35a20fe7debf7af96b68a25b21daef1448eb2d0e1684"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\check_timing.rpt",
+      "bytes": 32515,
+      "sha256": "a58c87a56cf15b4ab70d60d038ca6a10599c93fe23cfaec392c72d87c1e20da0"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\final_area.rpt",
+      "bytes": 26547,
+      "sha256": "0a980b2e3cb061499222d2d0d8afead30de02a97175a5189b44d93915afaee8d"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\html_fidelity\\builds\\hdmi_colorbar_diag_001\\runs\\hdmi_colorbar_diag_001\\inputs.json",
+      "bytes": 23109,
+      "sha256": "c9efab1034e51b3a38d3159a4ec824688e0846a67d88166f7bfc490d46c1331b"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\status.json",
+      "bytes": 1121,
+      "sha256": "edaee00d445bf002715e16ca2e744fb2aa71c2f698d81a2dd3567942b66f74dc"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\stdout.log",
+      "bytes": 5462,
+      "sha256": "81459053a8083ec7ffdabb4fca5efa227177a5441d2bd57bd11ff19960c0f913"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_timing.rpt",
+      "bytes": 6316270,
+      "sha256": "2cba4f3cbfa43c87cb29e295e7206eb8410fc0d5a0d8e265dee866b1c271311e"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_exceptions.rpt",
+      "bytes": 37754,
+      "sha256": "e55842b3b396115851e13d89ef5af5f140689a467f20532c78b457a96c406689"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_ignored.rpt",
+      "bytes": 53847,
+      "sha256": "8a18b4d0c2f7af56f0f4a08b0d97acafd8eb47e8b37867b9f40837f1e2c40ee8"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_clocks.rpt",
+      "bytes": 194,
+      "sha256": "f9401d9f3647b27427bf35a20fe7debf7af96b68a25b21daef1448eb2d0e1684"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_check.rpt",
+      "bytes": 32523,
+      "sha256": "322cca8c38d389234fc2b69b74af18f5743a6e1bf510794cefd1bb70f4c94c72"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\init_mode.sdc",
+      "bytes": 3133,
+      "sha256": "92377f7ae2ba66a8c16fa59f89e1f6e6526c03e7547ab8224f060f1658549a79"
+    },
+    {
+      "path": "D:\\FPGA\\EG4S20-NoBot-HDMIDiag\\output\\hdmi_colorbar_diag\\sta_init_mode\\spi_init_timing.tcl",
+      "bytes": 2279,
+      "sha256": "49c37e248521ef0b758683191c50fb84509041b791b34d90c64a8b3ce4fcd99b"
+    }
+  ],
+  "states": {
+    "OFFLINE_BUILD": "BUILD_PASS",
+    "TIMING": "STA_PASS_IN_DOCUMENTED_MODEL_COVERAGE",
+    "RTL_REGRESSION": "SCOPED_PASS",
+    "VIDEO_PATH_SIMULATION": "DIAGNOSTIC_ACTUAL_TOP_TO_HDMI_INPUT_2FRAME_PASS",
+    "AUDIO_PATH_SIMULATION": "ORIGINAL_TOP_FIRST_REAL_WAV_INPUT_PASS_DIAGNOSTIC_AUDIO_PAYLOAD_NOT_REQUALIFIED",
+    "HARDWARE_NOT_TESTED": true
+  },
+  "limits": [
+    "No encrypted HDMI packet/TMDS/PHY simulation or hardware verification.",
+    "No added multi-page,long-loop,random or EOF/restart tests.",
+    "Audio connections unchanged; diagnostic video independent of audio/media readiness."
+  ]
+}
