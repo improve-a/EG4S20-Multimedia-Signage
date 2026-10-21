@@ -12551,6 +12551,17 @@
       "bytes": 229,
       "origin": "openCamber_contest1/fix_round/unattended_evidence_20261021.zip:windows/netcheck/media_status_001/export_gate.tcl",
       "kind": "source"
+    },
+    {
+      "path": "archives/diagnostics_20261020/recovered_paths/run_reset_sta.py",
+      "sha256": "3377109eefd0a8fa5768b15d979ccc5a7caf9d854a364358dcb2e09ec45036bc",
+      "bytes": 16121,
+      "origin": "main_workspace/misplaced_Windows_path/run_reset_sta.py",
+      "aliases": [
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\ds1017_task_b_reset_sta/run_reset_sta.py",
+        "D:\\FPGA\\EG4S20-NoBot-HWFix\\output\\offline_debug\\ds1017_task_b/run_reset_sta.py"
+      ],
+      "kind": "source"
     }
   ],
   "excluded_candidates": [
