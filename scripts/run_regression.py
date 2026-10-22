@@ -87,7 +87,7 @@ def read_ppm(path):
     return pixels
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--run-id');ap.add_argument('--ui-bmp',type=pathlib.Path);ap.add_argument('--ui-ppm',type=pathlib.Path);ap.add_argument('--only-ui-pixel',action='store_true');ap.add_argument('--select',nargs='+');ap.add_argument('--evidence-root',type=pathlib.Path);a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--run-id');ap.add_argument('--ui-bmp',type=pathlib.Path);ap.add_argument('--ui-ppm',type=pathlib.Path);ap.add_argument('--only-ui-pixel',action='store_true');ap.add_argument('--select',nargs='+');ap.add_argument('--evidence-root',type=pathlib.Path);ap.add_argument('--local',action='store_true',help='Run on Windows locally, without SSH or archive transfer');a=ap.parse_args()
     assert bool(a.ui_bmp)==bool(a.ui_ppm)
     assert not a.only_ui_pixel or a.ui_bmp
     stamp=datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
@@ -127,6 +127,16 @@ def main():
     plan={'created_utc':stamp,'run_id':run_id,'tests':cases,'source_sha256':manifest,'recipe_policy':'References supply test recipes only. All inputs and results are fresh current-source data.','ui_pixel_provenance':ui_provenance,'remote_runner_sha256':hashlib.sha256(REMOTE_RUNNER.encode()).hexdigest(),'entry_script_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()}
     (evidence/'plan.json').write_text(json.dumps(plan,indent=2))
     (evidence/'remote_runner.py').write_text(REMOTE_RUNNER)
+    if a.local:
+        import sys
+        for name,data in payloads.items():
+            path=evidence/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
+        command=[sys.executable,'-X','utf8',str(evidence/'remote_runner.py'),str(evidence)]
+        completed=subprocess.run(command)
+        if completed.returncode:return completed.returncode
+        result=json.loads((evidence/'results/regression_summary.json').read_text())
+        print('EVIDENCE='+str(evidence),flush=True)
+        return 0 if result['status']=='PASS' else 1
     with zipfile.ZipFile(evidence/'inputs.zip','x',zipfile.ZIP_DEFLATED) as z:
         for n,v in sorted(payloads.items()):z.writestr(n,v)
         z.write(evidence/'plan.json','plan.json');z.write(evidence/'remote_runner.py','remote_runner.py')
