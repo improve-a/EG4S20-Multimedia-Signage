@@ -10,6 +10,7 @@ import re
 import shutil
 import subprocess
 import zipfile
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -30,6 +31,18 @@ def checkout_path(name):
 
 def resources(p):
     return {k: int(v) for k, v in re.findall(r'^\s*#(lut|reg|bram9k|bram32k|dsp|pll)\s+(\d+)', p.read_text(), re.M)}
+
+def project_semantics(data):
+    # TD saves its UCode and renumbers existing CompileOrder attributes. These
+    # are tool metadata, not source edits; compare every other XML field.
+    tree = ET.fromstring(data.replace(b'P&R', b'P&amp;R'))
+    for parent in tree.iter():
+        for child in list(parent):
+            if child.tag == 'UCode' or (child.tag == 'Attr' and child.get('Name') == 'CompileOrder'):
+                parent.remove(child)
+        if parent.text and not parent.text.strip(): parent.text = None
+        if parent.tail and not parent.tail.strip(): parent.tail = None
+    return ET.tostring(tree)
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -68,12 +81,23 @@ def main():
     result['build_source_commit'] = manifest['git_commit']
     result['checkout_commit'] = subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip()
     verified = []
+    source = ROOT/'artifacts'/(a.run_id+'_source.zip')
+    with zipfile.ZipFile(source) as archive:
+        project_input = archive.read('work/design/td_project/hx4s20_basic.al')
+    started_inputs = {x['path']:x['sha256'] for x in json.loads((job/'inputs.json').read_text())}
     for item in manifest['selected']:
         name = item['path']
         snapshot = base/'work/design'/name
         live = checkout_path(name)
-        assert sha(snapshot) == item['sha256'], name
-        assert canonical(live.read_bytes(), name.endswith('.al')) == canonical(snapshot.read_bytes(), name.endswith('.al')), name
+        data = snapshot.read_bytes()
+        if name == 'td_project/hx4s20_basic.al':
+            assert project_semantics(project_input) == project_semantics(data), 'TD changed project semantics'
+            result['td_project_metadata'] = {'input_sha256':hashlib.sha256(project_input).hexdigest(),
+                'after_td_sha256':sha(snapshot), 'source_list_and_settings_unchanged':True,
+                'changes':'TD UCode and CompileOrder renumbering only'}
+            data = project_input
+        assert hashlib.sha256(data).hexdigest() == item['sha256'] == started_inputs[name], name
+        assert canonical(live.read_bytes(), name.endswith('.al')) == canonical(data, name.endswith('.al')), name
         verified.append({'path':name, 'sha256':item['sha256']})
     result['verified_snapshot_inputs'] = verified
     differences = []
@@ -90,7 +114,6 @@ def main():
     result['classification'] = 'NEW_CANDIDATE_HARDWARE_NOT_TESTED'
     out = ROOT/'output/probe_audio_multires/delivery'/a.run_id
     out.mkdir(parents=True, exist_ok=False)
-    source = ROOT/'artifacts'/(a.run_id+'_source.zip')
     shutil.copy2(source, out/source.name)
     result['source_archive'] = {'path':str(out/source.name), 'sha256':sha(source)}
     bit = base/'work/design/td_project/hx4s20_basic_Runs/phy_1/hx4s20_basic.bit'
