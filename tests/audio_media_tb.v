@@ -8,7 +8,7 @@ wire audio_valid;wire[23:0]audio_left,audio_right;wire[3:0]status;wire[15:0]wave
 wire underflow,overflow,eof,error;wire[9:0]fifo_level;
 reg[7:0]card[0:3071];integer base=0,offset=0,delay_count=0,busy=0,frames=0,requests=0,ticks=0;
 reg[31:0]previous_tick=0;integer cycles=0;
-audio_media #(.FIFO_ADDRESS_BITS(9),.PREFILL_FRAMES(128),.SCAN_MAX_SECTOR(5)) dut(
+audio_media #(.FIFO_ADDRESS_BITS(9),.PREFILL_FRAMES(128),.SCAN_MAX_SECTOR(5),.LOOP_PLAY(0)) dut(
  sys_clk,rst,audio_clk,audio_rst,enable,paused,muted,restart,volume,sd_ready,sector_grant,
  sector_data,sector_valid,sector_end,sector_error,sector_req,sector_addr,sector_urgent,
  audio_valid,audio_left,audio_right,status,wave_peak,underflow,overflow,eof,error,fifo_level);

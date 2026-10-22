@@ -1,10 +1,17 @@
 // Real TF sector client, physical-header scan and contiguous-file WAV playback.
 // No FAT traversal: WAV must start on a sector and occupy consecutive sectors.
 // sector_* and controls: sys_clk. HDMI/status/wave_peak/flags: audio_clk.
+// LOOP_PLAY repeats the same contiguous data sectors from the header sector on
+// parser EOF without clearing the FIFO or rescanning LBA0..: the 2048-frame FIFO
+// keeps playing while the one header sector is reread, so the PCM stream is
+// continuous. LOOP_PLAY=1 is the production default. LOOP_PLAY=0 keeps the
+// legacy exhausted behaviour (source_eof, FINISHED, silent 48kHz output) and is
+// selected explicitly by the older EOF testbenches.
 module audio_media #(
  parameter SYS_CLK_HZ=100000000,AUDIO_CLK_HZ=25000000,
  parameter FIFO_ADDRESS_BITS=11,PREFILL_FRAMES=512,
- parameter [31:0] SCAN_START_SECTOR=0,SCAN_MAX_SECTOR=131071
+ parameter [31:0] SCAN_START_SECTOR=0,SCAN_MAX_SECTOR=131071,
+ parameter LOOP_PLAY=1
 )(
  input sys_clk,rst,audio_clk,audio_rst,
  input enable,paused,muted,restart,input [3:0] volume,
@@ -19,6 +26,8 @@ module audio_media #(
 localparam IDLE=0,SCAN_REQ=1,SCAN_WAIT=2,SCAN_EVAL=3,PLAY_RESET=4,
  PLAY_REQ=5,PLAY_WAIT=6,PLAY_EVAL=7,FINISHED=8,FAILED=9,PLAY_HOLD=10,SCAN_DRAIN=11,PLAY_DRAIN=12;
 reg [3:0] state;
+// candidate holds the sector where the current RIFF header starts and is left
+// unchanged during playback, so the EOF loop can restart from it.
 reg [31:0] candidate,current_sector,wait_count;
 // SCAN_EVAL follows a complete sector and SCAN_DRAIN, during which the address
 // is stable. Register the 32-bit bound comparison before its state/CE fanout.
@@ -148,6 +157,10 @@ always @(posedge sys_clk)begin
     PLAY_EVAL:begin
      if(sector_bytes!=512)begin fault_sys<=4'd15;state<=FAILED;end
      else if(parser_error!=0)begin fault_sys<=parser_error;state<=FAILED;end
+     // LOOP_PLAY replays the same contiguous data from the header sector without
+     // touching fifo clear, parser done, play_ready or prefill, so the 48kHz
+     // stream keeps running; only that sector's header bytes are reparsed.
+     else if(parser_done&&LOOP_PLAY!=0)begin current_sector<=candidate;parser_start<=1;state<=PLAY_HOLD;end
      else if(parser_done)begin source_eof<=1;play_ready<=1;state<=FINISHED;end
      else if(current_sector==32'hffffffff)begin fault_sys<=2;state<=FAILED;end
      else begin current_sector<=current_sector+1'b1;state<=PLAY_HOLD;end

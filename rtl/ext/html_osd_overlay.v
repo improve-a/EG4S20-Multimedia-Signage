@@ -89,7 +89,7 @@ module html_osd_overlay #(
  reg [5:0] typing_delay;
  reg [10:0] typing_phase;
  reg [6:0] cursor_frame;
- reg [4:0] audio_history[0:8];
+ reg [5:0] audio_history[0:8];
  reg [3:0] pcm_status;integer ah;
  // Serial18-byte prefill shares one9K ROM instead of144 parallel lookup bits.
  // It finishes19 pixel clocks after VS, well before active video33 lines later.
@@ -237,7 +237,7 @@ module html_osd_overlay #(
     muted<=mute;stopped<=paused;auto_flag<=auto_mode;prog<=progress;seconds<=interval;seconds_fraction<=interval_fraction<10 ? interval_fraction : 4'd0;
     cursor_frame<=cursor_frame+1'b1;pcm_status<=audio_status;
     for(ah=8;ah>0;ah=ah-1)audio_history[ah]<=audio_history[ah-1];
-    audio_history[0]<=(mute||paused)?5'd0:(audio_peak>=16'd32768 ?5'd29:audio_peak[14:10]);
+    audio_history[0]<=(mute||paused)?6'd0:(audio_peak>=16'd32768 ?6'd32:audio_peak[15:10]);
     if(page_event||event_pending||page_index!=page||dual_enable!=dual)begin
      event_pending<=0;typed_count<=0;typing_delay<=(page_event||event_pending||page_index!=page)?6'd33:6'd6;
      typing_phase<=0;
@@ -438,7 +438,7 @@ module html_osd_overlay #(
  reg [2:0] live_col;
  reg [9:0] mini_x0,mini_y0,mini_x1,mini_y1;
  reg [7:0] zoom_char;
- reg [3:0] bar_index;reg [2:0] bar_col;reg [4:0] bar_height;reg [9:0] bar_top,bar_bottom;
+ reg [3:0] bar_index;reg [2:0] bar_col;reg [6:0] bar_height;reg [9:0] bar_top,bar_bottom;
  reg [15:0] live_word;
  always @*begin
   plate_rgb=0;plate_code=0;plate_alpha=0;text_rgb=24'h1a1916;
@@ -456,13 +456,18 @@ module html_osd_overlay #(
    // Audio panel divider; waveform itself remains real-audio driven elsewhere.
    if(px==443&&y>=386&&y<458)begin plate_code=3'd3;plate_alpha=15;end
    // Nine temporal PCM-peak samples, not frequency bins or simulated bars.
-   if(px>=455&&px<500&&y>=399&&y<429)begin
-    bar_x=px-10'd455;bar_index=bar_x/6'd5;bar_col=bar_x%6'd5;
-    bar_height=audio_history[bar_index];
-    if(bar_height>29)bar_height=29;
-    bar_top=414-(bar_height>>1);bar_bottom=414+((bar_height+1'b1)>>1);
-    if(bar_col<3&&bar_height!=0&&y>=bar_top&&y<bar_bottom&&
-       (bar_col==1||(y>bar_top&&y+1<bar_bottom)))begin
+   // Enlarged chart: x445..507 (63px, 7px pitch, 5px bars) by y388..431 (44px),
+   // 2.05x the previous 45x30px area and clear of the18x20 caption field at
+   // x468..486,y433..453. Bar height is1.5px per audio_peak[15:10] step (full
+   // scale44px), so a silent or muted stream draws nothing at all.
+   if(px>=445&&px<508&&y>=388&&y<432)begin
+    bar_x=px-10'd445;bar_index=bar_x/3'd7;bar_col=bar_x%3'd7;
+    bar_height={1'b0,audio_history[bar_index]}*3'd3;
+    bar_height=bar_height>>1;
+    if(bar_height>44)bar_height=44;
+    bar_top=410-(bar_height>>1);bar_bottom=410+((bar_height+1'b1)>>1);
+    if(bar_col<5&&bar_height!=0&&y>=bar_top&&y<bar_bottom&&
+       (bar_col==2||(y>bar_top&&y+1<bar_bottom)))begin
      plate_code=3'd4;plate_alpha=15;
     end
    end

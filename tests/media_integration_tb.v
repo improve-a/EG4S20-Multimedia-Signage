@@ -35,7 +35,7 @@ module media_integration_tb #(parameter WRITE_BURST=256);
  .commit_toggle(commit_toggle),.display_commit_ack_toggle(commit_ack),.storage_fault_async(1'b0),
  .write_req(write_req),.write_req_ack(write_ack),.write_en(write_en),.write_data(write_data),
  .SD_nCS(),.SD_DCLK(),.SD_MOSI(),.SD_MISO(1'b1));
- audio_media #(.SYS_CLK_HZ(100000000),.AUDIO_CLK_HZ(25000000),
+ audio_media #(.SYS_CLK_HZ(100000000),.AUDIO_CLK_HZ(25000000),.LOOP_PLAY(0),
  .FIFO_ADDRESS_BITS(11),.PREFILL_FRAMES(512),.SCAN_START_SECTOR(790),.SCAN_MAX_SECTOR(846)) audio(
  .sys_clk(clk),.rst(rst),.audio_clk(video_clk),.audio_rst(rst),.enable(display_valid),
  .paused(paused),.muted(muted),.restart(1'b0),.volume(volume),.sd_ready(sd_ready),

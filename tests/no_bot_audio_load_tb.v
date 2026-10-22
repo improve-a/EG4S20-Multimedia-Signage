@@ -9,7 +9,7 @@ module no_bot_audio_load_tb;
  wire areq,urgent,agrant,av,ae,ax,bv,be,bx,sdreq;wire[31:0]aaddr,sdaddr;wire[7:0]adata,bdata;
  reg[7:0]sddata=0;reg sdvalid=0,sdend=0,sderr=0;
  wire valid;wire[23:0]left,right;wire[15:0]peak;wire[3:0]status;wire uf,of,eof,err;wire[11:0]level;
- audio_media media(.sys_clk(sc),.rst(rst),.audio_clk(ac),.audio_rst(ar),.enable(enable),.paused(1'b0),.muted(1'b0),.restart(1'b0),.volume(4'd8),
+ audio_media #(.LOOP_PLAY(0)) media(.sys_clk(sc),.rst(rst),.audio_clk(ac),.audio_rst(ar),.enable(enable),.paused(1'b0),.muted(1'b0),.restart(1'b0),.volume(4'd8),
  .sd_ready(1'b1),.sector_grant(agrant),.sector_data(adata),.sector_valid(av),.sector_end(ae),.sector_error(ax),.sector_req(areq),.sector_addr(aaddr),.sector_urgent(urgent),
  .audio_valid(valid),.audio_left(left),.audio_right(right),.status(status),.wave_peak(peak),.underflow(uf),.overflow(of),.eof(eof),.error(err),.fifo_level(level));
  media_sector_arbiter arb(.clk(sc),.rst(rst),.sd_ready(1'b1),.bmp_req(breq),.bmp_addr(baddr),.bmp_data(bdata),.bmp_valid(bv),.bmp_end(be),.bmp_error(bx),

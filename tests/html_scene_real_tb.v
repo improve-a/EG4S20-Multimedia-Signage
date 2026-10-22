@@ -18,7 +18,7 @@ html_scene_loader #(.TIMEOUT_CYCLES(200000),.SET_ID(SET_ID)) dut(.clk(clk),.rst(
 wire ar,au,ag,av,ae,ax;wire[31:0]aa;wire[7:0]ad;
 media_sector_arbiter arb(.clk(clk),.rst(rst),.sd_ready(sd_ready),.bmp_req(req),.bmp_addr(addr),.bmp_data(data),.bmp_valid(valid),.bmp_end(ending),.bmp_error(serr),.audio_req(ar),.audio_addr(aa),.audio_urgent(au),.audio_grant(ag),.audio_data(ad),.audio_valid(av),.audio_end(ae),.audio_error(ax),.sd_req(sreq),.sd_addr(saddr),.sd_data(sd),.sd_valid(sv),.sd_end(se),.sd_error(1'b0));
 reg restart=0;wire pcm_valid,uf,of,eof,aerror;wire[23:0]left,right;wire[3:0]status;wire[15:0]peak;wire[9:0]level;
-audio_media #(.FIFO_ADDRESS_BITS(9),.PREFILL_FRAMES(128),.SCAN_MAX_SECTOR(5)) audio(
+audio_media #(.FIFO_ADDRESS_BITS(9),.PREFILL_FRAMES(128),.SCAN_MAX_SECTOR(5),.LOOP_PLAY(0)) audio(
 clk,rst,aclk,rst,enable,1'b0,1'b0,restart,4'd8,sd_ready,ag,ad,av,ae,ax,ar,aa,au,pcm_valid,left,right,status,peak,uf,of,eof,aerror,level);
 reg[7:0]headers[0:3071],payload[0:7215103],card[0:3071];reg[31:0]gold[0:1803775],pcm[0:299];
 integer bases[0:5],lens[0:5],offsets[0:5];

@@ -10,7 +10,7 @@ reg[7:0]card[0:11263];integer busy=0,delay_count=0,offset=0,sector_base=0;
 integer cycles=0,last_a_req=-1,max_a_wait=0,wait_now,a_requests=0,b_sectors=0,a_sectors=0,frames=0;
 integer last_phy_end=0,max_sector_cycles=0,phy_start=0,sd_sectors=0,bbytes=0,bgap=0;
 reg [31:0]held_lba;reg served_audio;
-audio_media media(sc,rst,ac,ar,enable,1'b0,1'b0,1'b0,4'd8,1'b1,agrant,adata,av,ae,ax,
+audio_media #(.LOOP_PLAY(0)) media(sc,rst,ac,ar,enable,1'b0,1'b0,1'b0,4'd8,1'b1,agrant,adata,av,ae,ax,
  areq,aaddr,urgent,valid,left,right,status,peak,uf,of,eof,err,level);
 media_sector_arbiter arb(sc,rst,1'b1,breq,baddr,bdata,bv,be,bx,
  areq,aaddr,urgent,agrant,adata,av,ae,ax,sdreq,sdaddr,sddata,sdvalid,sdend,sderr);

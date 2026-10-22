@@ -17,7 +17,7 @@ integer cycles=0,last_current=-1,last_unified=-1,min_current=100000,max_current=
 integer min_unified=100000,max_unified=0,current_bad_gaps=0,unified_bad_gaps=0;
 integer current_frames=0,unified_frames=0,ctses=0,utses=0,current_bad_cts=0,unified_bad_cts=0;
 integer gap,selection_cycle=-1;
-audio_media media(sc,sr,vc,vr,1'b1,1'b0,1'b0,1'b0,4'd8,sdready,
+audio_media #(.LOOP_PLAY(0)) media(sc,sr,vc,vr,1'b1,1'b0,1'b0,1'b0,4'd8,sdready,
  grant,sddata,sdv,sde,1'b0,req,addr,urgent,wvalid,wl,wr,status,peak,uf,of,eof,error,level);
 hdmi_audio_tone_pcm_scale tone(vc,vr,1'b0,tvalid,tl,tr);
 audio_arc_calculate current_acr(vc,vr,current_valid,cv,ccts,cn);
