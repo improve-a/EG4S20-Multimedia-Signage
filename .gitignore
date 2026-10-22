@@ -89,3 +89,4 @@ __pycache__/
 # Generated visual assets, private prototype, snapshots and verification products stay local.
 /output/html_fidelity/
 /rtl/ext/html_assets/
+/output/probe_audio_multires/
