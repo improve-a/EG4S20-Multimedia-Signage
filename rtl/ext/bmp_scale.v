@@ -101,15 +101,18 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  reg [20:0] pixel_offset;
  reg [6:0] dib_size;
  reg [9:0] width;
- reg [8:0] height;
+ // 10 bits so a real 800x600 scan header keeps its full height field (600).
+ reg [9:0] height;
  // Legal BMP bounds fit these fields. Every discarded header bit and fixed
  // format byte is checked on arrival, before the full512byte header decision.
  reg header_fields_ok;
  reg [15:0] signature;
  reg [9:0] receive_count,parse_index;
- // Accepted BMPs have width<=640, height<=480 and pixel_offset<=1048576.
- // Thus stride<=1920 and pixel_end<=1970176; these counters cannot wrap
- // before DRAIN. Keep header extent arithmetic wide for malformed inputs.
+ // Parse fields stay inside 21 bits: the byte parser only runs after an
+ // ordinary load acceptance (width<=640, height<=480, pixel_offset<=1048576),
+ // so stride<=1920 and pixel_end<=1970176. A scan-only 800x600 acceptance
+ // (stride2400, image1440000, pixel_end1440512) never reaches the parser.
+ // Keep header extent arithmetic wide for malformed inputs.
  reg [20:0] file_position;
  reg [10:0] row_position;
  reg [1:0] component;
@@ -122,7 +125,9 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  // Header bytes are stable hundreds of clocks before HCHECK. Stage the
  // arithmetic to keep the wide validation out of a single 100MHz path.
  reg [11:0] rgb_row_narrow,row_stride_narrow;
- reg [20:0] image_bytes;
+ // 22 bits: 800x600 is2400*600=1440000, still inside the 21-bit parse window
+ // below, while an unbounded 12x10 multiply before acceptance cannot truncate.
+ reg [21:0] image_bytes;
  reg [32:0] pixel_end_wide,next_sector,last_sector;
  reg [31:0] file_sectors,max_file_len;
  wire [31:0] rgb_row={20'd0,rgb_row_narrow};
@@ -132,7 +137,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
   html_resource_locator locator(.clk(clk),.rst(rst),.header_start(state==HREQ),
    .byte_valid(state==HRECV && sd_sec_read_data_valid),.byte_index(receive_count),
    .byte_data(sd_sec_read_data),.file_len(file_len),.pixel_offset({11'd0,pixel_offset}),
-   .pixel_end(pixel_end),.dib_size({25'd0,dib_size}),.width({22'd0,width}),.height({23'd0,height}),
+   .pixel_end(pixel_end),.dib_size({25'd0,dib_size}),.width({22'd0,width}),.height({22'd0,height}),
    .valid(hfxl_extent_ok),.scene_offset(),.payload_bytes(),.word_base(),.set_id(),.page_index());
  end else begin: ordinary_bmp
   assign hfxl_extent_ok=1'b0;
@@ -144,8 +149,8 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
   end else begin
    rgb_row_narrow<=({2'd0,width[9:0]}<<1)+{2'd0,width[9:0]};
    row_stride_narrow<=(rgb_row_narrow+12'd3)&12'hffc;
-   image_bytes<=row_stride_narrow*height[8:0];
-   pixel_end_wide<={1'b0,pixel_offset}+{12'd0,image_bytes};
+   image_bytes<=row_stride_narrow*height[9:0];
+   pixel_end_wide<={1'b0,pixel_offset}+{11'd0,image_bytes};
    max_file_len<=pixel_end+32'd65536;
    pixel_begin_previous<=pixel_offset-21'd1;pixel_last<=pixel_end[20:0]-21'd1;
    file_sectors<=(file_len+32'd511)>>9;
@@ -157,27 +162,32 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  // In the fastest legal transport, byte33 precedes the decision by478 clocks;
  // this pipeline has ample settle time without altering any header bound.
  reg [32:0] dib_end;
- reg signature_ok,width_ok,height_ok,dib_ok;
+ reg signature_ok,width_ok,height_ok,dib_ok,probe_extent_ok;
  reg offset_lower_ok,offset_upper_ok,extent_lower_ok,extent_upper_ok,end_ok,lba_ok;
  reg dimensions_ok,format_ok,offset_ok,extent_ok;
  reg header_ok;
  always @(posedge clk) begin
   if(rst) begin
    dib_end<=0;signature_ok<=0;width_ok<=0;height_ok<=0;dib_ok<=0;offset_lower_ok<=0;offset_upper_ok<=0;
-   extent_lower_ok<=0;extent_upper_ok<=0;end_ok<=0;lba_ok<=0;
+   extent_lower_ok<=0;extent_upper_ok<=0;end_ok<=0;lba_ok<=0;probe_extent_ok<=0;
    dimensions_ok<=0;format_ok<=0;offset_ok<=0;extent_ok<=0;header_ok<=0;
   end else begin
    dib_end<={1'b0,dib_size}+33'd14;
    signature_ok<=signature==16'h4d42;
    width_ok<=(width!=0)&&(width<=32'd640);
    height_ok<=(height!=0)&&(height<=32'd480);
+   // The ordinary BMP load acceptance stays 640x480. A real 800x600 page is
+   // catalogued only while scanning; its load-path acceptance is not widened,
+   // so neither this module's scaler nor the exhibit loader can be started by
+   // an 800x600 file through the ordinary path.
+   probe_extent_ok<=scanning&&(width==32'd800)&&(height==32'd600);
    dib_ok<=(dib_size==32'd40)||(dib_size==32'd108)||(dib_size==32'd124);
    offset_lower_ok<=!dib_end[32]&&({1'b0,pixel_offset}>=dib_end);
    offset_upper_ok<=pixel_offset<=32'd1048576;
    extent_lower_ok<=file_len>=pixel_end;
    extent_upper_ok<=(file_len<=max_file_len)||hfxl_extent_ok;
    end_ok<=!pixel_end_wide[32];lba_ok<=!last_sector[32];
-   dimensions_ok<=signature_ok&&width_ok&&height_ok;
+   dimensions_ok<=signature_ok&&((width_ok&&height_ok)||probe_extent_ok);
    format_ok<=header_fields_ok&&dib_ok;
    offset_ok<=offset_lower_ok&&offset_upper_ok;
    extent_ok<=extent_lower_ok&&extent_upper_ok&&end_ok&&lba_ok;
@@ -202,7 +212,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
        18:width[7:0]<=sd_sec_read_data;
        19:begin width[9:8]<=sd_sec_read_data[1:0];if(sd_sec_read_data[7:2]!=0)header_fields_ok<=0;end
        22:height[7:0]<=sd_sec_read_data;
-       23:begin height[8]<=sd_sec_read_data[0];if(sd_sec_read_data[7:1]!=0)header_fields_ok<=0;end
+       23:begin height[9:8]<=sd_sec_read_data[1:0];if(sd_sec_read_data[7:2]!=0)header_fields_ok<=0;end
        26:if(sd_sec_read_data!=1)header_fields_ok<=0;
        28:if(sd_sec_read_data!=24)header_fields_ok<=0;
        13,15,16,17,20,21,24,25,27,29,30,31,32,33:if(sd_sec_read_data!=0)header_fields_ok<=0;
@@ -217,7 +227,7 @@ module bmp_scale_read #(parameter TIMEOUT_CYCLES=200_000_000, parameter ENABLE_H
  assign bmp_data_wr_en=scale_valid&&active&&!load_abort&&!sd_sec_read_error;
  assign bmp_data=scale_pixel;
  bmp_scale scaler(.clk(clk),.rst(rst||load_abort||!sd_init_done||state==IDLE),
- .start(scale_start),.source_width(width[9:0]),.source_height({1'b0,height}),
+ .start(scale_start),.source_width(width[9:0]),.source_height(height),
  .scale_mode(mode_l),.source_valid(source_valid),.source_pixel(source_pixel),
  .source_ready(source_ready),.pixel_valid(scale_valid),.pixel(scale_pixel),.done(scale_done));
  // Prefetch byte zero on the receive-to-parse edge. Each accepted byte

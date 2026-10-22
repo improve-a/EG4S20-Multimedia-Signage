@@ -23,7 +23,10 @@ def main():
     records = []
     for name in ORDER:
         changed = name in ('UI06.BMP', '07_MUSIC.WAV')
-        src = (a.replacements if changed else a.baseline) / name
+        # Keep the raw 54-byte-header 800x600 source separately; the frozen
+        # loader contract requires the byte-identical payload at offset512.
+        source_name = 'UI06_512.BMP' if name == 'UI06.BMP' else name
+        src = (a.replacements if changed else a.baseline) / source_name
         data = src.read_bytes()
         meta = {'name': name, 'source': str(src), 'bytes': len(data), 'sha256': sha(data),
                 'sectors': (len(data) + 511) // 512, 'replaced': changed}
