@@ -74,7 +74,7 @@ module media_controls #(
             interval_fraction <= ENABLE_EXHIBIT ? (AUTO_PERIOD_MILLISECONDS % 1000) / 100 : 0;
             osd_enable <= 1'b1;
             transition_mode <= ENABLE_EXHIBIT ? 2'd1 : 2'd0;
-            scale_mode <= ENABLE_EXHIBIT ? 2'd1 : 2'd0;
+            scale_mode <= 2'd0; // Native 1.0X in both single and dual layouts.
             volume <= 4'd8;
             param_changed <= 1'b0;
             pause_hold_count <= 0;
