@@ -33,6 +33,36 @@ changes to clocks, SDRAM arbitration, pins, HDMI interfaces or key assignments.
 
 ## Verification and delivery
 
-Fresh regression, source identity, media hashes, routed timing and final artifact
-paths will be recorded here after integration. Any final bit is classified
-`NEW_CANDIDATE_HARDWARE_NOT_TESTED`.
+The fresh inherited `probe_osd_default_1x_verify.py`,
+`no_bot_legacy_control_verify.py` and `html_osd_swap_verify.py` runs all exited 0
+in the isolated Windows checkout (before audio/BMP integration). Their logs are
+under `output/probe_audio_multires/inherited_regression_002`.
+
+Review of all 129 non-log frozen production inputs found only the intended eight
+differences: four audio/BMP RTL files, the three OSD/default RTL files (OSD is
+shared by both groups), and two font files. Frozen top, HDMI, SD protocol,
+SDRAM/FIFO writer/reader, constraints, PLL and key definitions remain unchanged.
+Final integrated regression and routed timing remain to be recorded.
+
+### BMP interpretation
+
+The 800×600 source is **not** displayed in full. The FPGA reads its central
+640×480 window at physical source coordinates (80,60); 64% of the source area
+is visible at 1×. The unchanged 2×/3× sampling and focus operate within that
+window. This is on-FPGA crop/address adaptation, not host-side downsampling.
+
+Both SDRAM buffers remain 307,200 × 32-bit words at bases 0 and 307,200; the
+highest frame word is 614,399 and the combined storage is 2,457,600 bytes.
+The 800×600 BMP's 2,400-byte source row stride does not become a framebuffer
+stride. One existing 640×24-bit line RAM and one 512-byte sector RAM are reused.
+
+### Windows-local workflow
+
+All media generation, unpacking, regression, TD snapshots and final bitstreams
+stay under `D:/FPGA/EG4S20-Probe-Audio-Multires`. Only source commits, small
+reports and hash manifests are synchronized to the Mac. The interrupted Mac
+`baseline_media.zip` is incomplete and is not an input or delivery artifact.
+
+Use `scripts/run_regression.py --local --evidence-root
+output/probe_audio_multires/regression` on Windows for the existing recipe set.
+Any final bit is classified `NEW_CANDIDATE_HARDWARE_NOT_TESTED`.
