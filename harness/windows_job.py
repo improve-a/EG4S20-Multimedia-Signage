@@ -45,7 +45,7 @@ def main():
    ledger=json.loads(ledger_path.read_text()) if ledger_path.exists() else {'attempts':[]}
    used=0
    for prior in ledger['attempts']:
-     previous=json.loads(pathlib.Path(prior['status']).read_text(encoding='utf-8'))
+    previous=json.loads(pathlib.Path(prior['status']).read_text(encoding='utf-8'))
     if previous['state'] in ['STARTING','RUNNING']:raise RuntimeError('Another build is active or unresolved')
     used+=previous.get('elapsed_seconds',0)
    state['prior_build_seconds']=used;state['attempt_number']=len(ledger['attempts'])+1

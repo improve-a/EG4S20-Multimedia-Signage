@@ -130,7 +130,8 @@ def inspect(image, pack):
         if header[:2]!=b'BM':return None
         size,off,dib,w,h=r32(header,2),r32(header,10),r32(header,14),r32(header,18),r32(header,22)
         stride=(w*3+3)&~3;pixel_end=off+stride*h
-        ok=(0<w<=640 and 0<h<=480 and r16(header,26)==1 and r16(header,28)==24 and r32(header,30)==0
+        dimensions=(0<w<=640 and 0<h<=480) or (w,h)==(800,600)
+        ok=(dimensions and r16(header,26)==1 and r16(header,28)==24 and r32(header,30)==0
             and dib in (40,108,124) and dib+14<=off<=1048576 and pixel_end<=size<=pixel_end+65536)
         return dict(bytes=size,width=w,height=h,pixel_offset=off,sectors=(size+511)//512) if ok else None
     by_lba={record['start_lba']:record for record in records};hits=[];sector=0;headers_examined=0
@@ -160,13 +161,13 @@ def inspect(image, pack):
                 loading_order=ORDER,files=records,scanner=dict(state='PASS',scan_start_lba=0,scan_max_lba=131071,
                     scan_target_count=10,headers_examined=headers_examined,bmp_hits=hits,next_lba_after10BMPs=sector,
                     all_sector_boundary_bmp_hits=physical_bmp,wav_header_lbas=riff,
-                    model='bmp_scale_read accepts width<=640,height<=480,BMP24 BI_RGB; accepted files advance ceil(bfSize/512), misses advance1sector. Software model, not RTL simulation.'),
+                     model='bmp_scale_read discovery accepts width<=640,height<=480 or exactly800x600,BMP24 BI_RGB; accepted files advance ceil(bfSize/512), misses advance1sector. Software model, not RTL simulation.'),
                 hardware='HARDWARE_NOT_TESTED',device_access=False,
                 scope='Persisted-image FAT/directory/cluster continuity, source-byte hashes,physical order and software scanner contract. Actual card allocation/RTL/hardware remain separate.')
 
 def documentation(report, output):
     lines=['# 无 Bot 普通媒体与离线 FAT32 镜像','',
-           '本目录提供六页 UI、四份独立产品面板、原 WAV，以及可复现的 64 MiB FAT32 超软盘镜像。今夜没有操作实体卡。',
+           '本目录提供六页 UI、四份独立产品面板、WAV，以及可复现的 64 MiB FAT32 超软盘镜像。本次没有操作实体卡。',
            '', '文件镜像：`'+output.name+'`；完整镜像与文件 SHA256、cluster/LBA 索引见 `'+output.with_suffix('.json').name+'`。',
            '', '```powershell', r'D:\python3.12.3\python.exe -X utf8 scripts\no_bot_package_media.py',
            r'D:\python3.12.3\python.exe -X utf8 scripts\no_bot_media_image.py',
@@ -178,11 +179,11 @@ def documentation(report, output):
     for record in report['files']:
         lines.append(f"|{record['index']}|{record['name']}|{record['first_cluster']}|{record['cluster_count']}|{record['start_lba']}|{record['end_lba']}|{record['bytes']}|")
     lines += ['', '512B/cluster，文件各自连续且按 UI01..06 → PN01..04 → WAV 紧邻排列。根目录顺序与物理顺序相同。',
-              'BMP 都是 offset512、DIB40、24bit BI_RGB、正高度480；UI宽640、PN宽320。静态素材不含动态字幕卡。',
+               'BMP 都是 offset512、DIB40、24bit BI_RGB、正高度；UI为640×480或800×600，PN为320×480。800×600由FPGA读取中心640×480窗口（裁剪而非整幅缩小），其余缩放在窗口内进行。静态素材不含动态字幕卡。',
               'PN01/02/03/04 分别为猎鹰/凤凰/精灵/飞龙，运行时组成左右画面；未交付预拼双图。',
               '', '## 明日部署与验证','',
               'FPGA 按物理扇区查找 BMP/RIFF，不遍历 FAT 文件链。文件名和普通复制顺序不能保证实体卡上的连续性或发现顺序。',
-              '若在单独授权的上板环节将整个镜像逐扇区写入合适实体卡，并在不移动/重写媒体文件的前提下读回校验，镜像索引才对应该卡：首 UI LBA2081、WAV LBA16491。整体镜像部署会覆盖卡上布局，今夜未执行。',
+               f"若由用户随后将整个镜像逐扇区写入另备实体卡，并在不移动/重写媒体文件的前提下读回校验，镜像索引才对应该卡：首 UI LBA{report['files'][0]['start_lba']}、WAV LBA{report['files'][-1]['start_lba']}。整体镜像部署会覆盖目标卡布局，本次未执行；必须保留原成功卡。",
               '若采用普通文件复制，请在新准备的 FAT32 卡上按 UI01..06、PN01..04、WAV 顺序复制这11个媒体文件，不复制日志/JSON/镜像。该操作只是安排顺序；仍须独立检查 FAT 链连续、所有文件首 LBA 在0..131071、物理BMP顺序为10项且没有旧/已删除媒体残留头。',
               '实际卡任一文件碎片化、物理顺序不符或旧媒体头干扰时，应在单独授权的卡准备流程中重新建立连续顺序布局并重新读回核对；不能靠重命名或反复覆盖保证。不要沿用旧卡扇区索引。',
               '本离线镜像中的cluster/LBA不能用于任意普通复制后的卡。当前硬件状态为 HARDWARE_NOT_TESTED。',
